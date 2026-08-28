@@ -42,6 +42,9 @@ const glMap = vi.hoisted(() => ({
   queryRenderedFeatures: vi.fn().mockReturnValue([]),
   querySourceFeatures: vi.fn().mockReturnValue([]),
   unproject: vi.fn(() => ({ lng: 2.3522, lat: 48.8566 })),
+  // The MapLibre place pins position themselves with this, so a mock without it
+  // never exercises the path the real map takes.
+  project: vi.fn((lngLat: [number, number]) => ({ x: lngLat[0] * 10, y: lngLat[1] * 10 })),
   getBounds: vi.fn(() => ({ getSouth: () => 0, getWest: () => 0, getNorth: () => 1, getEast: () => 1 })),
   easeTo: vi.fn(),
   getCanvas: vi.fn(() => document.createElement('canvas')),
@@ -409,6 +412,42 @@ describe('MapViewGL', () => {
     }))
     expect(glMap.addLayer).toHaveBeenCalledWith(expect.objectContaining({ id: 'trip-place-clusters-circle' }))
     expect(glMap.addLayer).toHaveBeenCalledWith(expect.objectContaining({ id: 'trip-place-clusters-count' }))
+  })
+
+  it('FE-COMP-MAPVIEWGL-070: MapLibre place pins are positioned from the map render, not from pointer moves', async () => {
+    glMap.on.mockImplementation((event: string, handlerOrLayer: unknown) => {
+      if (event === 'load' && typeof handlerOrLayer === 'function') (handlerOrLayer as () => void)()
+      return glMap
+    })
+    useSettingsStore.setState({
+      settings: {
+        ...useSettingsStore.getState().settings,
+        map_provider: 'maplibre-gl',
+        mapbox_access_token: '',
+        maplibre_style: 'https://tiles.openfreemap.org/styles/liberty',
+      },
+    } as any)
+
+    render(<MapViewGL places={[buildMapPlace({ id: 1, lat: 3, lng: 2 })]} fitKey={1} glProvider="maplibre-gl" />)
+    await act(async () => {})
+
+    // The pin sits in its own layer inside the canvas container, not in one of the
+    // library's marker wrappers — those follow 'move', which fires per pointer sample.
+    const layer = Array.from(glCanvasContainer.children).find(
+      c => c instanceof HTMLElement && c.style.pointerEvents === 'none',
+    ) as HTMLElement | undefined
+    expect(layer).toBeTruthy()
+    expect(layer!.children).toHaveLength(1)
+    const pin = layer!.children[0] as HTMLElement
+    // project() is mocked as lng*10 / lat*10.
+    expect(pin.style.transform).toContain('translate(20px, 30px)')
+
+    // Moving the camera and drawing a frame moves the pin with it.
+    glMap.project.mockReturnValue({ x: 90, y: 70 })
+    const render1 = glMap.on.mock.calls.find(c => c[0] === 'render')?.[1] as (() => void) | undefined
+    expect(render1).toBeTypeOf('function')
+    act(() => { render1!() })
+    expect(pin.style.transform).toContain('translate(90px, 70px)')
   })
 
   function touchEvent(type: string, touches: Array<{ clientX: number; clientY: number }>) {

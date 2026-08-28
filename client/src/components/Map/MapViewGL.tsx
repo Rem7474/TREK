@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useState, createElement } from 'react'
+import { useEffect, useRef, useMemo, useState, createElement, useCallback } from 'react'
 import { makeMarkerDraggable } from './markerDrag'
 import { renderIconMarkup } from '../../utils/iconMarkup'
 import type mapboxgl from 'mapbox-gl'
@@ -290,6 +290,72 @@ function formatViaDwellGl(seconds: number): string {
   return h > 0 ? `${h} h ${m} min` : `${m} min`
 }
 
+/**
+ * A place pin on the map, whatever is carrying it.
+ *
+ * Mapbox keeps the library's Marker (its terrain path needs the altitude handling that
+ * comes with it); MapLibre gets a hand-positioned element, because a Marker repositions
+ * itself on every `move` event — one per pointer sample — while the canvas only redraws
+ * once per animation frame. Under a heavy style the pins then run ahead of the map and
+ * visibly swim during a drag, which the clustered pins never do: those are drawn inside
+ * the canvas. Positioning from the map's own `render` event puts both on one clock.
+ */
+/** What either path accepts for a position — the 3-tuple carries a terrain altitude. */
+type PinPosition = [number, number] | [number, number, number] | { lng: number; lat: number }
+
+interface PlacePin {
+  el: HTMLElement
+  remove: () => void
+  getLngLat: () => { lng: number; lat: number }
+  setLngLat: (value: PinPosition) => void
+  /** Re-reads the map and writes this pin's screen position. No-op for a library marker. */
+  reposition: () => void
+}
+
+/** Wraps the library's own marker so both paths present the same handle. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function libraryPin(marker: any): PlacePin {
+  return {
+    el: marker.getElement(),
+    remove: () => marker.remove(),
+    getLngLat: () => marker.getLngLat(),
+    setLngLat: (value) => marker.setLngLat(value),
+    reposition: () => {},
+  }
+}
+
+/** A pin we place ourselves, in the map's render cadence. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function makePlacePin(map: any, layer: HTMLElement, el: HTMLElement, lng: number, lat: number): PlacePin {
+  let position = { lng, lat }
+  el.style.position = 'absolute'
+  el.style.top = '0'
+  el.style.left = '0'
+  el.style.pointerEvents = 'auto'
+  el.style.willChange = 'transform'
+  layer.appendChild(el)
+  const reposition = (): void => {
+    // The map is gone the moment the style rebuilds or the component unmounts, and a
+    // queued render can still land after that.
+    if (typeof map.project !== 'function') return
+    const p = map.project([position.lng, position.lat])
+    el.style.transform = `translate(-50%, -50%) translate(${p.x}px, ${p.y}px)`
+  }
+  reposition()
+  return {
+    el,
+    remove: () => el.remove(),
+    getLngLat: () => ({ ...position }),
+    setLngLat: (value) => {
+      position = Array.isArray(value)
+        ? { lng: value[0], lat: value[1] }
+        : { lng: value.lng, lat: value.lat }
+      reposition()
+    },
+    reposition,
+  }
+}
+
 // Tone dot for a plugin marker — visual twin of MapPluginMarkers' divIcon.
 function createPluginMarkerElement(tone: PluginMapMarker['tone']): HTMLDivElement {
   const color = PLUGIN_TONE_COLORS[tone] ?? PLUGIN_TONE_COLORS.default
@@ -411,7 +477,12 @@ export function MapViewGL({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any | null>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markersRef = useRef<Map<number, any>>(new Map())
+  const markersRef = useRef<Map<number, PlacePin>>(new Map())
+  // Own layer for the hand-positioned place pins (MapLibre path, see makePlacePin).
+  const pinLayerRef = useRef<HTMLDivElement | null>(null)
+  const repositionPins = useCallback(() => {
+    markersRef.current.forEach(pin => pin.reposition())
+  }, [])
   const locationMarkerRef = useRef<LocationMarkerHandle | null>(null)
   const reservationOverlayRef = useRef<ReservationMapboxOverlay | null>(null)
   // Refs so the reservation overlay always sees the latest callback /
@@ -737,6 +808,18 @@ export function MapViewGL({
       setMapReady(true)
     })
 
+    // Layer for the hand-positioned place pins, inside the canvas container so it
+    // shares the canvas's stacking context — the same place the library puts its own
+    // markers. `render` fires exactly when the map has drawn, so the pins land on the
+    // frame the user is looking at instead of on the last pointer sample.
+    if (isMapLibre) {
+      const layer = document.createElement('div')
+      layer.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none;'
+      map.getCanvasContainer().appendChild(layer)
+      pinLayerRef.current = layer
+      map.on('render', repositionPins)
+    }
+
     // Set by the long-press handler below: the touchend tap that follows a
     // long-press must not count as a normal map click (#1398).
     let suppressNextClick = false
@@ -904,8 +987,8 @@ export function MapViewGL({
         const curAlt = (ll as any).alt ?? 0
         if (Math.abs(curAlt - alt) > 0.25) {
           // mapbox-gl accepts a third altitude element at runtime, but its typings
-          // only model the 2-tuple form, so cast to LngLatLike.
-          marker.setLngLat([ll.lng, ll.lat, alt] as unknown as mapboxgl.LngLatLike)
+          // only model the 2-tuple form — PinPosition spells the runtime shape out.
+          marker.setLngLat([ll.lng, ll.lat, alt])
         }
       })
     }
@@ -921,8 +1004,11 @@ export function MapViewGL({
       canvas.removeEventListener('touchend', cancelLongPress)
       canvas.removeEventListener('touchcancel', cancelLongPress)
       cancelLongPress()
+      map.off('render', repositionPins)
       markersRef.current.forEach(m => m.remove())
       markersRef.current.clear()
+      pinLayerRef.current?.remove()
+      pinLayerRef.current = null
       if (popupRef.current) { popupRef.current.remove(); popupRef.current = null }
       onMapReadyRef.current?.(null)
       if (reservationOverlayRef.current) {
@@ -1082,10 +1168,12 @@ export function MapViewGL({
         // pitch. Tried `pitchAlignment: 'map'` to snap markers onto terrain,
         // but it rotates the element by the pitch angle and visually offsets
         // the anchor by ~100px at 45° tilt, which caused the observed drift.
-        const m = new gl.Marker({ element: el, anchor: 'center' })
-          .setLngLat([place.lng, place.lat])
-          .addTo(map)
-        markersRef.current.set(place.id, m)
+        const pin = isMapLibre && pinLayerRef.current
+          ? makePlacePin(map, pinLayerRef.current, el, place.lng, place.lat)
+          : libraryPin(new gl.Marker({ element: el, anchor: 'center' })
+            .setLngLat([place.lng, place.lat])
+            .addTo(map))
+        markersRef.current.set(place.id, pin)
       })
     }
 
