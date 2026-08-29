@@ -156,6 +156,9 @@ export class CalendarService {
       .prepare(
         `SELECT r.*, pl.lat AS place_lat, pl.lng AS place_lng,
                 sd.date AS stay_start_date, ed.date AS stay_end_date,
+                a.check_in AS stay_check_in, a.check_out AS stay_check_out,
+                (SELECT MIN(r2.id) FROM reservations r2
+                  WHERE r2.accommodation_id = a.id) AS stay_first_reservation_id,
                 rd.date AS day_date, red.date AS end_day_date
          FROM reservations r
          LEFT JOIN places pl ON r.place_id = pl.id
@@ -343,13 +346,28 @@ export class CalendarService {
       // nights it contains. DTEND is exclusive, so it is check-out plus one day.
       // Dropping that +1 hides the departure day; it is not a stray off-by-one
       // (#1869).
-      if (isDate(r.stay_start_date)) {
+      // Unless the stay records BOTH ends of its clock, in which case the two
+      // timed markers below already say everything the block would, and saying
+      // it twice buries a week of calendar under a bar nobody can act on
+      // (#2136). Knowing only one end still needs the block: it is the only
+      // thing carrying the other end's date.
+      //
+      // Only for the booking the markers actually stand in for, though. They are
+      // emitted once per stay and titled from its lowest-id reservation, so a
+      // second room on the same stay is represented by nothing else and keeps
+      // its block.
+      const markersCover = isTime(r.stay_check_in) && isTime(r.stay_check_out)
+        && r.stay_first_reservation_id === r.id;
+      if (isDate(r.stay_start_date) && !markersCover) {
         const lastDay = isDate(r.stay_end_date) && r.stay_end_date >= r.stay_start_date
           ? r.stay_end_date
           : r.stay_start_date;
         return `DTSTART;VALUE=DATE:${fmtDate(r.stay_start_date)}\r\n` +
           `DTEND;VALUE=DATE:${fmtDate(addDays(lastDay, 1))}\r\n`;
       }
+      // A fully timed stay is carried by its markers alone, so the booking row
+      // itself has nothing left to place.
+      if (isDate(r.stay_start_date)) return null;
 
       const eps = endpointsMap.get(r.id);
       const ordered = eps && eps.length > 0 ? [...eps].sort((a, b) => a.sequence - b.sequence) : null;

@@ -829,6 +829,57 @@ describe('accommodations', () => {
     expect(ics).toContain('SUMMARY:Hotel Bellevue');
   });
 
+  it('CAL-025b: a stay that records both ends of its clock drops the all-day block (#2136)', () => {
+    // The two markers already say when to arrive and when to leave, which is the
+    // part a subscriber can act on. Keeping the block as well buries the week
+    // under a bar that repeats what the markers say.
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id, { title: 'Paris' });
+    createStay(trip.id, {
+      start: '2026-07-07', end: '2026-07-12',
+      check_in: '15:00', check_out: '11:00',
+    });
+
+    const { ics } = svc.exportICS(trip.id);
+
+    expect(ics).not.toContain('DTSTART;VALUE=DATE:20260707\r\nDTEND;VALUE=DATE:20260713');
+    expect(ics).toContain('SUMMARY:Check-in: Hotel Bellevue');
+    expect(ics).toContain('SUMMARY:Check-out: Hotel Bellevue');
+  });
+
+  it('CAL-025d: a second room on the same stay keeps its block, since no marker names it', () => {
+    // The markers are emitted once per stay and titled from its lowest-id
+    // booking, so dropping every block would leave the second one with nothing.
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id, { title: 'Paris' });
+    const { stayId } = createStay(trip.id, {
+      start: '2026-07-07', end: '2026-07-12',
+      check_in: '15:00', check_out: '11:00',
+    });
+    const day = testDb.prepare('SELECT id FROM days WHERE trip_id = ? ORDER BY id ASC LIMIT 1').get(trip.id) as { id: number };
+    testDb.prepare(`
+      INSERT INTO reservations (trip_id, day_id, title, reservation_time, status, type, accommodation_id)
+      VALUES (?, ?, 'Bellevue second room', NULL, 'confirmed', 'hotel', ?)
+    `).run(trip.id, day.id, String(stayId));
+
+    const { ics } = svc.exportICS(trip.id);
+
+    expect(ics).toContain('SUMMARY:Bellevue second room');
+    expect(ics).toContain('SUMMARY:Check-in: Hotel Bellevue');
+  });
+
+  it('CAL-025c: knowing only one end keeps the block, since nothing else carries the other', () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id, { title: 'Paris' });
+    createStay(trip.id, { start: '2026-07-07', end: '2026-07-12', check_in: '15:00' });
+
+    const { ics } = svc.exportICS(trip.id);
+
+    expect(ics).toContain('DTSTART;VALUE=DATE:20260707\r\nDTEND;VALUE=DATE:20260713');
+    expect(ics).toContain('SUMMARY:Check-in: Hotel Bellevue');
+    expect(ics).not.toContain('SUMMARY:Check-out');
+  });
+
   it('CAL-026: check-in and check-out become their own timed events in the stay zone', () => {
     const { user } = createUser(testDb);
     const trip = createTrip(testDb, user.id, { title: 'Paris' });
