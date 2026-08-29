@@ -55,6 +55,27 @@ export function hidesOnMiddleDay(
 }
 
 /**
+ * Bookings you ride and then leave behind: the vehicle carries you out of the day's
+ * geography and keeps going without you. Their endpoints are therefore not the ends of
+ * a drive — you did not drive to tonight's hotel from the airport you took off from, and
+ * you did not drive to the airport you landed at from this morning's hotel (#2133).
+ *
+ * A hire car, a parked car or a hired bike is the exact opposite and must stay out of
+ * this set: you collect the vehicle and keep driving it, so a multi-day rental's pickup
+ * point IS where a drive to the hotel starts, and its drop-off point IS where a drive
+ * from the hotel ends (both pinned by the car-rental span rules above).
+ *
+ * `taxi`, `transit` and `transport_other` are left out on purpose: they are same-day
+ * hops, so both their endpoints land on the day anyway and the distinction never fires.
+ * Keeping them out means this set cannot change any behaviour they have today.
+ */
+const CARRIER_TRANSPORT_TYPES = new Set(['flight', 'train', 'ferry', 'cruise', 'bus'])
+
+export function isCarrierTransport(r: { type?: string | null }): boolean {
+  return !!r.type && CARRIER_TRANSPORT_TYPES.has(r.type)
+}
+
+/**
  * The route waypoints a transport contributes on a given day, respecting multi-day spans.
  * A car rental (or any reservation whose span covers several days) is only routed to on its
  * pickup day (the departure endpoint) and from on its drop-off day (the arrival endpoint) — on

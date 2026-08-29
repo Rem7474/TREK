@@ -27,12 +27,13 @@ import { usePluginStore } from '../../store/pluginStore'
 import { useSaveToCollectionStore } from '../../store/saveToCollectionStore'
 import { placeToSaveTarget } from '../Collections/saveTarget'
 import { useTranslation } from '../../i18n'
-import { isDayInAccommodationRange, getAccommodationAnchors, getDayBookendHotels, shouldDrawMorningLeg, shouldDrawEveningLeg } from '../../utils/dayOrder'
+import { isDayInAccommodationRange, getAccommodationAnchors, getDayBookendHotels, shouldDrawMorningLeg, shouldDrawEveningLeg, type CarrierEdge } from '../../utils/dayOrder'
 import {
   TRANSPORT_TYPES, parseTimeToMinutes, getSpanPhase, hidesOnMiddleDay, getDisplayTimeForDay, getTransportRouteEndpoints,
-  getTransportForDay as _getTransportForDay, getMergedItems as _getMergedItems,
+  getTransportForDay as _getTransportForDay, getMergedItems as _getMergedItems, isCarrierTransport,
   type MergedItem,
 } from '../../utils/dayMerge'
+import { withinDriveRange } from '../../utils/geo'
 import { formatDate, formatTime, dayTotalCost, formatMoneySum, splitReservationDateTime } from '../../utils/formatters'
 import { useDayNotes } from '../../hooks/useDayNotes'
 import { useExchangeRates } from '../../hooks/useExchangeRates'
@@ -520,6 +521,14 @@ function useDayPlanSidebar(props: DayPlanSidebarProps) {
       let curHasPlace = false
       for (const it of merged) {
         if (it.type === 'place' && it.data.place?.lat && it.data.place?.lng) {
+          // Mirror of the guard below: the open run may hold nothing but a far-away
+          // arrival endpoint, which is no more drivable in this direction (#2133).
+          const prev = cur[cur.length - 1]
+          if (prev && !prev.isPlace && !withinDriveRange(prev, { lat: it.data.place.lat, lng: it.data.place.lng })) {
+            if (cur.length >= 2 && curHasPlace) runs.push(cur)
+            cur = []
+            curHasPlace = false
+          }
           cur.push({ id: it.data.id, lat: it.data.place.lat, lng: it.data.place.lng, isPlace: true, leg_transport_mode: it.data.leg_transport_mode ?? null, incoming_leg_transport_mode: it.data.incoming_leg_transport_mode ?? null })
           curHasPlace = true
         } else if (it.type === 'transport') {
@@ -528,7 +537,12 @@ function useDayPlanSidebar(props: DayPlanSidebarProps) {
           if (from || to) {
             // Located transport: route to its departure point, break the run (the
             // flight/train itself isn't driven), and let its arrival start the next.
-            if (from) cur.push({ id: r.id, lat: from.lat, lng: from.lng, isPlace: false })
+            // ...but only when you could have driven there from the stop before it. A
+            // long-haul departure airport that sorted in after the day's local stops is
+            // not the end of a drive, and pairing them produces a phantom connector with
+            // an ocean-crossing distance (#2133).
+            const prev = cur[cur.length - 1]
+            if (from && (!prev || withinDriveRange(prev, from))) cur.push({ id: r.id, lat: from.lat, lng: from.lng, isPlace: false })
             if (cur.length >= 2 && curHasPlace) runs.push(cur)
             cur = []
             curHasPlace = false
@@ -559,20 +573,27 @@ function useDayPlanSidebar(props: DayPlanSidebarProps) {
       // whether each is a place and its time so the bookend decision can drop a leg that isn't
       // real: a check-in hotel never drove to a departure airport (#1321), and a place timed before
       // check-in / after check-out means you weren't at the hotel then (#1465).
-      const wayPts: { lat: number; lng: number; isPlace: boolean; time: string | null; leg_transport_mode?: string | null; incoming_leg_transport_mode?: string | null; id?: number }[] = []
+      // A carrier endpoint (flight/train/ferry/cruise/coach — not a hire car you keep
+      // driving) also records WHICH end it is, so the hotel leg can be dropped when it
+      // is one you flew out of or landed at rather than drove between (#2133).
+      const wayPts: { lat: number; lng: number; isPlace: boolean; time: string | null; carrierEdge?: CarrierEdge; leg_transport_mode?: string | null; incoming_leg_transport_mode?: string | null; id?: number }[] = []
       for (const it of merged) {
         if (it.type === 'place' && it.data.place?.lat && it.data.place?.lng) {
           wayPts.push({ lat: it.data.place.lat, lng: it.data.place.lng, isPlace: true, time: it.data.place?.place_time ?? null, leg_transport_mode: it.data.leg_transport_mode ?? null, incoming_leg_transport_mode: it.data.incoming_leg_transport_mode ?? null, id: it.data.id })
         } else if (it.type === 'transport') {
           const { from, to } = getTransportRouteEndpoints(it.data, dayId)
-          if (from) wayPts.push({ lat: from.lat, lng: from.lng, isPlace: false, time: null })
-          if (to) wayPts.push({ lat: to.lat, lng: to.lng, isPlace: false, time: null })
+          const carrier = isCarrierTransport(it.data)
+          if (from) wayPts.push({ lat: from.lat, lng: from.lng, isPlace: false, time: null, carrierEdge: carrier ? 'departure' : null })
+          if (to) wayPts.push({ lat: to.lat, lng: to.lng, isPlace: false, time: null, carrierEdge: carrier ? 'arrival' : null })
         }
       }
       const firstWay = wayPts[0]
       const lastWay = wayPts[wayPts.length - 1]
-      const wantTop = !!(startHotel && firstWay && bookends && day && shouldDrawMorningLeg(bookends, day, firstWay))
-      const wantBottom = !!(endHotel && lastWay && bookends && day && shouldDrawEveningLeg(bookends, day, lastWay))
+      const reachable = (h: { place_lat?: number | null; place_lng?: number | null } | undefined, w: typeof firstWay) =>
+        !h || !w || w.isPlace || h.place_lat == null || h.place_lng == null
+        || withinDriveRange({ lat: h.place_lat, lng: h.place_lng }, w)
+      const wantTop = !!(startHotel && firstWay && bookends && day && shouldDrawMorningLeg(bookends, day, firstWay)) && reachable(startHotel, firstWay)
+      const wantBottom = !!(endHotel && lastWay && bookends && day && shouldDrawEveningLeg(bookends, day, lastWay)) && reachable(endHotel, lastWay)
       return { runs, startHotel, endHotel, firstWay, lastWay, wantTop, wantBottom }
     }
 

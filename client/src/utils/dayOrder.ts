@@ -1,6 +1,16 @@
 import type { Day, Accommodation, RouteAnchors } from '../types'
 import { parseTimeToMinutes } from './dayMerge'
 
+/**
+ * Set on an edge waypoint that is the endpoint of a booking which CARRIES you out of
+ * the day's geography (see `isCarrierTransport`): 'departure' = you left from this
+ * point, 'arrival' = you were set down at it. A hire car — a vehicle you keep driving —
+ * leaves this unset, so its pickup/drop-off points keep the hotel legs they have always
+ * drawn. Undefined always means "no opinion", which is what keeps every existing caller
+ * and the activity-free transfer day behaving exactly as before.
+ */
+export type CarrierEdge = 'departure' | 'arrival' | null
+
 export const getDayOrder = (day: Day, days: Day[]): number =>
   day.day_number ?? days.indexOf(day)
 
@@ -67,8 +77,12 @@ export const getAccommodationAnchors = (
 export const shouldDrawMorningLeg = (
   bookends: { morning?: Accommodation; morningIsSleptHere?: boolean },
   day: Day,
-  firstStop?: { isPlace: boolean; time?: string | null },
+  firstStop?: { isPlace: boolean; time?: string | null; carrierEdge?: CarrierEdge },
 ): boolean => {
+  // You landed here. Whatever hotel the day belongs to, nobody drove out of it to the
+  // airport they arrived at — so there is no morning leg, not even on a night you
+  // provably slept in that hotel (#2133).
+  if (firstStop?.carrierEdge === 'arrival') return false
   if (bookends.morningIsSleptHere) return true
   const m = bookends.morning
   if (!m || m.start_day_id !== day.id || !firstStop?.isPlace) return false
@@ -91,8 +105,11 @@ export const shouldDrawMorningLeg = (
 export const shouldDrawEveningLeg = (
   bookends: { evening?: Accommodation; eveningIsOvernight?: boolean },
   day: Day,
-  lastStop?: { isPlace: boolean; time?: string | null },
+  lastStop?: { isPlace: boolean; time?: string | null; carrierEdge?: CarrierEdge },
 ): boolean => {
+  // Mirror: you took off from here, so no drive leads from it back to tonight's hotel —
+  // the reported "flight starting airport connected to the accommodation" (#2133).
+  if (lastStop?.carrierEdge === 'departure') return false
   if (bookends.eveningIsOvernight) return true
   const e = bookends.evening
   if (!e || e.end_day_id !== day.id || !lastStop?.isPlace) return false

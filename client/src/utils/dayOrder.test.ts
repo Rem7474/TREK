@@ -166,6 +166,25 @@ describe('shouldDrawMorningLeg', () => {
     expect(shouldDrawMorningLeg(bookends, checkInDay, { isPlace: true, time: '06:00' })).toBe(true)
   })
 
+  it('does NOT draw when the day opens on an airport you landed at (#2133)', () => {
+    // You flew in. Even on a night you provably slept in this hotel, nobody drove out
+    // of it to the airport that set you down.
+    const bookends = { morning: into(), morningIsSleptHere: true }
+    expect(shouldDrawMorningLeg(bookends, checkInDay, { isPlace: false, carrierEdge: 'arrival' })).toBe(false)
+  })
+
+  it('still draws when the day opens on an airport you departed from (#2133)', () => {
+    // The legitimate mirror: you woke in the hotel and drove to your outbound airport.
+    const bookends = { morning: into(), morningIsSleptHere: true }
+    expect(shouldDrawMorningLeg(bookends, checkInDay, { isPlace: false, carrierEdge: 'departure' })).toBe(true)
+  })
+
+  it('still draws for a hire-car drop-off point, which carries no carrierEdge (#2133)', () => {
+    // A car you keep driving is not a carrier: the hotel → drop-off depot drive is real.
+    const bookends = { morning: into(), morningIsSleptHere: true }
+    expect(shouldDrawMorningLeg(bookends, checkInDay, { isPlace: false, carrierEdge: null })).toBe(true)
+  })
+
   it('does NOT draw on a check-in day when the first place is before check-in (#1465)', () => {
     const bookends = { morning: into({ check_in: '15:00' }), morningIsSleptHere: false }
     // Airport place at 10:00, check-in 15:00 — you have not reached the hotel yet.
@@ -216,6 +235,25 @@ describe('shouldDrawEveningLeg', () => {
   it('draws when you sleep in the evening hotel tonight, regardless of stop time', () => {
     const bookends = { evening: out(), eveningIsOvernight: true }
     expect(shouldDrawEveningLeg(bookends, checkOutDay, { isPlace: true, time: '23:00' })).toBe(true)
+  })
+
+  it('does NOT draw when the day ends at an airport you took off from (#2133)', () => {
+    // The reported bug: an overnight flight leaves only its departure airport on the
+    // day it leaves, and that airport was being joined to tonight's hotel.
+    const bookends = { evening: out(), eveningIsOvernight: true }
+    expect(shouldDrawEveningLeg(bookends, checkOutDay, { isPlace: false, carrierEdge: 'departure' })).toBe(false)
+  })
+
+  it('still draws when the day ends at an airport you landed at (#2133)', () => {
+    // The legitimate case the fix must not eat: you land, then drive to the hotel.
+    const bookends = { evening: out(), eveningIsOvernight: true }
+    expect(shouldDrawEveningLeg(bookends, checkOutDay, { isPlace: false, carrierEdge: 'arrival' })).toBe(true)
+  })
+
+  it('still draws for a hire-car pickup point, which carries no carrierEdge (#2133)', () => {
+    // You collect the car at 18:00 and drive it to tonight's hotel — a real leg.
+    const bookends = { evening: out(), eveningIsOvernight: true }
+    expect(shouldDrawEveningLeg(bookends, checkOutDay, { isPlace: false, carrierEdge: null })).toBe(true)
   })
 
   it('does NOT draw on a check-out day when the last place is after check-out (#1465)', () => {
