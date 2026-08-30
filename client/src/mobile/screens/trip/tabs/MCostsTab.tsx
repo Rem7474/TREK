@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  AlertCircle, ArrowDown, ArrowRight, ArrowUp, Check, ChevronDown, ChevronUp,
+  AlertCircle, ArrowDown, ArrowLeftRight, ArrowRight, ArrowUp, Check, ChevronDown, ChevronUp,
   Layers, Pencil, Plus, StickyNote, Trash2,
 } from 'lucide-react'
 import MDancingTrek from '../../../components/MDancingTrek'
@@ -22,8 +22,8 @@ import { CountPill, TabScroller } from './tabChrome'
 import { STATUS_COLOR, type MTabScreenProps } from './tabModel'
 import {
   baseTotal, buildCostsCsv, categoryBreakdown, categoryFilterKeys, computeTotals, currencyOf,
-  dayFilterKeys, filterBudgetItems, groupByDay, isUnfinished, memberShareOf, tint,
-  type CostsCtx, type CostsSegment, type CostsSettlementResponse,
+  dayFilterKeys, filterBudgetItems, filterSettlements, groupLedgerByDay, isUnfinished, memberShareOf, tint,
+  type CostsCtx, type CostsSegment, type CostsSettlement, type CostsSettlementResponse,
 } from './costsModel'
 import type { BudgetItem, TripMember } from '../../../../types'
 
@@ -85,7 +85,11 @@ export default function MCostsTab({ planner, shell }: MTabScreenProps) {
     () => filterBudgetItems(budgetItems, { search, segment, categoryKey: catFilter, dayKey: dayFilter }, ctx),
     [budgetItems, search, segment, catFilter, dayFilter, ctx],
   )
-  const groups = useMemo(() => groupByDay(filtered), [filtered])
+  const filteredSettlements = useMemo(
+    () => filterSettlements(settlement?.settlements || [], { search, segment, categoryKey: catFilter, dayKey: dayFilter }, me),
+    [settlement, search, segment, catFilter, dayFilter, me],
+  )
+  const groups = useMemo(() => groupLedgerByDay(filtered, filteredSettlements), [filtered, filteredSettlements])
   const catBreakdown = useMemo(() => categoryBreakdown(budgetItems, ctx), [budgetItems, ctx])
   const catKeys = useMemo(() => categoryFilterKeys(budgetItems), [budgetItems])
   const dayKeys = useMemo(() => dayFilterKeys(budgetItems), [budgetItems])
@@ -425,9 +429,9 @@ export default function MCostsTab({ planner, shell }: MTabScreenProps) {
         </div>
       )}
 
-      {/* Expense groups (spec §3.7) */}
+      {/* Expense groups (spec §3.7) — expenses and recorded settle-up payments, day-merged */}
       {groups.map(g => {
-        const groupTotal = g.items.reduce((a, e) => a + baseTotal(e, ctx), 0)
+        const groupTotal = g.entries.reduce((a, en) => en.kind === 'expense' ? a + baseTotal(en.item, ctx) : a, 0)
         return (
           <div key={g.dateKey || 'no-date'}>
             <div className="mt-[14px] flex items-baseline gap-2 px-[2px]">
@@ -436,21 +440,31 @@ export default function MCostsTab({ planner, shell }: MTabScreenProps) {
                 {t('costs.spent', { amount: formatMoney(groupTotal, base, locale) })}
               </span>
             </div>
-            {g.items.map(item => (
+            {g.entries.map(en => en.kind === 'expense' ? (
               <ExpenseRow
-                key={item.id}
-                item={item}
+                key={'e' + en.item.id}
+                item={en.item}
                 ctx={ctx}
                 base={base}
                 locale={locale}
                 t={t}
                 canEdit={canEdit}
                 onEdit={() => {
-                  setEditingExpense(item)
+                  setEditingExpense(en.item)
                   setExpenseModalOpen(true)
                 }}
-                onDelete={() => setConfirmDelete(item)}
-                onTogglePaid={(userId, paid) => handleTogglePaid(item.id, userId, paid)}
+                onDelete={() => setConfirmDelete(en.item)}
+                onTogglePaid={(userId, paid) => handleTogglePaid(en.item.id, userId, paid)}
+              />
+            ) : (
+              <PaymentRow
+                key={'s' + en.settlement.id}
+                settlement={en.settlement}
+                ctx={ctx}
+                base={base}
+                locale={locale}
+                t={t}
+                personName={personName}
               />
             ))}
           </div>
@@ -626,6 +640,42 @@ function ExpenseRow({ item, ctx, base, locale, t, canEdit, onEdit, onDelete, onT
           </button>
         </div>
       )}
+    </div>
+  )
+}
+
+/**
+ * A recorded settle-up payment mixed into the day-grouped ledger (spec 03
+ * §3.7 desktop parity — see `CostsPanel.tsx`'s `SettlementRow`). Read-only:
+ * editing/undoing a payment stays a desktop-only action for now, this row
+ * only closes the "it vanishes into thin air" gap on mobile.
+ */
+function PaymentRow({ settlement, ctx, base, locale, t, personName }: {
+  settlement: CostsSettlement
+  ctx: CostsCtx
+  base: string
+  locale: string
+  t: TFn
+  personName: (id: number) => string
+}) {
+  const cur = (settlement.currency || base).toUpperCase()
+  const amount = ctx.convert(settlement.amount, cur)
+  return (
+    <div className="mt-2 flex items-center gap-[6px]">
+      <div className="relative min-w-0 flex-1 rounded-2xl border border-[color:var(--m-rowbr)] bg-m-card px-3 py-[12px]">
+        <div className="flex items-center gap-[10px]">
+          <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-[12px]" style={{ background: 'rgba(47,163,122,.12)', color: STATUS_COLOR.confirmed }}>
+            <ArrowLeftRight size={17} strokeWidth={2.2} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[0.8125rem] font-bold text-m-ink">{t('costs.payment')}</div>
+            <div className="truncate font-geist text-[0.65625rem] text-m-faint">{personName(settlement.from_user_id)} → {personName(settlement.to_user_id)}</div>
+          </div>
+          <span className="flex-none rounded-full bg-[color:var(--m-ic)] px-[11px] py-1 font-geist text-[0.75rem] font-extrabold tabular-nums text-m-ink">
+            {formatMoney(amount, base, locale)}
+          </span>
+        </div>
+      </div>
     </div>
   )
 }

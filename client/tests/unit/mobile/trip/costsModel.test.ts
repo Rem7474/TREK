@@ -8,7 +8,9 @@ import {
   currencyOf,
   dayFilterKeys,
   filterBudgetItems,
+  filterSettlements,
   groupByDay,
+  groupLedgerByDay,
   isUnfinished,
   memberShareOf,
   myPaidOf,
@@ -16,6 +18,7 @@ import {
   tint,
   type CostsCtx,
   type CostsFilterState,
+  type CostsSettlement,
   type CostsSettlementFlow,
 } from '../../../../src/mobile/screens/trip/tabs/costsModel';
 import { buildBudgetItem } from '../../../helpers/factories';
@@ -41,6 +44,10 @@ function member(user_id: number, amount?: number | null): Member {
 
 function payer(user_id: number, amount: number): Payer {
   return { user_id, amount, username: `u${user_id}` };
+}
+
+function settlement(overrides: Partial<CostsSettlement> = {}): CostsSettlement {
+  return { id: 1, from_user_id: 1, to_user_id: 2, amount: 10, currency: null, created_at: '2026-07-01T10:00:00Z', ...overrides };
 }
 
 function expense(overrides: Partial<BudgetItem> = {}): BudgetItem {
@@ -263,6 +270,64 @@ describe('costsModel — list filters and grouping', () => {
       expense({ expense_date: '2026-07-01' }),
     ];
     expect(dayFilterKeys(items)).toEqual(['2026-07-01', '2026-07-03']);
+  });
+
+  it('FE-MOB-CMOD-029: filterSettlements hides settlements when a search or category filter is active — they have neither', () => {
+    const list = [settlement()];
+    expect(filterSettlements(list, filters({ search: 'x' }), 1)).toEqual([]);
+    expect(filterSettlements(list, filters({ categoryKey: 'food' }), 1)).toEqual([]);
+  });
+
+  it('FE-MOB-CMOD-030: filterSettlements excludes them under "owed" and keeps only mine under "mine"', () => {
+    const mine = settlement({ id: 1, from_user_id: 1, to_user_id: 2 });
+    const others = settlement({ id: 2, from_user_id: 2, to_user_id: 3 });
+    const list = [mine, others];
+    expect(filterSettlements(list, filters({ segment: 'owed' }), 1)).toEqual([]);
+    expect(filterSettlements(list, filters({ segment: 'mine' }), 1).map(s => s.id)).toEqual([1]);
+    expect(filterSettlements(list, filters({ segment: 'all' }), 1).map(s => s.id)).toEqual([1, 2]);
+  });
+
+  it('FE-MOB-CMOD-031: filterSettlements narrows by the recorded day', () => {
+    const a = settlement({ id: 1, created_at: '2026-07-01T09:00:00Z' });
+    const b = settlement({ id: 2, created_at: '2026-07-02T09:00:00Z' });
+    expect(filterSettlements([a, b], filters({ dayKey: '2026-07-02' }), 1).map(s => s.id)).toEqual([2]);
+  });
+});
+
+describe('costsModel — ledger grouping (expenses + settlement payments)', () => {
+  it('FE-MOB-CMOD-032: merges expenses and payments into shared day groups, newest first, no-date last', () => {
+    const e = expense({ id: 50, expense_date: '2026-07-02' });
+    const undatedExpense = expense({ id: 51, expense_date: null });
+    const s = settlement({ id: 1, created_at: '2026-07-03T12:00:00Z' });
+
+    const groups = groupLedgerByDay([e, undatedExpense], [s]);
+
+    expect(groups.map(g => g.dateKey)).toEqual(['2026-07-03', '2026-07-02', '']);
+    expect(groups[0].entries).toEqual([{ kind: 'payment', date: '2026-07-03', settlement: s }]);
+    expect(groups[1].entries).toEqual([{ kind: 'expense', date: '2026-07-02', item: e }]);
+    expect(groups[2].entries).toEqual([{ kind: 'expense', date: '', item: undatedExpense }]);
+  });
+
+  it('FE-MOB-CMOD-033: a payment recorded the same day as an expense lands in that same group', () => {
+    const e = expense({ id: 52, expense_date: '2026-07-05' });
+    const s = settlement({ id: 2, created_at: '2026-07-05T08:00:00Z' });
+
+    expect(groupLedgerByDay([e], [s])).toEqual([{
+      dateKey: '2026-07-05',
+      entries: [
+        { kind: 'expense', date: '2026-07-05', item: e },
+        { kind: 'payment', date: '2026-07-05', settlement: s },
+      ],
+    }]);
+  });
+
+  it('FE-MOB-CMOD-034: a payment on a day with no expense still creates its own day group', () => {
+    const s = settlement({ id: 3, created_at: '2026-07-09T08:00:00Z' });
+    expect(groupLedgerByDay([], [s])).toEqual([{ dateKey: '2026-07-09', entries: [{ kind: 'payment', date: '2026-07-09', settlement: s }] }]);
+  });
+
+  it('FE-MOB-CMOD-035: empty inputs produce no groups', () => {
+    expect(groupLedgerByDay([], [])).toEqual([]);
   });
 });
 

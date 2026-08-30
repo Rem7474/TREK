@@ -557,4 +557,43 @@ describe('MCostsTab', () => {
     expect(settlementBases).toEqual(['GBP'])
     expect(up(screen.getByText('costs.totalSpend'), 1).textContent).toContain('£92.50')
   })
+
+  it('FE-MOB-COSTT-038: renders a recorded settlement payment inline with the day it was made on', async () => {
+    const payment = { id: 501, from_user_id: 1, to_user_id: 2, amount: 25, currency: 'USD', created_at: '2026-04-30T09:00:00Z' }
+    serveSettlement({ ...SETTLEMENT, settlements: [payment] })
+    await renderTab()
+    const group = up(screen.getByText('Thu, Apr 30'), 2)
+    expect(within(group).getByText('costs.payment')).toBeInTheDocument()
+    expect(within(group).getByText('costs.you → Ada')).toBeInTheDocument()
+    expect(within(group).getByText('$25.00')).toBeInTheDocument()
+    // The per-day "spent" total only counts expenses, not payments.
+    expect(within(group).getByText('costs.spent:$60.00')).toBeInTheDocument()
+  })
+
+  it('FE-MOB-COSTT-039: a payment on a day with no expense still creates its own ledger group', async () => {
+    const payment = { id: 502, from_user_id: 3, to_user_id: 1, amount: 15, currency: 'USD', created_at: '2026-06-15T09:00:00Z' }
+    serveSettlement({ ...SETTLEMENT, settlements: [payment] })
+    await renderTab()
+    expect(screen.getByText('costs.payment')).toBeInTheDocument()
+    const row = up(screen.getByText('Bob → costs.you'), 2)
+    expect(within(row).getByText('$15.00')).toBeInTheDocument()
+  })
+
+  it('FE-MOB-COSTT-040: the expense filters apply to payments the same way they do on desktop', async () => {
+    const mine = { id: 503, from_user_id: 1, to_user_id: 2, amount: 8, currency: 'USD', created_at: '2026-05-02T09:00:00Z' }
+    const others = { id: 504, from_user_id: 2, to_user_id: 3, amount: 9, currency: 'USD', created_at: '2026-05-02T09:00:00Z' }
+    serveSettlement({ ...SETTLEMENT, settlements: [mine, others] })
+    await renderTab()
+    expect(screen.getAllByText('costs.payment')).toHaveLength(2)
+
+    fireEvent.click(screen.getByRole('button', { name: 'costs.filter.owed' }))
+    expect(screen.queryByText('costs.payment')).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'costs.filter.mine' }))
+    expect(screen.getAllByText('costs.payment')).toHaveLength(1)
+
+    fireEvent.click(screen.getByRole('button', { name: 'costs.filter.all' }))
+    fireEvent.change(screen.getByLabelText('costs.searchPlaceholder'), { target: { value: 'ramen' } })
+    expect(screen.queryByText('costs.payment')).not.toBeInTheDocument()
+  })
 })
