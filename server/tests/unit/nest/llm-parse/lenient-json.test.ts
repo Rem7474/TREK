@@ -34,6 +34,30 @@ describe('parseLenientJson', () => {
     ]);
   });
 
+  it('reads the answer of a hybrid model that reasoned out loud first', () => {
+    const thought = '<think>The check-in line reads 2026-06-11</think>\n{"reservations":[{"@type":"LodgingReservation"}]}';
+    expect(parseLenientJson(thought)).toEqual({ reservations: [{ '@type': 'LodgingReservation' }] });
+  });
+
+  it('reads the answer when only the closing reasoning tag survived', () => {
+    expect(parseLenientJson('rambling on and on</think>{"reservations":[]}')).toEqual({ reservations: [] });
+  });
+
+  it('handles a reasoning block wrapped in a code fence, and one inside it', () => {
+    expect(parseLenientJson('```json\n<think>hm</think>\n{"a":1}\n```')).toEqual({ a: 1 });
+  });
+
+  it('leaves valid JSON that happens to mention the tag alone', () => {
+    // The strip is a second attempt, so anything that already parses is untouched.
+    expect(parseLenientJson('{"note":"<think>not reasoning, just text</think>"}')).toEqual({
+      note: '<think>not reasoning, just text</think>',
+    });
+  });
+
+  it('still gives up on a response that is only reasoning', () => {
+    expect(parseLenientJson('<think>I could not find a booking in this</think>')).toBeNull();
+  });
+
   it('parses a code-fenced non-strict object', () => {
     expect(parseLenientJson("```\n{ reservations: [{ '@type': 'TrainReservation' }] }\n```")).toEqual({
       reservations: [{ '@type': 'TrainReservation' }],
