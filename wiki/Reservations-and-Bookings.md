@@ -131,6 +131,14 @@ Each booking appears in the panel and is broadcast to all connected trip members
 
 The **Import from file** button is hidden only when neither the `kitinerary-extractor` binary nor the [AI Parsing addon](AI-Booking-Import) is available. With the AI addon enabled and configured, import works without the binary — every file goes straight to the model. The binary ships inside the official TREK Docker image. If you run TREK from source, install the `libkitinerary-bin` package (Debian trixie / Ubuntu 25.04+) or set `KITINERARY_EXTRACTOR_PATH` to the binary's full path. See [Environment-Variables](Environment-Variables).
 
+### When extraction fails
+
+`<file>: extraction failed — ...` means the extractor exited with an error, which is rare: it exits cleanly even for a document it cannot read, so a failure means it crashed, was killed, or ran past its 30-second limit. The message carries the extractor's own stderr, or names the signal — `killed by SIGSEGV` is usually a malformed PDF, `killed by SIGKILL` on a small host is the out-of-memory killer.
+
+The import itself usually still succeeds: when the [AI Parsing addon](AI-Booking-Import) is configured it runs as the fallback for any file kitinerary produced nothing for.
+
+A document that extracts cleanly but yields nothing is not a failure — it is one KDE Itinerary does not recognise, which is what the AI fallback is for.
+
 ### Needs review flag
 
 Items that the extractor could only partially parse are flagged **Needs review** — an amber badge on the card. Review these reservations after import and fill in any missing fields manually.

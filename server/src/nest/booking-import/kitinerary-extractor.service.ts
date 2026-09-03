@@ -15,6 +15,63 @@ const execFileAsync = promisify(execFile);
 const BINARY_NAME = 'kitinerary-extractor';
 const TIMEOUT_MS = 30_000;
 const MAX_BUFFER = 5 * 1024 * 1024;
+/** Trailing stderr lines quoted back to the user when the extractor exits non-zero. */
+const MAX_REPORTED_STDERR_LINES = 3;
+
+/** What `promisify(execFile)` rejects with — the output is on the error itself. */
+interface ExecFileFailure {
+  stdout?: string;
+  stderr?: string;
+  code?: number | null;
+  signal?: string | null;
+  killed?: boolean;
+}
+
+/**
+ * Qt's four-line "your locale is not UTF-8, I switched to C.UTF-8" notice. It is
+ * printed on every run under a non-UTF-8 locale and is never the reason an
+ * extraction failed, so it must not be quoted back as one.
+ */
+const QT_LOCALE_NOTICE =
+  /which is not UTF-8|has switched to|reconfigure your locale|locale\(1\) manual|^for more information\.$/;
+
+/**
+ * Drop expected noise: currency-symbol ambiguity warnings and vendor extractor
+ * script errors are normal (every matching script is tried; most won't match the
+ * current document), as is Qt reporting the locale it settled on.
+ */
+function meaningfulStderr(stderr: string | undefined): string[] {
+  return (stderr ?? '')
+    .split('\n')
+    .map(l => l.trim())
+    .filter(Boolean)
+    .filter(
+      l =>
+        !l.includes('Ambig') &&
+        !l.includes('JS ERROR') &&
+        !l.includes('Invalid result type from script') &&
+        !QT_LOCALE_NOTICE.test(l),
+    );
+}
+
+/**
+ * `execFile` rejects with a bare "Command failed: <binary> <tmpfile>", which
+ * names a temp file the user never sees and no reason at all. The actionable
+ * detail is in the extractor's own stderr, so report that instead.
+ */
+function describeFailure(failure: ExecFileFailure, binary: string): string {
+  if (failure.killed) return `${binary} timed out after ${TIMEOUT_MS / 1000}s`;
+  const reason = meaningfulStderr(failure.stderr).slice(-MAX_REPORTED_STDERR_LINES).join('; ');
+  // A signal means the extractor crashed rather than rejecting the document —
+  // usually poppler segfaulting on a malformed PDF, or the OOM killer on a small
+  // host. Naming it is the difference between "my import is broken" and a cause.
+  const how = failure.signal
+    ? ` (killed by ${failure.signal})`
+    : typeof failure.code === 'number'
+      ? ` (exit ${failure.code})`
+      : '';
+  return reason ? `${binary} failed${how}: ${reason}` : `${binary} failed${how} without any error output`;
+}
 
 @Injectable()
 export class KitineraryExtractorService implements OnModuleInit {
@@ -44,22 +101,26 @@ export class KitineraryExtractorService implements OnModuleInit {
     try {
       writeFileSync(tmpFile, buffer);
 
-      const { stdout, stderr } = await execFileAsync(this.binaryPath, [tmpFile], {
-        timeout: TIMEOUT_MS,
-        maxBuffer: MAX_BUFFER,
-      });
+      let stdout: string;
+      let stderr: string;
+      try {
+        ({ stdout, stderr } = await execFileAsync(this.binaryPath, [tmpFile], {
+          timeout: TIMEOUT_MS,
+          maxBuffer: MAX_BUFFER,
+        }));
+      } catch (err) {
+        // A non-zero exit still hands back whatever the extractor printed before
+        // giving up. Some documents make it exit 1 *after* emitting usable JSON,
+        // so keep that output and only fail when there is nothing in it.
+        const failure = err as ExecFileFailure;
+        stdout = failure.stdout ?? '';
+        stderr = failure.stderr ?? '';
+        if (!stdout.trim()) throw new Error(describeFailure(failure, this.binaryPath), { cause: err });
+      }
 
-      if (stderr?.trim()) {
-        // Filter expected noise: currency-symbol ambiguity warnings and vendor
-        // extractor script errors are normal (every matching script is tried;
-        // most won't match the current document).
-        const unexpected = stderr
-          .split('\n')
-          .filter(l => l.trim())
-          .filter(l => !l.includes('Ambig') && !l.includes('JS ERROR') && !l.includes('Invalid result type from script'));
-        if (unexpected.length) {
-          console.warn(`[KItinerary] stderr for "${fileName}":`, unexpected.join('\n'));
-        }
+      const unexpected = meaningfulStderr(stderr);
+      if (unexpected.length) {
+        console.warn(`[KItinerary] stderr for "${fileName}":`, unexpected.join('\n'));
       }
 
       const text = stdout.trim();

@@ -124,3 +124,111 @@ describe('KitineraryExtractorService binary probe', () => {
     );
   });
 });
+
+const BINARY = '/opt/kitinerary-extractor';
+
+/**
+ * Settle the one `execFile` call the extraction makes. The service promisifies
+ * it, so a rejection is a callback error and a success is its second argument —
+ * the same mock dev's probe tests drive, rather than a second one beside it.
+ */
+const settle = (err: unknown, value?: unknown) =>
+  execFile.mockImplementation(
+    (_b: string, _a: string[], _o: unknown, cb: (e: unknown, r?: unknown) => void) => cb(err, value),
+  );
+
+
+/** An `execFile` rejection: the output rides on the error, not on a resolved value. */
+function exitFailure(over: { stderr?: string; stdout?: string; code?: number | null; signal?: string; killed?: boolean } = {}) {
+  return Object.assign(new Error(`Command failed: ${BINARY} /tmp/trek-ki-abc.pdf`), { code: 1, ...over });
+}
+
+/**
+ * What the user is told when the extractor exits non-zero. `execFile` rejects
+ * with a bare "Command failed: <binary> <tmpfile>" naming a temp file they never
+ * see, while the reason sits on the error's stderr — which used to be discarded.
+ */
+describe('KitineraryExtractorService failure reporting', () => {
+  function bootWithBinary() {
+    existsSync.mockImplementation((p: string) => p === BINARY);
+    return boot({ kitineraryExtractorPath: BINARY });
+  }
+
+  beforeEach(() => {
+    execFile.mockReset();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  it('reports why the extractor failed instead of the bare "Command failed"', async () => {
+    settle(exitFailure({ stderr: 'Unable to open PDF: not a PDF document' }));
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'bilhete.pdf')).rejects.toThrow(
+      `${BINARY} failed (exit 1): Unable to open PDF: not a PDF document`,
+    );
+  });
+
+  it('keeps the output when the extractor exits non-zero after printing usable JSON', async () => {
+    settle(
+      exitFailure({ stdout: JSON.stringify([{ '@type': 'TrainReservation' }]), stderr: 'script failed on exit' }),
+    );
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'bilhete.pdf')).resolves.toEqual([
+      { '@type': 'TrainReservation' },
+    ]);
+  });
+
+  it('names the timeout rather than the exit code when the run was killed', async () => {
+    settle(exitFailure({ killed: true, stderr: '' }));
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'slow.pdf')).rejects.toThrow(
+      `${BINARY} timed out after 30s`,
+    );
+  });
+
+  it('names the signal when the extractor crashed rather than rejecting the document', async () => {
+    settle(exitFailure({ code: null, signal: 'SIGSEGV', stderr: '' }));
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'bilhete.pdf')).rejects.toThrow(
+      `${BINARY} failed (killed by SIGSEGV) without any error output`,
+    );
+  });
+
+  it('says so plainly when the extractor fails without explaining itself', async () => {
+    settle(exitFailure({ stderr: 'JS ERROR: vendor script blew up\nAmbiguous currency symbol' }));
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'bilhete.pdf')).rejects.toThrow(
+      `${BINARY} failed (exit 1) without any error output`,
+    );
+  });
+
+  it('does not mistake the Qt locale notice for the reason it failed', async () => {
+    settle(
+      exitFailure({
+        stderr: [
+          'Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.',
+          'Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.',
+          'No extractor matched this document',
+        ].join('\n'),
+      }),
+    );
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'bilhete.pdf')).rejects.toThrow(
+      `${BINARY} failed (exit 1): No extractor matched this document`,
+    );
+  });
+
+  it('returns the reservations a successful run printed', async () => {
+    settle(null, { stdout: JSON.stringify([{ '@type': 'FlightReservation' }]), stderr: '' });
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'boarding.pdf')).resolves.toEqual([
+      { '@type': 'FlightReservation' },
+    ]);
+  });
+
+  it('returns nothing when the run printed something that is not JSON', async () => {
+    settle(null, { stdout: 'not json at all', stderr: '' });
+
+    await expect(bootWithBinary().extract(Buffer.from('x'), 'odd.pdf')).resolves.toEqual([]);
+  });
+});
