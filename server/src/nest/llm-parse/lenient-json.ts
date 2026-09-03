@@ -1,6 +1,33 @@
 import JSON5 from 'json5';
 
 /**
+ * A hybrid model's reasoning, and the opening tag of a thought it never closed.
+ *
+ * Qwen3/Qwen3.5 and the other hybrid models emit `<think>…</think>` before the
+ * answer unless thinking is turned off, and the OpenAI-compatible endpoint has
+ * no field that turns it off on every server that speaks it. The request asks
+ * (see the clients); this is what makes the answer readable when the ask was
+ * ignored — without it a perfectly good extraction parses as nothing at all.
+ */
+const REASONING_BLOCK = /<(think|thinking|reasoning)>[\s\S]*?<\/\1>/gi;
+const UNCLOSED_REASONING = /^[\s\S]*?<\/(think|thinking|reasoning)>/i;
+
+/** Fenced code block, with or without a language tag. */
+function stripFences(content: string): string {
+  return content.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+}
+
+function stripReasoning(content: string): string {
+  const withoutBlocks = content.replace(REASONING_BLOCK, '');
+  // A closing tag with no opener left means the opener was in a chunk we never
+  // saw (or the model opened one and the fence swallowed it) — the answer is
+  // whatever follows the close.
+  return stripFences(/<\/(think|thinking|reasoning)>/i.test(withoutBlocks)
+    ? withoutBlocks.replace(UNCLOSED_REASONING, '')
+    : withoutBlocks);
+}
+
+/**
  * Parse LLM output that is *meant* to be JSON but may not be strict JSON.
  *
  * Cloud providers reached through the OpenAI-compatible endpoint don't all honour
@@ -14,20 +41,28 @@ import JSON5 from 'json5';
  * back to JSON5, which accepts exactly that relaxed superset. Returns `null` on failure.
  *
  * The leading/trailing code-fence strip stays here because some models still wrap the
- * payload in a ```json fence even when asked for raw JSON.
+ * payload in a ```json fence even when asked for raw JSON, and a hybrid model's
+ * reasoning block is stripped on a second pass (see REASONING_BLOCK above).
  */
 export function parseLenientJson(content: string | undefined | null): unknown {
   if (!content) return null;
-  const stripped = content.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
-  try {
-    return JSON.parse(stripped);
-  } catch {
+  const stripped = stripFences(content);
+  // The reasoning strip is a SECOND attempt, never the first: a response that
+  // already parses is returned untouched, so nothing that works today can be
+  // changed by it.
+  for (const candidate of [stripped, stripReasoning(stripped)]) {
+    if (!candidate) continue;
     try {
-      return JSON5.parse(stripped);
+      return JSON.parse(candidate);
     } catch {
-      return null;
+      try {
+        return JSON5.parse(candidate);
+      } catch {
+        // try the next candidate
+      }
     }
   }
+  return null;
 }
 
 /**

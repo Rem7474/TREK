@@ -473,7 +473,7 @@ describe('AddonManager', () => {
   it('FE-ADMIN-ADDON-021: the local provider lists installed models and a chip fills the model field', async () => {
     const user = userEvent.setup();
     const urls: (string | null)[] = [];
-    server.use(addonsRoute([llmAddon({ provider: 'local' })]), modelsRoute(['qwen3:8b', 'llama3:8b'], urls));
+    server.use(addonsRoute([llmAddon({ provider: 'local' })]), modelsRoute(['qwen3.5:4b', 'llama3:8b'], urls));
     render(<AddonManager />);
 
     await screen.findByText('Installed on the server');
@@ -483,10 +483,10 @@ describe('AddonManager', () => {
     await user.click(screen.getByRole('button', { name: 'llama3:8b' }));
     expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('llama3:8b');
 
-    // qwen3:8b is already installed, so the recommended row offers "Use" instead of "Pull"
-    await user.click(screen.getByRole('button', { name: 'Use' }));
-    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3:8b');
-    expect(screen.getByRole('button', { name: 'Selected' })).toBeDisabled();
+    // qwen3.5:4b is already installed, so the recommended row offers "Use" instead of "Pull"
+    await user.click(screen.getByRole('button', { name: 'Use qwen3.5:4b' }));
+    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3.5:4b');
+    expect(screen.getByRole('button', { name: 'Selected qwen3.5:4b' })).toBeDisabled();
   });
 
   it('FE-ADMIN-ADDON-022: an unreachable Ollama shows the error and Refresh retries', async () => {
@@ -545,7 +545,7 @@ describe('AddonManager', () => {
       addonsRoute([llmAddon({ provider: 'local' })]),
       http.get('/api/admin/llm/local/models', () => {
         modelCalls += 1;
-        return HttpResponse.json({ models: modelCalls === 1 ? [] : [{ name: 'qwen3:8b', size: 1 }] });
+        return HttpResponse.json({ models: modelCalls === 1 ? [] : [{ name: 'qwen3.5:4b', size: 1 }] });
       }),
       http.post('/api/admin/llm/local/pull', async ({ request }) => {
         pulled = await request.json();
@@ -559,15 +559,15 @@ describe('AddonManager', () => {
     render(<><ToastContainer /><AddonManager /></>);
 
     await screen.findByText('No models installed yet — pull one below.');
-    await user.click(screen.getByRole('button', { name: 'Pull' }));
+    await user.click(screen.getByRole('button', { name: 'Pull qwen3.5:4b' }));
 
     await screen.findByText('Pulling…');
     expect(screen.getByText('starting…')).toBeInTheDocument();
 
     await screen.findByText('Model pulled');
-    expect(pulled).toEqual({ baseUrl: 'http://localhost:11434/v1', model: 'qwen3:8b' });
-    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3:8b');
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Selected' })).toBeDisabled());
+    expect(pulled).toEqual({ baseUrl: 'http://localhost:11434/v1', model: 'qwen3.5:4b' });
+    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3.5:4b');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Selected qwen3.5:4b' })).toBeDisabled());
   });
 
   it('FE-ADMIN-ADDON-025: a failing pull surfaces the server error and saving reports both outcomes', async () => {
@@ -585,9 +585,9 @@ describe('AddonManager', () => {
     render(<><ToastContainer /><AddonManager /></>);
 
     await screen.findByText('No models installed yet — pull one below.');
-    await user.click(screen.getByRole('button', { name: 'Pull' }));
+    await user.click(screen.getByRole('button', { name: 'Pull qwen3.5:4b' }));
     await screen.findByText('no disk space');
-    expect(screen.getByRole('button', { name: 'Pull' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Pull qwen3.5:4b' })).toBeEnabled();
 
     await user.click(screen.getByRole('button', { name: 'Save' }));
     await screen.findByText('Saved');
@@ -671,12 +671,42 @@ describe('AddonManager', () => {
     render(<><ToastContainer /><AddonManager /></>);
 
     await screen.findByText('No models installed yet — pull one below.');
-    await user.click(screen.getByRole('button', { name: 'Pull' }));
+    await user.click(screen.getByRole('button', { name: 'Pull qwen3.5:4b' }));
 
     await screen.findByText('manifest not found');
     expect(screen.queryByText('Model pulled')).not.toBeInTheDocument();
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Pull' })).toBeEnabled());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Pull qwen3.5:4b' })).toBeEnabled());
     expect(screen.queryByText('Pulling…')).not.toBeInTheDocument();
+  });
+
+  it('FE-ADMIN-ADDON-027b: a text-only model starts with images off, and the one model offered can see', async () => {
+    // A host that follows the guided setup would otherwise turn receipt scanning
+    // on and hit a provider error. The catalogue carries a `vision` flag; this is
+    // it being read, and it is what the switch starts from.
+    server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3:8b', baseUrl: '', apiKey: '' })]));
+    render(<AddonManager />);
+
+    expect(await screen.findByRole('checkbox', { name: /reads images/i })).not.toBeChecked();
+    expect(screen.getByText(/Qwen3\.5 — 4B/)).toBeInTheDocument();
+  });
+
+  it('FE-ADMIN-ADDON-027c: a model known to see starts with images on, so nobody has to confirm it', async () => {
+    server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3.5:4b', baseUrl: '', apiKey: '' })]));
+    render(<AddonManager />);
+
+    expect(await screen.findByRole('checkbox', { name: /reads images/i })).toBeChecked();
+  });
+
+  it('FE-ADMIN-ADDON-027d: the operator can say a hand-typed model sees, and is told the catalogue disagrees', async () => {
+    server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3:8b', baseUrl: '', apiKey: '' })]));
+    render(<AddonManager />);
+
+    const user = userEvent.setup();
+    const toggle = await screen.findByRole('checkbox', { name: /reads images/i });
+    await user.click(toggle);
+
+    expect(toggle).toBeChecked();
+    expect(screen.getByText(/not known to read images/i)).toBeInTheDocument();
   });
 
   it('FE-ADMIN-ADDON-028: blurring the base URL under a cloud provider queries no local models', async () => {

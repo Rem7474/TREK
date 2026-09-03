@@ -6,7 +6,7 @@ import type { LlmExtractionInput } from './llm-provider.interface';
 import { isPdf, extractText } from './text-extract';
 import { routeExtraction, detectFlightNumbers } from './router/extraction-router';
 import { Injectable } from '@nestjs/common';
-import { kiReservationSchema } from '@trek/shared';
+import { kiReservationSchema, modelReadsPhotos } from '@trek/shared';
 import { RuntimeEnvService } from '../app-config/runtime-env.service';
 
 const MIME_BY_EXT: Record<string, string> = {
@@ -37,6 +37,21 @@ export class LlmParseService {
     return this.llmConfig.resolve(userId) !== null;
   }
 
+  /**
+   * Whether this user's model can be handed a photograph at all.
+   *
+   * A text-only model does not do its best with an image, the provider rejects
+   * it — after the minutes a read takes. So the answer decides whether the photo
+   * affordances are offered in the first place. The operator's switch is taken
+   * at its word; without it the catalogue answers for the models it knows, which
+   * keeps a working setup working without anyone having to go and confirm it.
+   */
+  readsPhotos(userId: number): boolean {
+    const config = this.llmConfig.resolve(userId);
+    if (!config) return false;
+    return config.multimodal || modelReadsPhotos(config.model);
+  }
+
   async parse(file: { buffer: Buffer; originalName: string }, userId: number): Promise<LlmParseResult> {
     const config = this.llmConfig.resolve(userId);
     if (!config) return { kiItems: [], warnings: ['AI parsing is not configured'] };
@@ -48,6 +63,7 @@ export class LlmParseService {
       model: config.model,
       baseUrl: config.baseUrl,
       apiKey: config.apiKey,
+      local: config.provider === 'local',
     };
 
     // Native PDF only for Anthropic (its document block reads text AND scans).

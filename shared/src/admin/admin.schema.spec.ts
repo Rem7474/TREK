@@ -1,4 +1,6 @@
 import {
+  LLM_MODEL_CATALOGUE,
+  modelReadsPhotos,
   adminUserCreateRequestSchema,
   adminUserUpdateRequestSchema,
   adminPermissionsRequestSchema,
@@ -152,5 +154,39 @@ describe('adminTestNotificationRequestSchema', () => {
       }).success,
     ).toBe(true);
     expect(adminTestNotificationRequestSchema.safeParse({ targetId: 'one' }).success).toBe(false);
+  });
+});
+
+describe('LLM_MODEL_CATALOGUE', () => {
+  it('offers exactly one model, and it is the recommended one', () => {
+    expect(LLM_MODEL_CATALOGUE).toHaveLength(1);
+    expect(LLM_MODEL_CATALOGUE[0].recommended).toBe(true);
+  });
+
+  it('offers a model that reads photographs, because receipt scanning has no other way in', () => {
+    expect(LLM_MODEL_CATALOGUE[0].vision).toBe(true);
+  });
+});
+
+describe('modelReadsPhotos', () => {
+  it('answers from the catalogue for the model it lists', () => {
+    expect(modelReadsPhotos('qwen3.5:4b')).toBe(true);
+  });
+
+  it('ignores the whitespace an operator leaves around a pasted id', () => {
+    expect(modelReadsPhotos('  qwen3.5:4b  ')).toBe(true);
+  });
+
+  it('assumes a hand-typed id from a family that advertises vision can see', () => {
+    expect(modelReadsPhotos('llava:13b')).toBe(true);
+    expect(modelReadsPhotos('gpt-4o-mini')).toBe(true);
+    expect(modelReadsPhotos('minicpm-v:8b')).toBe(true);
+  });
+
+  it('says nothing about an id it cannot place, which the switch is there to settle', () => {
+    // Text-only: booking imports and PDF invoices, never a photographed receipt.
+    expect(modelReadsPhotos('qwen3:8b')).toBe(false);
+    expect(modelReadsPhotos('mistral:7b')).toBe(false);
+    expect(modelReadsPhotos('')).toBe(false);
   });
 });

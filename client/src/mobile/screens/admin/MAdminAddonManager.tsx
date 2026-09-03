@@ -1,3 +1,4 @@
+import { LLM_MODEL_CATALOGUE, modelReadsPhotos } from '@trek/shared'
 import { useEffect, useState, type ComponentType } from 'react'
 import { adminApi } from '../../../api/client'
 import { useTranslation } from '../../../i18n'
@@ -348,12 +349,6 @@ function MSubRow({ icon: Icon, providerIcon: ProviderIcon, title, subtitle, enab
 const MASKED = '••••••••'
 const DEFAULT_OLLAMA_URL = 'http://localhost:11434/v1'
 
-/** Curated models the local extractor is tuned for, pullable via Ollama. The router drives
- *  one model per document via Ollama's grammar-constrained `format`; "thinking" is disabled
- *  automatically, so the Qwen3 family works without any tuning. A host only needs one. */
-const RECOMMENDED_MODELS: { id: string; label: string; note: string; recommended: boolean; vision: boolean }[] = [
-  { id: 'qwen3:8b', label: 'Qwen3 — 8B', note: 'Recommended · best extraction quality & speed on CPU (thinking auto-disabled) · Apache-2.0', recommended: true, vision: false },
-]
 
 /**
  * Instance-wide AI-parsing config. When set, applies to the whole instance and
@@ -368,6 +363,12 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
   const [model, setModel] = useState<string>((cfg.model as string) ?? '')
   const [baseUrl, setBaseUrl] = useState<string>((cfg.baseUrl as string) ?? '')
   const [apiKey, setApiKey] = useState<string>((cfg.apiKey as string) ?? '')
+  // Whether this model may be handed a photograph. Seeded from the catalogue so
+  // a known model needs no confirming, and overridable because the catalogue
+  // cannot know every model anyone will type.
+  const [multimodal, setMultimodal] = useState<boolean>(
+    cfg.multimodal === true || modelReadsPhotos((cfg.model as string) ?? ''),
+  )
   const [saving, setSaving] = useState(false)
 
   // Local-provider model management.
@@ -429,7 +430,7 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
     setSaving(true)
     try {
       // Send the masked sentinel unchanged so the server keeps the stored key.
-      await adminApi.updateAddon(addon.id, { config: { provider, model: model.trim(), baseUrl: baseUrl.trim(), apiKey, multimodal: cfg.multimodal === true } })
+      await adminApi.updateAddon(addon.id, { config: { provider, model: model.trim(), baseUrl: baseUrl.trim(), apiKey, multimodal } })
       toast.success('Saved')
     } catch {
       toast.error('Failed to save')
@@ -553,10 +554,26 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
               </div>
             )}
 
+            <div className="rounded-[12px] border border-[color:var(--m-rowbr)] px-3 py-[10px]">
+              <div className="flex items-center gap-[10px]">
+                <span className="flex-1 text-[0.8125rem] font-semibold text-m-ink">This model reads images</span>
+                <MToggle checked={multimodal} onChange={() => setMultimodal(v => !v)} ariaLabel="This model reads images" />
+              </div>
+              <p className="mt-1 text-[0.6875rem] text-m-faint">
+                Receipt scanning photographs a bill, so it needs a model that can see. Turn this off for a
+                text-only model and TREK stops offering the camera instead of failing at it.
+              </p>
+              {multimodal && model.trim() !== '' && !modelReadsPhotos(model) && (
+                <p className="mt-2 text-[0.6875rem] text-warning">
+                  {model.trim()} is not known to read images — if the provider refuses the photo, this is why.
+                </p>
+              )}
+            </div>
+
             <div className="border-t border-[color:var(--m-rowbr)] pt-3">
               <div className="mb-2 text-[0.75rem] font-semibold text-m-ink">Pull a recommended model</div>
               <div className="space-y-1">
-                {RECOMMENDED_MODELS.map(m => {
+                {LLM_MODEL_CATALOGUE.map(m => {
                   const installedHere = isInstalled(m.id)
                   const isPulling = pulling === m.id
                   const active = model === m.id
@@ -587,11 +604,11 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
                         )}
                       </div>
                       {installedHere ? (
-                        <MAdminButton variant="ghost" disabled={active} onClick={() => setModel(m.id)}>
+                        <MAdminButton variant="ghost" ariaLabel={`${active ? 'Selected' : 'Use'} ${m.id}`} disabled={active} onClick={() => setModel(m.id)}>
                           {active ? 'Selected' : 'Use'}
                         </MAdminButton>
                       ) : (
-                        <MAdminButton busy={isPulling} disabled={!!pulling} onClick={() => pull(m.id)}>
+                        <MAdminButton busy={isPulling} ariaLabel={`Pull ${m.id}`} disabled={!!pulling} onClick={() => pull(m.id)}>
                           {isPulling ? 'Pulling…' : 'Pull'}
                         </MAdminButton>
                       )}

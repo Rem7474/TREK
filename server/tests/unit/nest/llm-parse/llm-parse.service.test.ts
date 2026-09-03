@@ -187,4 +187,34 @@ describe('LlmParseService', () => {
     expect(res.warnings[0]).toMatch(/could not read file/i);
     expect(res.warnings[0]).toContain('corrupt pdf');
   });
+
+  it('tells the client the endpoint is a self-hosted one, which is what a local body may ask for', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'openai' }));
+    await svc().parse(file('a.txt'), 1);
+    expect(extract.mock.calls[0][0].local).toBe(false);
+  });
+});
+
+describe('LlmParseService.readsPhotos', () => {
+  it('takes the operator at their word when the switch is on', () => {
+    resolveLlmConfig.mockReturnValue(cfg({ model: 'some-local-thing', multimodal: true }));
+    expect(svc().readsPhotos(1)).toBe(true);
+  });
+
+  it('lets the catalogue answer for a model it knows, so a working setup needs no confirming', () => {
+    resolveLlmConfig.mockReturnValue(cfg({ model: 'qwen3.5:4b', multimodal: false }));
+    expect(svc().readsPhotos(1)).toBe(true);
+  });
+
+  it('says no to a catalogue model that is text-only, switch off', () => {
+    // Not a lesser choice for a photograph — the wrong one: the provider rejects
+    // the image rather than doing its best with it.
+    resolveLlmConfig.mockReturnValue(cfg({ model: 'qwen3:8b', multimodal: false }));
+    expect(svc().readsPhotos(1)).toBe(false);
+  });
+
+  it('says no when nothing is configured at all', () => {
+    resolveLlmConfig.mockReturnValue(null);
+    expect(svc().readsPhotos(1)).toBe(false);
+  });
 });

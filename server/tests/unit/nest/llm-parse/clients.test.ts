@@ -257,3 +257,52 @@ describe('AnthropicClient', () => {
     expect(blocks.some((b: any) => b.type === 'document' && b.source.type === 'base64')).toBe(true);
   });
 });
+
+describe('OpenAiCompatibleClient — a self-hosted server is not a small cloud one', () => {
+  const body = () => JSON.parse((safeFetchLlmMock.mock.calls.at(-1)?.[1] as { body: string }).body);
+
+  const input = (over: Record<string, unknown> = {}): LlmExtractionInput =>
+    ({ ...baseInput, model: 'qwen3.5:4b', baseUrl: 'http://ollama.lan:11434/v1', ...over }) as LlmExtractionInput;
+
+  beforeEach(() => mockFetch(() => jsonResponse({ choices: [{ message: { content: '{"reservations":[]}' } }] })));
+
+  it('asks a local server for JSON without constraining every token', async () => {
+    // Measured against Ollama: every grammar-constrained run timed out, including
+    // one on plain text with no image, while the same prompt without it answered.
+    await new OpenAiCompatibleClient().extract(input({ local: true }));
+
+    expect(body().response_format).toEqual({ type: 'json_object' });
+    expect(JSON.stringify(body())).not.toContain('json_schema');
+  });
+
+  it('keeps the schema for a cloud endpoint, where it costs nothing', async () => {
+    await new OpenAiCompatibleClient().extract(input());
+    expect(body().response_format.type).toBe('json_schema');
+  });
+
+  it('asks a local model to stay resident, so the next scan skips the cold load', async () => {
+    await new OpenAiCompatibleClient().extract(input({ local: true }));
+    expect(body().keep_alive).toBe('30m');
+  });
+
+  it('says nothing about residency to a cloud endpoint', async () => {
+    await new OpenAiCompatibleClient().extract(input());
+    expect(body().keep_alive).toBeUndefined();
+  });
+
+  it('turns reasoning off, in both dialects a self-hosted server might speak', async () => {
+    // The offered model is a hybrid: left alone it writes out its thinking before
+    // the answer, which on CPU is most of the wall clock and lands in the same
+    // content as the JSON.
+    await new OpenAiCompatibleClient().extract(input({ local: true }));
+
+    expect(body().think).toBe(false);
+    expect(body().chat_template_kwargs).toEqual({ enable_thinking: false });
+  });
+
+  it('never sends the thinking switches to a cloud endpoint, which 400s on an unknown key', async () => {
+    await new OpenAiCompatibleClient().extract(input());
+    expect(body().think).toBeUndefined();
+    expect(body().chat_template_kwargs).toBeUndefined();
+  });
+});

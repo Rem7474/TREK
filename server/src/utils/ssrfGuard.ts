@@ -203,7 +203,10 @@ export async function safeFetchAdminConfigured(url: string, init?: RequestInit, 
       throw new SsrfBlockedError('Requests to link-local / cloud-metadata addresses are not allowed');
     }
 
-    const dispatcher = createPinnedDispatcher(resolvedIp, true);
+    // This lane is the LLM's: pass its ceiling, or undici silently caps the wait
+    // for response headers at five minutes and the AbortController never gets a
+    // say. A local vision model reading a photograph routinely needs longer.
+    const dispatcher = createPinnedDispatcher(resolvedIp, true, readEnv().integrations.llmTimeoutMs);
     const response = await fetch(currentUrl, { ...init, redirect: 'manual', dispatcher } as any);
 
     // Only a 3xx WITH a Location header is a redirect we follow; anything else
@@ -353,8 +356,17 @@ export async function safeFetchFollow(
  * IP. This prevents DNS rebinding (TOCTOU) by ensuring the outbound connection
  * goes to the IP we checked, not a re-resolved one.
  */
-export function createPinnedDispatcher(resolvedIp: string, rejectUnauthorized = true): Agent {
+export function createPinnedDispatcher(resolvedIp: string, rejectUnauthorized = true, responseTimeoutMs?: number): Agent {
   return new Agent({
+    // undici caps the wait for response headers at 5 minutes by default, and
+    // that cap is invisible from the call site: an AbortController set to
+    // fifteen still dies at five. A local vision model reading a photographed
+    // receipt routinely needs longer than that, so the LLM lane passes its own
+    // ceiling; everything else keeps undici's, where a hung request should not
+    // be waited on for a quarter of an hour.
+    ...(responseTimeoutMs
+      ? { headersTimeout: responseTimeoutMs, bodyTimeout: responseTimeoutMs }
+      : {}),
     connect: {
       rejectUnauthorized,
       lookup: (_hostname: string, opts: Record<string, unknown>, callback: Function) => {

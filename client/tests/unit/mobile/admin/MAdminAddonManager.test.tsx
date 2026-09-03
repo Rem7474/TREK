@@ -368,7 +368,7 @@ describe('MAdminAddonManager', () => {
   it('FE-MOB-AADD-017: the local provider lists installed models and selecting a chip fills the model field', async () => {
     const user = userEvent.setup();
     const urls: (string | null)[] = [];
-    server.use(addonsRoute([llmAddon({ provider: 'local' })]), modelsRoute(['qwen3:8b', 'llama3:8b'], urls));
+    server.use(addonsRoute([llmAddon({ provider: 'local' })]), modelsRoute(['qwen3.5:4b', 'llama3:8b'], urls));
     render(<MAdminAddonManager />);
 
     await screen.findByText('Installed on the server');
@@ -378,10 +378,10 @@ describe('MAdminAddonManager', () => {
     await user.click(screen.getByRole('button', { name: 'llama3:8b' }));
     expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('llama3:8b');
 
-    // qwen3:8b is installed, so the recommended row offers "Use" instead of "Pull".
-    await user.click(screen.getByRole('button', { name: 'Use' }));
-    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3:8b');
-    expect(screen.getByRole('button', { name: 'Selected' })).toBeDisabled();
+    // qwen3.5:4b is installed, so the recommended row offers "Use" instead of "Pull".
+    await user.click(screen.getByRole('button', { name: 'Use qwen3.5:4b' }));
+    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3.5:4b');
+    expect(screen.getByRole('button', { name: 'Selected qwen3.5:4b' })).toBeDisabled();
   });
 
   it('FE-MOB-AADD-018: an unreachable Ollama shows the error, Refresh retries', async () => {
@@ -449,7 +449,7 @@ describe('MAdminAddonManager', () => {
       addonsRoute([llmAddon({ provider: 'local' })]),
       http.get('/api/admin/llm/local/models', () => {
         modelCalls += 1;
-        return HttpResponse.json({ models: modelCalls === 1 ? [] : [{ name: 'qwen3:8b', size: 1 }] });
+        return HttpResponse.json({ models: modelCalls === 1 ? [] : [{ name: 'qwen3.5:4b', size: 1 }] });
       }),
       http.post('/api/admin/llm/local/pull', async ({ request }) => {
         pulled = await request.json();
@@ -463,17 +463,17 @@ describe('MAdminAddonManager', () => {
     render(<><ToastContainer /><MAdminAddonManager /></>);
 
     await screen.findByText('No models installed yet — pull one below.');
-    await user.click(screen.getByRole('button', { name: 'Pull' }));
+    await user.click(screen.getByRole('button', { name: 'Pull qwen3.5:4b' }));
 
     // While the request is in flight the row shows the busy label and status line.
     await screen.findByText('Pulling…');
     expect(screen.getByText('starting…')).toBeInTheDocument();
 
     await screen.findByText('Model pulled');
-    expect(pulled).toEqual({ baseUrl: 'http://localhost:11434/v1', model: 'qwen3:8b' });
-    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3:8b');
+    expect(pulled).toEqual({ baseUrl: 'http://localhost:11434/v1', model: 'qwen3.5:4b' });
+    expect(screen.getByPlaceholderText('select or pull below')).toHaveValue('qwen3.5:4b');
     // Reloaded models now contain the pulled one, so the row switches to "Selected".
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Selected' })).toBeDisabled());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Selected qwen3.5:4b' })).toBeDisabled());
   });
 
   it('FE-MOB-AADD-022: a failing pull surfaces the server error', async () => {
@@ -486,10 +486,10 @@ describe('MAdminAddonManager', () => {
     render(<><ToastContainer /><MAdminAddonManager /></>);
 
     await screen.findByText('No models installed yet — pull one below.');
-    await user.click(screen.getByRole('button', { name: 'Pull' }));
+    await user.click(screen.getByRole('button', { name: 'Pull qwen3.5:4b' }));
 
     await screen.findByText('no disk space');
-    expect(screen.getByRole('button', { name: 'Pull' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Pull qwen3.5:4b' })).toBeEnabled();
   });
 
   it('FE-MOB-AADD-025: an error frame in the pull stream aborts the pull', async () => {
@@ -505,11 +505,11 @@ describe('MAdminAddonManager', () => {
     render(<><ToastContainer /><MAdminAddonManager /></>);
 
     await screen.findByText('No models installed yet — pull one below.');
-    await user.click(screen.getByRole('button', { name: 'Pull' }));
+    await user.click(screen.getByRole('button', { name: 'Pull qwen3.5:4b' }));
 
     await screen.findByText('manifest not found');
     expect(screen.queryByText('Model pulled')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Pull' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Pull qwen3.5:4b' })).toBeEnabled();
   });
 
   it('FE-MOB-AADD-023: saving posts the whole config and reports both outcomes', async () => {

@@ -1,3 +1,4 @@
+import { LLM_MODEL_CATALOGUE, modelReadsPhotos } from '@trek/shared'
 import { useEffect, useState, type ComponentType } from 'react'
 import { adminApi } from '../../api/client'
 import { useTranslation } from '../../i18n'
@@ -303,13 +304,6 @@ function GroupHead({ icon: Icon, label, hint, addons, t }: {
 const MASKED = '••••••••'
 const DEFAULT_OLLAMA_URL = 'http://localhost:11434/v1'
 
-/** Curated models the local extractor is tuned for, pullable via Ollama. The router drives
- *  one model per document via Ollama's grammar-constrained `format`; "thinking" is disabled
- *  automatically, so the Qwen3 family works without any tuning. A host only needs one. */
-const RECOMMENDED_MODELS: { id: string; label: string; note: string; recommended: boolean; vision: boolean }[] = [
-  { id: 'qwen3:8b', label: 'Qwen3 — 8B', note: 'Recommended · best extraction quality & speed on CPU (thinking auto-disabled) · Apache-2.0', recommended: true, vision: false },
-]
-
 /**
  * Instance-wide AI-parsing config. When set, applies to the whole instance and
  * overrides per-user config (see server llmConfig.ts). The API key is masked on
@@ -323,6 +317,12 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
   const [model, setModel] = useState<string>((cfg.model as string) ?? '')
   const [baseUrl, setBaseUrl] = useState<string>((cfg.baseUrl as string) ?? '')
   const [apiKey, setApiKey] = useState<string>((cfg.apiKey as string) ?? '')
+  // Whether this model may be handed a photograph. Seeded from the catalogue so
+  // a known model needs no confirming, and overridable because the catalogue
+  // cannot know every model anyone will type.
+  const [multimodal, setMultimodal] = useState<boolean>(
+    cfg.multimodal === true || modelReadsPhotos((cfg.model as string) ?? ''),
+  )
   const [saving, setSaving] = useState(false)
 
   // Local-provider model management.
@@ -384,7 +384,7 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
     setSaving(true)
     try {
       // Send the masked sentinel unchanged so the server keeps the stored key.
-      await adminApi.updateAddon(addon.id, { config: { provider, model: model.trim(), baseUrl: provider === 'anthropic' ? '' : baseUrl.trim(), apiKey, multimodal: cfg.multimodal === true } })
+      await adminApi.updateAddon(addon.id, { config: { provider, model: model.trim(), baseUrl: provider === 'anthropic' ? '' : baseUrl.trim(), apiKey, multimodal } })
       toast.success('Saved')
     } catch {
       toast.error('Failed to save')
@@ -460,10 +460,26 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
             </div>
           )}
 
+          <div className="rounded-lg border border-edge-secondary px-2.5 py-2">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={multimodal} onChange={e => setMultimodal(e.target.checked)} />
+              <span className="text-caption font-medium text-content">This model reads images</span>
+            </label>
+            <p className="mt-1 text-caption text-content-faint">
+              Receipt scanning photographs a bill, so it needs a model that can see. Turn this off for a
+              text-only model and TREK stops offering the camera instead of failing at it.
+            </p>
+            {multimodal && model.trim() !== '' && !modelReadsPhotos(model) && (
+              <p className="mt-1.5 text-caption text-warning">
+                {model.trim()} is not known to read images — if the provider refuses the photo, this is why.
+              </p>
+            )}
+          </div>
+
           <div className="border-t border-edge-secondary pt-2">
             <div className="mb-1.5 text-caption font-medium text-content-secondary">Pull a recommended model</div>
             <div className="space-y-1">
-              {RECOMMENDED_MODELS.map(m => {
+              {LLM_MODEL_CATALOGUE.map(m => {
                 const installedHere = isInstalled(m.id)
                 const isPulling = pulling === m.id
                 const active = model === m.id
@@ -475,11 +491,11 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
                         <span className="shrink-0 rounded-md bg-success-soft px-1.5 py-px text-caption font-semibold text-success">Recommended</span>
                       )}
                       {installedHere ? (
-                        <button type="button" onClick={() => setModel(m.id)} disabled={active} className={`shrink-0 rounded-md px-2 py-1 text-caption font-medium transition-colors ${active ? 'bg-surface-tertiary text-content-muted' : 'border border-edge-secondary text-content-secondary hover:border-edge'}`}>
+                        <button type="button" aria-label={`${active ? 'Selected' : 'Use'} ${m.id}`} onClick={() => setModel(m.id)} disabled={active} className={`shrink-0 rounded-md px-2 py-1 text-caption font-medium transition-colors ${active ? 'bg-surface-tertiary text-content-muted' : 'border border-edge-secondary text-content-secondary hover:border-edge'}`}>
                           {active ? 'Selected' : 'Use'}
                         </button>
                       ) : (
-                        <button type="button" onClick={() => pull(m.id)} disabled={!!pulling} className="shrink-0 rounded-md bg-accent px-2 py-1 text-caption font-medium text-accent-text disabled:opacity-60">
+                        <button type="button" aria-label={`Pull ${m.id}`} onClick={() => pull(m.id)} disabled={!!pulling} className="shrink-0 rounded-md bg-accent px-2 py-1 text-caption font-medium text-accent-text disabled:opacity-60">
                           {isPulling ? 'Pulling…' : 'Pull'}
                         </button>
                       )}

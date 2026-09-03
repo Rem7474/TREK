@@ -105,6 +105,8 @@ interface MAdminButtonProps {
   disabled?: boolean
   onClick?: () => void
   title?: string
+  /** Needed where several buttons share the same label — the model list has one per row. */
+  ariaLabel?: string
   className?: string
   children: ReactNode
 }
@@ -116,6 +118,7 @@ export function MAdminButton({
   disabled = false,
   onClick,
   title,
+  ariaLabel,
   className = '',
   children,
 }: MAdminButtonProps) {
@@ -128,6 +131,7 @@ export function MAdminButton({
   return (
     <button
       type="button"
+      aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled || busy}
       title={title}

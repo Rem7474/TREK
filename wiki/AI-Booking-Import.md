@@ -37,7 +37,7 @@ When you enable the addon, a configuration panel appears directly under it in [A
 - **Provider** — Local · OpenAI-compatible, OpenAI, or Anthropic.
 - **Base URL** — shown for every provider except Anthropic. Defaults to `http://localhost:11434/v1` for a local Ollama server, or `https://api.openai.com/v1` for OpenAI. Point it at any OpenAI-compatible endpoint here.
 - **API key** — optional for a local server (`(often not required)`), required for the cloud providers. Stored **encrypted**; it is shown masked (`••••••••`) once saved, and leaving it unchanged keeps the stored key.
-- **Model** — the model id (e.g. `qwen3:8b`, `gpt-4o`, `claude-opus-4-8`).
+- **Model** — the model id (e.g. `qwen3.5:4b`, `gpt-4o`, `claude-opus-4-8`).
 
 If you set a provider and model here, it applies to **all users** and overrides their personal settings. Leave the panel blank to let each user bring their own model (see below).
 
@@ -46,9 +46,19 @@ If you set a provider and model here, it applies to **all users** and overrides 
 With the **Local** provider selected, the panel manages your Ollama server directly:
 
 - **Installed on the server** lists the models Ollama already has, with a **Refresh** button. Click a model to select it.
-- **Pull a recommended model** downloads a model with a live progress bar. The one recommended model is **Qwen3 — 8B** (`qwen3:8b`) — *best extraction quality & speed on CPU (thinking auto-disabled) · Apache-2.0*. Once the pull finishes it is selected automatically.
+- **Pull a recommended model** downloads a model with a live progress bar. Once the pull finishes it is selected automatically. One model is offered: **Qwen3.5 — 4B** (`qwen3.5:4b`, 3.4 GB, 256K context). It is multimodal, so the same download covers both jobs — extracting a booking out of a PDF and reading a photographed receipt — and a self-hosted instance does not need to keep two models resident.
 
 You can also select any other model already installed on the server, or type a model id by hand.
+
+TREK asks a self-hosted server to turn **reasoning off** for these calls (Ollama's `think`, and `chat_template_kwargs.enable_thinking` for the servers that read that instead), and strips a reasoning block from the answer if one arrives anyway. On a hybrid model the chain of thought is most of the wall clock for an answer that is a handful of fields.
+
+### This model reads images
+
+A **This model reads images** switch sits with the provider fields. It says whether the model may be handed the document itself — a scanned page, a photo — rather than text pulled out of it, and it is what decides whether TREK offers [receipt scanning](Receipt-Scanning) at all.
+
+It is pre-filled from the model id: the model in the list answers for itself, and an id typed by hand is assumed to see if it belongs to a family that advertises vision (`qwen3.5`, `llava`, `minicpm-v`, anything `-vl`, GPT-4o, Claude, Gemini). Anything else starts off, and turning it on for a model the list does not recognise shows a warning rather than blocking it — the list cannot know every model.
+
+This is the same setting as the per-user **Send documents as images** toggle below, at instance scope.
 
 ## Per-user configuration
 
@@ -58,7 +68,7 @@ If an admin leaves the instance config blank, each user can configure their own 
 
 The fields are a **Provider** (only **OpenAI** or **Anthropic** here), a **Model** id, and an **API key** that is *stored encrypted* (leave blank to keep the current key). There is no personal Base URL: the address this server calls is instance configuration, so a local (Ollama) model can only be set up by an admin on the addon, and the server answers 403 to anyone, admins included, who tries to store a personal base URL or a personal `local` provider.
 
-There is also a **Send documents as images** toggle. It is stored per user, but extraction currently ignores it: only Anthropic is sent the raw PDF, every other provider always gets the extracted text.
+There is also a **Send documents as images** toggle — the per-user form of the admin switch above. For a *booking* import it is still ignored: only Anthropic is sent the raw PDF, every other provider always gets the extracted text. For a *receipt* it is what says the model can be handed a photograph.
 
 > **Precedence:** an admin instance model always wins. Personal settings only take effect when no instance-wide model is configured.
 
@@ -100,5 +110,6 @@ The model is asked to capture the full booking — including **every leg of a mu
 
 - [Reservations-and-Bookings](Reservations-and-Bookings) — the booking import flow this extends
 - [Admin-Addons](Admin-Addons) — enabling the addon
+- [Receipt-Scanning](Receipt-Scanning) — the same models, pointed at a paid receipt instead of a booking
 - [Budget-Tracking](Budget-Tracking) — linked costs from imported bookings
 - [Transport: Flights, Trains, Cars](Transport-Flights-Trains-Cars)
