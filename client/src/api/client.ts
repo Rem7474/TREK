@@ -1153,9 +1153,12 @@ export const receiptsApi = {
    * CPU vision model, so the request returns a job id and the result arrives over
    * the WebSocket (receipt:progress / receipt:done / receipt:error).
    */
-  scanAsync: (tripId: number | string, files: File[]): Promise<{ jobId: string }> => {
+  scanAsync: (tripId: number | string, files: File[], quick = false): Promise<{ jobId: string }> => {
     const fd = new FormData()
     for (const f of files) fd.append('files', f)
+    // The short read: the amount and little else, several times faster on a
+    // local model. Sent as text because the body is multipart.
+    if (quick) fd.append('quick', 'true')
     return postMultipart(`/trips/${tripId}/receipts/scan/async`, fd)
   },
   /** Recovery path for a client that missed the push (navigation, reconnect). */

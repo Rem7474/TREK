@@ -172,6 +172,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML 또는 EML · 최대 5개 파일, 각 10 MB',
   'receipts.takePhoto': '사진 찍기',
   'receipts.pickOrPhoto': '촬영하거나 파일 선택',
+  'receipts.quickMode': '빠른 읽기',
+  'receipts.quickModeHint': '금액과 상호만 읽습니다. 훨씬 빠르지만 품목별 분담은 할 수 없습니다.',
   'receipts.dropHere': '여기에 영수증을 놓거나 클릭해 선택하세요',
   'receipts.dropActive': '놓으면 스캔합니다',
   'receipts.scanning': '영수증을 읽는 중…',

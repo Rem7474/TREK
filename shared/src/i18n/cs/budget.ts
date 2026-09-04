@@ -172,6 +172,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML nebo EML · až 5 souborů, každý 10 MB',
   'receipts.takePhoto': 'Vyfotit',
   'receipts.pickOrPhoto': 'Vyfotit nebo vybrat soubor',
+  'receipts.quickMode': 'Rychlé čtení',
+  'receipts.quickModeHint': 'Načte jen částku a obchodníka — mnohem rychlejší, ale bez položek k rozdělení.',
   'receipts.dropHere': 'Přetáhněte sem účtenku nebo klikněte pro výběr',
   'receipts.dropActive': 'Pusťte pro naskenování',
   'receipts.scanning': 'Čteme vaši účtenku…',

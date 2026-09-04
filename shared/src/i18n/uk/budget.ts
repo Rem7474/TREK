@@ -172,6 +172,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML або EML · до 5 файлів, по 10 МБ',
   'receipts.takePhoto': 'Зробити фото',
   'receipts.pickOrPhoto': 'Сфотографувати або вибрати файл',
+  'receipts.quickMode': 'Швидке читання',
+  'receipts.quickModeHint': 'Читає лише суму та продавця — набагато швидше, але без позицій для поділу.',
   'receipts.dropHere': 'Перетягніть чек сюди або натисніть, щоб обрати',
   'receipts.dropActive': 'Відпустіть, щоб сканувати',
   'receipts.scanning': 'Читаємо ваш чек…',

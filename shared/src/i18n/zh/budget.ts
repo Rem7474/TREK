@@ -171,6 +171,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG、PNG、HEIC、WEBP、PDF、TXT、HTML 或 EML · 最多 5 个文件，每个 10 MB',
   'receipts.takePhoto': '拍照',
   'receipts.pickOrPhoto': '拍照或选择文件',
+  'receipts.quickMode': '快速识别',
+  'receipts.quickModeHint': '只读取金额和商家 — 快得多，但没有可按项分摊的明细。',
   'receipts.dropHere': '将收据拖到此处，或点击选择',
   'receipts.dropActive': '松开即可扫描',
   'receipts.scanning': '正在读取收据…',

@@ -9,6 +9,7 @@ import { toRecordList } from './lenient-json';
 import { classifyProviderFailure, describeProviderFailure, type ProviderFailureCode } from './llm-failure';
 import { capReceiptImage } from './receipt-image';
 import {
+  buildQuickReceiptPrompt,
   buildReceiptPrompt,
   RECEIPT_JSON_SCHEMA,
   RECEIPT_ROOT_KEY,
@@ -200,12 +201,13 @@ export class LlmParseService {
   async parseReceipt(
     file: { buffer: Buffer; originalName: string },
     userId: number,
+    quick = false,
   ): Promise<LlmReceiptResult> {
     const config = this.llmConfig.resolve(userId);
     if (!config) return { receipts: [], warnings: ['AI parsing is not configured'] };
 
     const input: LlmExtractionInput = {
-      prompt: buildReceiptPrompt(),
+      prompt: quick ? buildQuickReceiptPrompt() : buildReceiptPrompt(),
       jsonSchema: RECEIPT_JSON_SCHEMA,
       rootKey: RECEIPT_ROOT_KEY,
       userText: RECEIPT_USER_INSTRUCTION,

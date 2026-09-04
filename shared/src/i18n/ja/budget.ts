@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG、PNG、HEIC、WEBP、PDF、TXT、HTML、EML · 最大 5 ファイル、各 10 MB',
   'receipts.takePhoto': '写真を撮る',
   'receipts.pickOrPhoto': '撮影するかファイルを選択',
+  'receipts.quickMode': '簡易読み取り',
+  'receipts.quickModeHint': '金額と店名だけを読みます。大幅に速い代わりに、明細による分担はできません。',
   'receipts.dropHere': 'ここにレシートをドロップ、またはクリックして選択',
   'receipts.dropActive': 'ドロップしてスキャン',
   'receipts.scanning': 'レシートを読み取り中…',

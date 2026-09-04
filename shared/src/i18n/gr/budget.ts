@@ -174,6 +174,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML ή EML · έως 5 αρχεία, 10 MB το καθένα',
   'receipts.takePhoto': 'Λήψη φωτογραφίας',
   'receipts.pickOrPhoto': 'Φωτογραφήστε ή επιλέξτε αρχείο',
+  'receipts.quickMode': 'Γρήγορη ανάγνωση',
+  'receipts.quickModeHint': 'Διαβάζει μόνο το ποσό και το κατάστημα — πολύ πιο γρήγορα, χωρίς αναλυτικές γραμμές.',
   'receipts.dropHere': 'Αφήστε εδώ μια απόδειξη ή κάντε κλικ για επιλογή',
   'receipts.dropActive': 'Αφήστε για σάρωση',
   'receipts.scanning': 'Διαβάζουμε την απόδειξή σας…',

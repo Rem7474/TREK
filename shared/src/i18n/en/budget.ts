@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML or EML · up to 5 files, 10 MB each',
   'receipts.takePhoto': 'Take a photo',
   'receipts.pickOrPhoto': 'Photograph or choose a file',
+  'receipts.quickMode': 'Quick read',
+  'receipts.quickModeHint': 'Reads the amount and the merchant only — several times faster, but no itemized lines to split by.',
   'receipts.dropHere': 'Drop a receipt here, or click to choose',
   'receipts.dropActive': 'Drop to scan',
   'receipts.scanning': 'Reading your receipt…',

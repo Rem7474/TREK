@@ -1,4 +1,4 @@
-import { receiptConfirmRequestSchema } from '@trek/shared';
+import { receiptConfirmRequestSchema, receiptScanOptionsSchema } from '@trek/shared';
 import { createZodDto } from 'nestjs-zod';
 
 /**
@@ -11,3 +11,12 @@ import { createZodDto } from 'nestjs-zod';
  * omits one is a caller whose expense would be wrong.
  */
 export class ReceiptConfirmDto extends createZodDto(receiptConfirmRequestSchema) {}
+
+
+/**
+ * The async scan's own body: the files travel as multipart, and this is what
+ * rides alongside them. Small, but it goes through the same door as every other
+ * mutation body — a handler reading @Body() without a contract is what the boot
+ * ratchet exists to catch.
+ */
+export class ReceiptScanAsyncDto extends createZodDto(receiptScanOptionsSchema) {}

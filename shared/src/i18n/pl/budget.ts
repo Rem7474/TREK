@@ -172,6 +172,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML lub EML · do 5 plików, po 10 MB',
   'receipts.takePhoto': 'Zrób zdjęcie',
   'receipts.pickOrPhoto': 'Zrób zdjęcie lub wybierz plik',
+  'receipts.quickMode': 'Szybki odczyt',
+  'receipts.quickModeHint': 'Czyta tylko kwotę i sprzedawcę — znacznie szybciej, ale bez pozycji do podziału.',
   'receipts.dropHere': 'Upuść tutaj paragon albo kliknij, aby wybrać',
   'receipts.dropActive': 'Upuść, aby zeskanować',
   'receipts.scanning': 'Odczytujemy twój paragon…',

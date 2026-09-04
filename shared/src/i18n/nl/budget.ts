@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML of EML · maximaal 5 bestanden, elk 10 MB',
   'receipts.takePhoto': 'Foto maken',
   'receipts.pickOrPhoto': 'Fotograferen of een bestand kiezen',
+  'receipts.quickMode': 'Snel lezen',
+  'receipts.quickModeHint': 'Leest alleen het bedrag en de winkel — veel sneller, maar zonder regels om per artikel te splitsen.',
   'receipts.dropHere': 'Sleep hier een bon naartoe, of klik om te kiezen',
   'receipts.dropActive': 'Loslaten om te scannen',
   'receipts.scanning': 'Je bon wordt gelezen…',

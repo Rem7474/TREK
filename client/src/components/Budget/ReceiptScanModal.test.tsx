@@ -486,4 +486,28 @@ describe('ReceiptScanModal', () => {
     expect(await screen.findByText('That file type cannot be scanned.')).toBeInTheDocument()
   })
 
+  it('sends the quick read only when it is asked for', async () => {
+    // It gives up the receipt's own lines, and with them the per-item split, so
+    // it is never the default — the user has to say so.
+    withImageDecoder()
+    const sent = vi.spyOn(receiptsApi, 'scanAsync')
+    server.use(...scanJob({ scanId: 's1', items: [], warnings: [], files: [] }))
+
+    const { container } = renderModal()
+    const { default: userEvent } = await import('@testing-library/user-event')
+    const user = userEvent.setup()
+    await user.click(screen.getByRole('checkbox', { name: /Quick read/i }))
+    await scan(container, 'receipt.jpg')
+
+    await waitFor(() => expect(sent).toHaveBeenCalled())
+    expect(sent.mock.calls[0][2]).toBe(true)
+  })
+
+  it('rejects a file type that cannot hold a receipt', async () => {
+    const { container } = renderModal();
+    const input = container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [new File(['x'], 'holiday.mp4', { type: 'video/mp4' })] } });
+
+    expect(await screen.findByText('That file type cannot be scanned.')).toBeInTheDocument();
+  });
 });

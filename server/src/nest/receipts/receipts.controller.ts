@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequirePermission, TripAccessGuard } from '../permissions/trip-access.guard';
 import { Trip } from '../permissions/trip.decorator';
 import type { TripAccess } from '../database/database.service';
-import { ReceiptConfirmDto } from './receipts.dto';
+import { ReceiptConfirmDto, ReceiptScanAsyncDto } from './receipts.dto';
 import { ReceiptScanJobsService } from './receipt-scan-jobs.service';
 import { ReceiptsService } from './receipts.service';
 import {
@@ -111,9 +111,11 @@ export class ReceiptsController {
     @CurrentUser() user: User,
     @Param('tripId') tripId: string,
     @UploadedFiles() files: Express.Multer.File[] | undefined,
+    @Body() body: ReceiptScanAsyncDto,
   ): Promise<{ jobId: string }> {
     this.validateScan(user, files);
-    return { jobId: this.scanJobs.start(tripId, files!, user.id) };
+    // Multipart carries it as text; anything but an explicit "true" is the full read.
+    return { jobId: this.scanJobs.start(tripId, files!, user.id, body?.quick === 'true') };
   }
 
   /**

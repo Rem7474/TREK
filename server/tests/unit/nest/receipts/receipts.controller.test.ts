@@ -52,9 +52,19 @@ describe('ReceiptsController.scan/async', () => {
 
     // The point of the endpoint: the request does not carry the inference.
     expect(svc.scan).not.toHaveBeenCalled();
-    expect(scanJobs.start).toHaveBeenCalledWith('t1', [expect.anything()], 1);
+    expect(scanJobs.start).toHaveBeenCalledWith('t1', [expect.anything()], 1, false);
   });
 
+  it('passes the quick read on, and only for an explicit "true"', async () => {
+    // Multipart carries the flag as text, so anything else is the full read.
+    const { c, scanJobs } = make();
+
+    await c.scanAsync(user, 't1', [file()], { quick: 'true' });
+    expect(scanJobs.start).toHaveBeenLastCalledWith('t1', [expect.anything()], 1, true);
+
+    await c.scanAsync(user, 't1', [file()], { quick: 'yes' });
+    expect(scanJobs.start).toHaveBeenLastCalledWith('t1', [expect.anything()], 1, false);
+  });
 
   it('refuses before it starts anything: demo, no model, no file, wrong file', async () => {
     // Checked in the handler rather than in a guard — a guard on a multipart route
@@ -68,7 +78,7 @@ describe('ReceiptsController.scan/async', () => {
   it('takes a phone photo — HEIC included — and hands it straight to the job', async () => {
     const { c, scanJobs } = make();
     await c.scanAsync(user, 't1', [file('IMG_0421.HEIC')]);
-    expect(scanJobs.start).toHaveBeenCalledWith('t1', [expect.anything()], 1);
+    expect(scanJobs.start).toHaveBeenCalledWith('t1', [expect.anything()], 1, false);
   });
 
   it('404s a job that expired or belongs to somebody else', async () => {

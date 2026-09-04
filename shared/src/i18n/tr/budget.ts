@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML veya EML · en fazla 5 dosya, her biri 10 MB',
   'receipts.takePhoto': 'Fotoğraf çek',
   'receipts.pickOrPhoto': 'Fotoğraf çek veya dosya seç',
+  'receipts.quickMode': 'Hızlı okuma',
+  'receipts.quickModeHint': 'Yalnızca tutarı ve satıcıyı okur — çok daha hızlı, ama bölüşecek kalem yok.',
   'receipts.dropHere': 'Fişi buraya bırak veya seçmek için tıkla',
   'receipts.dropActive': 'Taramak için bırak',
   'receipts.scanning': 'Fişin okunuyor…',

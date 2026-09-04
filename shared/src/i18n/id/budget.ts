@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML atau EML · maksimal 5 berkas, masing-masing 10 MB',
   'receipts.takePhoto': 'Ambil foto',
   'receipts.pickOrPhoto': 'Foto atau pilih berkas',
+  'receipts.quickMode': 'Baca cepat',
+  'receipts.quickModeHint': 'Hanya membaca jumlah dan pedagang — jauh lebih cepat, tetapi tanpa rincian untuk dibagi.',
   'receipts.dropHere': 'Letakkan struk di sini, atau klik untuk memilih',
   'receipts.dropActive': 'Lepaskan untuk memindai',
   'receipts.scanning': 'Membaca struk kamu…',
