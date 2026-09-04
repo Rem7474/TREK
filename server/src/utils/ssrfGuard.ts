@@ -359,10 +359,7 @@ export function createPinnedDispatcher(resolvedIp: string, rejectUnauthorized = 
   return new Agent({
     // undici caps the wait for response headers at 5 minutes by default, and
     // that cap is invisible from the call site: an AbortController set to
-    // fifteen still dies at five. A local vision model reading a photographed
-    // receipt routinely needs longer than that, so the LLM lane passes its own
-    // ceiling; everything else keeps undici's, where a hung request should not
-    // be waited on for a quarter of an hour.
+    // fifteen still dies at five.
     ...(responseTimeoutMs
       ? { headersTimeout: responseTimeoutMs, bodyTimeout: responseTimeoutMs }
       : {}),
