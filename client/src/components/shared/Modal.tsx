@@ -71,13 +71,20 @@ export default function Modal({
         mouseDownTarget.current = null
       }}
     >
+      {/* The panel is bounded by the backdrop's content box (max-h-full), not by
+          its own copy of the viewport arithmetic. The two used to be written out
+          separately, and they disagreed between 640px and 767px — wide enough for
+          Tailwind's `sm:` rule, narrow enough to still have a bottom nav — so the
+          panel was allowed to stand ~84px taller than the space it sits in. The
+          backdrop clips what overflows, which took the rounded bottom corners and
+          the footer with it. */}
       <div
         role="presentation"
         className={`
           trek-modal-enter
           rounded-2xl overflow-hidden shadow-2xl w-full ${sizeClasses[size] || sizeClasses.md}
           flex flex-col
-          max-h-[calc(100dvh-var(--bottom-nav-h)-90px)] sm:max-h-[calc(100dvh-90px)]
+          max-h-full
           bg-surface-card
         `}
         onClick={e => e.stopPropagation()}
