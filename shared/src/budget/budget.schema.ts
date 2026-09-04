@@ -104,6 +104,11 @@ export type BudgetItemPayer = z.infer<typeof budgetItemPayerSchema>;
  * total_price is the sum of payer amounts in `currency`; `exchange_rate` converts
  * that to the trip base currency (NULL currency + rate 1 = base currency).
  */
+/** The three ways an expense is divided; see budget_items.split_mode. */
+export const EXPENSE_SPLIT_MODES = ['equally', 'custom', 'ticket'] as const;
+export type ExpenseSplitMode = (typeof EXPENSE_SPLIT_MODES)[number];
+export const expenseSplitModeSchema = z.enum(EXPENSE_SPLIT_MODES);
+
 export const budgetItemSchema = z.object({
   id: z.number(),
   trip_id: z.number(),

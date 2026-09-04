@@ -62,6 +62,24 @@ describe('extractEnforced', () => {
     expect(body.options.num_ctx).toBe(16000);
   });
 
+  it('hands images to the model on the user turn, with reasoning still off and no grammar', async () => {
+    // The receipt reader's request: a photograph, and no schema to constrain it.
+    const fetchFn = mockFetch(() => jsonResponse({ message: { content: '{"receipts":[]}' } }));
+    await extractEnforced({ baseUrl: INPUT.baseUrl, model: 'qwen3.5:4b', system: 'sys', user: 'doc', images: ['aGVsbG8='] });
+    const body = JSON.parse((fetchFn.mock.calls[0][1] as RequestInit).body as string);
+    expect(body).not.toHaveProperty('format');
+    expect(body.think).toBe(false);
+    expect(body.messages[1]).toEqual({ role: 'user', content: 'doc', images: ['aGVsbG8='] });
+  });
+
+  it('sends no images key at all for a text-only request', async () => {
+    const fetchFn = mockFetch(() => jsonResponse({ message: { content: '{}' } }));
+    await extractEnforced({ ...INPUT, images: [] });
+    const body = JSON.parse((fetchFn.mock.calls[0][1] as RequestInit).body as string);
+    expect(body.messages[1]).toEqual({ role: 'user', content: 'doc' });
+    expect(body.format).toEqual({ type: 'object' });
+  });
+
   it('strips a ```json code fence before parsing', async () => {
     mockFetch(() => jsonResponse({ message: { content: '```json\n{"a":1}\n```' } }));
     expect(await extractEnforced(INPUT)).toEqual({ a: 1 });

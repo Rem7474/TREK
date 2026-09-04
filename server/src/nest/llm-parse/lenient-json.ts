@@ -51,11 +51,11 @@ export function parseLenientJson(content: string | undefined | null): unknown {
  * that is genuinely not one, and guessing further would start inventing
  * bookings out of prose.
  */
-export function toReservationList(value: unknown): Record<string, unknown>[] {
+export function toRecordList(value: unknown, rootKey: string): Record<string, unknown>[] {
   const list = (v: unknown): Record<string, unknown>[] | null => {
     if (Array.isArray(v)) return v as Record<string, unknown>[];
-    if (v && typeof v === 'object' && Array.isArray((v as { reservations?: unknown }).reservations)) {
-      return (v as { reservations: Record<string, unknown>[] }).reservations;
+    if (v && typeof v === 'object' && Array.isArray((v as Record<string, unknown>)[rootKey])) {
+      return (v as Record<string, Record<string, unknown>[]>)[rootKey];
     }
     return null;
   };
@@ -64,4 +64,9 @@ export function toReservationList(value: unknown): Record<string, unknown>[] {
   if (direct) return direct;
   if (typeof value === 'string') return list(parseLenientJson(value)) ?? [];
   return [];
+}
+
+/** The booking import's shape: `{ reservations: [...] }`. */
+export function toReservationList(value: unknown): Record<string, unknown>[] {
+  return toRecordList(value, 'reservations');
 }

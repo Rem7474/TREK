@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseLenientJson, toReservationList } from '../../../../src/nest/llm-parse/lenient-json';
+import { parseLenientJson, toRecordList, toReservationList } from '../../../../src/nest/llm-parse/lenient-json';
 
 describe('parseLenientJson', () => {
   it('parses strict JSON', () => {
@@ -104,5 +104,16 @@ describe('toReservationList', () => {
   it('keeps an empty list an empty list', () => {
     expect(toReservationList([])).toEqual([]);
     expect(toReservationList('{"reservations":[]}')).toEqual([]);
+  });
+});
+
+describe('toRecordList', () => {
+  it('pulls the array out from under whichever root key the caller asked for', () => {
+    expect(toRecordList({ receipts: [{ total: 12 }] }, 'receipts')).toEqual([{ total: 12 }]);
+    expect(toRecordList({ reservations: [{ a: 1 }] }, 'reservations')).toEqual([{ a: 1 }]);
+  });
+
+  it('does not hand back another key\'s array', () => {
+    expect(toRecordList({ reservations: [{ a: 1 }] }, 'receipts')).toEqual([]);
   });
 });
