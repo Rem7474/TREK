@@ -17,11 +17,12 @@ import CustomSelect from '../shared/CustomSelect'
 import { CustomDatePicker } from '../shared/CustomDateTimePicker'
 import { localToday } from '../Planner/today'
 import { SYMBOLS, currenciesWith, SPLIT_COLORS } from './BudgetPanel.constants'
-import { amountPattern, calculateTicketShares, hasTicketSplit, NOTE_MAX, payersBalanced, readTicketItems, readUserNote, rebalancePayers, splitEqualShares, writeTicketItems, type TicketItem } from './CostsPanel.helpers'
+import { readUserNote, splitEqualShares } from './CostsPanel.helpers'
+import { ExpenseNotePanel, ExpensePayerPanel, ExpenseSplitPanel } from './ExpenseSplitEditor'
+import { useExpenseSplit } from './useExpenseSplit'
 import { COST_CATEGORY_LIST, catMeta } from './costsCategories'
 import type { BudgetItem } from '../../types'
 import type { TripMember } from './BudgetPanelMemberChips'
-import GuestBadge from '../shared/GuestBadge'
 import { NumericInput } from '../shared/NumericInput'
 import EmptyState from '../shared/EmptyState'
 
@@ -590,9 +591,11 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
             <span>{t('costs.youPaid')} · <b style={{ color: '#fff', fontWeight: 600 }}>{fmt0(totals.myPaid)}</b></span>
           </div>
           {canEdit && (
-            <button type="button" onClick={() => { setEditing(null); setModalOpen(true) }} style={{ marginTop: 16, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.16)', color: '#fff', padding: 13, borderRadius: 14, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
-              <Plus size={17} /> {t('costs.addExpense')}
-            </button>
+            <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+              <button type="button" onClick={() => { setEditing(null); setModalOpen(true) }} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.16)', color: '#fff', padding: 13, borderRadius: 14, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                <Plus size={17} /> {t('costs.addExpense')}
+              </button>
+            </div>
           )}
         </section>
 
@@ -1056,7 +1059,6 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
   const [cat, setCat] = useState<string>(editing ? catMeta(editing.category).key : (prefill?.category || 'food'))
   const [currency, setCurrency] = useState((editing?.currency || base).toUpperCase())
   const [day, setDay] = useState(editing?.expense_date || localToday())
-  const [note, setNote] = useState(() => readUserNote(editing))
   // Edit and prefill seeds are padded to the currency's decimals (#2175): the DB
   // returns numbers, so a saved 4,90 would otherwise reopen as "4,9" and a saved
   // 5,00 as "5". A prefill has no currency of its own — it is read as `base`,
@@ -1066,251 +1068,29 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
     if (prefill?.amount != null) return amountToInputString(prefill.amount, base)
     return ''
   })
-  const [participants, setParticipants] = useState<Set<number>>(() =>
-    editing ? new Set((editing.members || []).map(m => m.user_id)) : new Set(people.map(p => p.id)))
-
-  // Payer state. An expense can be fronted by several people, each with their own
-  // amount (budget_item_payers) — a shared card, or "I got this round, you get the
-  // next". The single-payer dropdown stays the default path; multiPayer swaps in a
-  // per-person amount editor. 0 represents "Nobody (planning entry)"; on an
-  // existing expense a missing payer is a deliberate choice, so only a brand-new
-  // one defaults to me. A negative payer (the recipient of a refund, #2176) is a
-  // real payer — filtering on > 0 here would silently drop them on save.
-  const initialPayers = (editing?.payers || []).filter(p => p.amount !== 0)
-
-  const [payerId, setPayerId] = useState<number>(() => {
-    const existingPayer = initialPayers[0]
-    if (existingPayer) return existingPayer.user_id
-    return editing ? 0 : me
-  })
-  const [multiPayer, setMultiPayer] = useState(() => initialPayers.length > 1)
-  const [payerIds, setPayerIds] = useState<Set<number>>(() => new Set(initialPayers.map(p => p.user_id)))
-  const [payerAmounts, setPayerAmounts] = useState<Record<number, string>>(() => {
-    const m: Record<number, string> = {}
-    for (const p of initialPayers) m[p.user_id] = amountToInputString(p.amount, currency)
-    return m
-  })
-  // Payers the user typed an amount for: rebalance leaves these alone and makes
-  // the others absorb the remainder.
-  const [pinnedPayers, setPinnedPayers] = useState<Set<number>>(() => new Set(initialPayers.map(p => p.user_id)))
-
-  const [splitMode, setSplitMode] = useState<'equally' | 'custom' | 'ticket'>(() => {
-    if (hasTicketSplit(editing)) {
-      return 'ticket'
-    }
-    if (editing && editing.members && editing.members.length > 0) {
-      const hasCustom = editing.members.some(m => m.amount !== null && m.amount !== undefined)
-      return hasCustom ? 'custom' : 'equally'
-    }
-    return 'equally'
-  })
-
-  const [ticketItems, setTicketItems] = useState<TicketItem[]>(() => readTicketItems(editing))
-
-  const [customAmounts, setCustomAmounts] = useState<Record<number, string>>(() => {
-    const m: Record<number, string> = {}
-    if (editing && editing.members) {
-      for (const member of editing.members) {
-        if (member.amount !== null && member.amount !== undefined) {
-          m[member.user_id] = amountToInputString(member.amount, currency)
-        }
-      }
-    }
-    return m
-  })
+  // Who paid, how it is shared and the note live in useExpenseSplit, so the
+  // dialog and the phone sheet render the same controls from one definition.
+  const split = useExpenseSplit({ people, me, editing, total: parseFloat(total) || 0, currency })
 
   const [saving, setSaving] = useState(false)
 
-  const isTicketMode = splitMode === 'ticket'
-
-  const ticketInfo = useMemo(() => {
-    return calculateTicketShares(ticketItems)
-  }, [ticketItems])
-
-  const totalNum = isTicketMode ? ticketInfo.total : (Number.parseFloat(total) || 0)
-  const splitSum = [...participants].reduce((sum, id) => sum + (Number.parseFloat(customAmounts[id]) || 0), 0)
-  const customBalanced = Math.round(splitSum * 100) === Math.round(totalNum * 100)
-  // How much is still to be handed out, read on the total's own side: on a refund
-  // (#2176) the shares run negative, so a plain total minus sum flips under and
-  // over around and sends the user the wrong way.
-  const splitShortfall = totalNum < 0 ? splitSum - totalNum : totalNum - splitSum
-  const each = participants.size > 0 ? totalNum / participants.size : 0
-  const equalShares = useMemo(() => {
-    return splitEqualShares(totalNum, [...participants].map(id => ({ user_id: id })), editing?.id || 0)
-  }, [totalNum, participants, editing])
-
-  const placeholderShares = useMemo(() => {
-    const emptyParts = [...participants].filter(id => !customAmounts[id])
-    if (emptyParts.length === 0) return {}
-
-    const enteredSum = [...participants]
-      .filter(id => customAmounts[id])
-      .reduce((sum, id) => sum + (Number.parseFloat(customAmounts[id]) || 0), 0)
-    // Clamped toward zero on the total's own side, so an over-entered positive
-    // split never suggests negative leftovers — while a negative total (#2176)
-    // still previews its negative equal shares.
-    const rest = totalNum - enteredSum
-    const remaining = totalNum >= 0 ? Math.max(0, rest) : Math.min(0, rest)
-
-    return splitEqualShares(remaining, emptyParts.map(id => ({ user_id: id })), editing?.id || 0)
-  }, [totalNum, participants, customAmounts, editing])
-
-  const ticketValid = ticketItems.length > 0 && ticketItems.every(item => item.name.trim().length > 0 && (Number.parseFloat(item.price) || 0) > 0 && item.participants.size > 0)
-  const payersOk = !multiPayer || (payerIds.size > 0 && payersBalanced(payerAmounts, payerIds, totalNum))
-  // A negative total is a valid entry (a refund, #2176); only zero has nothing to say.
-  const valid = name.trim().length > 0 && payersOk && (
-    isTicketMode
-      ? ticketValid
-      : totalNum !== 0 && (participants.size === 0 || splitMode === 'equally' || customBalanced)
-  )
+  const { isTicketMode, ticketInfo, totalNum } = split
+  const valid = name.trim().length > 0 && split.splitValid && (isTicketMode || totalNum !== 0)
 
   const onTotalChange = (v: string) => {
     setTotal(v.replace(',', '.'))
   }
 
-  // Keep the payer amounts summing to the total as it changes — including in ticket
-  // mode, where the total is derived from the ticket items rather than typed.
-  useEffect(() => {
-    if (!multiPayer) return
-    setPayerAmounts(prev => rebalancePayers(prev, pinnedPayers, payerIds, totalNum))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalNum])
-
-  const enableMultiPayer = () => {
-    const seed = payerIds.size > 0 ? new Set(payerIds) : new Set<number>([payerId > 0 ? payerId : me])
-    const pinned = new Set<number>()
-    setPayerIds(seed)
-    setPinnedPayers(pinned)
-    setPayerAmounts(prev => rebalancePayers(prev, pinned, seed, totalNum))
-    setMultiPayer(true)
-  }
-
-  const disableMultiPayer = () => {
-    // Collapsing back keeps the first payer; their amount becomes the whole total.
-    const [first] = [...payerIds]
-    setPayerId(first ?? me)
-    setMultiPayer(false)
-  }
-
-  const togglePayer = (id: number) => {
-    const nextIds = new Set(payerIds)
-    const nextPinned = new Set(pinnedPayers)
-    if (nextIds.has(id)) {
-      nextIds.delete(id)
-      nextPinned.delete(id)
-    } else {
-      nextIds.add(id)
-    }
-    setPayerIds(nextIds)
-    setPinnedPayers(nextPinned)
-    setPayerAmounts(prev => rebalancePayers(prev, nextPinned, nextIds, totalNum))
-  }
-
-  const onPayerAmountChange = (id: number, v: string) => {
-    const val = v.replace(',', '.')
-    const nextPinned = new Set(pinnedPayers)
-    nextPinned.add(id)
-    setPinnedPayers(nextPinned)
-    setPayerAmounts(prev => rebalancePayers({ ...prev, [id]: val }, nextPinned, payerIds, totalNum))
-  }
-
-  const handleCustomAmountChange = (id: number, val: string) => {
-    val = val.replace(',', '.')
-    if (val === '' || amountPattern(currency, true).test(val)) {
-      setCustomAmounts(prev => ({ ...prev, [id]: val }))
-    }
-  }
-
-  const handleAddEmptyItem = () => {
-    setTicketItems(prev => [
-      ...prev,
-      {
-        id: String(Date.now() + Math.random()),
-        name: '',
-        price: '',
-        participants: new Set(people.map(p => p.id))
-      }
-    ])
-  }
-
-  const handleUpdateItemName = (id: string, name: string) => {
-    setTicketItems(prev => prev.map(item => item.id === id ? { ...item, name } : item))
-  }
-
-  const handleUpdateItemPrice = (id: string, price: string) => {
-    price = price.replace(',', '.')
-    if (price === '' || amountPattern(currency, false).test(price)) {
-      setTicketItems(prev => prev.map(item => item.id === id ? { ...item, price } : item))
-    }
-  }
-
-  const handleRemoveItem = (id: string) => {
-    setTicketItems(prev => prev.filter(item => item.id !== id))
-  }
-
-  const handleToggleItemParticipant = (itemId: string, userId: number) => {
-    setTicketItems(prev => prev.map(item => {
-      if (item.id === itemId) {
-        const nextParts = new Set(item.participants)
-        if (nextParts.has(userId)) nextParts.delete(userId)
-        else nextParts.add(userId)
-        return { ...item, participants: nextParts }
-      }
-      return item
-    }))
-  }
-
-  const toggleParticipant = (id: number) => {
-    const nextParts = new Set(participants)
-    if (nextParts.has(id)) {
-      nextParts.delete(id)
-      setCustomAmounts(prev => {
-        const copy = { ...prev }
-        delete copy[id]
-        return copy
-      })
-    } else {
-      nextParts.add(id)
-    }
-    setParticipants(nextParts)
-  }
-
   const save = async () => {
     if (!valid) return
     setSaving(true)
-    // A picked payer always goes out, even when nobody shares the expense: the
-    // server re-derives total_price from the payer sum (CostsPanel.helpers), so
-    // dropping the payer would store the entry with a total of 0.
-    const payerList = multiPayer
-      ? [...payerIds]
-          .map(id => ({ user_id: id, amount: Number.parseFloat(payerAmounts[id]) || 0 }))
-          .filter(p => p.amount !== 0)
-      : payerId > 0 ? [{ user_id: payerId, amount: totalNum }] : []
-    // A receipt line can name somebody who is not ticked as a participant. Sending
-    // only the ticked set would drop their share, leaving the member sum short of
-    // total_price and handing the settlement a difference it can never clear (#1382).
-    const memberIds = splitMode === 'ticket'
-      ? [...new Set([...participants, ...Object.keys(ticketInfo.shares).map(Number)])].sort((a, b) => a - b)
-      : [...participants]
-    const memberList = memberIds.map(id => ({
-      user_id: id,
-      amount: splitMode === 'custom'
-        ? (Number.parseFloat(customAmounts[id]) || 0)
-        : splitMode === 'ticket'
-        ? (ticketInfo.shares[id] || 0)
-        : null
-    }))
     const data = {
       name: name.trim(),
       category: cat,
       currency,
-      payers: payerList,
-      members: memberList,
-      member_ids: memberIds,
+      ...split.buildPayload(),
       expense_date: day || null,
       total_price: totalNum,
-      note: note.trim() || null,
-      ticket_json: splitMode === 'ticket' ? writeTicketItems(ticketItems) : null,
       ...(!editing && prefill?.reservationId ? { reservation_id: prefill.reservationId } : {}),
       ...(!editing && prefill?.placeId ? { place_id: prefill.placeId } : {}),
     }
@@ -1405,231 +1185,12 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, minWidth: 0 }}>
-        <div className={panelCls}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <label className={labelCls} style={{ marginBottom: 0 }}>{t('costs.whoPaid')}</label>
-            <button type="button" onClick={() => (multiPayer ? disableMultiPayer() : enableMultiPayer())}
-              className="text-content-muted"
-              style={{ background: 'none', border: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', fontWeight: 600, textDecoration: 'underline' }}>
-              {multiPayer ? t('costs.singlePayer') : t('costs.multiplePayers')}
-            </button>
-          </div>
-          {!multiPayer ? (
-            <CustomSelect value={String(payerId)} onChange={v => setPayerId(Number(v))}
-              options={[
-                { value: '0', label: t('costs.noOnePaid') || 'Nobody (planning entry)' },
-                ...people.map(p => ({ value: String(p.id), label: p.id === me ? t('costs.you') : p.username }))
-              ]}
-              style={{ width: '100%' }} />
-          ) : (
-            <>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-                {people.map((p, idx) => {
-                  const on = payerIds.has(p.id)
-                  return (
-                    <div key={p.id} className="bg-surface-secondary border border-edge"
-                      style={{ display: 'grid', gridTemplateColumns: '1fr 130px', gap: 10, alignItems: 'center', padding: '8px 11px', borderRadius: 10, opacity: on ? 1 : 0.5 }}>
-                      <button type="button" onClick={() => togglePayer(p.id)} data-testid="payer-toggle"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'none', border: 0, cursor: 'pointer', fontFamily: 'inherit', padding: 0, minWidth: 0, textAlign: 'left' }}>
-                        {p.avatar_url
-                          ? <img src={p.avatar_url} alt="" style={{ width: 22, height: 22, borderRadius: '50%', objectFit: 'cover', display: 'block', flexShrink: 0, opacity: on ? 1 : 0.45 }} />
-                          : <span style={{ width: 22, height: 22, borderRadius: '50%', background: SPLIT_COLORS[idx % SPLIT_COLORS.length].gradient, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 9, fontWeight: 700, flexShrink: 0, opacity: on ? 1 : 0.45 }}>
-                              {(p.id === me ? t('costs.youShort') : p.username.charAt(0)).toUpperCase()}
-                            </span>}
-                        <span className="text-content" style={{ fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {p.id === me ? t('costs.you') : p.username}
-                        </span>
-                      </button>
-                      {on ? (
-                        <div className="bg-surface-input border border-edge" style={{ display: 'flex', alignItems: 'center', gap: 4, borderRadius: 8, padding: '0 10px' }}>
-                          <span className="text-content-faint" style={{ fontSize: 'calc(13px * var(--fs-scale-body, 1))' }}>{sym(currency)}</span>
-                          <NumericInput mode="signed-decimal" placeholder={localizeAmountInput('0.00', currency)} data-testid="payer-amount"
-                            value={localizeAmountInput(payerAmounts[p.id] || '', currency)}
-                            onValueChange={v => onPayerAmountChange(p.id, v)}
-                            className="text-content"
-                            style={{ width: '100%', border: 0, background: 'none', outline: 'none', fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, padding: '8px 0', textAlign: 'right' }} />
-                        </div>
-                      ) : (
-                        <button type="button" onClick={() => togglePayer(p.id)} className="text-content-faint"
-                          style={{ background: 'none', border: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 'calc(12px * var(--fs-scale-caption, 1))', textAlign: 'right' }}>
-                          {t('costs.tapToInclude')}
-                        </button>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-              {!payersOk && (
-                <div style={{ marginTop: 8, fontSize: 'calc(12.5px * var(--fs-scale-caption, 1))', color: '#d97706' }}>
-                  {t('costs.payersUnbalanced', { amount: formatMoney(totalNum, currency, locale) })}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+        <ExpensePayerPanel split={split} people={people} me={me} currency={currency} className={panelCls} labelCls={labelCls} />
 
-        <div className={panelCls}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-            <label className={labelCls} style={{ marginBottom: 0 }}>{t('costs.split') || 'Split'}</label>
-            <div className="bg-surface-card border border-edge" style={{ display: 'flex', borderRadius: 999, padding: 2 }}>
-              <button type="button" onClick={() => setSplitMode('equally')}
-                className={splitMode === 'equally' ? 'bg-surface-secondary text-content' : 'text-content-muted'}
-                style={{ padding: '4px 12px', fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', borderRadius: 999, fontWeight: 600, border: 0, background: splitMode === 'equally' ? undefined : 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
-                {t('costs.splitEqually') || 'Equally'}
-              </button>
-              <button type="button" onClick={() => setSplitMode('custom')}
-                className={splitMode === 'custom' ? 'bg-surface-secondary text-content' : 'text-content-muted'}
-                style={{ padding: '4px 12px', fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', borderRadius: 999, fontWeight: 600, border: 0, background: splitMode === 'custom' ? undefined : 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
-                {t('costs.splitCustom') || 'Custom'}
-              </button>
-              <button type="button" onClick={() => setSplitMode('ticket')}
-                className={splitMode === 'ticket' ? 'bg-surface-secondary text-content' : 'text-content-muted'}
-                style={{ padding: '4px 12px', fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', borderRadius: 999, fontWeight: 600, border: 0, background: splitMode === 'ticket' ? undefined : 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
-                {t('costs.splitTicket') || 'Ticket'}
-              </button>
-            </div>
-          </div>
-          {splitMode === 'ticket' ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <ExpenseSplitPanel split={split} people={people} me={me} currency={currency} className={panelCls} labelCls={labelCls} />
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {ticketItems.map((item, itemIdx) => (
-                  <div key={item.id} className="bg-surface-secondary border border-edge" style={{ padding: 10, borderRadius: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 130px auto', gap: 8, alignItems: 'center' }}>
-                      <input
-                        type="text"
-                        placeholder={t('costs.ticketItemName')}
-                        value={item.name}
-                        onChange={e => handleUpdateItemName(item.id, e.target.value)}
-                        className="bg-surface-input border border-edge text-content"
-                        style={{ minWidth: 0, padding: '6px 10px', borderRadius: 8, fontSize: 13, border: '1px solid var(--border-color)', outline: 'none' }}
-                      />
-                      <div className="bg-surface-input border border-edge" style={{ display: 'flex', alignItems: 'center', padding: '0 8px', borderRadius: 8 }}>
-                        <span className="text-content-faint" style={{ fontSize: 12 }}>{sym(currency)}</span>
-                        <NumericInput
-                          mode="decimal"
-                          placeholder={localizeAmountInput('0.00', currency)}
-                          value={localizeAmountInput(item.price, currency)}
-                          onValueChange={v => handleUpdateItemPrice(item.id, v)}
-                          className="text-content"
-                          style={{ width: '100%', border: 0, background: 'none', outline: 'none', fontSize: 13, fontWeight: 600, textAlign: 'right', padding: '6px 0' }}
-                        />
-                      </div>
-                      <button type="button" onClick={() => handleRemoveItem(item.id)} className="text-content-muted" style={{ background: 'none', border: 0, cursor: 'pointer', padding: 4 }}>
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
+        <ExpenseNotePanel split={split} className={panelCls} labelCls={labelCls} inputCls={inputCls} />
 
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, alignItems: 'center' }}>
-                      <span className="text-content-faint" style={{ fontSize: 10.5, fontWeight: 600, textTransform: 'uppercase', marginRight: 4 }}>{t('costs.ticketSplitting')}</span>
-                      {people.map((p, pIdx) => {
-                        const active = item.participants.has(p.id)
-                        return (
-                          <button
-                            type="button"
-                            key={p.id}
-                            onClick={() => handleToggleItemParticipant(item.id, p.id)}
-                            className={active ? 'bg-surface-card text-content border' : 'bg-surface-secondary text-content-muted border border-edge'}
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 999, fontSize: 11, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', border: active ? '1px solid var(--text-primary)' : undefined }}
-                          >
-                            {p.avatar_url
-                              ? <img src={p.avatar_url} alt="" style={{ width: 14, height: 14, borderRadius: '50%', objectFit: 'cover' }} />
-                              : <span style={{ width: 14, height: 14, borderRadius: '50%', background: SPLIT_COLORS[pIdx % SPLIT_COLORS.length].gradient, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 7, fontWeight: 700 }}>{(p.id === me ? t('costs.youShort') : p.username.charAt(0)).toUpperCase()}</span>}
-                            <span>{p.id === me ? t('costs.you') : p.username}</span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button type="button" onClick={handleAddEmptyItem} className="border border-dashed border-edge text-content-muted" style={{ padding: '8px 12px', borderRadius: 10, background: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <Plus size={14} /> {t('costs.ticketAddItem')}
-              </button>
-
-              {ticketItems.length > 0 && (
-                <div className="bg-surface-secondary border border-edge" style={{ padding: 12, borderRadius: 10 }}>
-                  <div className="text-content" style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>{t('costs.ticketShares')}</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    {people.map(p => {
-                      const share = ticketInfo.shares[p.id] || 0
-                      return (
-                        <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-                          <span className="text-content-muted">{p.id === me ? t('costs.you') : p.username}</span>
-                          <span className="text-content" style={{ fontWeight: 600 }}>{sym(currency)}{share.toFixed(2)}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-                {people.map((p, idx) => {
-                  const on = participants.has(p.id)
-                  return (
-                    <div key={p.id} className="bg-surface-secondary border border-edge" style={{ display: 'grid', gridTemplateColumns: '1fr 130px', gap: 10, alignItems: 'center', padding: '8px 11px', borderRadius: 10, opacity: on ? 1 : 0.5 }}>
-                      <button type="button" onClick={() => toggleParticipant(p.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'none', border: 0, cursor: 'pointer', fontFamily: 'inherit', padding: 0, minWidth: 0, textAlign: 'left' }}>
-                        {p.avatar_url
-                          ? <img src={p.avatar_url} alt="" style={{ width: 22, height: 22, borderRadius: '50%', objectFit: 'cover', display: 'block', flexShrink: 0, opacity: on ? 1 : 0.45 }} />
-                          : <span style={{ width: 22, height: 22, borderRadius: '50%', background: SPLIT_COLORS[idx % SPLIT_COLORS.length].gradient, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 9, fontWeight: 700, flexShrink: 0, opacity: on ? 1 : 0.45 }}>{(p.id === me ? t('costs.youShort') : p.username.charAt(0)).toUpperCase()}</span>}
-                        <span className="text-content" style={{ fontSize: 14, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.id === me ? t('costs.you') : p.username}</span>
-                        {p.is_guest && <GuestBadge size="xs" />}
-                      </button>
-                      {splitMode === 'equally' ? (
-                        on ? (
-                          <span className="text-content" style={{ fontSize: 14, fontWeight: 600, textAlign: 'right', paddingRight: 10 }}>
-                            {sym(currency)}{(equalShares[p.id] || 0).toFixed(2)}
-                          </span>
-                        ) : (
-                          <span className="text-content-faint" style={{ fontSize: 12, textAlign: 'right', paddingRight: 10 }}>{t('costs.excluded')}</span>
-                        )
-                      ) : (
-                        on ? (
-                          <div className="bg-surface-input border border-edge" style={{ display: 'flex', alignItems: 'center', gap: 4, borderRadius: 8, padding: '0 10px' }}>
-                            <span className="text-content-faint" style={{ fontSize: 13 }}>{sym(currency)}</span>
-                            <input type="text" inputMode="decimal" placeholder={localizeAmountInput((placeholderShares[p.id] || 0).toFixed(2), currency)} value={localizeAmountInput(customAmounts[p.id] || '', currency)}
-                              onChange={e => handleCustomAmountChange(p.id, e.target.value)}
-                              className="text-content" style={{ width: '100%', border: 0, background: 'none', outline: 'none', fontSize: 14, fontWeight: 600, padding: '8px 0', textAlign: 'right' }} />
-                          </div>
-                        ) : (
-                          <button type="button" onClick={() => toggleParticipant(p.id)} className="text-content-faint" style={{ background: 'none', border: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, textAlign: 'right' }}>{t('costs.tapToInclude')}</button>
-                        )
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-              <div style={{ marginTop: 10, fontSize: 12.5, display: 'flex', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-                {splitMode === 'equally' ? (
-                  <span className="text-content-faint">
-                    {participants.size > 0 && t('costs.splitSummary', { count: participants.size, amount: sym(currency) + each.toFixed(2) })}
-                  </span>
-                ) : (
-                  <span style={{ fontWeight: 600, color: customBalanced ? '#16a34a' : '#dc2626' }}>
-                    {customBalanced
-                      ? t('costs.splitBalanced')
-                      : t(splitShortfall > 0 ? 'costs.splitSumUnder' : 'costs.splitSumOver', {
-                          sum: sym(currency) + splitSum.toFixed(2),
-                          total: sym(currency) + totalNum.toFixed(2),
-                          diff: sym(currency) + Math.abs(totalNum - splitSum).toFixed(2),
-                        })}
-                  </span>
-                )}
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className={panelCls}>
-          <label className={labelCls} htmlFor="expense-note">{t('costs.note')}</label>
-          <textarea id="expense-note" value={note} onChange={e => setNote(e.target.value)} rows={2}
-            placeholder={t('costs.notePlaceholder')} maxLength={NOTE_MAX}
-            className={inputCls} style={{ borderRadius: 10, padding: '10px 13px', fontSize: 'calc(13.5px * var(--fs-scale-body, 1))', outline: 'none', resize: 'vertical', minHeight: 68, width: '100%', boxSizing: 'border-box', fontFamily: 'inherit', lineHeight: 1.5 }} />
-        </div>
         </div>
       </div>
     </Modal>

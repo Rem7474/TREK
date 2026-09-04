@@ -610,7 +610,37 @@ describe('CostsPanel — settlements in the ledger', () => {
     ]))
     // The receipt has its own column since #1658; `note` is the user's text.
     expect(JSON.parse(posted!.ticket_json as string).items).toHaveLength(3)
+    expect(posted!.split_mode).toBe('ticket')
     expect(posted!.note).toBeNull()
+  })
+
+  it('FE-W5COSTS-062: an expense split evenly keeps the receipt lines, and reopens split evenly', async () => {
+    // ticket_json used to mean "split by item" as well as "here are the lines",
+    // so keeping the lines would have flipped the split on the next open.
+    seedStore(useAuthStore, { user: buildUser({ id: 1, username: 'alice' }), isAuthenticated: true })
+    const item = {
+      ...buildBudgetItem({ trip_id: 1, category: 'food', name: 'Market run' }),
+      id: 7,
+      total_price: 100,
+      split_mode: 'equally',
+      ticket_json: JSON.stringify({ items: [{ name: 'Bread', price: '60', parts: [1, 2] }, { name: 'Milk', price: '40', parts: [1, 2] }] }),
+      payers: [{ user_id: 1, username: 'alice', amount: 100 }],
+      members: [{ user_id: 1, username: 'alice', paid: 0 }, { user_id: 2, username: 'bob', paid: 0 }],
+    }
+    server.use(
+      http.get('/api/trips/1/budget', () => HttpResponse.json({ items: [item] })),
+      http.get('/api/trips/1/budget/settlement', () => HttpResponse.json({ balances: [], flows: [], settlements: [] })),
+    )
+    const { default: userEvent } = await import('@testing-library/user-event')
+    const user = userEvent.setup()
+    render(<CostsPanel tripId={1} tripMembers={tripMembers} />)
+
+    await screen.findByText('Market run')
+    await user.click(screen.getByTitle('Edit'))
+
+    // Not the itemized editor: the lines are kept, the split is the one chosen.
+    expect(await screen.findByRole('button', { name: 'Equally' })).toBeInTheDocument()
+    expect(screen.queryByText('Individual Shares Summary')).not.toBeInTheDocument()
   })
 
   // ── Display currency ───────────────────────────────────────────────────────

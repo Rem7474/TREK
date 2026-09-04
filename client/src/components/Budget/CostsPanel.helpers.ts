@@ -134,7 +134,13 @@ export function readTicketItems(item: { ticket_json?: string | null; note?: stri
 }
 
 /** True when this expense is split line by line rather than equally or by amount. */
-export function hasTicketSplit(item: { ticket_json?: string | null; note?: string | null } | null | undefined): boolean {
+export function hasTicketSplit(
+  item: { split_mode?: string | null; ticket_json?: string | null; note?: string | null } | null | undefined,
+): boolean {
+  // The expense says how it is shared. Only when it does not — everything
+  // written before the column existed — does a stored ticket still mean one,
+  // which is what it used to mean and what those rows were saved under.
+  if (item?.split_mode) return item.split_mode === 'ticket'
   return Boolean(item?.ticket_json || item?.note?.startsWith('TICKETJSON:'))
 }
 

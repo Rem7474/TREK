@@ -128,6 +128,9 @@ describe('MCostSheet', () => {
       total_price: 85.5,
       note: null,
       ticket_json: null,
+      // The expense says how it is shared rather than leaving it to be deduced
+      // from whether a ticket happens to be stored.
+      split_mode: 'equally',
     })
     await waitFor(() => expect(onSaved).toHaveBeenCalledTimes(1))
   })
