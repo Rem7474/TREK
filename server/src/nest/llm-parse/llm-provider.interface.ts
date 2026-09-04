@@ -17,6 +17,12 @@ export interface LlmExtractionInput {
   text?: string;
   /** Native binary (PDF) for multimodal providers. */
   file?: LlmExtractionFile;
+  /**
+   * The endpoint is a self-hosted model server rather than a cloud provider.
+   * Changes what the request may ask for: a grammar-constrained response is
+   * affordable on hosted hardware and not on a CPU at home.
+   */
+  local?: boolean;
 }
 
 /**

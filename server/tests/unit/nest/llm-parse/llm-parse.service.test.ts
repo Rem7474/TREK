@@ -187,4 +187,10 @@ describe('LlmParseService', () => {
     expect(res.warnings[0]).toMatch(/could not read file/i);
     expect(res.warnings[0]).toContain('corrupt pdf');
   });
+
+  it('tells the client the endpoint is a self-hosted one, which is what a local body may ask for', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'openai' }));
+    await svc().parse(file('a.txt'), 1);
+    expect(extract.mock.calls[0][0].local).toBe(false);
+  });
 });
