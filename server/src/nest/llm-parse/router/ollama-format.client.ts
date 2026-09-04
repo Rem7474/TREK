@@ -13,8 +13,8 @@
 
 import { parseLenientJson } from '../lenient-json';
 import { safeFetchLlm } from '../../../utils/ssrfGuard';
+import { readEnv } from '../../../app-config';
 
-const TIMEOUT_MS = 300_000;
 
 export interface EnforcedExtractInput {
   /** Ollama base URL — accepts the addon's `…/v1` form; the `/v1` suffix is stripped. */
@@ -65,7 +65,7 @@ export async function extractEnforced(input: EnforcedExtractInput): Promise<Reco
   };
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), readEnv().integrations.llmTimeoutMs);
   let res: Response;
   try {
     // baseUrl is user-configurable — guard it against the cloud-metadata range,
