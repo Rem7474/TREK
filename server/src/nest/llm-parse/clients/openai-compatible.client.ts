@@ -1,6 +1,6 @@
 import type { LlmExtractionClient, LlmExtractionInput } from '../llm-provider.interface';
 import { isNuExtractModel, buildNuExtractUserText, nuExtractToKiReservations } from './nuextract';
-import { parseLenientJson, toReservationList } from '../lenient-json';
+import { parseLenientJson, toRecordList } from '../lenient-json';
 import { safeFetchLlm } from '../../../utils/ssrfGuard';
 import { readEnv } from '../../../app-config';
 
@@ -32,16 +32,19 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
     const url = `${base}/chat/completions`;
     const nuextract = isNuExtractModel(input.model);
 
+    const rootKey = input.rootKey ?? 'reservations';
     // A self-hosted server is a different machine from a cloud endpoint, not a
     // smaller one: what it can afford differs in kind (see `local` below).
     const local = input.local === true;
+    const userText = input.userText ?? USER_TEXT;
 
     const userContent: unknown[] = nuextract
       ? [{ type: 'text', text: buildNuExtractUserText(input.text ?? '') }]
-      : [{ type: 'text', text: input.text ? `${USER_TEXT}\n\n${input.text}` : USER_TEXT }];
+      : [{ type: 'text', text: input.text ? `${userText}\n\n${input.text}` : userText }];
     // Only genuine images go natively (as image_url) — OpenAI-compatible servers
     // (notably Ollama) reject `file`/PDF content parts. PDFs reach this client as
-    // pre-extracted text (see llm-parse.service.ts), never as bytes.
+    // pre-extracted text (see llm-parse.service.ts), never as bytes; a receipt
+    // photo does arrive as bytes and needs a vision-capable model.
     if (!nuextract && input.file && input.file.mimeType.startsWith('image/')) {
       const b64 = input.file.data.toString('base64');
       userContent.push({
@@ -89,7 +92,7 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
         ...baseBody,
         response_format: jsonObject
           ? { type: 'json_object' as const }
-          : { type: 'json_schema' as const, json_schema: { name: 'reservations', schema: input.jsonSchema, strict: false } },
+          : { type: 'json_schema' as const, json_schema: { name: rootKey, schema: input.jsonSchema, strict: false } },
       };
     };
     let tokenParam: 'max_tokens' | 'max_completion_tokens' = 'max_tokens';
@@ -122,7 +125,7 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
       choices?: { message?: { content?: string } }[];
     };
     const content = data.choices?.[0]?.message?.content;
-    return nuextract ? parseNuExtract(content) : parseReservations(content);
+    return nuextract ? parseNuExtract(content) : parseRecords(content, rootKey);
   }
 
   private async send(url: string, body: unknown, apiKey?: string): Promise<Response> {
@@ -153,7 +156,7 @@ function parseNuExtract(content: string | undefined | null): Record<string, unkn
 
 const USER_TEXT = 'Extract every travel reservation from the following document as schema.org JSON-LD.';
 
-/** Tolerant parse: strip code fences, JSON(5).parse, pull `reservations`. `[]` on failure. */
-function parseReservations(content: string | undefined | null): Record<string, unknown>[] {
-  return toReservationList(parseLenientJson(content));
+/** Tolerant parse: strip code fences, JSON(5).parse, pull the `rootKey` array. `[]` on failure. */
+function parseRecords(content: string | undefined | null, rootKey: string): Record<string, unknown>[] {
+  return toRecordList(parseLenientJson(content), rootKey);
 }

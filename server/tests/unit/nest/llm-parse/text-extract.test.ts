@@ -8,7 +8,7 @@ vi.mock('pdf-parse', () => ({
   },
 }));
 
-import { isTextLike, isPdf, extractText } from '../../../../src/nest/llm-parse/text-extract';
+import { isTextLike, isPdf, isImage, imageMimeType, extractText } from '../../../../src/nest/llm-parse/text-extract';
 
 describe('text-extract', () => {
   it('classifies text-like and pdf extensions', () => {
@@ -18,6 +18,18 @@ describe('text-extract', () => {
     expect(isTextLike('a.pdf')).toBe(false);
     expect(isPdf('a.PDF')).toBe(true);
     expect(isPdf('a.txt')).toBe(false);
+  });
+
+  it('recognises the image formats a receipt photo arrives as', () => {
+    expect(isImage('receipt.jpg')).toBe(true);
+    expect(isImage('RECEIPT.HEIC')).toBe(true);
+    expect(isImage('receipt.pdf')).toBe(false);
+
+    expect(imageMimeType('receipt.jpeg')).toBe('image/jpeg');
+    expect(imageMimeType('receipt.PNG')).toBe('image/png');
+    expect(imageMimeType('receipt.webp')).toBe('image/webp');
+    // Not an image — the caller sends it down the text path instead.
+    expect(imageMimeType('receipt.pdf')).toBeNull();
   });
 
   it('decodes plain text', async () => {

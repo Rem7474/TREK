@@ -22,6 +22,11 @@ const { routeExtraction, detectFlightNumbers } = vi.hoisted(() => ({
 }));
 vi.mock('../../../../src/nest/llm-parse/router/extraction-router', () => ({ routeExtraction, detectFlightNumbers }));
 
+// The native Ollama transport. A local receipt read goes here rather than to the
+// OpenAI-compatible client — measured, that path returns nothing at all.
+const extractEnforced = vi.hoisted(() => vi.fn(async () => ({ receipts: [] })));
+vi.mock('../../../../src/nest/llm-parse/router/ollama-format.client', () => ({ extractEnforced }));
+
 import { LlmParseService } from '../../../../src/nest/llm-parse/llm-parse.service';
 import type { LlmConfigResolver } from '../../../../src/nest/llm-parse/llm-config.resolver';
 import type { LlmLocalService } from '../../../../src/nest/llm-parse/llm-local.service';
@@ -203,6 +208,85 @@ describe('LlmParseService', () => {
   });
 });
 
+describe('LlmParseService.parseReceipt', () => {
+  it('returns a not-configured warning when no config resolves', async () => {
+    resolveLlmConfig.mockReturnValue(null);
+    const res = await svc().parseReceipt(file('receipt.jpg'), 1);
+    expect(res.receipts).toEqual([]);
+    expect(res.warnings[0]).toMatch(/not configured/i);
+    expect(extract).not.toHaveBeenCalled();
+  });
+
+  it('sends a photo as native image bytes on any provider', async () => {
+    extract.mockResolvedValue([{ doc_type: 'meal', total: 12 }]);
+    const res = await svc().parseReceipt(file('IMG_1.jpeg', 'binary'), 1);
+    const input = extract.mock.calls[0][0];
+    expect(input.file).toEqual({ mimeType: 'image/jpeg', data: Buffer.from('binary') });
+    expect(input.text).toBeUndefined();
+    expect(input.rootKey).toBe('receipts');
+    expect(res.receipts).toEqual([{ doc_type: 'meal', total: 12 }]);
+  });
+
+  it('extracts text for a pdf invoice on the OpenAI-compatible path', async () => {
+    extractText.mockResolvedValue('TOTAL 42,00 EUR');
+    await svc().parseReceipt(file('invoice.pdf', '%PDF'), 1);
+    const input = extract.mock.calls[0][0];
+    expect(input.text).toBe('TOTAL 42,00 EUR');
+    expect(input.file).toBeUndefined();
+  });
+
+  it('sends a pdf invoice as native bytes for Anthropic', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'anthropic' }));
+    await svc().parseReceipt(file('invoice.pdf', '%PDF'), 1);
+    const input = extract.mock.calls[0][0];
+    expect(input.file?.mimeType).toBe('application/pdf');
+  });
+
+  it('tells the user to photograph a PDF that has no text layer', async () => {
+    extractText.mockResolvedValue('   ');
+    const res = await svc().parseReceipt(file('scan.pdf', '%PDF'), 1);
+    expect(res.receipts).toEqual([]);
+    expect(res.warnings[0]).toMatch(/no readable text/i);
+    expect(extract).not.toHaveBeenCalled();
+  });
+
+  it('says the model cannot read images rather than quoting the provider 400', async () => {
+    // What a text-only model answers when a photo is sent to it. The raw body is
+    // nested, escaped JSON that names no fix — and this never succeeds on retry,
+    // so the message has to point at the setting that changes it.
+    extract.mockRejectedValue(
+      new Error(
+        'LLM request failed (400): {"error":{"message":"{\\"error\\":{\\"code\\":400,\\"message\\":\\"Multimodal data provided, but model does not support multimodal requests.\\"}}"}}'
+      )
+    );
+
+    const res = await svc().parseReceipt(file('receipt.jpg', 'binary'), 1);
+
+    expect(res.warnings[0]).toMatch(/cannot read images/i);
+    expect(res.warnings[0]).toMatch(/vision-capable/i);
+    expect(res.warnings[0]).not.toMatch(/invalid_request_error/);
+  });
+
+  it('routes every provider failure through the translator, never the raw body', async () => {
+    // The service must not pass a rejection straight to the panel: a 503 is a
+    // model that never answered, and that is what the user is told. The full
+    // mapping lives in llm-failure.test.ts; this pins that the service uses it.
+    extract.mockRejectedValue(new Error('LLM request failed (503): upstream unavailable'));
+
+    const res = await svc().parseReceipt(file('receipt.jpg', 'binary'), 1);
+
+    expect(res.warnings[0]).toMatch(/did not answer in time/i);
+    expect(res.warnings[0]).not.toMatch(/upstream unavailable/);
+  });
+
+  it('degrades to a warning when the provider call fails', async () => {
+    extract.mockRejectedValue(new Error('boom'));
+    const res = await svc().parseReceipt(file('receipt.png', 'binary'), 1);
+    expect(res.receipts).toEqual([]);
+    expect(res.warnings[0]).toMatch(/scan failed/i);
+  });
+});
+
 describe('LlmParseService.readsPhotos', () => {
   beforeEach(() => localCapabilities.mockResolvedValue(null));
 
@@ -248,5 +332,64 @@ describe('LlmParseService.readsPhotos', () => {
   it('says no when nothing is configured at all', async () => {
     resolveLlmConfig.mockReturnValue(null);
     await expect(svc().readsPhotos(1)).resolves.toBe(false);
+  });
+});
+
+describe('LlmParseService.parseReceipt — on a self-hosted server', () => {
+  beforeEach(() => extractEnforced.mockResolvedValue({ receipts: [] }));
+
+  it('reads through the native transport, with reasoning off, not the /v1 client', async () => {
+    // Measured on qwen3.5:4b, same prompt, same server: /v1 spent 485s and
+    // answered with nothing (the whole token budget went on reasoning, which
+    // `think` cannot switch off there); /api/chat answered in 49s.
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'local', baseUrl: 'http://ollama.lan:11434/v1' }));
+    extractEnforced.mockResolvedValue({ receipts: [{ doc_type: 'meal', total: 9.13 }] });
+
+    const res = await svc().parseReceipt(file('receipt.jpg', 'binary'), 1);
+
+    expect(extract).not.toHaveBeenCalled();
+    const sent = extractEnforced.mock.calls[0][0];
+    expect(sent.baseUrl).toBe('http://ollama.lan:11434/v1');
+    expect(sent.images).toHaveLength(1);
+    // No grammar: a constrained read answered with fewer fields than the mapper needs.
+    expect(sent.schema).toBeUndefined();
+    expect(res.receipts).toEqual([{ doc_type: 'meal', total: 9.13 }]);
+  });
+
+  it('gives a photograph the wider context window it costs, and text the narrow one', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'local' }));
+
+    await svc().parseReceipt(file('receipt.jpg', 'binary'), 1);
+    expect(extractEnforced.mock.calls[0][0].numCtx).toBe(16384);
+
+    extractText.mockResolvedValue('TOTAL 9,13 EUR');
+    await svc().parseReceipt(file('invoice.txt'), 1);
+    const textCall = extractEnforced.mock.calls[1][0];
+    expect(textCall.numCtx).toBe(8192);
+    expect(textCall.images).toBeUndefined();
+    expect(textCall.user).toContain('TOTAL 9,13 EUR');
+  });
+
+  it('leaves a cloud provider on the OpenAI-compatible client, which has neither problem', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'openai' }));
+    extract.mockResolvedValue([{ doc_type: 'meal', total: 1 }]);
+
+    await svc().parseReceipt(file('receipt.jpg', 'binary'), 1);
+
+    expect(extractEnforced).not.toHaveBeenCalled();
+    expect(extract).toHaveBeenCalled();
+  });
+
+  it('reports a native-transport failure with the same vocabulary as any other', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'local' }));
+    extractEnforced.mockRejectedValueOnce(new Error('Ollama /api/chat failed (500): out of memory'));
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const res = await svc().parseReceipt(file('receipt.jpg', 'binary'), 1);
+
+    expect(res.receipts).toEqual([]);
+    expect(res.failureCode).toBeDefined();
+    expect(res.warnings[0]).toMatch(/scan failed/i);
+    spy.mockRestore();
   });
 });

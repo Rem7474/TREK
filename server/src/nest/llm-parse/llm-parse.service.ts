@@ -4,8 +4,18 @@ import { LlmConfigResolver } from './llm-config.resolver';
 import { LlmLocalService } from './llm-local.service';
 import { buildSystemPrompt, KI_RESERVATION_JSON_SCHEMA } from './llm-prompt';
 import type { LlmExtractionInput } from './llm-provider.interface';
-import { isPdf, extractText } from './text-extract';
+import { isPdf, imageMimeType, extractText } from './text-extract';
+import { toRecordList } from './lenient-json';
+import { classifyProviderFailure, describeProviderFailure, type ProviderFailureCode } from './llm-failure';
+import { capReceiptImage } from './receipt-image';
+import {
+  buildReceiptPrompt,
+  RECEIPT_JSON_SCHEMA,
+  RECEIPT_ROOT_KEY,
+  RECEIPT_USER_INSTRUCTION,
+} from './receipt-prompt';
 import { routeExtraction, detectFlightNumbers } from './router/extraction-router';
+import { extractEnforced } from './router/ollama-format.client';
 import { Injectable } from '@nestjs/common';
 import { kiReservationSchema, modelReadsPhotos } from '@trek/shared';
 import { RuntimeEnvService } from '../app-config/runtime-env.service';
@@ -18,6 +28,17 @@ export interface LlmParseResult {
   kiItems: KiReservation[];
   warnings: string[];
 }
+
+/** Raw receipt objects straight from the model — the receipt mapper validates them. */
+export interface LlmReceiptResult {
+  receipts: Record<string, unknown>[];
+  warnings: string[];
+  /** Why the provider refused, when it did — the client translates this. */
+  failureCode?: ProviderFailureCode;
+}
+
+/** Text fed to the model for a receipt — they are short, so the cap is tight. */
+const MAX_RECEIPT_CHARS = 6000;
 
 /**
  * Orchestrates the LLM fallback: resolve config → pick client → build input
@@ -135,7 +156,7 @@ export class LlmParseService {
         console.error(`[llm-parse] AI parsing failed for "${file.originalName}" (provider=${config.provider}):`, err instanceof Error ? err.message : err);
         return {
           kiItems: [],
-          warnings: [`${file.originalName}: AI parsing failed — ${err instanceof Error ? err.message : String(err)}`],
+          warnings: [`${file.originalName}: AI parsing failed — ${describeProviderFailure(err)}`],
         };
       }
     }
@@ -162,6 +183,125 @@ export class LlmParseService {
     }
 
     return { kiItems, warnings };
+  }
+
+  /**
+   * Extract receipts from one uploaded document. Same provider plumbing as
+   * `parse()`, different prompt/schema — and one extra input mode: a photo is
+   * sent as native image bytes, since a till roll has no text layer to extract.
+   *
+   *  - image (jpg/png/webp/heic/…) → bytes, straight to the vision model
+   *  - PDF   → native document block on Anthropic, extracted text elsewhere
+   *  - txt/html/eml → extracted text
+   *
+   * Never throws for content/provider reasons — degrades to `[]` + a warning,
+   * mirroring the booking-import path.
+   */
+  async parseReceipt(
+    file: { buffer: Buffer; originalName: string },
+    userId: number,
+  ): Promise<LlmReceiptResult> {
+    const config = this.llmConfig.resolve(userId);
+    if (!config) return { receipts: [], warnings: ['AI parsing is not configured'] };
+
+    const input: LlmExtractionInput = {
+      prompt: buildReceiptPrompt(),
+      jsonSchema: RECEIPT_JSON_SCHEMA,
+      rootKey: RECEIPT_ROOT_KEY,
+      userText: RECEIPT_USER_INSTRUCTION,
+      model: config.model,
+      baseUrl: config.baseUrl,
+      apiKey: config.apiKey,
+      local: config.provider === 'local',
+    };
+
+    const imageMime = imageMimeType(file.originalName);
+    try {
+      if (imageMime) {
+        // A photographed receipt only exists as pixels — the model has to see it,
+        // but not all of them: a full-size phone photo reads worse than a capped
+        // one, and slower. The browser caps it too; this is the copy nothing can
+        // route around.
+        input.file = await capReceiptImage(file.buffer, imageMime);
+      } else if (config.provider === 'anthropic' && isPdf(file.originalName)) {
+        input.file = { mimeType: MIME_BY_EXT['.pdf'], data: file.buffer };
+      } else {
+        input.text = await extractText(file.buffer, file.originalName);
+        if (input.text.length > MAX_RECEIPT_CHARS) input.text = input.text.slice(0, MAX_RECEIPT_CHARS);
+        if (!input.text.trim()) {
+          return {
+            receipts: [],
+            warnings: [
+              `${file.originalName}: no readable text found — photograph the receipt instead, or use a provider that reads scanned PDFs`,
+            ],
+          };
+        }
+      }
+    } catch (err) {
+      console.error(`[llm-parse] Could not read "${file.originalName}":`, err instanceof Error ? err.message : err);
+      return {
+        receipts: [],
+        warnings: [`${file.originalName}: could not read file — ${err instanceof Error ? err.message : String(err)}`],
+      };
+    }
+
+    try {
+      const raw =
+        config.provider === 'local'
+          ? await this.readReceiptLocally(input, imageMime !== null)
+          : await createLlmClient(config).extract(input);
+      return { receipts: raw, warnings: [] };
+    } catch (err) {
+      console.error(
+        `[llm-parse] Receipt scan failed for "${file.originalName}" (provider=${config.provider}):`,
+        err instanceof Error ? err.message : err,
+      );
+      return {
+        receipts: [],
+        failureCode: classifyProviderFailure(err),
+        warnings: [`${file.originalName}: scan failed — ${describeProviderFailure(err)}`],
+      };
+    }
+  }
+
+  /**
+   * Read a receipt on a self-hosted server, through Ollama's own chat API.
+   *
+   * The OpenAI-compatible endpoint cannot express what this needs. Measured
+   * against qwen3.5:4b reading one receipt, same prompt, same server:
+   *
+   *   /v1                      485s — 4096 tokens of reasoning, empty answer
+   *   /api/chat think:false     49s — the whole receipt, correctly
+   *
+   * It is not a speed difference, it is the difference between a scan that
+   * works and one that does not. `think` is a real parameter here and an
+   * ignored one on /v1 (measured), so a hybrid model — which is every model
+   * TREK offers — spends the entire token budget reasoning and returns nothing.
+   * `num_ctx` is the same story: on /v1 it cannot be asked for at all, which is
+   * why the context-too-small failure tells the operator to go and change a
+   * server-wide environment variable.
+   *
+   * Cloud providers keep the OpenAI-compatible client: they have no equivalent
+   * endpoint, and neither problem.
+   */
+  private async readReceiptLocally(
+    input: LlmExtractionInput,
+    isPhoto: boolean,
+  ): Promise<Record<string, unknown>[]> {
+    const out = await extractEnforced({
+      baseUrl: input.baseUrl ?? 'http://localhost:11434/v1',
+      model: input.model,
+      apiKey: input.apiKey,
+      system: input.prompt,
+      user: input.text ? `${input.userText ?? ''}\n\n${input.text}`.trim() : (input.userText ?? ''),
+      images: input.file ? [input.file.data.toString('base64')] : undefined,
+      // A photograph costs far more context than the text of the same receipt.
+      numCtx: isPhoto ? 16384 : 8192,
+      // Generous: a supermarket receipt is a long list of lines, and with
+      // reasoning off nothing else competes for the budget.
+      numPredict: 4096,
+    });
+    return toRecordList(out, RECEIPT_ROOT_KEY);
   }
 }
 
