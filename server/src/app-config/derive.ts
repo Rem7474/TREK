@@ -236,11 +236,9 @@ export function deriveIntegrations(raw: RawEnv) {
     overpassTimeoutMs: positiveNumberOr(raw.OVERPASS_TIMEOUT_MS, 12000),
     kitineraryExtractorPath: raw.KITINERARY_EXTRACTOR_PATH,
     /**
-     * How long one model call may take. Generous on purpose: a vision model
-     * reading a photographed receipt on CPU routinely needs several minutes, and
-     * aborting throws away the whole inference — the host pays the compute and
-     * gets nothing. Nothing waits on this any more either, since the scan runs as
-     * a background job, so a long ceiling costs only a slow failure.
+     * The potential duration of a call to the model.
+     * A generous margin has been intentionally allowed 
+     * for the future integration of a vision model.
      */
     llmTimeoutMs: positiveNumberOr(raw.LLM_TIMEOUT_MS, 900_000),
     // Windows spells it Path; every other platform PATH. Split here so callers
