@@ -364,13 +364,24 @@ describe('MTripShell', () => {
 
   it('FE-MOB-SHELL-028: the transports header offers both importers when they are available', () => {
     const { planner, container } = renderShell({ activeTab: 'transports', airTrailAvailable: true } as Partial<TripPlanner>)
+    // One button for documents, as on the desktop planner: it opens the picker,
+    // and what was picked decides which reader gets it.
     fireEvent.click(screen.getByRole('button', { name: 'reservations.import.title' }))
-    expect(planner.setBookingImportKind).toHaveBeenCalledWith('transports')
-    expect(planner.setShowBookingImport).toHaveBeenCalledWith(true)
+    const picker = container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement
+    fireEvent.change(picker, { target: { files: [new File(['x'], 'booking.pdf', { type: 'application/pdf' })] } })
     fireEvent.click(screen.getByRole('button', { name: 'reservations.airtrail.title' }))
+    expect(planner.onDocumentsPicked).toHaveBeenCalled()
     expect(planner.setShowAirTrailImport).toHaveBeenCalledWith(true)
   })
 
+  it('FE-MOB-SHELL-028b: the picker takes the file types the planner says are readable', () => {
+    const { container } = renderShell({
+      activeTab: 'transports',
+      documentPickerAccept: '.eml,.pdf,.jpg',
+    } as Partial<TripPlanner>)
+    const picker = container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement
+    expect(picker.accept).toBe('.eml,.pdf,.jpg')
+  })
 
   it('FE-MOB-SHELL-029: the transports header hides the importers that are switched off', () => {
     renderShell({
@@ -396,7 +407,9 @@ describe('MTripShell', () => {
     expect(planner.setEditingReservation).toHaveBeenCalledWith(null)
     expect(planner.setShowReservationModal).toHaveBeenCalledWith(true)
     fireEvent.click(screen.getByRole('button', { name: 'reservations.import.title' }))
-    expect(planner.setShowBookingImport).toHaveBeenCalledWith(true)
+    const picker = container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement
+    fireEvent.change(picker, { target: { files: [new File(['x'], 'booking.pdf', { type: 'application/pdf' })] } })
+    expect(planner.onDocumentsPicked).toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'mobileTrip.compactView' }))
     expect(shellApi.bookingsCompact).toBe(true)
     expect(shellApi.transportsCompact).toBe(false)

@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Cambiar entre gasto y reembolso',
 
   // Escáner de recibos — fotografía una cuenta y obtén el gasto (Costes → Escanear recibo).
+  'receipts.fromPhotoCta': "Escanear billete",
+  'receipts.fromPhotoTitle': "Escanear un billete o confirmación",
+  'receipts.bookingTitle': "Escanear una reserva",
+  'receipts.bookingSubtitle':
+    "Fotografía un billete, una factura de hotel o una confirmación. TREK detecta de qué se trata y prepara la reserva — y el gasto correspondiente.",
   'receipts.failure.noVision':
     "El modelo de IA no puede leer imágenes. Elige un modelo con visión en los ajustes de análisis con IA.",
   'receipts.failure.contextTooSmall':
@@ -184,6 +189,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Revisa este',
   'receipts.merchant': 'Comercio',
   'receipts.docType': 'Tipo de documento',
+  'receipts.createBooking': 'Añadirlo también al itinerario',
+  'receipts.createBookingHint': 'Crea la reserva correspondiente ({type}) con su lugar y sus fechas.',
   'receipts.attachReceipt': 'Guardar el recibo en Documentos',
   'receipts.lineItems': '{count} artículos en el recibo',
   'receipts.save': 'Guardar gasto',

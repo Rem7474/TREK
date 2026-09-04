@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Alterna entre despesa i devolució',
 
   // Escàner de rebuts — fotografia un compte i tindràs la despesa (Costos → Escanejar rebut).
+  'receipts.fromPhotoCta': "Escanejar bitllet",
+  'receipts.fromPhotoTitle': "Escaneja un bitllet o una confirmació",
+  'receipts.bookingTitle': "Escanejar una reserva",
+  'receipts.bookingSubtitle':
+    "Fotografia un bitllet, una factura d'hotel o una confirmació. El TREK detecta de què es tracta i prepara la reserva — i la despesa corresponent.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -184,6 +189,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Revisa aquest',
   'receipts.merchant': 'Comerç',
   'receipts.docType': 'Tipus de document',
+  'receipts.createBooking': 'Afegeix-ho també a l’itinerari',
+  'receipts.createBookingHint': 'Crea la reserva corresponent ({type}) amb el lloc i les dates.',
   'receipts.attachReceipt': 'Conserva el rebut als Documents',
   'receipts.lineItems': '{count} articles al rebut',
   'receipts.save': 'Desar despesa',

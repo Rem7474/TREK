@@ -73,7 +73,7 @@ An expense with no payer is flagged **Unfinished** on its row and counted into t
 
 ## Scanning a receipt
 
-With the **AI Parsing** addon on, **Scan receipt** (next to *Add expense*) turns a photo of a bill into an expense: the document type, merchant, amount, currency and date are read for you. See [Receipt-Scanning](Receipt-Scanning).
+With the **AI Parsing** addon on, **Scan receipt** (next to *Add expense*) turns a photo of a bill into an expense: the document type, merchant, amount, currency and date are read for you, and a hotel or transport receipt can create its booking at the same time. See [Receipt-Scanning](Receipt-Scanning).
 
 ## Splitting costs
 

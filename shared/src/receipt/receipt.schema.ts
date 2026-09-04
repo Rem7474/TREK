@@ -9,17 +9,20 @@ import { z } from 'zod';
  * The flow mirrors the booking import (see reservation.schema.ts) but starts
  * from a *paid* document rather than a booking: the user photographs or uploads
  * a receipt/invoice, an LLM classifies it (meal, hotel, transport, …) and pulls
- * out the amount, and the confirm step creates the expense, with the receipt
- * itself filed as a trip document.
+ * out the amount, and the confirm step creates the expense — plus, when the
+ * document describes a stay or a journey, the matching reservation/place and
+ * the receipt itself as a trip document.
  *
  * Trip-scoped: every endpoint verifies trip access (404 "Trip not found") and
- * checks the 'budget_edit' permission (403 "No permission"). Mutations
+ * checks the 'budget_edit' permission (403 "No permission"); creating a
+ * reservation alongside additionally needs 'reservation_edit'. Mutations
  * broadcast over WebSocket with the forwarded X-Socket-Id.
  */
 
 /**
  * What the scanned document is. This is the classification the model is asked
- * for, and it drives the expense category (see the map below).
+ * for — it drives both the expense category and whether a reservation is worth
+ * creating alongside the expense (see the two maps below).
  */
 export const RECEIPT_DOC_TYPES = [
   'meal',
@@ -58,6 +61,77 @@ export function receiptDocTypeToCostCategory(type: string | null | undefined): C
   return DOC_TYPE_TO_COST_CATEGORY[type.trim().toLowerCase() as ReceiptDocType] ?? 'other';
 }
 
+/**
+ * Detected document type → reservation `type`, for the doc types where the
+ * receipt also documents something that belongs on the itinerary (a stay, a
+ * journey). `null` means "expense only" — a lunch bill or a supermarket ticket
+ * has nothing to put on the planner.
+ *
+ * A transport receipt maps to the catch-all 'transport_other' type; the mapper
+ * narrows it to train/bus/taxi/car/ferry/transit when the document names the mode.
+ */
+const DOC_TYPE_TO_RESERVATION_TYPE: Record<ReceiptDocType, string | null> = {
+  meal: 'restaurant',
+  groceries: null,
+  accommodation: 'hotel',
+  transport: 'transport_other',
+  flight: 'flight',
+  fuel: null,
+  activity: 'event',
+  shopping: null,
+  health: null,
+  fees: null,
+  other: null,
+};
+
+/**
+ * Transport modes the planner draws — the same list its transport form offers.
+ *
+ * The model is asked which one a ticket is, because recognising the operator is
+ * the part a regex loses: a carrier list can only ever name the operators
+ * somebody thought of, and "Comboios de Portugal" or "Ferrocarrils de la
+ * Generalitat" are railways whether or not they are on it. The pattern match
+ * stays as the fallback for a model that leaves the field out.
+ */
+export const RECEIPT_TRANSPORT_MODES = [
+  'flight',
+  'train',
+  'bus',
+  'car',
+  'taxi',
+  'bicycle',
+  'cruise',
+  'ferry',
+  'transit',
+  'transport_other',
+] as const;
+export type ReceiptTransportMode = (typeof RECEIPT_TRANSPORT_MODES)[number];
+
+const TRANSPORT_MODE_SET = new Set<string>(RECEIPT_TRANSPORT_MODES);
+
+/** The model's transport mode when it named a real one, else null. */
+export function normalizeTransportMode(value: unknown): ReceiptTransportMode | null {
+  const raw = typeof value === 'string' ? value.trim().toLowerCase() : '';
+  return TRANSPORT_MODE_SET.has(raw) ? (raw as ReceiptTransportMode) : null;
+}
+
+export function receiptDocTypeToReservationType(type: string | null | undefined): string | null {
+  if (!type) return null;
+  return DOC_TYPE_TO_RESERVATION_TYPE[type.trim().toLowerCase() as ReceiptDocType] ?? null;
+}
+
+/**
+ * Whether a reservation is created ALONGSIDE the expense by default for this
+ * doc type. A hotel or a train ticket documents a real itinerary entry; a meal
+ * or a museum ticket is usually just money already spent, so the toggle starts
+ * off and the user can flip it in the review step.
+ */
+const DOC_TYPES_CREATING_RESERVATIONS = new Set<ReceiptDocType>(['accommodation', 'transport', 'flight']);
+
+export function receiptCreatesReservationByDefault(type: string | null | undefined): boolean {
+  return DOC_TYPES_CREATING_RESERVATIONS.has((type ?? '').trim().toLowerCase() as ReceiptDocType);
+}
+
 /** One line of the receipt — feeds the Costs panel's itemized ("ticket") split. */
 export const receiptLineItemSchema = z.object({
   name: z.string(),
@@ -84,11 +158,25 @@ export const receiptScanItemSchema = z.object({
   address: z.string().nullable().optional(),
   /** Purchase date, YYYY-MM-DD (budget_items.expense_date). */
   date: z.string().nullable().optional(),
-  /** Local time printed on the receipt, HH:MM. */
+  /** Local time on the receipt, HH:MM — used for the reservation's start time. */
   time: z.string().nullable().optional(),
   total: z.number(),
   currency: z.string().nullable().optional(),
   confirmation_number: z.string().nullable().optional(),
+  /** Accommodation: stay range, ISO local strings. */
+  check_in: z.string().nullable().optional(),
+  check_out: z.string().nullable().optional(),
+  /** Transport/flight: endpoints as printed on the ticket. */
+  from: z.string().nullable().optional(),
+  to: z.string().nullable().optional(),
+  departure_time: z.string().nullable().optional(),
+  arrival_time: z.string().nullable().optional(),
+  /** Airline / rail operator / bus company. */
+  carrier: z.string().nullable().optional(),
+  /** Which kind of transport the ticket is, as read by the model. */
+  transport_mode: z.enum(RECEIPT_TRANSPORT_MODES).nullable().optional(),
+  /** Flight or train number as printed. */
+  travel_number: z.string().nullable().optional(),
   line_items: z.array(receiptLineItemSchema).optional(),
   needs_review: z.boolean().optional(),
   source: z.object({ fileName: z.string(), index: z.number() }),
@@ -125,6 +213,8 @@ export type ReceiptScanResponse = z.infer<typeof receiptScanResponseSchema>;
  * plus the choices the review step offers.
  */
 export const receiptConfirmItemSchema = receiptScanItemSchema.extend({
+  /** Also create the reservation/accommodation this document describes. */
+  create_reservation: z.boolean().optional(),
   /** File the receipt image/PDF in the trip's documents and link it to the expense. */
   attach_receipt: z.boolean().optional(),
   /** Who fronted the bill (amounts in the receipt currency). Defaults to the caller. */
@@ -157,9 +247,10 @@ export const receiptConfirmRequestSchema = z.object({
 });
 export type ReceiptConfirmRequest = z.infer<typeof receiptConfirmRequestSchema>;
 
-/** What one confirmed receipt produced. `file` is absent when not requested. */
+/** What one confirmed receipt produced. `reservation`/`file` are absent when not requested. */
 export const receiptConfirmResultSchema = z.object({
   budget_item: z.record(z.string(), z.unknown()),
+  reservation: z.record(z.string(), z.unknown()).nullable().optional(),
   file: z.record(z.string(), z.unknown()).nullable().optional(),
 });
 export type ReceiptConfirmResult = z.infer<typeof receiptConfirmResultSchema>;
@@ -194,6 +285,15 @@ export const RECEIPT_JSON_SCHEMA = {
           total: { type: 'number', description: 'Grand total actually paid' },
           currency: { type: 'string', description: 'ISO 4217 code, e.g. EUR' },
           confirmation_number: { type: 'string' },
+          check_in: { type: 'string' },
+          check_out: { type: 'string' },
+          from: { type: 'string' },
+          to: { type: 'string' },
+          departure_time: { type: 'string' },
+          arrival_time: { type: 'string' },
+          carrier: { type: 'string' },
+          transport_mode: { type: 'string', enum: [...RECEIPT_TRANSPORT_MODES] },
+          travel_number: { type: 'string' },
           line_items: {
             type: 'array',
             items: {

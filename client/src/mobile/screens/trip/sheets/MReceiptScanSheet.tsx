@@ -1,6 +1,8 @@
 import {
   RECEIPT_DOC_TYPES,
+  receiptCreatesReservationByDefault,
   receiptDocTypeToCostCategory,
+  receiptDocTypeToReservationType,
   type ReceiptDocType,
   type ReceiptScanResponse,
 } from '@trek/shared'
@@ -34,6 +36,7 @@ export default function MReceiptScanSheet({
   base,
   people,
   me,
+  intent = 'expense',
   photosAvailable = true,
   initialFiles,
   initialResult,
@@ -44,6 +47,7 @@ export default function MReceiptScanSheet({
   base: string
   people: TripMember[]
   me: number
+  intent?: 'expense' | 'booking'
   /** Whether the configured model reads photographs; without it, no camera. */
   photosAvailable?: boolean
   initialFiles?: File[]
@@ -67,7 +71,7 @@ export default function MReceiptScanSheet({
     files, phase, drafts, warnings, error, saving,
     fileInputRef, accept, photos,
     selectFiles, handleScan, handleSave, patch, setSplit, removeDraft, splitsOk,
-  } = useReceiptScan({ tripId, base, photos: photosAvailable, initialFiles, initialResult, onClose: requestClose, onSaved })
+  } = useReceiptScan({ tripId, base, intent, photos: photosAvailable, initialFiles, initialResult, onClose: requestClose, onSaved })
 
   const reviewing = phase === 'review'
 
@@ -76,11 +80,11 @@ export default function MReceiptScanSheet({
       open={open}
       onClose={requestClose}
       material="opaque"
-      ariaLabel={reviewing ? t('receipts.reviewTitle') : t('receipts.title')}
+      ariaLabel={reviewing ? t('receipts.reviewTitle') : t(intent === 'booking' ? 'receipts.bookingTitle' : 'receipts.title')}
     >
       <FormSheetHeader
         icon={ScanLine}
-        title={reviewing ? t('receipts.reviewTitle') : t('receipts.title')}
+        title={reviewing ? t('receipts.reviewTitle') : t(intent === 'booking' ? 'receipts.bookingTitle' : 'receipts.title')}
         onClose={requestClose}
         closeLabel={t('common.close')}
       />
@@ -90,7 +94,7 @@ export default function MReceiptScanSheet({
         {!reviewing && (
           <>
             <p className="mt-2 text-[0.78125rem] leading-relaxed text-m-muted">
-              {t('receipts.subtitle')}
+              {t(intent === 'booking' ? 'receipts.bookingSubtitle' : 'receipts.subtitle')}
             </p>
 
             {/* One button. The OS picker already offers Camera beside Library and
@@ -158,6 +162,7 @@ export default function MReceiptScanSheet({
                 base={base}
                 people={people}
                 me={me}
+                intent={intent}
                 removable={drafts.length > 1}
                 patch={(changes) => patch(index, changes)}
                 onRemove={() => removeDraft(draft.uid)}
@@ -187,12 +192,13 @@ export default function MReceiptScanSheet({
 
 /** One scanned receipt under review, in the sheet's own chrome. */
 function MReceiptDraftCard({
-  draft, base, people, me, removable, patch, onRemove, onSplitChange,
+  draft, base, people, me, intent, removable, patch, onRemove, onSplitChange,
 }: {
   draft: Draft
   base: string
   people: TripMember[]
   me: number
+  intent: 'expense' | 'booking'
   removable: boolean
   patch: (changes: Partial<Draft>) => void
   onRemove: () => void
@@ -206,6 +212,7 @@ function MReceiptDraftCard({
   const cat = catMeta(draft.category)
   const CatIcon = cat.Icon
   const currency = (draft.currency || base).toUpperCase()
+  const reservationType = receiptDocTypeToReservationType(draft.doc_type)
 
   const docTypeOptions = useMemo(
     () => RECEIPT_DOC_TYPES.map((type) => ({ value: type, label: t(`receipts.type.${type}`) })),
@@ -225,6 +232,22 @@ function MReceiptDraftCard({
 
   const itinerary = (
     <div className="mt-3 flex flex-col gap-[6px]">
+      {reservationType && (
+        <label className="flex items-start gap-[10px] rounded-[12px] border border-[color:var(--m-rowbr)] bg-[color:var(--m-ic)] px-3 py-[10px]">
+          <input
+            type="checkbox"
+            checked={draft.create_reservation}
+            onChange={(e) => patch({ create_reservation: e.target.checked })}
+            className="mt-[2px] flex-none"
+          />
+          <span className="min-w-0">
+            <span className="block text-[0.8125rem] font-medium text-m-ink">{t('receipts.createBooking')}</span>
+            <span className="block text-[0.6875rem] text-m-faint">
+              {t('receipts.createBookingHint', { type: t(`reservations.type.${reservationType}`) })}
+            </span>
+          </span>
+        </label>
+      )}
       <label className="flex items-center gap-[10px] rounded-[12px] border border-[color:var(--m-rowbr)] bg-[color:var(--m-ic)] px-3 py-[10px]">
         <input
           type="checkbox"
@@ -315,6 +338,7 @@ function MReceiptDraftCard({
               patch({
                 doc_type: docType,
                 category: receiptDocTypeToCostCategory(docType),
+                create_reservation: receiptCreatesReservationByDefault(docType),
               })
             }}
           />
@@ -334,8 +358,20 @@ function MReceiptDraftCard({
       <Eyebrow className="mb-[5px] mt-3 uppercase">{t('receipts.merchant')}</Eyebrow>
       <input type="text" value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={FIELD_CLS} />
 
-      {money}
-      {itinerary}
+      {/* From the planner the booking is the point and the money the side effect;
+          from Costs it is the other way round. Same fields, same order of
+          importance as the screen the user came from. */}
+      {intent === 'booking' ? (
+        <>
+          {itinerary}
+          {money}
+        </>
+      ) : (
+        <>
+          {money}
+          {itinerary}
+        </>
+      )}
 
       <MExpenseSplitFields split={split} people={people} me={me} currency={currency} />
 

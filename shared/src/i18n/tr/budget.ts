@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Gider ve iade arasında geçiş yap',
 
   // Fiş tarayıcı — hesabı fotoğrafla, harcaman hazır (Masraflar → Fiş tara).
+  'receipts.fromPhotoCta': "Bilet tara",
+  'receipts.fromPhotoTitle': "Bir bilet veya rezervasyon onayı tara",
+  'receipts.bookingTitle': "Rezervasyon tara",
+  'receipts.bookingSubtitle':
+    "Bir bileti, otel faturasını veya rezervasyon onayını fotoğraflayın. TREK ne olduğunu anlar ve rezervasyonu — ilgili masrafla birlikte — hazırlar.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -184,6 +189,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Bunu kontrol et',
   'receipts.merchant': 'İşletme',
   'receipts.docType': 'Belge türü',
+  'receipts.createBooking': 'Rotaya da ekle',
+  'receipts.createBookingHint': 'İlgili rezervasyonu ({type}) yeri ve tarihleriyle oluşturur.',
   'receipts.attachReceipt': 'Fişi Belgeler’de sakla',
   'receipts.lineItems': 'Fişte {count} kalem',
   'receipts.save': 'Harcamayı kaydet',

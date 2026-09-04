@@ -148,6 +148,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': '在支出與退款之間切換',
 
   // 收據掃描 — 拍下帳單即可產生支出（費用 → 掃描收據）。
+  'receipts.fromPhotoCta': "掃描票券",
+  'receipts.fromPhotoTitle': "掃描票券或訂房確認單",
+  'receipts.bookingTitle': "掃描訂位",
+  'receipts.bookingSubtitle':
+    "拍攝票券、飯店帳單或訂房確認單。TREK 會辨識類型並建立對應的訂位與支出。",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -181,6 +186,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': '請核對',
   'receipts.merchant': '商家',
   'receipts.docType': '單據類型',
+  'receipts.createBooking': '同時加入行程',
+  'receipts.createBookingHint': '會建立對應的預訂（{type}），並帶上地點與日期。',
   'receipts.attachReceipt': '將收據保留在「文件」中',
   'receipts.lineItems': '收據上有 {count} 個項目',
   'receipts.save': '儲存支出',

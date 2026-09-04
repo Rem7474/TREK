@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': '支出と返金を切り替える',
 
   // レシートスキャン — 伝票を撮影すると支出になります（費用 → レシートをスキャン）。
+  'receipts.fromPhotoCta': "チケットをスキャン",
+  'receipts.fromPhotoTitle': "チケットまたは予約確認をスキャン",
+  'receipts.bookingTitle': "予約をスキャン",
+  'receipts.bookingSubtitle':
+    "チケット、ホテルの請求書、予約確認書を撮影してください。TREK が種類を判別し、予約と対応する支出を作成します。",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': '要確認',
   'receipts.merchant': '店舗',
   'receipts.docType': '書類の種類',
+  'receipts.createBooking': '旅程にも追加する',
+  'receipts.createBookingHint': '対応する予約（{type}）を場所と日付付きで作成します。',
   'receipts.attachReceipt': 'レシートをドキュメントに保存する',
   'receipts.lineItems': 'レシートの明細 {count} 件',
   'receipts.save': '支出を保存',

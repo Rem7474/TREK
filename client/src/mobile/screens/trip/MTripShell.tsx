@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react'
+import DocumentPickerInput from '../../../components/Planner/DocumentPickerInput'
 import { findFocusDayId } from '../../../components/Planner/today'
 import {
   ChevronDown, ChevronLeft, Download, FileDown, List, Map as MapIcon, MoreHorizontal, PackageCheck,
@@ -323,6 +324,14 @@ export default function MTripShell({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-[color:var(--m-bg)] bg-[image:var(--m-scr)] text-m-ink">
+      {/* The one import button's picker, shared by all three tabs. Which reader
+          the choice reaches is decided in useTripPlanner, so both shells route
+          the same way. */}
+      <DocumentPickerInput
+        inputRef={planner.documentPickerRef}
+        accept={planner.documentPickerAccept}
+        onPicked={planner.onDocumentsPicked}
+      />
       {/* ── Content layers ─────────────────────────────────────────────── */}
       {trTab === 'plan' && (
         <div className="absolute inset-0">
@@ -417,9 +426,16 @@ export default function MTripShell({
                 planner.setShowTransportModal(true)
               }}
             />
-            {planner.bookingImportAvailable && (
-              <MIconBtn ariaLabel={t('reservations.import.title')} onClick={() => { planner.setBookingImportKind('transports'); planner.setShowBookingImport(true) }} size={40} className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]">
-                <Download size={15} strokeWidth={2} />
+            {/* One button, as on the desktop planner: the OS picker offers Camera
+                beside Files, and the chosen file decides which reader gets it. */}
+            {(planner.bookingImportAvailable || planner.receiptScanAvailable) && (
+              <MIconBtn
+                ariaLabel={planner.receiptScanAvailable ? t('receipts.fromPhotoTitle') : t('reservations.import.title')}
+                onClick={() => planner.openDocumentPicker('planner', 'transports')}
+                size={40}
+                className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]"
+              >
+                {planner.receiptScanAvailable ? <ScanLine size={15} strokeWidth={2} /> : <Download size={15} strokeWidth={2} />}
               </MIconBtn>
             )}
             {planner.airTrailAvailable && (
@@ -437,9 +453,16 @@ export default function MTripShell({
               label={t('mobileTrip.newReservation')}
               onClick={() => { planner.setEditingReservation(null); planner.setShowReservationModal(true) }}
             />
-            {planner.bookingImportAvailable && (
-              <MIconBtn ariaLabel={t('reservations.import.title')} onClick={() => { planner.setBookingImportKind('bookings'); planner.setShowBookingImport(true) }} size={40} className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]">
-                <Download size={15} strokeWidth={2} />
+            {/* One button, as on the desktop planner: the OS picker offers Camera
+                beside Files, and the chosen file decides which reader gets it. */}
+            {(planner.bookingImportAvailable || planner.receiptScanAvailable) && (
+              <MIconBtn
+                ariaLabel={planner.receiptScanAvailable ? t('receipts.fromPhotoTitle') : t('reservations.import.title')}
+                onClick={() => planner.openDocumentPicker('planner', 'bookings')}
+                size={40}
+                className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]"
+              >
+                {planner.receiptScanAvailable ? <ScanLine size={15} strokeWidth={2} /> : <Download size={15} strokeWidth={2} />}
               </MIconBtn>
             )}
             <CompactToggle active={bookingsCompact} onToggle={() => setBookingsCompact(v => !v)} label={t('mobileTrip.compactView')} />
@@ -450,7 +473,7 @@ export default function MTripShell({
           <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-[7px]">
             <PrimaryPill label={t('costs.addExpense')} onClick={() => setAddExpenseSignal(s => s + 1)} />
             {planner.receiptScanAvailable && (
-              <MIconBtn ariaLabel={t('receipts.scan')} onClick={() => planner.setShowReceiptScan(true)} size={40} className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]">
+              <MIconBtn ariaLabel={t('receipts.scan')} onClick={() => planner.openDocumentPicker('receipts')} size={40} className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]">
                 <ScanLine size={15} strokeWidth={2} />
               </MIconBtn>
             )}

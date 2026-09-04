@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Passa da spesa a rimborso',
 
   // Scanner di scontrini — fotografa un conto e ottieni la spesa (Costi → Scansiona scontrino).
+  'receipts.fromPhotoCta': "Scansiona biglietto",
+  'receipts.fromPhotoTitle': "Scansiona un biglietto o una conferma",
+  'receipts.bookingTitle': "Scansiona una prenotazione",
+  'receipts.bookingSubtitle':
+    "Fotografa un biglietto, una fattura d'albergo o una conferma. TREK riconosce di cosa si tratta e prepara la prenotazione — e la spesa collegata.",
   'receipts.failure.noVision':
     "Il modello IA non sa leggere le immagini. Scegli un modello con visione nelle impostazioni di analisi IA.",
   'receipts.failure.contextTooSmall':
@@ -184,6 +189,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Da controllare',
   'receipts.merchant': 'Esercente',
   'receipts.docType': 'Tipo di documento',
+  'receipts.createBooking': "Aggiungilo anche all'itinerario",
+  'receipts.createBookingHint': 'Crea la prenotazione corrispondente ({type}) con luogo e date.',
   'receipts.attachReceipt': 'Conserva lo scontrino nei Documenti',
   'receipts.lineItems': '{count} voci sullo scontrino',
   'receipts.save': 'Salva spesa',

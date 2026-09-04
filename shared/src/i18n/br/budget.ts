@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Alternar entre despesa e reembolso',
 
   // Leitor de recibos — fotografe a conta e tenha a despesa (Custos → Escanear recibo).
+  'receipts.fromPhotoCta': "Digitalizar bilhete",
+  'receipts.fromPhotoTitle': "Digitalizar um bilhete ou confirmação",
+  'receipts.bookingTitle': "Digitalizar uma reserva",
+  'receipts.bookingSubtitle':
+    "Fotografe um bilhete, uma fatura de hotel ou uma confirmação. O TREK detecta do que se trata e prepara a reserva — e a despesa correspondente.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -184,6 +189,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Confira este',
   'receipts.merchant': 'Estabelecimento',
   'receipts.docType': 'Tipo de documento',
+  'receipts.createBooking': 'Adicionar também ao roteiro',
+  'receipts.createBookingHint': 'Cria a reserva correspondente ({type}) com local e datas.',
   'receipts.attachReceipt': 'Manter o recibo nos Documentos',
   'receipts.lineItems': '{count} itens no recibo',
   'receipts.save': 'Salvar despesa',

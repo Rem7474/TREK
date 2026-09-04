@@ -51,7 +51,12 @@ const meal = (over: Partial<ReceiptConfirmItem> = {}): ReceiptConfirmItem => ({
 
 const createBudgetItem = vi.fn((_tripId: unknown, data: Record<string, unknown>) => ({ id: 99, ...data }));
 const freezeForeignRate = vi.fn(async () => {});
+const createReservation = vi.fn(() => ({ reservation: { id: 7 }, accommodationCreated: true }));
+const setReservationTravelers = vi.fn();
+const createPlace = vi.fn(() => ({ id: 3, name: 'Hotel Napoleon' }));
+const searchNominatim = vi.fn(async () => [{ lat: 48.87, lng: 2.29 }]);
 const createFile = vi.fn(() => ({ id: 55, original_name: 'receipt.jpg' }));
+const createFileLink = vi.fn();
 const broadcast = vi.fn();
 
 function make(llmOver: Partial<LlmParseService> = {}) {
@@ -62,8 +67,12 @@ function make(llmOver: Partial<LlmParseService> = {}) {
     store,
     new DatabaseService(dbConn),
     { createBudgetItem, freezeForeignRate } as never,
-    { createFile } as never,
+    { createFile, createFileLink } as never,
+    { searchNominatim } as never,
+    { checkPermission: vi.fn(() => true) } as never,
+    { create: createPlace } as never,
     { broadcast } as never,
+    { create: createReservation, setReservationTravelers } as never,
   );
   return { svc, llm, store };
 }
@@ -95,7 +104,7 @@ describe('ReceiptsService.scan', () => {
 describe('ReceiptsService.confirm', () => {
   it('creates the expense with the payer, split and frozen rate', async () => {
     const { svc } = make();
-    const res = await svc.confirm('1', user, undefined, [meal({ payers: [{ user_id: 1, amount: 86.4 }], member_ids: [1, 2] })], undefined);
+    const res = await svc.confirm('1', user, undefined, [meal({ payers: [{ user_id: 1, amount: 86.4 }], member_ids: [1, 2] })], true, undefined);
 
     expect(freezeForeignRate).toHaveBeenCalled();
     expect(createBudgetItem).toHaveBeenCalledWith('1', expect.objectContaining({
@@ -108,35 +117,88 @@ describe('ReceiptsService.confirm', () => {
       member_ids: [1, 2],
     }));
     expect(res.created).toHaveLength(1);
+    // A meal receipt is expense-only by default — nothing lands on the itinerary.
+    expect(createReservation).not.toHaveBeenCalled();
     expect(broadcast).toHaveBeenCalledWith('1', 'budget:created', expect.anything(), undefined);
   });
 
   it('falls back to the doc type when the category is not a real one', async () => {
     const { svc } = make();
-    await svc.confirm('1', user, undefined, [meal({ category: 'made-up' })], undefined);
+    await svc.confirm('1', user, undefined, [meal({ category: 'made-up' })], true, undefined);
     expect(createBudgetItem).toHaveBeenCalledWith('1', expect.objectContaining({ category: 'food' }));
   });
 
   it('defaults the payer to the person who scanned it', async () => {
     const { svc } = make();
-    await svc.confirm('1', user, undefined, [meal()], undefined);
+    await svc.confirm('1', user, undefined, [meal()], true, undefined);
     expect(createBudgetItem).toHaveBeenCalledWith('1', expect.objectContaining({ payers: [{ user_id: 1, amount: 86.4 }] }));
   });
 
   it('records an unpaid expense when the review says nobody paid', async () => {
     const { svc } = make();
-    await svc.confirm('1', user, undefined, [meal({ payers: [] })], undefined);
+    await svc.confirm('1', user, undefined, [meal({ payers: [] })], true, undefined);
     expect(createBudgetItem).toHaveBeenCalledWith('1', expect.objectContaining({ payers: [], total_price: 86.4 }));
   });
 
+  it('creates the place, hotel reservation and accommodation for a stay', async () => {
+    const { svc } = make();
+    const res = await svc.confirm(
+      '1',
+      user,
+      undefined,
+      [meal({ doc_type: 'accommodation', category: 'accommodation', title: 'Hotel Napoleon', merchant: 'Hotel Napoleon', address: '40 av de Friedland', total: 420, check_in: '2026-06-11T15:00:00', check_out: '2026-06-14T11:00:00' })],
+      true,
+      undefined,
+    );
 
+    expect(createPlace).toHaveBeenCalledWith('1', expect.objectContaining({ name: 'Hotel Napoleon', lat: 48.87, lng: 2.29 }));
+    expect(createReservation).toHaveBeenCalledWith('1', expect.objectContaining({
+      type: 'hotel',
+      status: 'confirmed',
+      place_id: 3,
+      create_accommodation: expect.objectContaining({ check_in: '2026-06-11T15:00:00', check_out: '2026-06-14T11:00:00', start_day_id: 10, end_day_id: 10 }),
+    }));
+    // The expense links back to the booking it paid for.
+    expect(createBudgetItem).toHaveBeenCalledWith('1', expect.objectContaining({ reservation_id: 7 }));
+    expect(res.created[0].reservation).toEqual({ id: 7 });
+  });
 
+  it('narrows a transport receipt to the mode its carrier names and titles it From → To', async () => {
+    const { svc } = make();
+    await svc.confirm(
+      '1',
+      user,
+      undefined,
+      [meal({ doc_type: 'transport', category: 'transport', title: 'SNCF', carrier: 'SNCF', from: 'Paris Gare de Lyon', to: 'Lyon Part-Dieu', departure_time: '2026-06-11T09:07:00' })],
+      true,
+      undefined,
+    );
+
+    expect(createReservation).toHaveBeenCalledWith('1', expect.objectContaining({
+      type: 'train',
+      title: 'Paris Gare de Lyon → Lyon Part-Dieu',
+      reservation_time: '2026-06-11T09:07:00',
+      endpoints: [
+        { role: 'from', sequence: 0, name: 'Paris Gare de Lyon', lat: 48.87, lng: 2.29 },
+        { role: 'to', sequence: 1, name: 'Lyon Part-Dieu', lat: 48.87, lng: 2.29 },
+      ],
+    }));
+  });
+
+  it('keeps the expense but warns when the user may not create reservations', async () => {
+    const { svc } = make();
+    const res = await svc.confirm('1', user, undefined, [meal({ doc_type: 'accommodation', create_reservation: true })], false, undefined);
+
+    expect(createReservation).not.toHaveBeenCalled();
+    expect(createBudgetItem).toHaveBeenCalled();
+    expect(res.warnings?.[0]).toContain('no reservation permission');
+  });
 
   it('files the receipt as a trip document and links it to the expense', async () => {
     const { svc, store } = make();
     const scanId = store.put('1', 1, [{ originalName: 'receipt.jpg', mimeType: 'image/jpeg', buffer: Buffer.from('bytes') }]);
 
-    const res = await svc.confirm('1', user, scanId, [meal()], undefined);
+    const res = await svc.confirm('1', user, scanId, [meal()], true, undefined);
 
     expect(writeFileSync).toHaveBeenCalled();
     expect(createFile).toHaveBeenCalledWith('1', expect.objectContaining({ originalname: 'receipt.jpg', size: 5 }), 1, expect.objectContaining({ description: 'Receipt — Chez Marcel' }));
@@ -150,7 +212,7 @@ describe('ReceiptsService.confirm', () => {
     const { svc } = make();
     // A scan id whose files the store has already let go: the review sat in the
     // background tray longer than the bytes are kept.
-    const res = await svc.confirm('1', user, 'gone', [meal()], undefined);
+    const res = await svc.confirm('1', user, 'gone', [meal()], true, undefined);
 
     expect(createFile).not.toHaveBeenCalled();
     expect(res.created).toHaveLength(1);
@@ -161,7 +223,7 @@ describe('ReceiptsService.confirm', () => {
     const { svc, store } = make();
     const scanId = store.put('1', 1, [{ originalName: 'receipt.jpg', mimeType: 'image/jpeg', buffer: Buffer.from('bytes') }]);
 
-    await svc.confirm('1', user, scanId, [meal({ attach_receipt: false })], undefined);
+    await svc.confirm('1', user, scanId, [meal({ attach_receipt: false })], true, undefined);
     expect(createFile).not.toHaveBeenCalled();
   });
 
@@ -171,14 +233,14 @@ describe('ReceiptsService.confirm', () => {
     // copy of the rule in useExpenseSplit, drifting the moment either side changed.
     const { svc } = make();
     const ticket = JSON.stringify({ items: [{ name: 'Pasta', price: '12', parts: [1, 2] }] });
-    await svc.confirm('1', user, undefined, [meal({ total: 30, member_ids: [1, 2], ticket_json: ticket })], undefined);
+    await svc.confirm('1', user, undefined, [meal({ total: 30, member_ids: [1, 2], ticket_json: ticket })], true, undefined);
 
     expect((createBudgetItem.mock.calls[0][1] as { ticket_json: string }).ticket_json).toBe(ticket);
   });
 
   it('leaves the lines alone when the reviewer sent none, rather than inventing them', async () => {
     const { svc } = make();
-    await svc.confirm('1', user, undefined, [meal({ total: 30, line_items: [{ name: 'Pasta', price: 12 }] })], undefined);
+    await svc.confirm('1', user, undefined, [meal({ total: 30, line_items: [{ name: 'Pasta', price: 12 }] })], true, undefined);
 
     expect((createBudgetItem.mock.calls[0][1] as { ticket_json: string | null }).ticket_json).toBeNull();
   });
@@ -203,9 +265,43 @@ describe('ReceiptsService.confirm', () => {
   it('keeps going after one receipt fails', async () => {
     createBudgetItem.mockImplementationOnce(() => { throw new Error('db down'); });
     const { svc } = make();
-    const res = await svc.confirm('1', user, undefined, [meal({ title: 'Broken' }), meal({ title: 'Fine' })], undefined);
+    const res = await svc.confirm('1', user, undefined, [meal({ title: 'Broken' }), meal({ title: 'Fine' })], true, undefined);
 
     expect(res.created).toHaveLength(1);
     expect(res.warnings?.[0]).toContain('Broken');
+  });
+});
+
+describe('ReceiptsService.confirm — the meal on the itinerary', () => {
+  it('records the printed time as when the table was left, not taken', async () => {
+    // A till receipt is printed when the bill is paid. Filed as the start, a
+    // lunch appeared on the timeline at the hour it ended.
+    const { svc } = make();
+    await svc.confirm('1', user, undefined, [meal({ date: '2026-08-25', time: '12:41', create_reservation: true })], true, undefined);
+
+    const payload = createReservation.mock.calls[0][1] as { reservation_time?: string; reservation_end_time?: string; day_id?: number };
+    expect(payload.reservation_end_time).toBe('2026-08-25T12:41:00');
+    expect(payload.reservation_time).toBeUndefined();
+    // No start means nothing to place it by, so the day is set outright.
+    expect(payload.day_id).toBeDefined();
+  });
+
+  it('seats whoever the bill is split between, so nobody ticks the same names twice', async () => {
+    const { svc } = make();
+    await svc.confirm('1', user, undefined, [meal({ create_reservation: true, member_ids: [1, 2] })], true, undefined);
+
+    expect(setReservationTravelers).toHaveBeenCalledWith(7, '1', [1, 2]);
+  });
+
+  it('falls back to the payers when nobody shares the expense', async () => {
+    const { svc } = make();
+    await svc.confirm('1', user, undefined, [meal({
+      create_reservation: true,
+      member_ids: [],
+      payers: [{ user_id: 4, amount: 20 }, { user_id: 5, amount: 0 }],
+    })], true, undefined);
+
+    // The one who paid nothing was not at the table as far as the receipt knows.
+    expect(setReservationTravelers).toHaveBeenCalledWith(7, '1', [4]);
   });
 });

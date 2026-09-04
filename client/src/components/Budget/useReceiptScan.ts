@@ -1,4 +1,4 @@
-import { type ReceiptConfirmItem, type ReceiptScanItem, type ReceiptScanResponse } from '@trek/shared';
+import { type ReceiptConfirmItem, type ReceiptScanItem, type ReceiptScanResponse, receiptCreatesReservationByDefault } from '@trek/shared';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { receiptsApi } from '../../api/client';
 import { addListener, removeListener } from '../../api/websocket';
@@ -29,6 +29,7 @@ export const MAX_FILES = 5;
 export interface Draft extends ReceiptScanItem {
   /** Stable across removals, so a card keeps the split its own receipt was given. */
   uid: string;
+  create_reservation: boolean;
   attach_receipt: boolean;
 }
 
@@ -42,7 +43,7 @@ export interface DraftSplit {
 /** The bits of an axios rejection these handlers read — narrower than `any`, and enough. */
 type ApiError = { response?: { status?: number; data?: { error?: string } } };
 
-function toDraft(item: ReceiptScanItem, index: number, base: string): Draft {
+function toDraft(item: ReceiptScanItem, index: number, base: string, intent: 'expense' | 'booking'): Draft {
   return {
     ...item,
     uid: `${index}-${item.source.fileName}`,
@@ -50,6 +51,7 @@ function toDraft(item: ReceiptScanItem, index: number, base: string): Draft {
     // than filing the expense with no day at all.
     date: item.date || new Date().toISOString().slice(0, 10),
     currency: (item.currency || base).toUpperCase(),
+    create_reservation: intent === 'booking' || receiptCreatesReservationByDefault(item.doc_type),
     attach_receipt: true,
   };
 }
@@ -57,6 +59,7 @@ function toDraft(item: ReceiptScanItem, index: number, base: string): Draft {
 export function useReceiptScan({
   tripId,
   base,
+  intent,
   photos = true,
   initialFiles,
   initialResult,
@@ -66,6 +69,7 @@ export function useReceiptScan({
 }: {
   tripId: number;
   base: string;
+  intent: 'expense' | 'booking';
   /**
    * Whether the configured model can read a photograph. A text-only one still
    * reads a PDF invoice, so this narrows what is offered rather than closing the
@@ -155,11 +159,11 @@ export function useReceiptScan({
         setError(translated[0] || res.warnings?.[0] || t('receipts.nothingFound'));
         return;
       }
-      setDrafts(res.items.map((item, i) => toDraft(item, i, base)));
+      setDrafts(res.items.map((item, i) => toDraft(item, i, base, intent)));
       setSplits({});
       setPhase('review');
     },
-    [t, base]
+    [t, base, intent]
   );
 
   // The scan is a background job now, so the result arrives on the user's socket
@@ -260,12 +264,13 @@ export function useReceiptScan({
     if (saving || drafts.length === 0 || !splitsOk) return;
     setSaving(true);
     try {
-      const items: ReceiptConfirmItem[] = drafts.map(({ uid, attach_receipt, ...item }) => {
+      const items: ReceiptConfirmItem[] = drafts.map(({ uid, create_reservation, attach_receipt, ...item }) => {
         const split = splits[uid];
         return {
           ...item,
           // In ticket mode the rows are the receipt, so they set the total.
           total: split?.total ?? item.total,
+          create_reservation,
           attach_receipt,
           ...(split?.payload ?? {}),
         };

@@ -307,6 +307,63 @@ describe('useTripPlanner — bootstrap', () => {
     await waitFor(() => expect(result.current.bookingImportAvailable).toBe(true))
   })
 
+  it('FE-TP-HOOK-008b: the one import button routes a photo to the scanner and a confirmation to the import', async () => {
+    // The two readers behind one button: only the scanner can make sense of a
+    // photograph, and only the booking import needs no AI at all.
+    vi.mocked(healthApi.features).mockResolvedValue({ bookingImport: true, aiParsing: true, receiptScan: true })
+    vi.mocked(llmApi.capabilities).mockResolvedValue({ configured: true, photos: true })
+    seedTrip()
+
+    const { result } = await renderPlanner()
+    await waitFor(() => expect(result.current.receiptScanAvailable).toBe(true))
+
+    const photo = new File(['x'], 'till.jpg', { type: 'image/jpeg' })
+    const confirmation = new File(['x'], 'booking.pdf', { type: 'application/pdf' })
+
+    act(() => { result.current.openDocumentPicker('planner', 'transports') })
+    act(() => { result.current.onDocumentsPicked([confirmation]) })
+    expect(result.current.showBookingImport).toBe(true)
+    // The tab the picker was opened from still decides the form (#2076).
+    expect(result.current.bookingImportKind).toBe('transports')
+    expect(result.current.showReceiptScan).toBeNull()
+
+    act(() => { result.current.setShowBookingImport(false) })
+    // A mixed pick follows the photo: it is the file with only one reader.
+    act(() => { result.current.onDocumentsPicked([confirmation, photo]) })
+    expect(result.current.showReceiptScan).toBe('booking')
+    expect(result.current.pickedDocuments).toEqual([photo])
+  })
+
+  it('FE-TP-HOOK-008c: from Costs every document is a receipt, whatever it is', async () => {
+    vi.mocked(healthApi.features).mockResolvedValue({ bookingImport: true, aiParsing: true, receiptScan: true })
+    vi.mocked(llmApi.capabilities).mockResolvedValue({ configured: true, photos: true })
+    seedTrip()
+
+    const { result } = await renderPlanner()
+    const invoice = new File(['x'], 'hotel-invoice.pdf', { type: 'application/pdf' })
+
+    act(() => { result.current.openDocumentPicker('receipts') })
+    act(() => { result.current.onDocumentsPicked([invoice]) })
+
+    expect(result.current.showReceiptScan).toBe('expense')
+    expect(result.current.showBookingImport).toBe(false)
+    expect(result.current.pickedDocuments).toEqual([invoice])
+  })
+
+  it('FE-TP-HOOK-008d: the picker only offers image types when something can read them', async () => {
+    vi.mocked(healthApi.features).mockResolvedValue({ bookingImport: true, aiParsing: true, receiptScan: true })
+    vi.mocked(llmApi.capabilities).mockResolvedValue({ configured: true, photos: false })
+    seedTrip()
+
+    const { result } = await renderPlanner()
+
+    await waitFor(() => expect(result.current.receiptScanAvailable).toBe(true))
+    // A text-only model still reads a PDF invoice; offering .jpg would invite a
+    // pick that can only fail.
+    expect(result.current.documentPickerAccept).not.toContain('.jpg')
+    expect(result.current.documentPickerAccept).toContain('.pdf')
+  })
+
   it('FE-TP-HOOK-009: opening the trip pulls AirTrail changes once and reloads bookings', async () => {
     env.airTrailAvailable = true
     vi.mocked(airtrailApi.sync).mockResolvedValue({ changed: 3 })

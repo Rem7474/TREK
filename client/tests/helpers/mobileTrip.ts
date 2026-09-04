@@ -136,6 +136,12 @@ export function buildPlanner(overrides: Partial<TripPlanner> = {}): TripPlanner 
     bookingImportKind: 'bookings' as const,
     setBookingImportKind: vi.fn(),
     bookingImportAvailable: true,
+    // The one import button hands whatever was picked to the routing rule.
+    pickedDocuments: undefined,
+    documentPickerRef: { current: null },
+    openDocumentPicker: vi.fn(),
+    onDocumentsPicked: vi.fn(),
+    documentPickerAccept: '.eml,.pdf,.pkpass,.html,.htm,.txt',
     airTrailAvailable: false,
     showAirTrailImport: false,
     setShowAirTrailImport: vi.fn(),

@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': '지출과 환불 전환',
 
   // 영수증 스캔 — 계산서를 찍으면 지출이 됩니다 (비용 → 영수증 스캔).
+  'receipts.fromPhotoCta': "티켓 스캔",
+  'receipts.fromPhotoTitle': "티켓 또는 예약 확인서 스캔",
+  'receipts.bookingTitle': "예약 스캔",
+  'receipts.bookingSubtitle':
+    "티켓, 호텔 청구서 또는 예약 확인서를 촬영하세요. TREK이 종류를 파악해 예약과 해당 지출을 준비합니다.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -182,6 +187,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': '확인 필요',
   'receipts.merchant': '판매처',
   'receipts.docType': '문서 종류',
+  'receipts.createBooking': '일정에도 추가',
+  'receipts.createBookingHint': '해당 예약({type})을 장소와 날짜와 함께 만듭니다.',
   'receipts.attachReceipt': '영수증을 문서에 보관',
   'receipts.lineItems': '영수증 항목 {count}개',
   'receipts.save': '지출 저장',

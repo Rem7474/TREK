@@ -1,4 +1,4 @@
-import { RECEIPT_DOC_TYPES, RECEIPT_JSON_SCHEMA } from '@trek/shared';
+import { RECEIPT_DOC_TYPES, RECEIPT_JSON_SCHEMA, RECEIPT_TRANSPORT_MODES } from '@trek/shared';
 
 export { RECEIPT_JSON_SCHEMA };
 
@@ -7,7 +7,8 @@ export const RECEIPT_ROOT_KEY = 'receipts';
 
 /**
  * System instructions for the receipt scanner: classify the document, then pull
- * out the money and the few fields the expense needs. Deliberately flat and short — receipts are photographed under
+ * out the money and the few type-specific fields the confirm step needs to build
+ * a reservation. Deliberately flat and short — receipts are photographed under
  * bad light and the model does better with a small, explicit field list than
  * with the nested schema.org shape the booking import uses. Pure (no I/O) so
  * it's unit-testable.
@@ -41,6 +42,9 @@ export function buildReceiptPrompt(today: Date = new Date()): string {
     // so the reading closest to today is the one to take.
     `Today is ${todayIso}. A receipt is scanned within days or weeks of payment, so when a two-digit or otherwise ambiguous date could be read several ways, choose the reading nearest to today; never choose one in the future.`,
     'Also fill "confirmation_number" (booking/reference/invoice number) when the document shows one.',
+    'For accommodation, add "check_in" and "check_out" as ISO local date-times (e.g. "2026-06-11T15:00:00").',
+    'For transport and flight, add "from" and "to" (station/airport/city as printed), "departure_time"/"arrival_time" as ISO local date-times, "carrier" (airline, rail or bus operator) and "travel_number" (flight/train number).',
+    `Also set "transport_mode" to what the operator actually runs, one of: ${RECEIPT_TRANSPORT_MODES.join(', ')}. Judge it from the carrier and the ticket, not from the words printed on it — "Comboios de Portugal" and "Renfe" are train, "Bolt" and "FreeNow" are taxi, a metro or travelcard is transit.`,
     'Fill "line_items" with the itemized lines when the receipt lists them: { "name", "price", "quantity" }. Prices are per line as printed. Skip discount/subtotal/tax/total lines.',
     'Never invent a value: leave a field out when the document does not show it. Numbers are plain numbers (12.5, not "12,50 €").',
     'If the image is unreadable or shows no receipt at all, return { "receipts": [] }.',

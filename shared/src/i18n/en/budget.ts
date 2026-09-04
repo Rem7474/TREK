@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Switch between expense and refund',
 
   // Receipt scanner — photograph a bill, get an expense (Costs → Scan receipt).
+  'receipts.fromPhotoCta': "Scan a ticket",
+  'receipts.fromPhotoTitle': "Scan a ticket or booking confirmation",
+  'receipts.bookingTitle': "Scan a booking",
+  'receipts.bookingSubtitle':
+    "Photograph a ticket, a hotel folio or a booking confirmation. TREK reads what it is and prepares the booking — and the expense that goes with it.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Check this one',
   'receipts.merchant': 'Merchant',
   'receipts.docType': 'Document type',
+  'receipts.createBooking': 'Also add it to the itinerary',
+  'receipts.createBookingHint': 'Creates the matching booking ({type}) with its place and dates.',
   'receipts.attachReceipt': 'Keep the receipt in Documents',
   'receipts.lineItems': '{count} items on the receipt',
   'receipts.save': 'Save expense',

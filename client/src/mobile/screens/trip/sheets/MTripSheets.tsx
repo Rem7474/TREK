@@ -138,17 +138,25 @@ export default function MTripSheets({ planner, shell }: MTripSheetsProps) {
         />
       )}
 
-      <BookingImportModal isOpen={planner.showBookingImport} onClose={() => planner.setShowBookingImport(false)} tripId={tripId} kind={planner.bookingImportKind} />
+      <BookingImportModal
+        isOpen={planner.showBookingImport}
+        onClose={() => planner.setShowBookingImport(false)}
+        tripId={tripId}
+        kind={planner.bookingImportKind}
+        initialFiles={planner.pickedDocuments}
+      />
       {planner.showReceiptScan && (
         <MReceiptScanSheet
           tripId={tripId}
           base={costsBase}
           people={planner.tripMembers}
           me={meId}
+          intent={planner.showReceiptScan}
           photosAvailable={planner.receiptPhotosAvailable}
+          initialFiles={planner.pickedDocuments}
           initialResult={planner.receiptScanResult}
-          onClose={() => { planner.setShowReceiptScan(false); planner.setReceiptScanResult(undefined) }}
-          onSaved={() => { planner.setShowReceiptScan(false); planner.setReceiptScanResult(undefined); loadBudgetItems(tripId) }}
+          onClose={() => { planner.setShowReceiptScan(null); planner.setReceiptScanResult(undefined) }}
+          onSaved={() => { planner.setShowReceiptScan(null); planner.setReceiptScanResult(undefined); tripActions.loadReservations(tripId); loadBudgetItems(tripId) }}
         />
       )}
       <AirTrailImportModal isOpen={planner.showAirTrailImport} onClose={() => planner.setShowAirTrailImport(false)} tripId={tripId} pushUndo={planner.pushUndo} />

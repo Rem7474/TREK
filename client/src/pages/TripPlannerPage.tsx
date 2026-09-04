@@ -19,6 +19,7 @@ import TripMembersModal from '../components/Trips/TripMembersModal'
 import { ReservationModal } from '../components/Planner/ReservationModal'
 import TransitJourneyModal from '../components/Planner/TransitJourneyModal'
 import BookingImportModal from '../components/Planner/BookingImportModal'
+import DocumentPickerInput from '../components/Planner/DocumentPickerInput'
 import ReceiptScanModal from '../components/Budget/ReceiptScanModal'
 import AirTrailImportModal from '../components/Planner/AirTrailImportModal'
 // MemoriesPanel moved to Journey addon
@@ -255,7 +256,9 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
     showTripForm, setShowTripForm, showMembersModal, setShowMembersModal,
     showReservationModal, setShowReservationModal, editingReservation, setEditingReservation,
     showBookingImport, setShowBookingImport, bookingImportKind, setBookingImportKind, bookingImportAvailable,
-    showReceiptScan, setShowReceiptScan, receiptScanResult, setReceiptScanResult, receiptPhotosAvailable,
+    showReceiptScan, setShowReceiptScan, receiptScanAvailable, receiptScanResult, setReceiptScanResult,
+    pickedDocuments, documentPickerAccept, receiptPhotosAvailable,
+    documentPickerRef, openDocumentPicker, onDocumentsPicked,
     airTrailAvailable, showAirTrailImport, setShowAirTrailImport,
     bookingForAssignmentId, setBookingForAssignmentId,
     showTransportModal, setShowTransportModal, editingTransport, setEditingTransport,
@@ -743,8 +746,9 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
                 assignments={assignments}
                 files={files}
                 onAdd={() => { setEditingTransport(null); setTransitPrefill(null); setTransportModalAutomated(false); setShowTransportModal(true) }}
-                onImport={() => { setBookingImportKind('transports'); setShowBookingImport(true) }}
-                bookingImportAvailable={bookingImportAvailable}
+                onImport={() => openDocumentPicker('planner', 'transports')}
+                bookingImportAvailable={bookingImportAvailable || receiptScanAvailable}
+                importTitle={receiptScanAvailable ? t('receipts.fromPhotoTitle') : undefined}
                 onAirTrailImport={() => setShowAirTrailImport(true)}
                 airTrailAvailable={airTrailAvailable}
                 onEdit={(r) => { if (r.type === 'transit') { setTransitJourney(r) } else { setEditingTransport(r); setTransportModalAutomated(false); setShowTransportModal(true) } }}
@@ -769,8 +773,9 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
                 assignments={assignments}
                 files={files}
                 onAdd={() => { setEditingReservation(null); setShowReservationModal(true) }}
-                onImport={() => { setBookingImportKind('bookings'); setShowBookingImport(true) }}
-                bookingImportAvailable={bookingImportAvailable}
+                onImport={() => openDocumentPicker('planner', 'bookings')}
+                bookingImportAvailable={bookingImportAvailable || receiptScanAvailable}
+                importTitle={receiptScanAvailable ? t('receipts.fromPhotoTitle') : undefined}
                 onEdit={(r) => { setEditingReservation(r); setShowReservationModal(true) }}
                 onDelete={handleDeleteReservation}
                 onNavigateToFiles={() => handleTabChange('dateien')}
@@ -900,17 +905,20 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
           </Suspense>
         </ErrorBoundary>
       )}
-      <BookingImportModal isOpen={showBookingImport} onClose={() => setShowBookingImport(false)} tripId={tripId} kind={bookingImportKind} />
+      <DocumentPickerInput inputRef={documentPickerRef} accept={documentPickerAccept} onPicked={onDocumentsPicked} />
+      <BookingImportModal isOpen={showBookingImport} onClose={() => setShowBookingImport(false)} tripId={tripId} kind={bookingImportKind} initialFiles={pickedDocuments} />
       {showReceiptScan && (
         <ReceiptScanModal
           photosAvailable={receiptPhotosAvailable}
+          initialFiles={pickedDocuments}
           initialResult={receiptScanResult}
           tripId={tripId}
           base={costsBase}
           people={tripMembers}
           me={meId}
-          onClose={() => { setShowReceiptScan(false); setReceiptScanResult(undefined) }}
-          onSaved={() => { setShowReceiptScan(false); setReceiptScanResult(undefined); loadBudgetItems(tripId) }}
+          intent="booking"
+          onClose={() => { setShowReceiptScan(null); setReceiptScanResult(undefined) }}
+          onSaved={() => { setShowReceiptScan(null); setReceiptScanResult(undefined); tripActions.loadReservations(tripId) }}
         />
       )}
       <AirTrailImportModal isOpen={showAirTrailImport} onClose={() => setShowAirTrailImport(false)} tripId={tripId} pushUndo={pushUndo} />

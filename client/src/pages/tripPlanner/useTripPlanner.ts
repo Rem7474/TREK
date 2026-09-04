@@ -239,9 +239,75 @@ export function useTripPlanner() {
    * the feature. Shared with the Costs panel — see the hook.
    */
   const { available: receiptScanAvailable, photos: receiptPhotosAvailable } = useReceiptScanCapability()
-  const [showReceiptScan, setShowReceiptScan] = useState<boolean>(false)
+  // Null when closed, else which screen opened it — the scanner reviews the
+  // booking first from Transport and the money first from Costs.
+  const [showReceiptScan, setShowReceiptScan] = useState<'expense' | 'booking' | null>(null)
   /** A background scan handed back for review; the modal opens straight on it. */
   const [receiptScanResult, setReceiptScanResult] = useState<ReceiptScanResponse | undefined>()
+  /** Files chosen from the one import button, handed to whichever reader took them. */
+  const [pickedDocuments, setPickedDocuments] = useState<File[] | undefined>()
+  /**
+   * What the one import button will take. The image types are only offered when
+   * the scanner is there to read them: nothing else in TREK can make sense of a
+   * photograph, so listing them without it invites a pick that can only fail.
+   */
+  const documentPickerAccept =
+    '.eml,.pdf,.pkpass,.html,.htm,.txt' +
+    (receiptPhotosAvailable ? ',.jpg,.jpeg,.png,.webp,.heic,.heif,.gif' : '')
+
+  /**
+   * The one import button: its file input, and what the choice was made for.
+   *
+   * Both live here rather than in a shell. A Page is a wiring container and may
+   * hold no state of its own (PATTERN.md), the phone shell offers the same button
+   * from three tabs, and a routing rule kept in one shell is a rule the other one
+   * guesses at. The refs survive the round trip through the OS picker, which the
+   * component tree does not have to know about.
+   *
+   * `route` is where the button was: from the planner a photo is a ticket and a
+   * confirmation is a booking, from Costs every document is a receipt. `tab` still
+   * decides which form an item of guessed type opens in (#2076), so merging the
+   * two buttons into one picker must not lose it.
+   */
+  const documentPickerRef = useRef<HTMLInputElement>(null)
+  const pickerRouteRef = useRef<'planner' | 'receipts'>('planner')
+  const importTabRef = useRef<'transports' | 'bookings'>('bookings')
+
+  const openDocumentPicker = (
+    route: 'planner' | 'receipts' = 'planner',
+    tab: 'transports' | 'bookings' = 'bookings',
+  ) => {
+    pickerRouteRef.current = route
+    importTabRef.current = tab
+    documentPickerRef.current?.click()
+  }
+
+  /**
+   * Send the chosen files to whichever engine can read them.
+   *
+   * Photos have no text layer, so only the receipt scanner can read them;
+   * everything else goes to the booking import, which tries KItinerary first and
+   * needs no AI at all. A mixed pick is routed by the photos, since those are the
+   * ones with only one possible reader. From Costs there is nothing to route —
+   * every document there is a receipt.
+   */
+  const onDocumentsPicked = (list: File[]) => {
+    if (!list.length) return
+    if (pickerRouteRef.current === 'receipts') {
+      setPickedDocuments(list)
+      setShowReceiptScan('expense')
+      return
+    }
+    const photos = list.filter(f => f.type.startsWith('image/'))
+    setPickedDocuments(photos.length > 0 ? photos : list)
+    if (photos.length > 0) {
+      setShowReceiptScan('booking')
+      return
+    }
+    setBookingImportKind(importTabRef.current)
+    setShowBookingImport(true)
+  }
+
   const { available: airTrailAvailable } = useAirtrailConnection()
   const [showAirTrailImport, setShowAirTrailImport] = useState<boolean>(false)
   // Pull this user's AirTrail edits as soon as they open the trip, so changes
@@ -1004,7 +1070,7 @@ export function useTripPlanner() {
       const result = scan.receipt
       dismissBgTask(scan.id)
       setReceiptScanResult(result)
-      setShowReceiptScan(true)
+      setShowReceiptScan('expense')
       return
     }
 
@@ -1100,6 +1166,7 @@ export function useTripPlanner() {
     showBookingImport, setShowBookingImport, bookingImportKind, setBookingImportKind, bookingImportAvailable,
     showReceiptScan, setShowReceiptScan, receiptScanAvailable, receiptPhotosAvailable,
     receiptScanResult, setReceiptScanResult,
+    pickedDocuments, documentPickerAccept, documentPickerRef, openDocumentPicker, onDocumentsPicked,
     airTrailAvailable, showAirTrailImport, setShowAirTrailImport,
     bookingForAssignmentId, setBookingForAssignmentId,
     showTransportModal, setShowTransportModal, editingTransport, setEditingTransport,

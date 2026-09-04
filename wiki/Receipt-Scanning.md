@@ -2,7 +2,7 @@
 
 Photograph a receipt and TREK turns it into an expense. The **AI Parsing** addon reads the image, works out what kind of document it is — a meal, a hotel folio, a train ticket — and pre-fills the [expense](Budget-Tracking) with the merchant, the date, the amount and the currency. You check the result and save.
 
-The photo itself is filed in [Documents](Documents-and-Files) alongside the expense.
+For a stay or a journey it goes one step further: the same receipt also creates the matching [reservation](Reservations-and-Bookings) with its place, dates and route. The photo itself is filed in [Documents](Documents-and-Files) alongside the expense.
 
 > **Admin:** Receipt scanning needs both the **Costs** and the **AI Parsing** addons enabled in [Admin-Addons](Admin-Addons). Without them, the *Scan receipt* button is not shown.
 
@@ -16,7 +16,7 @@ They also differ in what they can read. Booking import parses structured confirm
 |---|---|---|
 | Input | EML, PDF, PKPass, HTML, TXT | **Photos** (JPG, PNG, HEIC, WEBP), PDF, TXT, HTML, EML |
 | Reads | Booking confirmations | Receipts, bills, invoices |
-| Creates | Reservation (+ linked cost) | Expense (+ the receipt as a document) |
+| Creates | Reservation (+ linked cost) | Expense (+ optional reservation and document) |
 | Needs AI addon | Only as a fallback | Always |
 
 ## Scanning a receipt
@@ -34,16 +34,43 @@ A cloud provider answers in seconds. A local model on CPU takes minutes on a pho
 
 Nothing is saved until you confirm. Each scanned receipt appears as a card showing what was detected:
 
-- **Document type** — meal, groceries, accommodation, transport, flight, fuel, activity, shopping, health, fees or other. Changing it re-picks the Costs category.
+- **Document type** — meal, groceries, accommodation, transport, flight, fuel, activity, shopping, health, fees or other. Changing it re-picks the Costs category and the itinerary toggle.
+- **Also add it to the itinerary** — see below.
 - **Category** — the Costs category the expense will land in.
 - **Merchant** — becomes the expense name.
 - **Amount, currency, day** — a foreign-currency receipt shows the converted amount underneath, and its exchange rate is frozen at save time so a later rate change never re-opens a settled balance.
 - **Who paid** and **Split between** — defaults to *you paid, split with everyone*, exactly like a hand-entered expense.
-- **Keep the receipt in Documents** — files the photo/PDF in the trip's documents, linked to the expense.
+- **Keep the receipt in Documents** — files the photo/PDF in the trip's documents, linked to the expense (and to the booking, when one is created).
 
 A card marked **Check this one** is missing something the scan could not read — usually the merchant or the date. The expense is still perfectly usable; the badge just tells you where to look.
 
 Anything the scan gets wrong is editable here, and the expense stays fully editable afterwards.
+
+## Where you can start a scan
+
+Two entry points, same scanner, different emphasis:
+
+- **Costs → Scan receipt** — the money is the point. The expense is reviewed first, and *Also add it to the itinerary* is offered (ticked for a stay, a journey or a flight).
+- **Transport / Bookings → the import button** — the booking is the point. The itinerary entry is reviewed first and ticked by default whatever the document turns out to be, and the expense is still created underneath it. It is one button: the OS picker offers Camera beside Files, and a photo goes to the scanner while a confirmation goes to [AI Booking Import](AI-Booking-Import).
+
+Either way one scan produces one expense, plus the booking when you keep it ticked. Starting from Transport does not skip the expense: a ticket you photographed is a ticket you paid for.
+
+## What lands on the itinerary
+
+Some receipts document something that belongs on the plan, not just in the ledger. When they do, **Also add it to the itinerary** appears, and it is **on by default** for a stay or a journey:
+
+| Document type | Reservation created | On by default |
+|---|---|---|
+| Accommodation | Hotel (+ accommodation dates on the day plan, geocoded place) | Yes |
+| Transport | Train, bus, taxi, ferry, transit or car — narrowed from the operator named on the ticket, with From → To endpoints | Yes |
+| Flight | Flight | Yes |
+| Meal | Restaurant | No |
+| Activity | Event | No |
+| Groceries, shopping, fuel, health, fees, other | — | — |
+
+The created booking is marked **confirmed** (the receipt is the proof), carries the amount in its metadata, and is linked to the expense — so editing the price on either side keeps the other in step.
+
+Creating a booking needs the **reservation edit** permission. Without it the expense is still created, and a note tells you the booking was skipped.
 
 ## Itemized receipts
 

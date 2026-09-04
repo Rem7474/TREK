@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Перемкнути між витратою та поверненням',
 
   // Сканер чеків — сфотографуйте рахунок і отримайте витрату (Витрати → Сканувати чек).
+  'receipts.fromPhotoCta': "Сканувати квиток",
+  'receipts.fromPhotoTitle': "Відскануйте квиток або підтвердження броні",
+  'receipts.bookingTitle': "Сканувати бронь",
+  'receipts.bookingSubtitle':
+    "Сфотографуйте квиток, рахунок готелю або підтвердження броні. TREK визначить, що це, і підготує бронювання — разом із відповідною витратою.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -182,6 +187,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Перевірте це',
   'receipts.merchant': 'Продавець',
   'receipts.docType': 'Тип документа',
+  'receipts.createBooking': 'Додати також до маршруту',
+  'receipts.createBookingHint': 'Створює відповідне бронювання ({type}) з місцем і датами.',
   'receipts.attachReceipt': 'Зберегти чек у «Документах»',
   'receipts.lineItems': 'Позицій у чеку: {count}',
   'receipts.save': 'Зберегти витрату',

@@ -8,6 +8,8 @@ import { saveImportFiles } from '../../db/offlineDb'
 
 interface BookingImportModalProps {
   isOpen: boolean
+  /** Files already chosen upstream — the shared picker hands them straight over. */
+  initialFiles?: File[]
   onClose: () => void
   tripId: number
   /** The tab this import was started from, carried into the job so the review
@@ -25,7 +27,7 @@ const MAX_FILES = 5
  * (progress over the WebSocket). When it finishes, the trip page opens the per-item
  * review flow — so the user can navigate and keep editing while it works.
  */
-export default function BookingImportModal({ isOpen, onClose, tripId, kind }: BookingImportModalProps) {
+export default function BookingImportModal({ isOpen, onClose, tripId, kind, initialFiles }: BookingImportModalProps) {
   const { t } = useTranslation()
   const addTask = useBackgroundTasksStore((s) => s.addTask)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -45,10 +47,13 @@ export default function BookingImportModal({ isOpen, onClose, tripId, kind }: Bo
   }
 
   useEffect(() => {
-    if (isOpen) reset()
-    // reset is stable — intentional
+    if (!isOpen) return
+    reset()
+    // Opened from the shared picker: the user already chose, don't ask twice.
+    if (initialFiles?.length) selectFiles(initialFiles)
+    // reset/selectFiles are stable — intentional
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen])
+  }, [isOpen, initialFiles])
 
   useEffect(() => {
     if (!isOpen) return
