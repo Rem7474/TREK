@@ -4257,6 +4257,48 @@ function runMigrations(db: Database.Database): void {
         db.exec('ALTER TABLE journey_entries ADD COLUMN stats_excluded INTEGER NOT NULL DEFAULT 0');
       }
     },
+
+    // The AI Parsing addon now also powers receipt scanning in Costs, so its
+    // catalogue blurb no longer describes what it does. Only rewrite the untouched
+    // default — an admin who edited the description keeps theirs.
+    () => {
+      db.prepare('UPDATE addons SET description = ? WHERE id = ? AND description = ?').run(
+        'LLM fallback for booking imports kitinerary cannot read, and receipt scanning in Costs',
+        'llm_parsing',
+        'LLM fallback for booking imports kitinerary cannot read',
+      );
+    },
+
+    // The trip document a scanned receipt was filed as, so the expense keeps its
+    // proof of purchase (receipt scanner — server/src/nest/receipts). ON DELETE
+    // SET NULL: emptying the trash on the document leaves the expense intact.
+    () => {
+      const hasColumn = db.prepare("SELECT 1 FROM pragma_table_info('budget_items') WHERE name = 'receipt_file_id'").get();
+      if (!hasColumn) {
+        db.exec(
+          'ALTER TABLE budget_items ADD COLUMN receipt_file_id INTEGER REFERENCES trip_files(id) ON DELETE SET NULL DEFAULT NULL',
+        );
+      }
+    },
+
+    // How an expense is shared, said outright instead of inferred.
+    //
+    // ticket_json carried two meanings at once: here are the receipt's lines,
+    // AND the split is by line. So the lines could only be kept for an expense
+    // that was actually split by them — reopening any other one would flip its
+    // split to "by item" and overwrite the choice its owner had made. Splitting
+    // the two lets the lines be kept for every scanned receipt, which is what
+    // they are worth keeping for.
+    //
+    // NULL means "work it out as before" — every row written before this, and
+    // any client that does not know the column yet.
+    () => {
+      const hasColumn = db.prepare("SELECT 1 FROM pragma_table_info('budget_items') WHERE name = 'split_mode'").get();
+      if (!hasColumn) db.exec("ALTER TABLE budget_items ADD COLUMN split_mode TEXT DEFAULT NULL");
+      // Existing rows keep behaving exactly as they did: a stored ticket meant a
+      // ticket split, and that is now written down rather than deduced.
+      db.exec("UPDATE budget_items SET split_mode = 'ticket' WHERE ticket_json IS NOT NULL AND split_mode IS NULL");
+    },
   ];
 
   if (currentVersion < migrations.length) {

@@ -31,6 +31,9 @@ export class FeaturesController {
       // Addon-level flag (per-user config availability is reported per-file in
       // the preview response). Drives whether the client shows AI affordances.
       aiParsing: this.addons.isAddonEnabled(ADDON_IDS.LLM_PARSING),
+      // Receipt scanning reads a photo with the LLM and writes an expense, so it
+      // needs both addons on — there is no non-AI fallback for a photographed bill.
+      receiptScan: this.addons.isAddonEnabled(ADDON_IDS.LLM_PARSING) && this.addons.isAddonEnabled(ADDON_IDS.BUDGET),
     };
   }
 }

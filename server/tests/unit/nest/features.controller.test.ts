@@ -23,17 +23,32 @@ function make(available: boolean, aiEnabled: boolean) {
 describe('FeaturesController (GET /api/health/features)', () => {
   it('FEAT-001: reports both flags on', () => {
     const { controller } = make(true, true);
-    expect(controller.features()).toEqual({ bookingImport: true, aiParsing: true });
+    expect(controller.features()).toEqual({ bookingImport: true, aiParsing: true, receiptScan: true });
   });
 
   it('FEAT-002: reports both flags off', () => {
     const { controller } = make(false, false);
-    expect(controller.features()).toEqual({ bookingImport: false, aiParsing: false });
+    expect(controller.features()).toEqual({ bookingImport: false, aiParsing: false, receiptScan: false });
   });
 
   it('FEAT-003: the two flags are independent', () => {
-    expect(make(true, false).controller.features()).toEqual({ bookingImport: true, aiParsing: false });
-    expect(make(false, true).controller.features()).toEqual({ bookingImport: false, aiParsing: true });
+    expect(make(true, false).controller.features()).toEqual({ bookingImport: true, aiParsing: false, receiptScan: false });
+    expect(make(false, true).controller.features()).toEqual({ bookingImport: false, aiParsing: true, receiptScan: true });
+  });
+
+  it('FEAT-003b: receiptScan needs Budget as well as AI parsing, not either one', () => {
+    // A photographed bill has no non-AI fallback and nowhere to land without
+    // Costs, so the button is only offered when both addons are on.
+    const withAddons = (enabled: Set<string>) => {
+      const extractor = { isAvailable: vi.fn(() => true) };
+      const addons = { isAddonEnabled: vi.fn((id: string) => enabled.has(id)) };
+      return new FeaturesController(extractor as Extractor as KitineraryExtractorService, addons as never);
+    };
+
+    expect(withAddons(new Set([ADDON_IDS.LLM_PARSING, ADDON_IDS.BUDGET])).features().receiptScan).toBe(true);
+    expect(withAddons(new Set([ADDON_IDS.LLM_PARSING])).features().receiptScan).toBe(false);
+    expect(withAddons(new Set([ADDON_IDS.BUDGET])).features().receiptScan).toBe(false);
+    expect(withAddons(new Set()).features().receiptScan).toBe(false);
   });
 
   it('FEAT-004: aiParsing asks the addons service for the LLM parsing addon specifically', () => {

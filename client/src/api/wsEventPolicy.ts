@@ -74,6 +74,10 @@ export const HANDLED_OUTSIDE_TRIP_STORE = [
   'import:progress',
   'import:done',
   'import:error',
+  // Receipt scanning — ReceiptScanModal follows its own job ('receipt:' prefix)
+  'receipt:progress',
+  'receipt:done',
+  'receipt:error',
 ] as const satisfies readonly TrekWsEventName[]
 
 /**
