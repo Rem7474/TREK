@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Váltás kiadás és visszatérítés között',
 
   // Nyugtaszkenner — fényképezd le a számlát, és kész a költség (Költségek → Nyugta beolvasása).
+  'receipts.fromPhotoCta': "Jegy beolvasása",
+  'receipts.fromPhotoTitle': "Olvass be jegyet vagy foglalási visszaigazolást",
+  'receipts.bookingTitle': "Foglalás beolvasása",
+  'receipts.bookingSubtitle':
+    "Fényképezd le a jegyet, a szállodai számlát vagy a visszaigazolást. A TREK felismeri, mi az, és előkészíti a foglalást — a hozzá tartozó kiadással együtt.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Ezt nézd át',
   'receipts.merchant': 'Kereskedő',
   'receipts.docType': 'Dokumentum típusa',
+  'receipts.createBooking': 'Kerüljön az útitervbe is',
+  'receipts.createBookingHint': 'Létrehozza a megfelelő foglalást ({type}) a helyszínnel és a dátumokkal.',
   'receipts.attachReceipt': 'Nyugta megőrzése a Dokumentumokban',
   'receipts.lineItems': '{count} tétel a nyugtán',
   'receipts.save': 'Költség mentése',

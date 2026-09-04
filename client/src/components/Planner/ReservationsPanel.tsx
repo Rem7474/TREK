@@ -709,6 +709,8 @@ interface ReservationsPanelProps {
   onAdd: () => void
   onImport?: () => void
   bookingImportAvailable?: boolean
+  /** Tooltip for the single import door — it says more when scanning is on too. */
+  importTitle?: string
   onAirTrailImport?: () => void
   airTrailAvailable?: boolean
   onEdit: (reservation: Reservation) => void
@@ -731,7 +733,7 @@ const CTA_STYLE: CSSProperties = {
   fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500,
 }
 
-export default function ReservationsPanel({ tripId, reservations, days, assignments, files = [], onAdd, onImport, bookingImportAvailable, onAirTrailImport, airTrailAvailable, onEdit, onDelete, onNavigateToFiles, titleKey = 'reservations.title', addManualKey = 'reservations.addManual', contributionView = 'reservations', tripMembers = [] }: ReservationsPanelProps) {
+export default function ReservationsPanel({ tripId, reservations, days, assignments, files = [], onAdd, onImport, bookingImportAvailable, importTitle, onAirTrailImport, airTrailAvailable, onEdit, onDelete, onNavigateToFiles, titleKey = 'reservations.title', addManualKey = 'reservations.addManual', contributionView = 'reservations', tripMembers = [] }: ReservationsPanelProps) {
   const { t, locale } = useTranslation()
   const can = useCanDo()
   const trip = useTripStore((s) => s.trip)
@@ -913,7 +915,7 @@ export default function ReservationsPanel({ tripId, reservations, days, assignme
                 }}
                   onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
                   onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                  title={t('reservations.import.title')}
+                  title={importTitle ?? t('reservations.import.title')}
                 >
                   <Download size={14} strokeWidth={2} />
                   <span className="hidden sm:inline">{t('reservations.import.cta')}</span>

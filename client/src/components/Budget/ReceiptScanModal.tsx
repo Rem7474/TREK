@@ -1,6 +1,8 @@
 import {
   RECEIPT_DOC_TYPES,
+  receiptCreatesReservationByDefault,
   receiptDocTypeToCostCategory,
+  receiptDocTypeToReservationType,
   type ReceiptDocType,
   type ReceiptScanResponse,
 } from '@trek/shared';
@@ -41,6 +43,7 @@ export default function ReceiptScanModal({
   base,
   people,
   me,
+  intent = 'expense',
   photosAvailable = true,
   initialFiles,
   initialResult,
@@ -56,6 +59,7 @@ export default function ReceiptScanModal({
    * 'booking' (Transport/Reservations) reviews the itinerary entry first and
    * ticks it by default, because that is what the user came to create.
    */
+  intent?: 'expense' | 'booking';
   /** Whether the configured model reads photographs; without it, no camera. */
   photosAvailable?: boolean;
   /** Files already chosen upstream — the shared picker hands them straight over. */
@@ -93,7 +97,7 @@ export default function ReceiptScanModal({
     setSplit,
     removeDraft,
     splitsOk,
-  } = useReceiptScan({ tripId, base, photos: photosAvailable, initialFiles, initialResult, onClose, onSaved });
+  } = useReceiptScan({ tripId, base, intent, photos: photosAvailable, initialFiles, initialResult, onClose, onSaved });
 
   const footer =
     phase === 'review' ? (
@@ -178,7 +182,7 @@ export default function ReceiptScanModal({
       title={
         phase === 'review'
           ? t('receipts.reviewTitle')
-          : t('receipts.title')
+          : t(intent === 'booking' ? 'receipts.bookingTitle' : 'receipts.title')
       }
       size="xl"
       footer={footer}
@@ -189,7 +193,7 @@ export default function ReceiptScanModal({
             className="text-content-muted"
             style={{ fontSize: 'calc(13px * var(--fs-scale-body, 1))', lineHeight: 1.5, margin: 0 }}
           >
-            {t('receipts.subtitle')}
+            {t(intent === 'booking' ? 'receipts.bookingSubtitle' : 'receipts.subtitle')}
           </p>
 
           <input
@@ -358,6 +362,7 @@ export default function ReceiptScanModal({
               base={base}
               people={people}
               me={me}
+              intent={intent}
               removable={drafts.length > 1}
               patch={(changes) => patch(index, changes)}
               onRemove={() => removeDraft(draft.uid)}
@@ -385,6 +390,7 @@ function ReceiptDraftCard({
   base,
   people,
   me,
+  intent,
   removable,
   patch,
   onRemove,
@@ -395,6 +401,7 @@ function ReceiptDraftCard({
   base: string;
   people: TripMember[];
   me: number;
+  intent: 'expense' | 'booking';
   removable: boolean;
   patch: (changes: Partial<Draft>) => void;
   onRemove: () => void;
@@ -422,6 +429,7 @@ function ReceiptDraftCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signature, draft.uid]);
 
+  const reservationType = receiptDocTypeToReservationType(draft.doc_type);
   const cat = catMeta(draft.category);
   const CatIcon = cat.Icon;
   const currency = (draft.currency || base).toUpperCase();
@@ -497,6 +505,7 @@ function ReceiptDraftCard({
               patch({
                 doc_type: docType,
                 category: receiptDocTypeToCostCategory(docType),
+                create_reservation: receiptCreatesReservationByDefault(docType),
               });
             }}
           />
@@ -594,20 +603,75 @@ function ReceiptDraftCard({
         </div>
       )}
 
-      <ExpensePayerPanel split={split} people={people} me={me} currency={currency} labelCls={LABEL_CLS} />
-      <ExpenseSplitPanel split={split} people={people} me={me} currency={currency} labelCls={LABEL_CLS} />
-      <ExpenseNotePanel split={split} labelCls={LABEL_CLS} inputCls={INPUT_CLS} id={`receipt-note-${index}`} />
-
-      <label style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}>
-        <input
-          type="checkbox"
-          checked={draft.attach_receipt}
-          onChange={(e) => patch({ attach_receipt: e.target.checked })}
-        />
-        <span className="text-content" style={{ fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500 }}>
-          {t('receipts.attachReceipt')}
-        </span>
-      </label>
+      {(() => {
+        // From the planner the booking is the point and the money is the
+        // side effect, so the itinerary choice comes first; from Costs it is
+        // the other way round. Same fields, same order of importance as the
+        // screen the user opened this from.
+        const payerAndSplit = (
+          <>
+            <ExpensePayerPanel split={split} people={people} me={me} currency={currency} labelCls={LABEL_CLS} />
+            <ExpenseSplitPanel split={split} people={people} me={me} currency={currency} labelCls={LABEL_CLS} />
+            <ExpenseNotePanel split={split} labelCls={LABEL_CLS} inputCls={INPUT_CLS} id={`receipt-note-${index}`} />
+          </>
+        );
+        const itineraryChoices = (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {reservationType && (
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={draft.create_reservation}
+                  style={{ marginTop: 2 }}
+                  onChange={(e) => patch({ create_reservation: e.target.checked })}
+                />
+                <span style={{ minWidth: 0 }}>
+                  <span
+                    className="text-content"
+                    style={{
+                      display: 'block',
+                      fontSize: 'calc(13px * var(--fs-scale-body, 1))',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {t('receipts.createBooking')}
+                  </span>
+                  <span
+                    className="text-content-faint"
+                    style={{ display: 'block', fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))' }}
+                  >
+                    {t('receipts.createBookingHint', { type: t(`reservations.type.${reservationType}`) })}
+                  </span>
+                </span>
+              </label>
+            )}
+            <label style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={draft.attach_receipt}
+                onChange={(e) => patch({ attach_receipt: e.target.checked })}
+              />
+              <span
+                className="text-content"
+                style={{ fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500 }}
+              >
+                {t('receipts.attachReceipt')}
+              </span>
+            </label>
+          </div>
+        );
+        return intent === 'booking' ? (
+          <>
+            {itineraryChoices}
+            {payerAndSplit}
+          </>
+        ) : (
+          <>
+            {payerAndSplit}
+            {itineraryChoices}
+          </>
+        );
+      })()}
 
       {draft.line_items && draft.line_items.length > 0 && (
         <div className="text-content-faint" style={{ fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))' }}>

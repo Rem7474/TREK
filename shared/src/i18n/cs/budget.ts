@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Přepnout mezi výdajem a vratkou',
 
   // Skener účtenek — vyfoťte účet a máte výdaj (Náklady → Naskenovat účtenku).
+  'receipts.fromPhotoCta': "Naskenovat jízdenku",
+  'receipts.fromPhotoTitle': "Naskenujte jízdenku nebo potvrzení rezervace",
+  'receipts.bookingTitle': "Naskenovat rezervaci",
+  'receipts.bookingSubtitle':
+    "Vyfoťte jízdenku, hotelový účet nebo potvrzení rezervace. TREK rozpozná, o co jde, a připraví rezervaci — i související výdaj.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -182,6 +187,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Zkontrolujte',
   'receipts.merchant': 'Obchodník',
   'receipts.docType': 'Typ dokladu',
+  'receipts.createBooking': 'Přidat i do itineráře',
+  'receipts.createBookingHint': 'Vytvoří odpovídající rezervaci ({type}) s místem a daty.',
   'receipts.attachReceipt': 'Ponechat účtenku v Dokumentech',
   'receipts.lineItems': 'Položek na účtence: {count}',
   'receipts.save': 'Uložit výdaj',

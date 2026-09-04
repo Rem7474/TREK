@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Przełącz między wydatkiem a zwrotem',
 
   // Skaner paragonów — sfotografuj rachunek i masz wydatek (Koszty → Skanuj paragon).
+  'receipts.fromPhotoCta': "Skanuj bilet",
+  'receipts.fromPhotoTitle': "Zeskanuj bilet lub potwierdzenie rezerwacji",
+  'receipts.bookingTitle': "Skanuj rezerwację",
+  'receipts.bookingSubtitle':
+    "Sfotografuj bilet, rachunek hotelowy lub potwierdzenie rezerwacji. TREK rozpozna, co to jest, i przygotuje rezerwację — wraz z powiązanym wydatkiem.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Sprawdź ten',
   'receipts.merchant': 'Sprzedawca',
   'receipts.docType': 'Typ dokumentu',
+  'receipts.createBooking': 'Dodaj też do planu podróży',
+  'receipts.createBookingHint': 'Tworzy odpowiadającą rezerwację ({type}) wraz z miejscem i datami.',
   'receipts.attachReceipt': 'Zachowaj paragon w Dokumentach',
   'receipts.lineItems': 'Pozycji na paragonie: {count}',
   'receipts.save': 'Zapisz wydatek',

@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'التبديل بين المصروف والاسترداد',
 
   // ماسح الإيصالات — صوّر الفاتورة لتتحول إلى مصروف (التكاليف ← مسح الإيصال).
+  'receipts.fromPhotoCta': "مسح التذكرة",
+  'receipts.fromPhotoTitle': "امسح تذكرة أو تأكيد حجز",
+  'receipts.bookingTitle': "مسح حجز",
+  'receipts.bookingSubtitle':
+    "صوّر تذكرة أو فاتورة فندق أو تأكيد حجز. يتعرّف TREK على نوعه ويجهّز الحجز — مع المصروف المرتبط به.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -182,6 +187,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'تحقّق من هذا',
   'receipts.merchant': 'التاجر',
   'receipts.docType': 'نوع المستند',
+  'receipts.createBooking': 'أضفه إلى خط سير الرحلة أيضاً',
+  'receipts.createBookingHint': 'ينشئ الحجز المقابل ({type}) مع مكانه وتواريخه.',
   'receipts.attachReceipt': 'الاحتفاظ بالإيصال في المستندات',
   'receipts.lineItems': '{count} بنود في الإيصال',
   'receipts.save': 'حفظ المصروف',

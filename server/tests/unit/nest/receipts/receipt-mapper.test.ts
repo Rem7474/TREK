@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  detectTransportType,
   mapReceipts,
   normalizeDocType,
   parseCurrency,
   parseMoney,
   parseReceiptDate,
   parseReceiptTime,
+  reservationTypeForItem,
+  toLocalDateTime,
 } from '../../../../src/nest/receipts/receipt-mapper';
 
 describe('parseMoney', () => {
@@ -114,6 +117,86 @@ describe('normalizeDocType', () => {
   });
 });
 
+describe('detectTransportType', () => {
+  it('recognises a rail operator', () => {
+    expect(detectTransportType('SNCF', null)).toBe('train');
+  });
+
+  it('recognises a ride-hailing merchant', () => {
+    expect(detectTransportType(null, 'Uber BV')).toBe('taxi');
+  });
+
+  it('returns null when no mode is named', () => {
+    expect(detectTransportType(null, 'Some Shop')).toBeNull();
+  });
+});
+
+describe('reservationTypeForItem', () => {
+  it('maps accommodation to a hotel reservation', () => {
+    expect(reservationTypeForItem({ doc_type: 'accommodation' } as never)).toBe('hotel');
+  });
+
+  it('narrows a transport receipt to the mode its carrier names', () => {
+    expect(reservationTypeForItem({ doc_type: 'transport', carrier: 'Flixbus' } as never)).toBe('bus');
+  });
+
+  it('keeps the catch-all transport type when no mode is named', () => {
+    expect(reservationTypeForItem({ doc_type: 'transport', merchant: 'Kiosk' } as never)).toBe('transport_other');
+  });
+
+  it('takes the mode the model read, so an operator no pattern lists is still placed', () => {
+    // Comboios de Portugal is a railway; no carrier pattern names it, and the
+    // ticket says "Bilhete", not "train". Before the model was asked, this
+    // landed on the catch-all and the journey lost its mode.
+    expect(
+      reservationTypeForItem({
+        doc_type: 'transport',
+        carrier: 'CP - Comboios de Portugal',
+        transport_mode: 'train',
+      } as never)
+    ).toBe('train');
+  });
+
+  it("prefers the model's mode over what the carrier name pattern-matches", () => {
+    // "Eurostar Rent a Car" matches the train pattern on its name alone.
+    expect(
+      reservationTypeForItem({
+        doc_type: 'transport',
+        carrier: 'Eurostar Rent a Car',
+        transport_mode: 'car',
+      } as never)
+    ).toBe('car');
+  });
+
+  it('falls back to the carrier patterns when the model left the mode out', () => {
+    expect(reservationTypeForItem({ doc_type: 'transport', carrier: 'Flixbus' } as never)).toBe('bus');
+  });
+
+  it('ignores a mode the model invented', () => {
+    expect(
+      reservationTypeForItem({ doc_type: 'transport', carrier: 'Flixbus', transport_mode: 'hovercraft' } as never)
+    ).toBe('bus');
+  });
+
+  it('has nothing to create for groceries', () => {
+    expect(reservationTypeForItem({ doc_type: 'groceries' } as never)).toBeNull();
+  });
+});
+
+describe('toLocalDateTime', () => {
+  it('combines a date and a time', () => {
+    expect(toLocalDateTime('2026-06-11', '19:30')).toBe('2026-06-11T19:30:00');
+  });
+
+  it('defaults the time to midnight', () => {
+    expect(toLocalDateTime('2026-06-11', null)).toBe('2026-06-11T00:00:00');
+  });
+
+  it('returns null without a date', () => {
+    expect(toLocalDateTime(null, '19:30')).toBeNull();
+  });
+});
+
 describe('mapReceipts', () => {
   it('maps a restaurant bill to a food expense', () => {
     const { items, warnings } = mapReceipts(
@@ -148,6 +231,13 @@ describe('mapReceipts', () => {
     expect(items[0].line_items).toEqual([{ name: 'Plat du jour', price: 24, quantity: 2 }]);
   });
 
+  it('maps a hotel folio to an accommodation expense', () => {
+    const { items } = mapReceipts(
+      [{ doc_type: 'accommodation', merchant: 'Hotel Napoleon', total: 420, currency: 'EUR', date: '2026-06-11', check_in: '2026-06-11T15:00:00', check_out: '2026-06-14T11:00:00' }],
+      'folio.pdf',
+    );
+    expect(items[0]).toMatchObject({ category: 'accommodation', check_in: '2026-06-11T15:00:00', check_out: '2026-06-14T11:00:00' });
+  });
 
   it('flags an item for review when the merchant or date is missing', () => {
     const { items } = mapReceipts([{ doc_type: 'meal', total: 12 }], 'blurry.jpg');

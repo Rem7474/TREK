@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Chuyển giữa khoản chi và khoản hoàn',
 
   // Quét hóa đơn — chụp ảnh hóa đơn để tạo chi phí (Chi phí → Quét hóa đơn).
+  'receipts.fromPhotoCta': "Quét vé",
+  'receipts.fromPhotoTitle': "Quét vé hoặc xác nhận đặt chỗ",
+  'receipts.bookingTitle': "Quét đặt chỗ",
+  'receipts.bookingSubtitle':
+    "Chụp ảnh vé, hóa đơn khách sạn hoặc xác nhận đặt chỗ. TREK nhận diện loại tài liệu và tạo đặt chỗ — cùng khoản chi tương ứng.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -182,6 +187,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Cần kiểm tra',
   'receipts.merchant': 'Người bán',
   'receipts.docType': 'Loại chứng từ',
+  'receipts.createBooking': 'Thêm vào cả lịch trình',
+  'receipts.createBookingHint': 'Tạo đặt chỗ tương ứng ({type}) kèm địa điểm và ngày.',
   'receipts.attachReceipt': 'Giữ hóa đơn trong Tài liệu',
   'receipts.lineItems': '{count} mục trên hóa đơn',
   'receipts.save': 'Lưu chi phí',

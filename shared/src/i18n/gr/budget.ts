@@ -150,6 +150,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Εναλλαγή μεταξύ εξόδου και επιστροφής',
 
   // Σαρωτής αποδείξεων — φωτογραφίστε έναν λογαριασμό και γίνεται έξοδο (Έξοδα → Σάρωση απόδειξης).
+  'receipts.fromPhotoCta': "Σάρωση εισιτηρίου",
+  'receipts.fromPhotoTitle': "Σαρώστε εισιτήριο ή επιβεβαίωση κράτησης",
+  'receipts.bookingTitle': "Σάρωση κράτησης",
+  'receipts.bookingSubtitle':
+    "Φωτογραφίστε ένα εισιτήριο, έναν λογαριασμό ξενοδοχείου ή μια επιβεβαίωση. Το TREK αναγνωρίζει τι είναι και ετοιμάζει την κράτηση — μαζί με το αντίστοιχο έξοδο.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -185,6 +190,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Ελέγξτε το',
   'receipts.merchant': 'Κατάστημα',
   'receipts.docType': 'Τύπος εγγράφου',
+  'receipts.createBooking': 'Προσθήκη και στο δρομολόγιο',
+  'receipts.createBookingHint': 'Δημιουργεί την αντίστοιχη κράτηση ({type}) με τόπο και ημερομηνίες.',
   'receipts.attachReceipt': 'Διατήρηση της απόδειξης στα Έγγραφα',
   'receipts.lineItems': '{count} είδη στην απόδειξη',
   'receipts.save': 'Αποθήκευση εξόδου',

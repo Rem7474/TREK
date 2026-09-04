@@ -3,6 +3,8 @@ import { AuthService } from '../auth/auth.service';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequirePermission, TripAccessGuard } from '../permissions/trip-access.guard';
+import { Trip } from '../permissions/trip.decorator';
+import type { TripAccess } from '../database/database.service';
 import { ReceiptConfirmDto } from './receipts.dto';
 import { ReceiptScanJobsService } from './receipt-scan-jobs.service';
 import { ReceiptsService } from './receipts.service';
@@ -52,7 +54,9 @@ const UPLOAD = {
  *
  * Two steps, mirroring the reservation import: `scan/async` reads the uploaded
  * files and hands back an editable preview without persisting anything, `confirm`
- * writes the subset the user accepted. Both need 'budget_edit'.
+ * writes the subset the user accepted. Both need 'budget_edit'; creating the reservation
+ * a receipt describes additionally needs 'reservation_edit' (missing it degrades
+ * to an expense-only result with a warning, it doesn't reject the request).
  */
 @Controller('api/trips/:tripId/receipts')
 // TripAccessGuard resolves :tripId and 404s a trip the user cannot reach, then
@@ -132,10 +136,18 @@ export class ReceiptsController {
   @Post('confirm')
   async confirm(
     @CurrentUser() user: User,
+    @Trip() trip: TripAccess,
     @Param('tripId') tripId: string,
     @Body() body: ReceiptConfirmDto,
     @Headers('x-socket-id') socketId?: string,
   ): Promise<ReceiptConfirmResponse> {
-    return this.receipts.confirm(tripId, user, body.scanId, body.items, socketId);
+    return this.receipts.confirm(
+      tripId,
+      user,
+      body.scanId,
+      body.items,
+      this.receipts.canEditReservations(trip, user),
+      socketId,
+    );
   }
 }

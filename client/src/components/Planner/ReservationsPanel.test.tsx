@@ -629,6 +629,31 @@ describe('ReservationsPanel', () => {
 
   // ── Toolbar actions ─────────────────────────────────────────────────────────
 
+  it('FE-PLANNER-RESP-057b: one import door, titled to say it also takes photos when scanning is on', async () => {
+    const user = userEvent.setup();
+    const onImport = vi.fn();
+
+    // There is a single entry point: the panel never shows a second, near-identical
+    // button for the scanner. Which engine reads the file is decided upstream from
+    // the file itself, so the user is not asked to choose an engine.
+    const { rerender } = render(
+      <ReservationsPanel {...defaultProps} onImport={onImport} bookingImportAvailable />
+    );
+    expect(screen.getAllByTitle('Import booking confirmations')).toHaveLength(1);
+
+    rerender(
+      <ReservationsPanel
+        {...defaultProps}
+        onImport={onImport}
+        bookingImportAvailable
+        importTitle="Scan a ticket or booking confirmation"
+      />
+    );
+    expect(screen.queryByTitle('Import booking confirmations')).not.toBeInTheDocument();
+    await user.click(screen.getByTitle('Scan a ticket or booking confirmation'));
+    expect(onImport).toHaveBeenCalled();
+  });
+
   it('FE-PLANNER-RESP-057: the import and AirTrail buttons appear only when enabled and call their handlers', async () => {
     const user = userEvent.setup();
     const onImport = vi.fn();

@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Wisselen tussen uitgave en terugbetaling',
 
   // Bonnenscanner — fotografeer een rekening en krijg de uitgave (Kosten → Bon scannen).
+  'receipts.fromPhotoCta': "Ticket scannen",
+  'receipts.fromPhotoTitle': "Scan een ticket of boekingsbevestiging",
+  'receipts.bookingTitle': "Boeking scannen",
+  'receipts.bookingSubtitle':
+    "Fotografeer een ticket, een hotelrekening of een boekingsbevestiging. TREK herkent wat het is en maakt de boeking aan — inclusief de bijbehorende uitgave.",
   'receipts.failure.noVision':
     "Het AI-model kan geen afbeeldingen lezen. Kies een model met beeldherkenning in de AI-instellingen.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Even controleren',
   'receipts.merchant': 'Verkoper',
   'receipts.docType': 'Documenttype',
+  'receipts.createBooking': 'Ook aan de reisroute toevoegen',
+  'receipts.createBookingHint': 'Maakt de bijbehorende boeking ({type}) aan met plaats en datums.',
   'receipts.attachReceipt': 'Bon bewaren bij Documenten',
   'receipts.lineItems': '{count} regels op de bon',
   'receipts.save': 'Uitgave opslaan',

@@ -133,6 +133,11 @@ const budget: TranslationStrings = {
   'costs.amount': 'Montant',
 
   // Scanner de reçus — photographier une note pour créer la dépense (Coûts → Scanner un reçu).
+  'receipts.fromPhotoCta': "Scanner un billet",
+  'receipts.fromPhotoTitle': "Scanner un billet ou une confirmation",
+  'receipts.bookingTitle': "Scanner une réservation",
+  'receipts.bookingSubtitle':
+    "Photographie un billet, une facture d'hôtel ou une confirmation. TREK détecte de quoi il s'agit et prépare la réservation — ainsi que la dépense correspondante.",
   'receipts.failure.noVision':
     "Le modèle IA ne sait pas lire les images. Choisissez un modèle capable de vision dans les réglages d'analyse IA.",
   'receipts.failure.contextTooSmall':
@@ -168,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'À vérifier',
   'receipts.merchant': 'Commerçant',
   'receipts.docType': 'Type de document',
+  'receipts.createBooking': 'Ajouter aussi à l’itinéraire',
+  'receipts.createBookingHint': 'Crée la réservation correspondante ({type}) avec son lieu et ses dates.',
   'receipts.attachReceipt': 'Conserver le reçu dans les Documents',
   'receipts.lineItems': '{count} articles sur le reçu',
   'receipts.save': 'Enregistrer la dépense',

@@ -37,6 +37,7 @@ function renderSheet(initialResult?: unknown, intent: 'expense' | 'booking' = 'e
       base="EUR"
       people={PEOPLE}
       me={1}
+      intent={intent}
       initialResult={initialResult as never}
       onClose={onClose}
       onSaved={onSaved}
@@ -98,6 +99,15 @@ describe('MReceiptScanSheet', () => {
     await waitFor(() => expect(onSaved).toHaveBeenCalled())
   })
 
+  it('FE-MOB-RCPTSH-004: opened from the planner, the itinerary choice is ticked and comes first', async () => {
+    renderSheet(
+      { scanId: 's1', items: [{ ...mealItem, doc_type: 'accommodation', category: 'accommodation' }], warnings: [], files: [] },
+      'booking',
+    )
+
+    const toggle = await screen.findByRole('checkbox', { name: /Also add it to the itinerary/ })
+    expect(toggle).toBeChecked()
+  })
 
   it('FE-MOB-RCPTSH-005: a receipt read line by line opens on its lines', async () => {
     renderSheet({

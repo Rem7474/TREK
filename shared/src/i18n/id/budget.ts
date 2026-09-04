@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Beralih antara pengeluaran dan pengembalian dana',
 
   // Pemindai struk — foto tagihan, pengeluaran langsung jadi (Biaya → Pindai struk).
+  'receipts.fromPhotoCta': "Pindai tiket",
+  'receipts.fromPhotoTitle': "Pindai tiket atau konfirmasi pemesanan",
+  'receipts.bookingTitle': "Pindai pemesanan",
+  'receipts.bookingSubtitle':
+    "Foto tiket, tagihan hotel, atau konfirmasi pemesanan. TREK mengenali jenisnya dan menyiapkan pemesanan — beserta pengeluaran terkait.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Periksa yang ini',
   'receipts.merchant': 'Penjual',
   'receipts.docType': 'Jenis dokumen',
+  'receipts.createBooking': 'Tambahkan juga ke itinerary',
+  'receipts.createBookingHint': 'Membuat pemesanan terkait ({type}) beserta tempat dan tanggalnya.',
   'receipts.attachReceipt': 'Simpan struk di Dokumen',
   'receipts.lineItems': '{count} item pada struk',
   'receipts.save': 'Simpan pengeluaran',

@@ -1,6 +1,8 @@
 import {
   RECEIPT_DOC_TYPES,
   receiptDocTypeToCostCategory,
+  receiptDocTypeToReservationType,
+  normalizeTransportMode,
   type ReceiptDocType,
   type ReceiptLineItem,
   type ReceiptScanItem,
@@ -10,12 +12,30 @@ import {
  * Turns the model's raw receipt objects into `ReceiptScanItem`s the review step
  * can show and the confirm step can persist. Pure (no I/O, no DB) so the whole
  * normalisation surface — money written as "12,50 €", DD/MM/YYYY dates, a
- * doc_type the model invented — is unit-testable without a provider.
+ * doc_type the model invented, a transport receipt that is really a taxi — is
+ * unit-testable without a provider.
  *
  * Tolerant by design, exactly like the kitinerary mapper: a receipt that only
  * yields a total is still a usable expense, so anything else missing produces a
  * `needs_review` flag rather than a dropped item.
  */
+
+/** Recognised transport modes → the reservation `type` the planner uses. */
+const TRANSPORT_MODE_PATTERNS: [RegExp, string][] = [
+  [
+    /\b(train|rail|sncf|renfe|trenitalia|db bahn|deutsche bahn|amtrak|eurostar|thalys|tgv|ouigo|italo|via rail)\b/i,
+    'train',
+  ],
+  [/\b(bus|coach|flixbus|blablabus|greyhound|megabus|autocar)\b/i, 'bus'],
+  [/\b(taxi|uber|lyft|bolt|cab|vtc|freenow|grab)\b/i, 'taxi'],
+  [/\b(ferry|boat|traghetto|f[aä]hre)\b/i, 'ferry'],
+  [/\b(cruise|croisi[eè]re)\b/i, 'cruise'],
+  [
+    /\b(car rental|rental car|hertz|avis|sixt|europcar|enterprise|budget rent|location de voiture|parking|toll|p[eé]age)\b/i,
+    'car',
+  ],
+  [/\b(metro|subway|tram|underground|s-bahn|u-bahn|transit|ratp|tfl|oyster|navigo)\b/i, 'transit'],
+];
 
 /** Fallback expense names per doc type when the receipt shows no merchant. */
 const FALLBACK_TITLE: Record<ReceiptDocType, string> = {
@@ -151,6 +171,35 @@ export function toLocalDateTime(date: string | null, time: string | null): strin
   return `${date}T${time ?? '00:00'}:00`;
 }
 
+/**
+ * Narrow a generic transport receipt to a concrete reservation type by looking
+ * for the mode in the fields that name it (carrier, merchant, endpoints).
+ */
+export function detectTransportType(...hints: (string | null | undefined)[]): string | null {
+  const haystack = hints.filter(Boolean).join(' ');
+  if (!haystack) return null;
+  for (const [pattern, type] of TRANSPORT_MODE_PATTERNS) {
+    if (pattern.test(haystack)) return type;
+  }
+  return null;
+}
+
+/** The reservation type a confirmed item should create, or null for expense-only. */
+export function reservationTypeForItem(
+  item: Pick<ReceiptScanItem, 'doc_type' | 'carrier' | 'merchant' | 'from' | 'to' | 'transport_mode'>,
+): string | null {
+  const base = receiptDocTypeToReservationType(item.doc_type);
+  if (base !== 'transport_other') return base;
+  // The model read the ticket and knows what the operator runs; the carrier
+  // patterns only recognise operators somebody remembered to list, so they are
+  // the fallback rather than the answer.
+  return (
+    normalizeTransportMode(item.transport_mode) ??
+    detectTransportType(item.carrier, item.merchant, item.from, item.to) ??
+    'transport_other'
+  );
+}
+
 function mapLineItems(value: unknown): ReceiptLineItem[] | undefined {
   if (!Array.isArray(value)) return undefined;
   const items: ReceiptLineItem[] = [];
@@ -220,6 +269,15 @@ export function mapReceipts(
       total,
       currency: parseCurrency(node.currency),
       confirmation_number: str(node.confirmation_number),
+      check_in: str(node.check_in),
+      check_out: str(node.check_out),
+      from: str(node.from),
+      to: str(node.to),
+      departure_time: str(node.departure_time),
+      arrival_time: str(node.arrival_time),
+      carrier: str(node.carrier),
+      travel_number: str(node.travel_number),
+      transport_mode: normalizeTransportMode(node.transport_mode),
       line_items: mapLineItems(node.line_items),
       // A receipt read off a photo is never as certain as a structured booking
       // file: flag the ones missing a field the user would want to fix.

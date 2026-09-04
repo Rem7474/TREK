@@ -148,6 +148,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': '在支出和退款之间切换',
 
   // 收据扫描 — 拍下账单即可生成支出（费用 → 扫描收据）。
+  'receipts.fromPhotoCta': "扫描票据",
+  'receipts.fromPhotoTitle': "扫描车票或预订确认单",
+  'receipts.bookingTitle': "扫描预订",
+  'receipts.bookingSubtitle':
+    "拍摄车票、酒店账单或预订确认单。TREK 会识别类型并创建对应的预订和支出。",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -181,6 +186,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': '请核对',
   'receipts.merchant': '商家',
   'receipts.docType': '单据类型',
+  'receipts.createBooking': '同时加入行程',
+  'receipts.createBookingHint': '会创建对应的预订（{type}），并带上地点和日期。',
   'receipts.attachReceipt': '将收据保留在「文档」中',
   'receipts.lineItems': '收据上有 {count} 个项目',
   'receipts.save': '保存支出',

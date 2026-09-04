@@ -196,6 +196,11 @@ function baseState(): HookState {
     bookingImportKind: 'bookings' as const,
     setBookingImportKind: vi.fn(),
     bookingImportAvailable: true,
+    // The picker and the tab it was opened from live in the hook, not the page —
+    // a Page holds no state of its own (PATTERN.md).
+    documentPickerRef: { current: null },
+    openDocumentPicker: vi.fn(),
+    onDocumentsPicked: vi.fn(),
     airTrailAvailable: true,
     showAirTrailImport: false,
     setShowAirTrailImport: vi.fn(),
@@ -819,8 +824,11 @@ describe('TripPlannerPage — other tabs', () => {
     act(() => { props('reservationsPanel').onAdd() })
     expect(hookState.setTransportModalAutomated).toHaveBeenCalledWith(false)
 
+    // One door for both engines: the button opens the OS picker, and which modal
+    // opens is decided from the chosen file, not from a second button.
     act(() => { props('reservationsPanel').onImport() })
-    expect(hookState.setShowBookingImport).toHaveBeenCalledWith(true)
+    expect(document.querySelector('input[type="file"]')).toBeTruthy()
+    expect(hookState.setShowBookingImport).not.toHaveBeenCalled()
 
     act(() => { props('reservationsPanel').onAirTrailImport() })
     expect(hookState.setShowAirTrailImport).toHaveBeenCalledWith(true)
@@ -855,8 +863,11 @@ describe('TripPlannerPage — other tabs', () => {
     act(() => { props('reservationsPanel').onAdd() })
     expect(hookState.setShowReservationModal).toHaveBeenCalledWith(true)
 
+    // One door for both engines: the button opens the OS picker, and which modal
+    // opens is decided from the chosen file, not from a second button.
     act(() => { props('reservationsPanel').onImport() })
-    expect(hookState.setShowBookingImport).toHaveBeenCalledWith(true)
+    expect(document.querySelector('input[type="file"]')).toBeTruthy()
+    expect(hookState.setShowBookingImport).not.toHaveBeenCalled()
 
     act(() => { props('reservationsPanel').onEdit(hotel) })
     expect(hookState.setEditingReservation).toHaveBeenCalledWith(hotel)

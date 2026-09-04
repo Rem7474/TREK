@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Växla mellan utgift och återbetalning',
 
   // Kvittoskanner — fotografera en nota och få utgiften (Kostnader → Skanna kvitto).
+  'receipts.fromPhotoCta': "Skanna biljett",
+  'receipts.fromPhotoTitle': "Skanna en biljett eller bokningsbekräftelse",
+  'receipts.bookingTitle': "Skanna en bokning",
+  'receipts.bookingSubtitle':
+    "Fotografera en biljett, en hotellräkning eller en bokningsbekräftelse. TREK känner igen vad det är och förbereder bokningen — och utgiften som hör till.",
   'receipts.failure.noVision':
     "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Kolla den här',
   'receipts.merchant': 'Säljare',
   'receipts.docType': 'Dokumenttyp',
+  'receipts.createBooking': 'Lägg även till i resplanen',
+  'receipts.createBookingHint': 'Skapar motsvarande bokning ({type}) med plats och datum.',
   'receipts.attachReceipt': 'Behåll kvittot bland Dokument',
   'receipts.lineItems': '{count} rader på kvittot',
   'receipts.save': 'Spara utgift',

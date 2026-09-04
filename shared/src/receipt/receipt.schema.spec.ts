@@ -3,7 +3,9 @@ import {
   RECEIPT_DOC_TYPES,
   RECEIPT_JSON_SCHEMA,
   receiptConfirmRequestSchema,
+  receiptCreatesReservationByDefault,
   receiptDocTypeToCostCategory,
+  receiptDocTypeToReservationType,
   receiptScanItemSchema,
   receiptScanResponseSchema,
 } from './receipt.schema';
@@ -76,6 +78,29 @@ describe('receiptDocTypeToCostCategory', () => {
   it('falls back to other for an unknown or missing type', () => {
     expect(receiptDocTypeToCostCategory('spaceship')).toBe('other');
     expect(receiptDocTypeToCostCategory(null)).toBe('other');
+  });
+});
+
+describe('receiptDocTypeToReservationType', () => {
+  it('has nothing to put on the itinerary for pure purchases', () => {
+    expect(receiptDocTypeToReservationType('groceries')).toBeNull();
+    expect(receiptDocTypeToReservationType('shopping')).toBeNull();
+    expect(receiptDocTypeToReservationType('fuel')).toBeNull();
+  });
+
+  it('maps a stay and a journey to their reservation types', () => {
+    expect(receiptDocTypeToReservationType('accommodation')).toBe('hotel');
+    expect(receiptDocTypeToReservationType('flight')).toBe('flight');
+    expect(receiptDocTypeToReservationType('transport')).toBe('transport_other');
+  });
+});
+
+describe('receiptCreatesReservationByDefault', () => {
+  it('is on for a stay or a journey, off for money already spent', () => {
+    expect(receiptCreatesReservationByDefault('accommodation')).toBe(true);
+    expect(receiptCreatesReservationByDefault('transport')).toBe(true);
+    expect(receiptCreatesReservationByDefault('meal')).toBe(false);
+    expect(receiptCreatesReservationByDefault(null)).toBe(false);
   });
 });
 

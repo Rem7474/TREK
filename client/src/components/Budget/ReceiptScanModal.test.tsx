@@ -232,6 +232,8 @@ describe('ReceiptScanModal', () => {
       member_ids: [1, 2],
       attach_receipt: true,
     });
+    // A meal is money already spent — nothing to add to the itinerary by default.
+    expect(posted.items[0].create_reservation).toBe(false);
     await waitFor(() => expect(onSaved).toHaveBeenCalled());
   });
 
@@ -298,8 +300,100 @@ describe('ReceiptScanModal', () => {
     expect(posted.items[0].total).toBe(86.4);
   });
 
+  it('offers to add a hotel receipt to the itinerary, checked by default', async () => {
+    let posted: ReceiptConfirmRequest | null = null;
+    server.use(
+      http.post('/api/trips/1/receipts/confirm', async ({ request }) => {
+        posted = (await request.json()) as ReceiptConfirmRequest;
+        return HttpResponse.json({ created: [{ budget_item: { id: 6 } }], warnings: [] });
+      })
+    );
+    renderReview({ scanId: 's1', items: [hotelItem], warnings: [], files: [] });
+    const { default: userEvent } = await import('@testing-library/user-event');
+    const user = userEvent.setup();
 
+    const toggle = await screen.findByRole('checkbox', { name: /Also add it to the itinerary/ });
+    expect(toggle).toBeChecked();
 
+    await user.click(screen.getByRole('button', { name: 'Save expense' }));
+    await waitFor(() => expect(posted).not.toBeNull());
+    expect(posted.items[0]).toMatchObject({ create_reservation: true, category: 'accommodation' });
+  });
+
+  it('lets the user drop the booking before saving', async () => {
+    let posted: ReceiptConfirmRequest | null = null;
+    server.use(
+      http.post('/api/trips/1/receipts/confirm', async ({ request }) => {
+        posted = (await request.json()) as ReceiptConfirmRequest;
+        return HttpResponse.json({ created: [{ budget_item: { id: 7 } }], warnings: [] });
+      })
+    );
+    renderReview({ scanId: 's1', items: [hotelItem], warnings: [], files: [] });
+    const { default: userEvent } = await import('@testing-library/user-event');
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole('checkbox', { name: /Also add it to the itinerary/ }));
+    await user.click(screen.getByRole('button', { name: 'Save expense' }));
+
+    await waitFor(() => expect(posted).not.toBeNull());
+    expect(posted.items[0].create_reservation).toBe(false);
+  });
+
+  describe('opened from the planner (intent="booking")', () => {
+
+    it('reviews the itinerary entry before the money', async () => {
+      renderReview({ scanId: 's1', items: [hotelItem], warnings: [], files: [] }, { intent: 'booking' });
+
+      await screen.findByDisplayValue('Hotel Napoleon');
+      // The modal renders through a portal, so the card lives on document.body.
+      const text = document.body.textContent ?? '';
+      // From Transport the booking is what the user came for, so it is read first.
+      expect(text.indexOf('itinerary')).toBeGreaterThan(-1);
+      expect(text.indexOf('itinerary')).toBeLessThan(text.indexOf('paid'));
+    });
+
+    it('ticks the itinerary box even for a type that would not add one from Costs', async () => {
+      // A meal never creates a booking by default in Costs; asked for from the
+      // planner, the user plainly wants the itinerary entry.
+      renderReview({ scanId: 's1', items: [mealItem], warnings: [], files: [] }, { intent: 'booking' });
+
+      await screen.findByDisplayValue('Chez Marcel');
+      const boxes = Array.from(document.body.querySelectorAll('input[type="checkbox"]')) as HTMLInputElement[];
+      expect(boxes.length).toBeGreaterThan(0);
+      expect(boxes[0].checked).toBe(true);
+    });
+
+    it('still creates the expense alongside the booking', async () => {
+      let posted: ReceiptConfirmRequest | null = null;
+      server.use(
+        http.post('/api/trips/1/receipts/confirm', async ({ request }) => {
+          posted = (await request.json()) as ReceiptConfirmRequest;
+          return HttpResponse.json({ created: [], warnings: [] });
+        })
+      );
+      renderReview({ scanId: 's1', items: [hotelItem], warnings: [], files: [] }, { intent: 'booking' });
+      const { default: userEvent } = await import('@testing-library/user-event');
+      const user = userEvent.setup();
+      await screen.findByDisplayValue('Hotel Napoleon');
+      await user.click(screen.getByRole('button', { name: /Save expense/i }));
+
+      await waitFor(() => expect(posted).not.toBeNull());
+      expect(posted!.items[0].total).toBe(420);
+      expect(posted!.items[0].create_reservation).toBe(true);
+    });
+  });
+
+  it('explains that the AI addon is required when the server returns 409', async () => {
+    server.use(
+      http.post('/api/trips/1/receipts/scan/async', () =>
+        HttpResponse.json({ error: 'AI parsing is not configured' }, { status: 409 })
+      )
+    );
+    const { container } = renderModal();
+    await scan(container);
+
+    expect(await screen.findByText(/needs the AI parsing addon/)).toBeInTheDocument();
+  });
 
   it('reports back when nothing readable was found', async () => {
     renderReview({ scanId: 's1', items: [], warnings: ['receipt.jpg: no receipt found'], files: [] });

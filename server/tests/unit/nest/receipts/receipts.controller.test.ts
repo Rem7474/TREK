@@ -15,9 +15,11 @@ const item = {
   source: { fileName: 'receipt.jpg', index: 0 },
 };
 
+const trip = { user_id: 1 } as never;
 
 function make(over: Partial<ReceiptsService> = {}, demo = false) {
   const svc = {
+    canEditReservations: vi.fn(() => true),
     isAvailable: vi.fn(() => true),
     scan: vi.fn(async () => ({ scanId: 's1', items: [], warnings: [], files: [] })),
     confirm: vi.fn(async () => ({ created: [], warnings: [] })),
@@ -89,8 +91,13 @@ describe('ReceiptsController.scan/async', () => {
 describe('ReceiptsController.confirm', () => {
   it('passes the scan id, items and socket id through', async () => {
     const { c, svc } = make();
-    await c.confirm(user, 't1', { scanId: 's1', items: [item] } as never, 'socket-9');
-    expect(svc.confirm).toHaveBeenCalledWith('t1', user, 's1', [expect.objectContaining({ title: 'Chez Marcel' })], 'socket-9');
+    await c.confirm(user, trip, 't1', { scanId: 's1', items: [item] } as never, 'socket-9');
+    expect(svc.confirm).toHaveBeenCalledWith('t1', user, 's1', [expect.objectContaining({ title: 'Chez Marcel' })], true, 'socket-9');
   });
 
+  it('tells the service the user may not create reservations', async () => {
+    const { c, svc } = make({ canEditReservations: vi.fn(() => false) as never });
+    await c.confirm(user, trip, 't1', { items: [item] } as never);
+    expect(svc.confirm).toHaveBeenCalledWith('t1', user, undefined, expect.anything(), false, undefined);
+  });
 });

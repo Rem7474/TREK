@@ -149,6 +149,11 @@ const budget: TranslationStrings = {
   'costs.toggleSign': 'Zwischen Ausgabe und Erstattung wechseln',
 
   // Beleg-Scanner — eine Rechnung fotografieren und daraus eine Ausgabe machen (Kosten → Beleg scannen).
+  'receipts.fromPhotoCta': "Ticket scannen",
+  'receipts.fromPhotoTitle': "Ticket oder Buchungsbestätigung scannen",
+  'receipts.bookingTitle': "Buchung scannen",
+  'receipts.bookingSubtitle':
+    "Fotografiere ein Ticket, eine Hotelrechnung oder eine Buchungsbestätigung. TREK erkennt, worum es geht, und legt die Buchung an — samt zugehöriger Ausgabe.",
   'receipts.failure.noVision':
     "Das KI-Modell kann keine Bilder lesen. Wähle in den KI-Einstellungen ein Modell mit Bilderkennung.",
   'receipts.failure.contextTooSmall':
@@ -183,6 +188,8 @@ const budget: TranslationStrings = {
   'receipts.needsReview': 'Bitte prüfen',
   'receipts.merchant': 'Händler',
   'receipts.docType': 'Dokumenttyp',
+  'receipts.createBooking': 'Auch zum Reiseplan hinzufügen',
+  'receipts.createBookingHint': 'Legt die passende Buchung ({type}) mit Ort und Daten an.',
   'receipts.attachReceipt': 'Beleg in den Dokumenten behalten',
   'receipts.lineItems': '{count} Positionen auf dem Beleg',
   'receipts.save': 'Ausgabe speichern',
