@@ -48,6 +48,7 @@ export class LlmParseService {
       model: config.model,
       baseUrl: config.baseUrl,
       apiKey: config.apiKey,
+      local: config.provider === 'local',
     };
 
     // Native PDF only for Anthropic (its document block reads text AND scans).

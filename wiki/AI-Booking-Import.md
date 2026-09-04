@@ -50,6 +50,8 @@ With the **Local** provider selected, the panel manages your Ollama server direc
 
 You can also select any other model already installed on the server, or type a model id by hand.
 
+With the **Local** provider, TREK adapts what it asks for: it asks the server to keep the model resident for half an hour, so two imports in a row do not each pay a multi-gigabyte cold load, and it asks for JSON without constraining every token, because a grammar-constrained response is affordable on hosted hardware and not on a CPU at home. Neither is sent to a cloud provider.
+
 ## Per-user configuration
 
 If an admin leaves the instance config blank, each user can configure their own model under **Settings → Integrations → AI parsing** (the section only appears when the addon is enabled):

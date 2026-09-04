@@ -4,6 +4,8 @@ import { parseLenientJson, toReservationList } from '../lenient-json';
 import { safeFetchLlm } from '../../../utils/ssrfGuard';
 import { readEnv } from '../../../app-config';
 
+// Generous: a local CPU model (Ollama, no GPU) may cold-load several GB and then
+// take a few minutes on a longer document before the first token.
 const MAX_TOKENS = 4096;
 
 /**
@@ -30,6 +32,10 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
     const url = `${base}/chat/completions`;
     const nuextract = isNuExtractModel(input.model);
 
+    // A self-hosted server is a different machine from a cloud endpoint, not a
+    // smaller one: what it can afford differs in kind (see `local` below).
+    const local = input.local === true;
+
     const userContent: unknown[] = nuextract
       ? [{ type: 'text', text: buildNuExtractUserText(input.text ?? '') }]
       : [{ type: 'text', text: input.text ? `${USER_TEXT}\n\n${input.text}` : USER_TEXT }];
@@ -52,6 +58,11 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
       const baseBody = {
         model: input.model,
         [tokenParam]: MAX_TOKENS,
+        // Ollama unloads an idle model and reloads it on the next call — several
+        // gigabytes off disk, paid by whoever scans next. The native client has
+        // always asked it to stay resident; this path never did, so back-to-back
+        // scans could each pay the cold load. Ignored by servers that don't know it.
+        ...(local ? { keep_alive: '30m' } : {}),
         // Extraction is a deterministic task — Ollama defaults to 0.7, which makes
         // small models (NuExtract) drop fields or return empty. Pin to 0.
         temperature: 0,
@@ -65,6 +76,15 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
             ],
       };
       if (nuextract) return baseBody;
+      // A grammar-constrained response is free on a cloud endpoint and ruinous on
+      // a local one: measured against Ollama, every json_schema run timed out —
+      // including one on plain text with no image at all — while the same prompt
+      // without it answered in about six minutes, with valid JSON either way. The
+      // schema only guaranteed a shape the prompt already produces, and TREK's
+      // parse is tolerant (code fences, JSON5, a bare array), so the guarantee was
+      // never load-bearing. `json_object` keeps the "must be JSON" nudge without
+      // constraining every token.
+      if (local) return { ...baseBody, response_format: { type: 'json_object' as const } };
       return {
         ...baseBody,
         response_format: jsonObject
@@ -72,7 +92,6 @@ export class OpenAiCompatibleClient implements LlmExtractionClient {
           : { type: 'json_schema' as const, json_schema: { name: 'reservations', schema: input.jsonSchema, strict: false } },
       };
     };
-
     let tokenParam: 'max_tokens' | 'max_completion_tokens' = 'max_tokens';
     let res = await this.send(url, buildBody(tokenParam, false), input.apiKey);
     let detail = res.ok ? '' : await res.text().catch(() => '');
