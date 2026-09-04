@@ -1,17 +1,18 @@
 import type { LlmExtractionClient, LlmExtractionInput } from '../llm-provider.interface';
 import { safeFetchLlm } from '../../../utils/ssrfGuard';
 import { readEnv } from '../../../app-config';
-import { toReservationList } from '../lenient-json';
+import { toRecordList } from '../lenient-json';
 
 const MAX_TOKENS = 8192;
 const ANTHROPIC_VERSION = '2023-06-01';
-const TOOL_NAME = 'emit_reservations';
+const DEFAULT_ROOT_KEY = 'reservations';
 
 /**
  * Anthropic Messages API client. Structured output via forced tool-use: a single
- * `emit_reservations` tool whose `input_schema` is the reservations schema, with
+ * `emit_<rootKey>` tool whose `input_schema` is the caller's schema, with
  * `tool_choice` forcing it — the documented, reliable way to get structured JSON.
- * PDFs go as native base64 `document` blocks (Anthropic reads scanned PDFs).
+ * PDFs go as native base64 `document` blocks and photos as `image` blocks, so a
+ * scanned PDF or a phone snap of a receipt is read directly (no OCR step).
  * Raw fetch (no SDK) to match the codebase's HTTP style.
  */
 export class AnthropicClient implements LlmExtractionClient {
@@ -23,16 +24,22 @@ export class AnthropicClient implements LlmExtractionClient {
     const base = (input.baseUrl ?? 'https://api.anthropic.com').replace(/(?<!\/)\/+$/, '');
     const url = `${base}/v1/messages`;
 
+    const rootKey = input.rootKey ?? DEFAULT_ROOT_KEY;
+    const toolName = `emit_${rootKey}`;
+    const userText = input.userText ?? USER_TEXT;
+
     const content: unknown[] = [];
     if (input.file) {
+      // An image is an `image` block, everything else a `document` block — sending a
+      // photo as a document is rejected (only PDFs are documents).
       content.push({
-        type: 'document',
+        type: input.file.mimeType.startsWith('image/') ? 'image' : 'document',
         source: { type: 'base64', media_type: input.file.mimeType, data: input.file.data.toString('base64') },
       });
     }
     content.push({
       type: 'text',
-      text: input.text ? `${USER_TEXT}\n\n${input.text}` : USER_TEXT,
+      text: input.text ? `${userText}\n\n${input.text}` : userText,
     });
 
     const body = {
@@ -41,12 +48,12 @@ export class AnthropicClient implements LlmExtractionClient {
       system: input.prompt,
       tools: [
         {
-          name: TOOL_NAME,
-          description: 'Return the travel reservations extracted from the document.',
+          name: toolName,
+          description: `Return the ${rootKey} extracted from the document.`,
           input_schema: input.jsonSchema,
         },
       ],
-      tool_choice: { type: 'tool', name: TOOL_NAME },
+      tool_choice: { type: 'tool', name: toolName },
       messages: [{ role: 'user', content }],
     };
 
@@ -77,15 +84,15 @@ export class AnthropicClient implements LlmExtractionClient {
 
     const data = (await res.json()) as {
       stop_reason?: string;
-      content?: { type: string; name?: string; input?: { reservations?: unknown } }[];
+      content?: { type: string; name?: string; input?: Record<string, unknown> }[];
     };
 
     if (data.stop_reason === 'refusal') {
       throw new Error('Anthropic declined to process this document');
     }
 
-    const toolUse = data.content?.find(b => b.type === 'tool_use' && b.name === TOOL_NAME);
-    return toReservationList(toolUse?.input?.reservations);
+    const toolUse = data.content?.find(b => b.type === 'tool_use' && b.name === toolName);
+    return toRecordList(toolUse?.input?.[rootKey], rootKey);
   }
 }
 

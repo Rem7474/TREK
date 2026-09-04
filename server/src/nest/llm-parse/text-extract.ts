@@ -87,6 +87,30 @@ function decodeEntities(s: string): string {
 }
 
 /**
+ * Image extensions a receipt photo can arrive as, mapped to the media type the
+ * providers expect. There is no text layer to pull out of these — they only work
+ * on a vision-capable model, which is why the receipt scanner sends the bytes.
+ */
+const IMAGE_MIME_BY_EXT: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.heic': 'image/heic',
+  '.heif': 'image/heif',
+};
+
+export function isImage(fileName: string): boolean {
+  return extname(fileName).toLowerCase() in IMAGE_MIME_BY_EXT;
+}
+
+/** Media type for an image file name, or null when the extension isn't an image. */
+export function imageMimeType(fileName: string): string | null {
+  return IMAGE_MIME_BY_EXT[extname(fileName).toLowerCase()] ?? null;
+}
+
+/**
  * Strip HTML/XML tags, resolve entities and collapse whitespace for a cleaner
  * LLM prompt.
  *
