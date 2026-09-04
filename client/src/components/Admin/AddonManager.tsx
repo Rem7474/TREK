@@ -1,4 +1,4 @@
-import { LLM_MODEL_CATALOGUE } from '@trek/shared'
+import { LLM_MODEL_CATALOGUE, modelReadsPhotos } from '@trek/shared'
 import { useEffect, useState, type ComponentType } from 'react'
 import { adminApi } from '../../api/client'
 import { useTranslation } from '../../i18n'
@@ -317,7 +317,36 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
   const [model, setModel] = useState<string>((cfg.model as string) ?? '')
   const [baseUrl, setBaseUrl] = useState<string>((cfg.baseUrl as string) ?? '')
   const [apiKey, setApiKey] = useState<string>((cfg.apiKey as string) ?? '')
+  // Whether this model may be handed the document itself. Seeded from the
+  // catalogue so a known model needs no confirming, and overridable because the
+  // catalogue cannot know every model anyone will type.
+  const [multimodal, setMultimodal] = useState<boolean>(
+    cfg.multimodal === true || modelReadsPhotos((cfg.model as string) ?? ''),
+  )
+  // What Ollama says about the selected model, when it can say anything. It is
+  // the authoritative answer to a question the id can only be guessed from, so
+  // it seeds the switch and overrides the guess. null = no answer (unreachable,
+  // unknown model, or a server too old to report it).
+  const [ollamaVision, setOllamaVision] = useState<boolean | null>(null)
   const [saving, setSaving] = useState(false)
+
+  // Ask the local server what the selected model can do, rather than reading its
+  // name. Verified against Ollama 0.32.15: qwen3.5:4b reports vision, qwen3:8b
+  // does not. A cloud provider has no equivalent endpoint, so the guess stands.
+  useEffect(() => {
+    const id = model.trim()
+    if (provider !== 'local' || !id) { setOllamaVision(null); return }
+    let cancelled = false
+    adminApi.llmLocalCapabilities(baseUrl.trim() || DEFAULT_OLLAMA_URL, id)
+      .then(r => {
+        if (cancelled || !r.capabilities) return setOllamaVision(null)
+        const sees = r.capabilities.includes('vision')
+        setOllamaVision(sees)
+        setMultimodal(sees)
+      })
+      .catch(() => { if (!cancelled) setOllamaVision(null) })
+    return () => { cancelled = true }
+  }, [provider, model, baseUrl])
 
   // Local-provider model management.
   const [installed, setInstalled] = useState<string[]>([])
@@ -378,7 +407,7 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
     setSaving(true)
     try {
       // Send the masked sentinel unchanged so the server keeps the stored key.
-      await adminApi.updateAddon(addon.id, { config: { provider, model: model.trim(), baseUrl: provider === 'anthropic' ? '' : baseUrl.trim(), apiKey, multimodal: cfg.multimodal === true } })
+      await adminApi.updateAddon(addon.id, { config: { provider, model: model.trim(), baseUrl: provider === 'anthropic' ? '' : baseUrl.trim(), apiKey, multimodal } })
       toast.success('Saved')
     } catch {
       toast.error('Failed to save')
@@ -453,6 +482,35 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
               ))}
             </div>
           )}
+
+          <div className="rounded-lg border border-edge-secondary px-2.5 py-2">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={multimodal} onChange={e => setMultimodal(e.target.checked)} />
+              <span className="text-caption font-medium text-content">This model reads images</span>
+            </label>
+            <p className="mt-1 text-caption text-content-faint">
+              A vision model is handed the document itself — a scanned page, a photo — instead of text
+              pulled out of it. Leave this off for a text-only model: it is the same switch users have
+              in their own settings, and the provider refuses the image once it is on.
+            </p>
+            {ollamaVision !== null && (
+              <p className="mt-1.5 text-caption text-content-muted">
+                {ollamaVision
+                  ? `The server reports that ${model.trim()} reads images.`
+                  : `The server reports that ${model.trim()} does not read images.`}
+              </p>
+            )}
+            {multimodal && ollamaVision === false && (
+              <p className="mt-1.5 text-caption text-warning">
+                You have turned this on against what the server reports — the provider will refuse the document.
+              </p>
+            )}
+            {multimodal && ollamaVision === null && model.trim() !== '' && !modelReadsPhotos(model) && (
+              <p className="mt-1.5 text-caption text-warning">
+                {model.trim()} is not known to read images — if the provider refuses the document, this is why.
+              </p>
+            )}
+          </div>
 
           <div className="border-t border-edge-secondary pt-2">
             <div className="mb-1.5 text-caption font-medium text-content-secondary">Pull a recommended model</div>

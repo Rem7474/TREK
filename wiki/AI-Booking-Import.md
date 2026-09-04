@@ -52,6 +52,16 @@ You can also select any other model already installed on the server, or type a m
 
 With the **Local** provider, TREK adapts what it asks for: it asks the server to keep the model resident for half an hour, so two imports in a row do not each pay a multi-gigabyte cold load, and it asks for JSON without constraining every token, because a grammar-constrained response is affordable on hosted hardware and not on a CPU at home. Neither is sent to a cloud provider.
 
+### This model reads images
+
+A **This model reads images** switch sits with the provider fields. It says whether the model may be handed the document itself — a scanned page, a photo — rather than text pulled out of it.
+
+With the **Local** provider TREK does not guess: it asks the server. Ollama's `/api/show` reports what a model can do, so selecting `qwen3.5:4b` fills the switch in and the panel says *the server reports that qwen3.5:4b reads images*; a text-only model turns it off and says so. Turning it on against that shows a warning rather than blocking it — the switch stays an override.
+
+For a cloud provider there is no such endpoint, so the id is all there is: one from a family that advertises vision (`qwen3.5`, `llava`, `minicpm-v`, anything `-vl`, GPT-4o, Claude, Gemini) is assumed to see, anything else starts off. That guess is also the fallback when the local server is unreachable or too old to report its capabilities.
+
+This is the same setting as the per-user **Send documents as images** toggle below, at instance scope. `GET /api/llm/capabilities` reports the answer for the signed-in user, which `/api/health/features` cannot: that route is public, so it has no idea whose model is configured.
+
 ## Per-user configuration
 
 If an admin leaves the instance config blank, each user can configure their own model under **Settings → Integrations → AI parsing** (the section only appears when the addon is enabled):
@@ -60,7 +70,7 @@ If an admin leaves the instance config blank, each user can configure their own 
 
 The fields are a **Provider** (only **OpenAI** or **Anthropic** here), a **Model** id, and an **API key** that is *stored encrypted* (leave blank to keep the current key). There is no personal Base URL: the address this server calls is instance configuration, so a local (Ollama) model can only be set up by an admin on the addon, and the server answers 403 to anyone, admins included, who tries to store a personal base URL or a personal `local` provider.
 
-There is also a **Send documents as images** toggle. It is stored per user, but extraction currently ignores it: only Anthropic is sent the raw PDF, every other provider always gets the extracted text.
+There is also a **Send documents as images** toggle — the per-user form of the admin switch above. Booking extraction still ignores it: only Anthropic is sent the raw PDF, every other provider always gets the extracted text.
 
 > **Precedence:** an admin instance model always wins. Personal settings only take effect when no instance-wide model is configured.
 

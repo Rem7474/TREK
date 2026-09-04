@@ -679,6 +679,36 @@ describe('AddonManager', () => {
     expect(screen.queryByText('Pulling…')).not.toBeInTheDocument();
   });
 
+  it('FE-ADMIN-ADDON-027b: a text-only model starts with images off, and the one model offered can see', async () => {
+    // A host that follows the guided setup would otherwise turn receipt scanning
+    // on and hit a provider error. The catalogue carries a `vision` flag; this is
+    // it being read, and it is what the switch starts from.
+    server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3:8b', baseUrl: '', apiKey: '' })]));
+    render(<AddonManager />);
+
+    expect(await screen.findByRole('checkbox', { name: /reads images/i })).not.toBeChecked();
+    expect(screen.getByText(/Qwen3\.5 — 4B/)).toBeInTheDocument();
+  });
+
+  it('FE-ADMIN-ADDON-027c: a model known to see starts with images on, so nobody has to confirm it', async () => {
+    server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3.5:4b', baseUrl: '', apiKey: '' })]));
+    render(<AddonManager />);
+
+    expect(await screen.findByRole('checkbox', { name: /reads images/i })).toBeChecked();
+  });
+
+  it('FE-ADMIN-ADDON-027d: the operator can say a hand-typed model sees, and is told the catalogue disagrees', async () => {
+    server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3:8b', baseUrl: '', apiKey: '' })]));
+    render(<AddonManager />);
+
+    const user = userEvent.setup();
+    const toggle = await screen.findByRole('checkbox', { name: /reads images/i });
+    await user.click(toggle);
+
+    expect(toggle).toBeChecked();
+    expect(screen.getByText(/not known to read images/i)).toBeInTheDocument();
+  });
+
   it('FE-ADMIN-ADDON-028: blurring the base URL under a cloud provider queries no local models', async () => {
     const user = userEvent.setup();
     const urls: (string | null)[] = [];
