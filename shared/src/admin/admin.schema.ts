@@ -110,3 +110,43 @@ export const adminTestNotificationRequestSchema = z.object({
   inApp: z.union([z.boolean(), z.record(z.string(), z.unknown())]).optional(),
 });
 export type AdminTestNotificationRequest = z.infer<typeof adminTestNotificationRequestSchema>;
+
+/**
+ * The model the local extractor is tuned for, pullable via Ollama. One entry on
+ * purpose: a self-hosted instance needs a model, not a menu, and Qwen3.5 4B is
+ * the one that does every job — it extracts a booking out of a PDF and reads a
+ * scanned page or a photograph, so nobody has to keep two models resident.
+ * Reasoning is turned off on the way out (see the llm-parse clients), which is
+ * what keeps it inside a CPU latency budget.
+ *
+ * Any other model can still be typed in or picked from what Ollama already has;
+ * this is the one TREK offers to pull.
+ *
+ * `vision` says whether the model can be handed the document itself rather than
+ * text pulled out of it. It lives here rather than beside either admin screen
+ * because both of them had their own copy of this list, and the server needs the
+ * same answer they do.
+ */
+export const LLM_MODEL_CATALOGUE: { id: string; label: string; note: string; recommended: boolean; vision: boolean }[] = [
+  {
+    id: 'qwen3.5:4b',
+    label: 'Qwen3.5 — 4B',
+    note: 'Recommended · reads images as well as text, so one model covers every document (3.4 GB, 256K context, thinking auto-disabled)',
+    recommended: true,
+    vision: true,
+  },
+];
+
+/**
+ * Whether a model is known to read images.
+ *
+ * The catalogue answers for what it lists. For an id typed by hand this assumes
+ * the families that advertise vision do, and says nothing about anything else —
+ * a guess that hides a working model is worse than one that lets it try, which
+ * is why an explicit override exists alongside.
+ */
+export function modelReadsPhotos(id: string): boolean {
+  const known = LLM_MODEL_CATALOGUE.find((m) => m.id === id.trim());
+  if (known) return known.vision;
+  return /qwen3\.5|-vl\b|vl:|llava|minicpm-v|vision|gpt-4o|gpt-5|claude|gemini/i.test(id);
+}

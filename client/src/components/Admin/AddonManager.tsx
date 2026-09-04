@@ -1,3 +1,4 @@
+import { LLM_MODEL_CATALOGUE } from '@trek/shared'
 import { useEffect, useState, type ComponentType } from 'react'
 import { adminApi } from '../../api/client'
 import { useTranslation } from '../../i18n'
@@ -303,14 +304,6 @@ function GroupHead({ icon: Icon, label, hint, addons, t }: {
 const MASKED = '••••••••'
 const DEFAULT_OLLAMA_URL = 'http://localhost:11434/v1'
 
-/** Curated models the local extractor is tuned for, pullable via Ollama. The router drives
- *  one model per document via Ollama's grammar-constrained `format`; "thinking" is disabled
- *  automatically, so the Qwen3 family works without any tuning. A host only needs one — and
- *  Qwen3.5 reads images as well as text, so that one covers every kind of document. */
-const RECOMMENDED_MODELS: { id: string; label: string; note: string; recommended: boolean; vision: boolean }[] = [
-  { id: 'qwen3.5:4b', label: 'Qwen3.5 — 4B', note: 'Recommended · reads images as well as text, so one model covers every document (3.4 GB, 256K context, thinking auto-disabled)', recommended: true, vision: true },
-]
-
 /**
  * Instance-wide AI-parsing config. When set, applies to the whole instance and
  * overrides per-user config (see server llmConfig.ts). The API key is masked on
@@ -464,7 +457,7 @@ function LlmParsingConfig({ addon }: { addon: Addon }) {
           <div className="border-t border-edge-secondary pt-2">
             <div className="mb-1.5 text-caption font-medium text-content-secondary">Pull a recommended model</div>
             <div className="space-y-1">
-              {RECOMMENDED_MODELS.map(m => {
+              {LLM_MODEL_CATALOGUE.map(m => {
                 const installedHere = isInstalled(m.id)
                 const isPulling = pulling === m.id
                 const active = model === m.id
