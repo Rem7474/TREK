@@ -4,19 +4,27 @@ export interface LlmExtractionFile {
   data: Buffer;
 }
 
-/** Everything a provider client needs to extract reservations from one document. */
+/** Everything a provider client needs to extract structured records from one document. */
 export interface LlmExtractionInput {
   /** System instructions enumerating the schema.org shape (see llm-prompt.ts). */
   prompt: string;
-  /** JSON Schema describing `{ reservations: KiReservation[] }`. */
+  /** JSON Schema describing `{ <rootKey>: T[] }` (e.g. `{ reservations: KiReservation[] }`). */
   jsonSchema: object;
   model: string;
   baseUrl?: string;
   apiKey?: string;
   /** Pre-extracted text (text-like files, or text-only-model mode). */
   text?: string;
-  /** Native binary (PDF) for multimodal providers. */
+  /** Native binary (PDF, or a receipt photo) for multimodal providers. */
   file?: LlmExtractionFile;
+  /**
+   * Root array key of the structured output — 'reservations' for the booking
+   * import, 'receipts' for the receipt scanner. Clients read the array under
+   * this key (and name the Anthropic tool after it). Defaults to 'reservations'.
+   */
+  rootKey?: string;
+  /** User-turn instruction sent with the document. Defaults to the booking-import one. */
+  userText?: string;
   /**
    * The endpoint is a self-hosted model server rather than a cloud provider.
    * Changes what the request may ask for: a grammar-constrained response is

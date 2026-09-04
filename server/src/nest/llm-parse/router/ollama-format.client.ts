@@ -1,5 +1,6 @@
 /**
- * Minimal Ollama native-API client used by the extraction router.
+ * Minimal Ollama native-API client — the one transport TREK uses to talk to a
+ * self-hosted model, shared by the booking-import router and the receipt reader.
  *
  * Why not the OpenAI-compatible `/v1/chat/completions` path the rest of llm-parse uses?
  * Ollama's `/v1` endpoint does NOT faithfully honour OpenAI's `response_format:{json_schema,strict}`
@@ -22,8 +23,22 @@ export interface EnforcedExtractInput {
   model: string;
   system: string;
   user: string;
-  /** JSON Schema the output is constrained to (grammar-level). */
-  schema: Record<string, unknown>;
+  /**
+   * JSON Schema the output is constrained to (grammar-level). Optional: the
+   * booking router wants the hard guarantee, the receipt reader does not.
+   * Measured against qwen3.5 on one receipt, a constrained read was faster
+   * (19s against 49s) but answered with fewer fields — the grammar lets the
+   * model stop at the two required ones, and merchant/date are exactly what
+   * the receipt mapper flags a scan for review without. Worth revisiting with
+   * a schema designed for it; not worth trading the fields for now.
+   */
+  schema?: Record<string, unknown>;
+  /**
+   * Base64 images for a vision model. Ollama's native chat takes them on the
+   * message; the OpenAI-compatible path cannot express what a photograph needs
+   * (see llm-parse.service.ts).
+   */
+  images?: string[];
   apiKey?: string;
   numPredict?: number;
   /** Context window. 8192 fits a typical multi-section booking; raise for long itineraries. */
@@ -50,7 +65,7 @@ export async function extractEnforced(input: EnforcedExtractInput): Promise<Reco
   const body = {
     model: input.model,
     stream: false,
-    format: input.schema,
+    ...(input.schema ? { format: input.schema } : {}),
     // Disable "thinking" for hybrid/reasoning models (Qwen3, etc.): the reasoning tokens
     // collide with the format-grammar constraint here — they produce unparseable output and
     // blow the latency budget on CPU. Ollama ignores this for non-thinking models, so it's safe.
@@ -60,7 +75,7 @@ export async function extractEnforced(input: EnforcedExtractInput): Promise<Reco
     options: { temperature: 0, num_predict: input.numPredict ?? 512, num_ctx: input.numCtx ?? 8192 },
     messages: [
       { role: 'system', content: input.system },
-      { role: 'user', content: input.user },
+      { role: 'user', content: input.user, ...(input.images?.length ? { images: input.images } : {}) },
     ],
   };
 

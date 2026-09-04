@@ -262,9 +262,9 @@ describe('OpenAiCompatibleClient — a self-hosted server is not a small cloud o
   const body = () => JSON.parse((safeFetchLlmMock.mock.calls.at(-1)?.[1] as { body: string }).body);
 
   const input = (over: Record<string, unknown> = {}): LlmExtractionInput =>
-    ({ ...baseInput, model: 'qwen3.5:4b', baseUrl: 'http://ollama.lan:11434/v1', ...over }) as LlmExtractionInput;
+    ({ ...baseInput, model: 'qwen3.5:4b', baseUrl: 'http://ollama.lan:11434/v1', rootKey: 'receipts', ...over }) as LlmExtractionInput;
 
-  beforeEach(() => mockFetch(() => jsonResponse({ choices: [{ message: { content: '{"reservations":[]}' } }] })));
+  beforeEach(() => mockFetch(() => jsonResponse({ choices: [{ message: { content: '{"receipts":[]}' } }] })));
 
   it('asks a local server for JSON without constraining every token', async () => {
     // Measured against Ollama: every grammar-constrained run timed out, including

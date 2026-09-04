@@ -27,6 +27,7 @@ export * from './vacay/vacay.schema';
 export * from './packing/packing.schema';
 export * from './todo/todo.schema';
 export * from './budget/budget.schema';
+export * from './receipt/receipt.schema';
 export * from './reservation/reservation.schema';
 export * from './reservation/ki-reservation.schema';
 export * from './datetime/datetime-normalize';
