@@ -167,6 +167,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Σύρετε τις γωνίες ώστε να μείνει μόνο η απόδειξη — λιγότερο φόντο, λιγότερα λάθη.",
+  'receipts.retakePhoto': "Νέα λήψη",
+  'receipts.cropApply': "Χρήση περικοπής",
+  'receipts.cropProgress': 'Εικόνα {index} από {total}',
   'receipts.scan': 'Σάρωση απόδειξης',
   'receipts.title': 'Σάρωση απόδειξης',
   'receipts.subtitle':

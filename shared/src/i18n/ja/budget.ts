@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "角をドラッグしてレシートだけを残してください。背景が少ないほど誤読が減ります。",
+  'receipts.retakePhoto': "撮り直す",
+  'receipts.cropApply': "この範囲を使う",
+  'receipts.cropProgress': '{total} 枚中 {index} 枚目',
   'receipts.scan': 'レシートをスキャン',
   'receipts.title': 'レシートをスキャン',
   'receipts.subtitle':

@@ -100,6 +100,9 @@ async function scan(container: HTMLElement, name = 'receipt.jpg') {
   fireEvent.change(input, { target: { files: [new File(['x'], name, { type: 'image/jpeg' })] } });
   const { default: userEvent } = await import('@testing-library/user-event');
   const user = userEvent.setup();
+  // Every image goes through the cropper now, whatever it was picked from.
+  const crop = screen.queryByRole('button', { name: 'Use this crop' });
+  if (crop) await user.click(crop);
   // A picked photo is re-encoded before it counts as chosen, so the action only
   // arms once that has landed — the same wait the button makes the user do.
   const action = await screen.findByRole('button', { name: 'Scan' });
@@ -141,12 +144,103 @@ describe('ReceiptScanModal', () => {
     expect(clicked).toHaveBeenCalled();
   });
 
+  it('offers a crop before sending a photo taken with the camera', async () => {
+    const { container } = renderModal();
+    const inputs = Array.from(container.ownerDocument.querySelectorAll('input[type="file"]'));
+    const camera = inputs.find((i) => i.hasAttribute('capture')) as HTMLInputElement;
 
+    fireEvent.change(camera, {
+      target: { files: [new File(['x'], 'IMG_0421.jpg', { type: 'image/jpeg' })] },
+    });
 
+    // A phone frame is mostly table; trimming it is the cheapest accuracy win.
+    expect(await screen.findByRole('button', { name: /Use this crop/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Retake/i })).toBeInTheDocument();
+  });
 
+  it('does not interrupt a document with a crop step — there is no framing to fix', async () => {
+    const { container } = renderModal();
+    const picker = container.ownerDocument.querySelector('input[type="file"]:not([capture])') as HTMLInputElement;
 
+    fireEvent.change(picker, {
+      target: { files: [new File(['x'], 'invoice.pdf', { type: 'application/pdf' })] },
+    });
 
-  it('sends a mixed selection whole — photo and PDF alike', async () => {
+    expect(await screen.findByRole('button', { name: 'Scan' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Use this crop/i })).not.toBeInTheDocument();
+  });
+
+  it('crops an image from the gallery too, not only one straight from the camera', async () => {
+    // A photo picked from the gallery is as unframed as one just taken: the
+    // frame is mostly table either way, and the trimmings cost tokens.
+    const { container } = renderModal();
+    const picker = container.ownerDocument.querySelector('input[type="file"]:not([capture])') as HTMLInputElement;
+
+    fireEvent.change(picker, {
+      target: { files: [new File(['x'], 'PXL_20260825.jpg', { type: 'image/jpeg' })] },
+    });
+
+    expect(await screen.findByRole('button', { name: /Use this crop/i })).toBeInTheDocument();
+  });
+
+  it('crops every image of a multi-file selection in turn, not just the first', async () => {
+    // Picking five photos at once is exactly where framing is worst — nobody
+    // reframes a batch before importing it — so each one gets its own crop.
+    let uploaded = 0;
+    server.use(
+      http.post('/api/trips/1/receipts/scan/async', async ({ request }) => {
+        const form = await request.formData();
+        uploaded = form.getAll('files').length;
+        return HttpResponse.json({ jobId: 'job-batch' });
+      })
+    );
+    const { container } = renderModal();
+    const picker = container.ownerDocument.querySelector('input[type="file"]:not([capture])') as HTMLInputElement;
+
+    fireEvent.change(picker, {
+      target: {
+        files: [
+          new File(['a'], 'one.jpg', { type: 'image/jpeg' }),
+          new File(['b'], 'two.jpg', { type: 'image/jpeg' }),
+          new File(['c'], 'three.jpg', { type: 'image/jpeg' }),
+        ],
+      },
+    });
+
+    const { default: userEvent } = await import('@testing-library/user-event');
+    const user = userEvent.setup();
+    // The counter is what tells the user this is not the only one coming.
+    expect(await screen.findByText('Image 1 of 3')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Use this crop' }));
+    expect(await screen.findByText('Image 2 of 3')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Use this crop' }));
+    expect(await screen.findByText('Image 3 of 3')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Use this crop' }));
+
+    const action = await screen.findByRole('button', { name: 'Scan' });
+    await waitFor(() => expect(action).not.toBeDisabled());
+    await user.click(action);
+
+    // All three survive the queue, in the order they were chosen — the upload
+    // carries three parts, and the task label names them in order.
+    await waitFor(() => expect(uploaded).toBe(3));
+    const task = useBackgroundTasksStore.getState().tasks.find((t) => t.id === 'job-batch');
+    expect(task?.label).toBe('one.jpg, two.jpg, three.jpg');
+  });
+
+  it('does not count a single image as a batch', async () => {
+    const { container } = renderModal();
+    const picker = container.ownerDocument.querySelector('input[type="file"]:not([capture])') as HTMLInputElement;
+
+    fireEvent.change(picker, {
+      target: { files: [new File(['x'], 'alone.jpg', { type: 'image/jpeg' })] },
+    });
+
+    expect(await screen.findByRole('button', { name: 'Use this crop' })).toBeInTheDocument();
+    expect(screen.queryByText(/Image 1 of/)).not.toBeInTheDocument();
+  });
+
+  it('crops the photos of a mixed selection and carries the PDF along untouched', async () => {
     let uploaded = 0;
     server.use(
       http.post('/api/trips/1/receipts/scan/async', async ({ request }) => {
@@ -169,15 +263,45 @@ describe('ReceiptScanModal', () => {
 
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
+    // One image to crop, so no counter — the PDF is not queued behind it.
+    expect(await screen.findByRole('button', { name: 'Use this crop' })).toBeInTheDocument();
+    expect(screen.queryByText(/Image 1 of/)).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Use this crop' }));
+
     const action = await screen.findByRole('button', { name: 'Scan' });
     await waitFor(() => expect(action).not.toBeDisabled());
     await user.click(action);
 
+    // Both go up: the PDF was never queued for a crop, but it was not dropped.
     await waitFor(() => expect(uploaded).toBe(2));
     const task = useBackgroundTasksStore.getState().tasks.find((t) => t.id === 'job-mixed');
-    expect(task?.label).toBe('photo.jpg, invoice.pdf');
+    expect(task?.label).toBe('invoice.pdf, photo.jpg');
   });
 
+  it('abandons the whole selection when a crop is refused mid-batch', async () => {
+    // "Retake" on image two cannot leave image one queued with nothing to join
+    // it — the selection goes back to the picker whole.
+    const { container } = renderModal();
+    const picker = container.ownerDocument.querySelector('input[type="file"]:not([capture])') as HTMLInputElement;
+
+    fireEvent.change(picker, {
+      target: {
+        files: [
+          new File(['a'], 'one.jpg', { type: 'image/jpeg' }),
+          new File(['b'], 'two.jpg', { type: 'image/jpeg' }),
+        ],
+      },
+    });
+
+    const { default: userEvent } = await import('@testing-library/user-event');
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole('button', { name: 'Use this crop' }));
+    expect(await screen.findByText('Image 2 of 2')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Retake' }));
+
+    expect(screen.queryByRole('button', { name: 'Use this crop' })).not.toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'Scan' })).toBeDisabled();
+  });
 
   it('sends the photo the camera returned to the background scanner', async () => {
     let uploaded = 0;
@@ -200,6 +324,7 @@ describe('ReceiptScanModal', () => {
 
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
+    await user.click(await screen.findByRole('button', { name: 'Use this crop' }));
     const action = await screen.findByRole('button', { name: 'Scan' });
     await waitFor(() => expect(action).not.toBeDisabled());
     await user.click(action);
@@ -482,7 +607,9 @@ describe('ReceiptScanModal', () => {
     const input = container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement
     fireEvent.change(input, { target: { files: [new File(['x'], 'IMG_0042.HEIC', { type: 'image/heic' })] } })
 
-    // The format is settled when the bytes are read, not from the extension.
+    const { default: userEvent } = await import('@testing-library/user-event')
+    // The crop comes first; the format is only settled when the bytes are read.
+    await userEvent.setup().click(await screen.findByRole('button', { name: 'Use this crop' }))
     expect(await screen.findByText('That file type cannot be scanned.')).toBeInTheDocument()
   })
 

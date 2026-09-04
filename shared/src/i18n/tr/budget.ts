@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Köşeleri sürükleyip yalnızca fişi bırakın — daha az arka plan, daha az okuma hatası.",
+  'receipts.retakePhoto': "Yeniden çek",
+  'receipts.cropApply': "Bu kırpmayı kullan",
+  'receipts.cropProgress': '{total} görselden {index}.',
   'receipts.scan': 'Fiş tara',
   'receipts.title': 'Fiş tara',
   'receipts.subtitle':

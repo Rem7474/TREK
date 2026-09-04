@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Przeciągnij rogi, aby zostawić tylko paragon — mniej tła to mniej błędów odczytu.",
+  'receipts.retakePhoto': "Zrób ponownie",
+  'receipts.cropApply': "Użyj tego kadru",
+  'receipts.cropProgress': 'Zdjęcie {index} z {total}',
   'receipts.scan': 'Skanuj paragon',
   'receipts.title': 'Zeskanuj paragon',
   'receipts.subtitle': 'Zrób zdjęcie paragonu albo wgraj fakturę PDF. TREK rozpozna, co to jest, i przygotuje wydatek.',

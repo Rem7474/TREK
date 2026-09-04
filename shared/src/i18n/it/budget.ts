@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "Il modello IA non ha risposto in tempo. Potrebbe essere ancora in caricamento, o il server non è raggiungibile.",
   'receipts.failure.rejected':
     "Il fornitore IA ha rifiutato la richiesta. Il log del server contiene la sua risposta.",
+  'receipts.cropHint':
+    "Trascina gli angoli per tenere solo la ricevuta — meno sfondo, meno errori di lettura.",
+  'receipts.retakePhoto': "Rifai la foto",
+  'receipts.cropApply': "Usa questo ritaglio",
+  'receipts.cropProgress': 'Immagine {index} di {total}',
   'receipts.scan': 'Scansiona scontrino',
   'receipts.title': 'Scansiona uno scontrino',
   'receipts.subtitle':

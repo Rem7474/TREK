@@ -24,7 +24,8 @@ They also differ in what they can read. Booking import parses structured confirm
 1. Open a trip → **Costs**.
 2. Click **Scan receipt** (on a phone, the camera button next to *Add expense*). The picker your device offers already has Camera beside Files, so photographing a bill and opening a saved invoice are the same gesture.
 3. Pick up to 5 files at once, 10 MB each. Photos are shrunk and re-encoded in the browser before they are uploaded — a phone photo is far larger than the model needs.
-4. Reading starts in the background. The scan appears in the **background tasks** tray, and you can leave the panel, change tab or lock the phone — when it is done the tray offers **Review**.
+4. **Crop** each photo to the receipt. Dragging the corners in is worth doing: a frame that is mostly table costs reading time and invites misreads. A batch is cropped one image after the other.
+5. Reading starts in the background. The scan appears in the **background tasks** tray, and you can leave the panel, change tab or lock the phone — when it is done the tray offers **Review**.
 
 ### Quick read
 
@@ -108,7 +109,7 @@ The receipt is sent to whichever provider is configured — with a local model, 
 
 **"Receipt scanning needs the AI parsing addon set up with a vision-capable model"** — the addon is on, but no provider/model is configured for you. Set one in [User Settings](User-Settings), or ask an admin to set an instance-wide one.
 
-**"Nothing readable was found on this receipt"** — usually a text-only model given a photo. Switch to a vision model. Otherwise retake the photo: fill the frame with the receipt, flatten it, avoid glare on thermal paper, and fill the frame with it.
+**"Nothing readable was found on this receipt"** — usually a text-only model given a photo. Switch to a vision model. Otherwise retake the photo: fill the frame with the receipt, flatten it, avoid glare on thermal paper, and crop tight in the step before the scan.
 
 **"The AI model did not answer in time"** — a local model on a cold start can take minutes to load before it reads anything. Try again once it is resident; if it keeps happening, raise `LLM_TIMEOUT_MS` (see [Environment-Variables](Environment-Variables)).
 

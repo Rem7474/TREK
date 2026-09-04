@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Húzd a sarkokat, hogy csak a nyugta maradjon — kevesebb háttér, kevesebb hiba.",
+  'receipts.retakePhoto': "Új fotó",
+  'receipts.cropApply': "Ezt a kivágást",
+  'receipts.cropProgress': '{total} kép közül a(z) {index}.',
   'receipts.scan': 'Nyugta beolvasása',
   'receipts.title': 'Nyugta beolvasása',
   'receipts.subtitle':

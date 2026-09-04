@@ -8,6 +8,7 @@ import {
 } from '@trek/shared'
 import { AlertCircle, Camera, ScanLine, Upload, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import ReceiptCropper from '../../../../components/Budget/ReceiptCropper'
 import { SYMBOLS, currenciesWith } from '../../../../components/Budget/BudgetPanel.constants'
 import type { TripMember } from '../../../../components/Budget/BudgetPanelMemberChips'
 import { COST_CATEGORY_LIST, catMeta } from '../../../../components/Budget/costsCategories'
@@ -68,7 +69,7 @@ export default function MReceiptScanSheet({
   }
 
   const {
-    files, phase, drafts, warnings, error, saving,
+    files, phase, drafts, warnings, error, saving, cropping, cropIndex, cropTotal, applyCrop, cancelCrop,
     fileInputRef, accept, photos, quick, setQuick,
     selectFiles, handleScan, handleSave, patch, setSplit, removeDraft, splitsOk,
   } = useReceiptScan({ tripId, base, intent, photos: photosAvailable, initialFiles, initialResult, onClose: requestClose, onSaved })
@@ -89,6 +90,16 @@ export default function MReceiptScanSheet({
         closeLabel={t('common.close')}
       />
 
+      {cropping && (
+        <ReceiptCropper
+          key={cropIndex}
+          file={cropping}
+          index={cropIndex}
+          total={cropTotal}
+          onCancel={cancelCrop}
+          onCropped={applyCrop}
+        />
+      )}
 
       <div className="min-h-0 flex-1 overflow-y-auto px-[18px] pb-[6px] pt-[2px]">
         {!reviewing && (
