@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Kéo các góc để chỉ giữ lại hóa đơn — càng ít nền thì càng ít đọc sai.",
+  'receipts.retakePhoto': "Chụp lại",
+  'receipts.cropApply': "Dùng khung này",
+  'receipts.cropProgress': 'Ảnh {index} trên {total}',
   'receipts.scan': 'Quét hóa đơn',
   'receipts.title': 'Quét hóa đơn',
   'receipts.subtitle': 'Chụp ảnh hóa đơn, hoặc tải lên hóa đơn PDF. TREK nhận biết đó là gì và chuẩn bị khoản chi.',

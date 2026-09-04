@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Arrossega les cantonades per deixar només el rebut — menys fons, menys errors de lectura.",
+  'receipts.retakePhoto': "Torna a fer la foto",
+  'receipts.cropApply': "Usa aquest retall",
+  'receipts.cropProgress': 'Imatge {index} de {total}',
   'receipts.scan': 'Escanejar rebut',
   'receipts.title': 'Escanejar un rebut',
   'receipts.subtitle':

@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Потяните за углы, чтобы остался только чек — меньше фона, меньше ошибок распознавания.",
+  'receipts.retakePhoto': "Переснять",
+  'receipts.cropApply': "Использовать кадр",
+  'receipts.cropProgress': 'Изображение {index} из {total}',
   'receipts.scan': 'Сканировать чек',
   'receipts.title': 'Сканирование чека',
   'receipts.subtitle': 'Сфотографируйте чек или загрузите счёт в PDF. TREK определит, что это, и подготовит расход.',

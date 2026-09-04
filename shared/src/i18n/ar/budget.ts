@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "اسحب الزوايا للإبقاء على الإيصال فقط — خلفية أقل تعني أخطاء قراءة أقل.",
+  'receipts.retakePhoto': "إعادة التقاط",
+  'receipts.cropApply': "استخدام هذا الاقتصاص",
+  'receipts.cropProgress': 'الصورة {index} من {total}',
   'receipts.scan': 'مسح الإيصال',
   'receipts.title': 'مسح إيصال',
   'receipts.subtitle': 'صوّر إيصالاً أو ارفع فاتورة PDF. يتعرّف TREK على نوع المستند ويجهّز المصروف.',

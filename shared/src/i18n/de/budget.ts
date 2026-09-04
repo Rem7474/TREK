@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "Das KI-Modell hat nicht rechtzeitig geantwortet. Es lädt möglicherweise noch, oder der Server ist nicht erreichbar.",
   'receipts.failure.rejected':
     "Der KI-Anbieter hat die Anfrage abgelehnt. Die Antwort steht im Server-Log.",
+  'receipts.cropHint':
+    "Zieh die Ecken so, dass nur der Beleg bleibt — weniger Hintergrund, weniger Lesefehler.",
+  'receipts.retakePhoto': "Neu aufnehmen",
+  'receipts.cropApply': "Diesen Ausschnitt verwenden",
+  'receipts.cropProgress': 'Bild {index} von {total}',
   'receipts.scan': 'Beleg scannen',
   'receipts.title': 'Beleg scannen',
   'receipts.subtitle':

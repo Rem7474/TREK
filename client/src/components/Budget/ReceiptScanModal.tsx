@@ -8,6 +8,7 @@ import {
 } from '@trek/shared';
 import { AlertCircle, Camera, Loader2, Upload, X } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
+import ReceiptCropper from './ReceiptCropper';
 import { useExchangeRates } from '../../hooks/useExchangeRates';
 import { useTranslation } from '../../i18n';
 import { formatMoney } from '../../utils/formatters';
@@ -84,6 +85,11 @@ export default function ReceiptScanModal({
     warnings,
     error,
     saving,
+    cropping,
+    cropIndex,
+    cropTotal,
+    applyCrop,
+    cancelCrop,
     isDragOver,
     setIsDragOver,
     fileInputRef,
@@ -189,7 +195,18 @@ export default function ReceiptScanModal({
       size="xl"
       footer={footer}
     >
-      {phase !== 'review' && (
+      {cropping && (
+        <ReceiptCropper
+          key={cropIndex}
+          file={cropping}
+          index={cropIndex}
+          total={cropTotal}
+          onCancel={cancelCrop}
+          onCropped={applyCrop}
+        />
+      )}
+
+      {!cropping && phase !== 'review' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <p
             className="text-content-muted"

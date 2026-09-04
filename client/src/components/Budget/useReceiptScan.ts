@@ -56,6 +56,16 @@ function toDraft(item: ReceiptScanItem, index: number, base: string, intent: 'ex
   };
 }
 
+/** Images waiting on the cropper, what it has produced, and what travels with them. */
+interface CropSession {
+  /** Still to crop, in the order they were chosen; the head is on screen. */
+  queue: File[];
+  /** Cropped so far. */
+  done: File[];
+  /** PDFs and the like from the same selection: nothing to crop, but they arrive together. */
+  others: File[];
+}
+
 export function useReceiptScan({
   tripId,
   base,
@@ -102,11 +112,34 @@ export function useReceiptScan({
   // with them the per-item split, which is not a trade to make on the user's
   // behalf. On a coffee or a parking meter there is nothing there to give up.
   const [quick, setQuick] = useState(false);
+  // Images go through the cropper first: a phone frame is mostly table, and the
+  // trimmings cost tokens and invite misreads. A selection can hold several, so
+  // this is a queue rather than one file — they are cropped one after the other.
+  const [crop, setCrop] = useState<CropSession | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  /** Validate, shrink and keep what was chosen, wherever the picker came from. */
-  const selectFiles = async (incoming: File[]) => {
+  /**
+   * Take what was chosen, wherever it came from.
+   *
+   * Every image goes to the cropper first, whether it was just photographed or
+   * picked from the gallery, and whether it came alone or with four others: a
+   * phone frame is mostly table either way, and the trimmings cost tokens and
+   * invite misreads. Several images are queued and cropped in turn rather than
+   * being waved through — a batch is exactly where framing is worst, because
+   * nobody reframes ten photos before importing them. `crop: false` is how the
+   * cropper hands its own output back without being sent round again.
+   */
+  const selectFiles = async (incoming: File[], opts?: { crop?: boolean }) => {
+    if (opts?.crop !== false) {
+      const capped = incoming.slice(0, MAX_FILES);
+      const images = capped.filter((f) => f.type.startsWith('image/'));
+      if (images.length) {
+        setCrop({ queue: images, done: [], others: capped.filter((f) => !f.type.startsWith('image/')) });
+        return;
+      }
+    }
     const valid: File[] = [];
     let firstErr = '';
     for (const f of incoming.slice(0, MAX_FILES)) {
@@ -136,11 +169,37 @@ export function useReceiptScan({
     if (valid.length) setFiles(valid);
   };
 
+  /**
+   * One image cropped: keep it and move to the next, or, when it was the last,
+   * hand the whole selection on for validation in the order it was chosen.
+   */
+  const applyCrop = (cropped: File) => {
+    if (!crop) return;
+    const done = [...crop.done, cropped];
+    const queue = crop.queue.slice(1);
+    if (queue.length) {
+      setCrop({ ...crop, queue, done });
+      return;
+    }
+    setCrop(null);
+    // crop: false — these ARE the crops coming back; sending them round again
+    // would reopen the cropper on its own output, forever.
+    void selectFiles([...crop.others, ...done], { crop: false });
+  };
+
+  /**
+   * Abandon the crop — and with it the selection, part-cropped or not. The
+   * button says "retake": leaving the earlier crops of a batch queued up with
+   * nothing to join them would be a stranger outcome than starting over.
+   */
+  const cancelCrop = () => setCrop(null);
+
   // Opened from the shared picker: the user already chose, don't ask twice.
   //
-  // Not when a finished scan is being reopened, though: a result means the
-  // picking is long over, and feeding the files back in would re-validate and
-  // re-encode something that has already been read.
+  // Not when a finished scan is being reopened, though. The files that started
+  // it are still held upstream, and feeding them back in here sent the image
+  // round the cropper a second time — after it had already been read, which is
+  // both pointless and baffling. A result means the picking is long over.
   useEffect(() => {
     if (initialResult) return;
     if (initialFiles?.length) void selectFiles(initialFiles);
@@ -298,6 +357,13 @@ export function useReceiptScan({
     warnings,
     error,
     saving,
+    /** The image the cropper should be showing, if any. */
+    cropping: crop?.queue[0] ?? null,
+    /** Position in the batch, 1-based, for a cropper that says which one this is. */
+    cropIndex: crop ? crop.done.length + 1 : 0,
+    cropTotal: crop ? crop.done.length + crop.queue.length : 0,
+    applyCrop,
+    cancelCrop,
     isDragOver,
     setIsDragOver,
     fileInputRef,

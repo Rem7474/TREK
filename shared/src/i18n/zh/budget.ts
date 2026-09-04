@@ -165,6 +165,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "拖动四角，只保留小票——背景越少，识别出错越少。",
+  'receipts.retakePhoto': "重拍",
+  'receipts.cropApply': "使用此裁剪",
+  'receipts.cropProgress': '第 {index} 张，共 {total} 张',
   'receipts.scan': '扫描收据',
   'receipts.title': '扫描收据',
   'receipts.subtitle': '拍下收据，或上传 PDF 发票。TREK 会识别单据类型并为你准备好这笔支出。',

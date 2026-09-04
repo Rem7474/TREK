@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "모서리를 끌어 영수증만 남기세요. 배경이 적을수록 오독이 줄어듭니다.",
+  'receipts.retakePhoto': "다시 촬영",
+  'receipts.cropApply': "이 영역 사용",
+  'receipts.cropProgress': '{total}장 중 {index}장',
   'receipts.scan': '영수증 스캔',
   'receipts.title': '영수증 스캔',
   'receipts.subtitle': '영수증을 촬영하거나 PDF 청구서를 올리세요. TREK이 종류를 인식해 지출을 준비합니다.',

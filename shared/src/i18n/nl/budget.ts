@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "Het AI-model antwoordde niet op tijd. Het laadt mogelijk nog, of de server is onbereikbaar.",
   'receipts.failure.rejected':
     "De AI-aanbieder heeft het verzoek geweigerd. Het serverlog bevat het antwoord.",
+  'receipts.cropHint':
+    "Sleep de hoeken zodat alleen de bon overblijft — minder achtergrond, minder leesfouten.",
+  'receipts.retakePhoto': "Opnieuw",
+  'receipts.cropApply': "Deze uitsnede gebruiken",
+  'receipts.cropProgress': 'Afbeelding {index} van {total}',
   'receipts.scan': 'Bon scannen',
   'receipts.title': 'Een bon scannen',
   'receipts.subtitle':

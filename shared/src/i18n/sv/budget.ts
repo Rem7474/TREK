@@ -166,6 +166,11 @@ const budget: TranslationStrings = {
     "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
   'receipts.failure.rejected':
     "The AI provider rejected the request. The server log has its response.",
+  'receipts.cropHint':
+    "Dra i hörnen så att bara kvittot är kvar — mindre bakgrund ger färre lässfel.",
+  'receipts.retakePhoto': "Ta om",
+  'receipts.cropApply': "Använd beskärningen",
+  'receipts.cropProgress': 'Bild {index} av {total}',
   'receipts.scan': 'Skanna kvitto',
   'receipts.title': 'Skanna ett kvitto',
   'receipts.subtitle':
