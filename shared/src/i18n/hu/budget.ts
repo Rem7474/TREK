@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'A részek összege: {sum} / {total} (hiányzik {diff})',
   'costs.splitSumOver': 'A részek összege: {sum} / {total} ({diff} a többlet)',
   'costs.toggleSign': 'Váltás kiadás és visszatérítés között',
+
+  // Nyugtaszkenner — fényképezd le a számlát, és kész a költség (Költségek → Nyugta beolvasása).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Nyugta beolvasása',
+  'receipts.title': 'Nyugta beolvasása',
+  'receipts.subtitle':
+    'Fényképezd le a nyugtát, vagy tölts fel egy PDF számlát. A TREK felismeri, mi az, és előkészíti a költséget.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML vagy EML · legfeljebb 5 fájl, egyenként 10 MB',
+  'receipts.takePhoto': 'Fénykép készítése',
+  'receipts.pickOrPhoto': 'Fényképezés vagy fájl választása',
+  'receipts.dropHere': 'Húzz ide egy nyugtát, vagy kattints a kiválasztáshoz',
+  'receipts.dropActive': 'Engedd el a beolvasáshoz',
+  'receipts.scanning': 'A nyugta olvasása…',
+  'receipts.scanningHint': 'Helyi modellel ez akár egy percig is tarthat.',
+  'receipts.scanAction': 'Beolvasás',
+  'receipts.unsupportedFormat': 'Ez a fájltípus nem olvasható be.',
+  'receipts.fileTooLarge': 'A(z) {name} nagyobb 10 MB-nál.',
+  'receipts.notConfigured': 'A nyugták beolvasásához az MI-elemzés bővítmény kell, képfelismerésre képes modellel.',
+  'receipts.error': 'A nyugtát nem sikerült beolvasni.',
+  'receipts.nothingFound': 'Ezen a nyugtán nem található olvasható adat.',
+  'receipts.reviewTitle': 'Ellenőrizd mentés előtt',
+  'receipts.reviewSubtitle': '{count} nyugta beolvasva. Javítsd, ami nem stimmel, majd mentsd el.',
+  'receipts.needsReview': 'Ezt nézd át',
+  'receipts.merchant': 'Kereskedő',
+  'receipts.docType': 'Dokumentum típusa',
+  'receipts.attachReceipt': 'Nyugta megőrzése a Dokumentumokban',
+  'receipts.lineItems': '{count} tétel a nyugtán',
+  'receipts.save': 'Költség mentése',
+  'receipts.savePlural': '{count} költség mentése',
+  'receipts.saved': 'Költség hozzáadva a nyugtádból.',
+  'receipts.savedPlural': '{count} költség hozzáadva a nyugtáidból.',
+  'receipts.saveError': 'A költséget nem sikerült menteni.',
+  'receipts.scanExpired': 'Ez a beolvasás lejárt, mielőtt visszatértél — olvasd be újra a nyugtát.',
+  'receipts.discard': 'Elvetés',
+  'receipts.type.meal': 'Étkezés',
+  'receipts.type.groceries': 'Élelmiszer',
+  'receipts.type.accommodation': 'Szállás',
+  'receipts.type.transport': 'Közlekedés',
+  'receipts.type.flight': 'Repülőjegy',
+  'receipts.type.fuel': 'Üzemanyag',
+  'receipts.type.activity': 'Program',
+  'receipts.type.shopping': 'Vásárlás',
+  'receipts.type.health': 'Egészség',
+  'receipts.type.fees': 'Díjak',
+  'receipts.type.other': 'Egyéb',
 };
 export default budget;

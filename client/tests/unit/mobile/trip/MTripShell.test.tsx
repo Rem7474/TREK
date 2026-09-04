@@ -363,12 +363,14 @@ describe('MTripShell', () => {
   })
 
   it('FE-MOB-SHELL-028: the transports header offers both importers when they are available', () => {
-    const { planner } = renderShell({ activeTab: 'transports', airTrailAvailable: true } as Partial<TripPlanner>)
+    const { planner, container } = renderShell({ activeTab: 'transports', airTrailAvailable: true } as Partial<TripPlanner>)
     fireEvent.click(screen.getByRole('button', { name: 'reservations.import.title' }))
-    fireEvent.click(screen.getByRole('button', { name: 'reservations.airtrail.title' }))
+    expect(planner.setBookingImportKind).toHaveBeenCalledWith('transports')
     expect(planner.setShowBookingImport).toHaveBeenCalledWith(true)
+    fireEvent.click(screen.getByRole('button', { name: 'reservations.airtrail.title' }))
     expect(planner.setShowAirTrailImport).toHaveBeenCalledWith(true)
   })
+
 
   it('FE-MOB-SHELL-029: the transports header hides the importers that are switched off', () => {
     renderShell({
@@ -389,7 +391,7 @@ describe('MTripShell', () => {
   })
 
   it('FE-MOB-SHELL-031: the bookings header opens a blank reservation and toggles its own density', () => {
-    const { planner } = renderShell({ activeTab: 'buchungen' } as Partial<TripPlanner>)
+    const { planner, container } = renderShell({ activeTab: 'buchungen' } as Partial<TripPlanner>)
     fireEvent.click(screen.getByRole('button', { name: 'mobileTrip.newReservation' }))
     expect(planner.setEditingReservation).toHaveBeenCalledWith(null)
     expect(planner.setShowReservationModal).toHaveBeenCalledWith(true)

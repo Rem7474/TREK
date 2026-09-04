@@ -147,6 +147,63 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Suma de les parts: {sum} de {total} (en falten {diff})',
   'costs.splitSumOver': 'Suma de les parts: {sum} de {total} ({diff} de més)',
   'costs.toggleSign': 'Alterna entre despesa i devolució',
+
+  // Escàner de rebuts — fotografia un compte i tindràs la despesa (Costos → Escanejar rebut).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Escanejar rebut',
+  'receipts.title': 'Escanejar un rebut',
+  'receipts.subtitle':
+    'Fes una foto d’un rebut, o puja una factura en PDF. El TREK detecta de què es tracta i prepara la despesa.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML o EML · fins a 5 fitxers, 10 MB cadascun',
+  'receipts.takePhoto': 'Fer una foto',
+  'receipts.pickOrPhoto': 'Fotografia o tria un fitxer',
+  'receipts.dropHere': 'Deixa anar un rebut aquí, o clica per triar-lo',
+  'receipts.dropActive': 'Deixa anar per escanejar',
+  'receipts.scanning': 'Llegint el teu rebut…',
+  'receipts.scanningHint': 'Amb un model local pot trigar fins a un minut.',
+  'receipts.scanAction': 'Escanejar',
+  'receipts.unsupportedFormat': 'Aquest tipus de fitxer no es pot escanejar.',
+  'receipts.fileTooLarge': '{name} supera els 10 MB.',
+  'receipts.notConfigured':
+    "Escanejar rebuts requereix el complement d'anàlisi amb IA configurat amb un model capaç de llegir imatges.",
+  'receipts.error': 'No s’ha pogut escanejar el rebut.',
+  'receipts.nothingFound': 'No s’ha trobat res llegible en aquest rebut.',
+  'receipts.reviewTitle': 'Comprova-ho abans de desar',
+  'receipts.reviewSubtitle': 'S’han llegit {count} rebuts. Corregeix el que no quadri i desa.',
+  'receipts.needsReview': 'Revisa aquest',
+  'receipts.merchant': 'Comerç',
+  'receipts.docType': 'Tipus de document',
+  'receipts.attachReceipt': 'Conserva el rebut als Documents',
+  'receipts.lineItems': '{count} articles al rebut',
+  'receipts.save': 'Desar despesa',
+  'receipts.savePlural': 'Desar {count} despeses',
+  'receipts.saved': 'Despesa afegida des del teu rebut.',
+  'receipts.savedPlural': '{count} despeses afegides des dels teus rebuts.',
+  'receipts.saveError': 'No s’ha pogut desar la despesa.',
+  'receipts.scanExpired': 'Aquest escaneig ha caducat abans que tornessis: escaneja el rebut de nou.',
+  'receipts.discard': 'Descartar',
+  'receipts.type.meal': 'Àpat',
+  'receipts.type.groceries': 'Supermercat',
+  'receipts.type.accommodation': 'Allotjament',
+  'receipts.type.transport': 'Transport',
+  'receipts.type.flight': 'Vol',
+  'receipts.type.fuel': 'Combustible',
+  'receipts.type.activity': 'Activitat',
+  'receipts.type.shopping': 'Compres',
+  'receipts.type.health': 'Salut',
+  'receipts.type.fees': 'Taxes',
+  'receipts.type.other': 'Altres',
 };
 
 export default budget;

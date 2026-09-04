@@ -10,7 +10,7 @@ import { resolvePluginIcon } from '../../components/shared/PluginIcon'
 import { useTranslation, translateApiError } from '../../i18n'
 import { addonsApi, accommodationsApi, authApi, tripsApi, assignmentsApi, healthApi, airtrailApi, mapsApi, placesApi } from '../../api/client'
 import { parsedItemToDraft, isTransportItem, isUnplaceableItem, type BookingReviewDraft } from '../../components/Planner/parsedItemToDraft'
-import type { BookingImportPreviewItem } from '@trek/shared'
+import type { BookingImportPreviewItem, ReceiptScanResponse } from '@trek/shared'
 import { accommodationRepo } from '../../repo/accommodationRepo'
 import { offlineDb, getImportFiles, deleteImportFiles } from '../../db/offlineDb'
 import { isEffectivelyOffline } from '../../sync/networkMode'
@@ -22,6 +22,7 @@ import { useRouteCalculation } from '../../hooks/useRouteCalculation'
 import { usePlaceSelection } from '../../hooks/usePlaceSelection'
 import { usePlannerHistory } from '../../hooks/usePlannerHistory'
 import { useAirtrailConnection } from '../../hooks/useAirtrailConnection'
+import { useReceiptScanCapability } from '../../hooks/useReceiptScanCapability'
 import { useIsTouch } from '../../hooks/useIsTouch'
 import { usePluginStore } from '../../store/pluginStore'
 import type { Accommodation, TripMember, Day, Place, Reservation } from '../../types'
@@ -231,6 +232,16 @@ export function useTripPlanner() {
   // Which tab opened the importer. Only ever a tie-breaker — see openImportItem.
   const [bookingImportKind, setBookingImportKind] = useState<'transports' | 'bookings'>('bookings')
   const [bookingImportAvailable, setBookingImportAvailable] = useState<boolean>(false)
+  /**
+   * Whether the instance offers receipt scanning, and whether the model configured
+   * for this user can be handed a photograph. The scanner still reads a PDF invoice
+   * without the second, so it gates the camera and the image file types rather than
+   * the feature. Shared with the Costs panel — see the hook.
+   */
+  const { available: receiptScanAvailable, photos: receiptPhotosAvailable } = useReceiptScanCapability()
+  const [showReceiptScan, setShowReceiptScan] = useState<boolean>(false)
+  /** A background scan handed back for review; the modal opens straight on it. */
+  const [receiptScanResult, setReceiptScanResult] = useState<ReceiptScanResponse | undefined>()
   const { available: airTrailAvailable } = useAirtrailConnection()
   const [showAirTrailImport, setShowAirTrailImport] = useState<boolean>(false)
   // Pull this user's AirTrail edits as soon as they open the trip, so changes
@@ -984,6 +995,19 @@ export function useTripPlanner() {
     const task = bgTasks.find(
       (tk) => tk.tripId === String(tripId) && tk.status === 'done' && tk.reviewRequested && !tk.consumed,
     )
+    // A finished receipt scan reopens the scanner on its result instead of the
+    // per-booking import flow — same widget, different review.
+    const scan = bgTasks.find(
+      (tk) => tk.tripId === String(tripId) && tk.job === 'receipt' && tk.status === 'done' && tk.reviewRequested && !tk.consumed,
+    )
+    if (scan?.receipt) {
+      const result = scan.receipt
+      dismissBgTask(scan.id)
+      setReceiptScanResult(result)
+      setShowReceiptScan(true)
+      return
+    }
+
     if (task && task.items && task.items.length > 0) {
       // Hand the items (and the source files, to attach to each booking) to the review flow
       // and clear the widget entry — once the user hit "review", the background card is done.
@@ -1074,6 +1098,8 @@ export function useTripPlanner() {
     showTripForm, setShowTripForm, showMembersModal, setShowMembersModal,
     showReservationModal, setShowReservationModal, editingReservation, setEditingReservation,
     showBookingImport, setShowBookingImport, bookingImportKind, setBookingImportKind, bookingImportAvailable,
+    showReceiptScan, setShowReceiptScan, receiptScanAvailable, receiptPhotosAvailable,
+    receiptScanResult, setReceiptScanResult,
     airTrailAvailable, showAirTrailImport, setShowAirTrailImport,
     bookingForAssignmentId, setBookingForAssignmentId,
     showTransportModal, setShowTransportModal, editingTransport, setEditingTransport,

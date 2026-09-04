@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 
 import { findFocusDayId } from '../../../components/Planner/today'
 import {
   ChevronDown, ChevronLeft, Download, FileDown, List, Map as MapIcon, MoreHorizontal, PackageCheck,
-  Plane, Plus, Rows3, Ticket, TrainFront, Trash2, Upload, Wallet,
+  Plane, Plus, Rows3, ScanLine, Ticket, TrainFront, Trash2, Upload, Wallet,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useTripPlanner } from '../../../pages/tripPlanner/useTripPlanner'
@@ -449,6 +449,11 @@ export default function MTripShell({
         {trTab === 'finanzplan' && (
           <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-[7px]">
             <PrimaryPill label={t('costs.addExpense')} onClick={() => setAddExpenseSignal(s => s + 1)} />
+            {planner.receiptScanAvailable && (
+              <MIconBtn ariaLabel={t('receipts.scan')} onClick={() => planner.setShowReceiptScan(true)} size={40} className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]">
+                <ScanLine size={15} strokeWidth={2} />
+              </MIconBtn>
+            )}
             <MIconBtn ariaLabel={t('budget.exportCsv')} onClick={() => setExportCostsCsvSignal(s => s + 1)} size={40} className="text-m-muted backdrop-blur-[24px] backdrop-saturate-[1.7]">
               <FileDown size={15} strokeWidth={2} />
             </MIconBtn>

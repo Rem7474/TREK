@@ -16,8 +16,8 @@ import { Eyebrow, FIELD_AREA_CLS } from './PlSheetChrome'
  * The desktop dialog has the same three fields (ExpenseSplitEditor) and both are
  * driven by the same state (useExpenseSplit): what differs here is only the
  * chrome, which is the whole point of the shell. Extracted from MCostSheet so
- * that anything writing an expense on a phone reaches for the sheet's own
- * controls rather than borrowing the desktop panel.
+ * that scanning a receipt reviews it with the sheet's controls rather than a
+ * borrowed desktop panel.
  */
 
 // Nested surfaces for the split/payer rows on the opaque sheet: the row sits on

@@ -19,6 +19,7 @@ import TripMembersModal from '../components/Trips/TripMembersModal'
 import { ReservationModal } from '../components/Planner/ReservationModal'
 import TransitJourneyModal from '../components/Planner/TransitJourneyModal'
 import BookingImportModal from '../components/Planner/BookingImportModal'
+import ReceiptScanModal from '../components/Budget/ReceiptScanModal'
 import AirTrailImportModal from '../components/Planner/AirTrailImportModal'
 // MemoriesPanel moved to Journey addon
 import ApplyTemplateButton from '../components/Packing/ApplyTemplateButton'
@@ -254,6 +255,7 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
     showTripForm, setShowTripForm, showMembersModal, setShowMembersModal,
     showReservationModal, setShowReservationModal, editingReservation, setEditingReservation,
     showBookingImport, setShowBookingImport, bookingImportKind, setBookingImportKind, bookingImportAvailable,
+    showReceiptScan, setShowReceiptScan, receiptScanResult, setReceiptScanResult, receiptPhotosAvailable,
     airTrailAvailable, showAirTrailImport, setShowAirTrailImport,
     bookingForAssignmentId, setBookingForAssignmentId,
     showTransportModal, setShowTransportModal, editingTransport, setEditingTransport,
@@ -899,6 +901,18 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
         </ErrorBoundary>
       )}
       <BookingImportModal isOpen={showBookingImport} onClose={() => setShowBookingImport(false)} tripId={tripId} kind={bookingImportKind} />
+      {showReceiptScan && (
+        <ReceiptScanModal
+          photosAvailable={receiptPhotosAvailable}
+          initialResult={receiptScanResult}
+          tripId={tripId}
+          base={costsBase}
+          people={tripMembers}
+          me={meId}
+          onClose={() => { setShowReceiptScan(false); setReceiptScanResult(undefined) }}
+          onSaved={() => { setShowReceiptScan(false); setReceiptScanResult(undefined); loadBudgetItems(tripId) }}
+        />
+      )}
       <AirTrailImportModal isOpen={showAirTrailImport} onClose={() => setShowAirTrailImport(false)} tripId={tripId} pushUndo={pushUndo} />
       <ConfirmDialog
         isOpen={!!deletePlaceId}

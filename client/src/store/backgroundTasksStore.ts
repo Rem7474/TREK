@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { BookingImportPreviewItem, BookingImportMode } from '@trek/shared'
+import type { BookingImportPreviewItem, BookingImportMode, ReceiptScanResponse } from '@trek/shared'
 
 /**
  * Tracks booking-import parses that run in the BACKGROUND (the async endpoint).
@@ -9,20 +9,31 @@ import type { BookingImportPreviewItem, BookingImportMode } from '@trek/shared'
  * WebSocket (which reaches every page), and the global BackgroundTasksWidget
  * renders the list. The trip page turns a finished task into the review flow.
  *
- * Persisted (minimal): the server keeps the job for ~10 min and exposes a status
+ * Persisted (minimal): the server keeps the job for a while and exposes a status
  * endpoint, so a reload mid-parse must NOT drop the widget — we persist the running
  * (and finished-but-unreviewed) tasks by id and the widget re-fetches their status
- * on mount. We deliberately persist neither the parsed `items` (re-fetched) nor the
- * transient review flags (so a reload never auto-reopens the review flow).
+ * on mount. We deliberately persist neither a booking import's parsed `items`
+ * (re-fetched) nor the transient review flags (so a reload never auto-reopens the
+ * review flow). A finished receipt scan is the exception — see partialize.
  */
 export interface BackgroundImportTask {
   id: string                 // server job id
   tripId: string
+  /**
+   * Which server produced this job. Receipt scans join the same widget rather than
+   * getting one of their own: to the user both are "TREK is reading my document,
+   * let me get on with something else", and one corner of the screen should not
+   * grow two competing trays. Absent means 'import' — persisted tasks written
+   * before receipts existed must keep working across the upgrade.
+   */
+  job?: 'import' | 'receipt'
   label: string              // file name(s) being parsed
   status: 'running' | 'done' | 'error'
   done: number
   total: number
   items?: BookingImportPreviewItem[]
+  /** A finished receipt scan, kept whole so the review reopens exactly as it would have. */
+  receipt?: ReceiptScanResponse
   warnings?: string[]
   error?: string
   reviewRequested?: boolean  // user clicked "review" — the trip page consumes it
@@ -44,9 +55,10 @@ export interface BackgroundImportTask {
 
 interface BackgroundTasksState {
   tasks: BackgroundImportTask[]
-  addTask: (task: { id: string; tripId: string; label: string; total: number; files?: File[]; mode?: BookingImportMode; kind?: 'transports' | 'bookings' }) => void
+  addTask: (task: { id: string; tripId: string; label: string; total: number; files?: File[]; mode?: BookingImportMode; kind?: 'transports' | 'bookings'; job?: 'import' | 'receipt' }) => void
   setProgress: (id: string, tripId: string, done: number, total: number) => void
   setDone: (id: string, tripId: string, items: BookingImportPreviewItem[], warnings: string[]) => void
+  setReceiptDone: (id: string, tripId: string, result: ReceiptScanResponse) => void
   setError: (id: string, tripId: string, error: string) => void
   requestReview: (id: string) => void
   markConsumed: (id: string) => void
@@ -71,9 +83,11 @@ export const useBackgroundTasksStore = create<BackgroundTasksState>()(
 
       return {
         tasks: [],
-        addTask: ({ id, tripId, label, total, files, mode, kind }) => upsert(id, tripId, { label, total, status: 'running', done: 0, sourceFiles: files, mode, kind }),
+        addTask: ({ id, tripId, label, total, files, mode, kind, job }) => upsert(id, tripId, { label, total, status: 'running', done: 0, sourceFiles: files, mode, kind, job }),
         setProgress: (id, tripId, done, total) => upsert(id, tripId, { done, total, status: 'running' }),
         setDone: (id, tripId, items, warnings) => upsert(id, tripId, { status: 'done', items, warnings, done: items?.length ?? 0 }),
+        setReceiptDone: (id, tripId, result) =>
+          upsert(id, tripId, { status: 'done', job: 'receipt', receipt: result, warnings: result.warnings, done: result.items.length }),
         setError: (id, tripId, error) => upsert(id, tripId, { status: 'error', error }),
         requestReview: (id) => set((s) => ({ tasks: s.tasks.map((t) => (t.id === id ? { ...t, reviewRequested: true } : t)) })),
         markConsumed: (id) => set((s) => ({ tasks: s.tasks.map((t) => (t.id === id ? { ...t, consumed: true, reviewRequested: false } : t)) })),
@@ -91,7 +105,18 @@ export const useBackgroundTasksStore = create<BackgroundTasksState>()(
           .filter((t) => !t.consumed && t.status !== 'error')
           // `kind` rides along: it is not a review flag but the context the review
           // needs, and without it a reload silently falls back to 'bookings'.
-          .map((t) => ({ id: t.id, tripId: t.tripId, label: t.label, status: t.status, done: t.done, total: t.total, kind: t.kind })),
+          //
+          // `job` says which server it belongs to — a receipt scan is not a booking
+          // import and polls a different endpoint. A finished RECEIPT keeps its
+          // result too: the server holds a job for half an hour, a phone left in a
+          // pocket outlasts that easily, and a scan the user waited minutes for must
+          // not vanish because the app reloaded on the walk back. The payload is a
+          // handful of fields, and carrying it reopens nothing — the review flags
+          // stay unpersisted, so the tray still waits to be clicked.
+          .map((t) => ({
+            id: t.id, tripId: t.tripId, label: t.label, status: t.status, done: t.done, total: t.total, kind: t.kind, job: t.job,
+            ...(t.job === 'receipt' && t.receipt ? { receipt: t.receipt, warnings: t.warnings } : {}),
+          })),
       }),
     },
   ),

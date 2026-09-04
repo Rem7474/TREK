@@ -147,5 +147,62 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Payların toplamı: {total} tutarın {sum} kadarı ({diff} eksik)',
   'costs.splitSumOver': 'Payların toplamı: {total} tutarın {sum} kadarı ({diff} fazla)',
   'costs.toggleSign': 'Gider ve iade arasında geçiş yap',
+
+  // Fiş tarayıcı — hesabı fotoğrafla, harcaman hazır (Masraflar → Fiş tara).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Fiş tara',
+  'receipts.title': 'Fiş tara',
+  'receipts.subtitle':
+    'Bir fişin fotoğrafını çek ya da PDF fatura yükle. TREK ne olduğunu algılar ve harcamayı hazırlar.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML veya EML · en fazla 5 dosya, her biri 10 MB',
+  'receipts.takePhoto': 'Fotoğraf çek',
+  'receipts.pickOrPhoto': 'Fotoğraf çek veya dosya seç',
+  'receipts.dropHere': 'Fişi buraya bırak veya seçmek için tıkla',
+  'receipts.dropActive': 'Taramak için bırak',
+  'receipts.scanning': 'Fişin okunuyor…',
+  'receipts.scanningHint': 'Yerel bir modelde bu bir dakikayı bulabilir.',
+  'receipts.scanAction': 'Tara',
+  'receipts.unsupportedFormat': 'Bu dosya türü taranamaz.',
+  'receipts.fileTooLarge': '{name} 10 MB sınırını aşıyor.',
+  'receipts.notConfigured':
+    'Fiş tarama, görsel okuyabilen bir modelle yapılandırılmış YZ ayrıştırma eklentisini gerektirir.',
+  'receipts.error': 'Fiş taranamadı.',
+  'receipts.nothingFound': 'Bu fişte okunabilir bir şey bulunamadı.',
+  'receipts.reviewTitle': 'Kaydetmeden önce kontrol et',
+  'receipts.reviewSubtitle': '{count} fiş okundu. Hatalı görünen yerleri düzelt ve kaydet.',
+  'receipts.needsReview': 'Bunu kontrol et',
+  'receipts.merchant': 'İşletme',
+  'receipts.docType': 'Belge türü',
+  'receipts.attachReceipt': 'Fişi Belgeler’de sakla',
+  'receipts.lineItems': 'Fişte {count} kalem',
+  'receipts.save': 'Harcamayı kaydet',
+  'receipts.savePlural': '{count} harcamayı kaydet',
+  'receipts.saved': 'Fişinden harcama eklendi.',
+  'receipts.savedPlural': 'Fişlerinden {count} harcama eklendi.',
+  'receipts.saveError': 'Harcama kaydedilemedi.',
+  'receipts.scanExpired': 'Bu tarama sen dönmeden önce sona erdi — fişi yeniden tara.',
+  'receipts.discard': 'Vazgeç',
+  'receipts.type.meal': 'Yemek',
+  'receipts.type.groceries': 'Market alışverişi',
+  'receipts.type.accommodation': 'Konaklama',
+  'receipts.type.transport': 'Ulaşım',
+  'receipts.type.flight': 'Uçuş',
+  'receipts.type.fuel': 'Yakıt',
+  'receipts.type.activity': 'Etkinlik',
+  'receipts.type.shopping': 'Alışveriş',
+  'receipts.type.health': 'Sağlık',
+  'receipts.type.fees': 'Ücretler',
+  'receipts.type.other': 'Diğer',
 };
 export default budget;

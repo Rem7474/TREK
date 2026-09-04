@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Summe der Anteile: {sum} von {total} (es fehlen {diff})',
   'costs.splitSumOver': 'Summe der Anteile: {sum} von {total} ({diff} zu viel)',
   'costs.toggleSign': 'Zwischen Ausgabe und Erstattung wechseln',
+
+  // Beleg-Scanner — eine Rechnung fotografieren und daraus eine Ausgabe machen (Kosten → Beleg scannen).
+  'receipts.failure.noVision':
+    "Das KI-Modell kann keine Bilder lesen. Wähle in den KI-Einstellungen ein Modell mit Bilderkennung.",
+  'receipts.failure.contextTooSmall':
+    "Das Dokument passte nicht in das Kontextfenster des Modells. Erhöhe es auf dem KI-Server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 oder mehr für Fotos).",
+  'receipts.failure.authRejected':
+    "Der KI-Anbieter hat die Zugangsdaten abgelehnt. Prüfe den API-Schlüssel in den KI-Einstellungen.",
+  'receipts.failure.rateLimited':
+    "Der KI-Anbieter drosselt diesen Server. Versuche es gleich noch einmal.",
+  'receipts.failure.unreachable':
+    "Das KI-Modell hat nicht rechtzeitig geantwortet. Es lädt möglicherweise noch, oder der Server ist nicht erreichbar.",
+  'receipts.failure.rejected':
+    "Der KI-Anbieter hat die Anfrage abgelehnt. Die Antwort steht im Server-Log.",
+  'receipts.scan': 'Beleg scannen',
+  'receipts.title': 'Beleg scannen',
+  'receipts.subtitle':
+    'Fotografiere einen Beleg oder lade eine PDF-Rechnung hoch. TREK erkennt, worum es sich handelt, und bereitet die Ausgabe vor.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML oder EML · bis zu 5 Dateien, je 10 MB',
+  'receipts.takePhoto': 'Foto aufnehmen',
+  'receipts.pickOrPhoto': 'Fotografieren oder Datei wählen',
+  'receipts.dropHere': 'Beleg hier ablegen oder zum Auswählen klicken',
+  'receipts.dropActive': 'Zum Scannen ablegen',
+  'receipts.scanning': 'Beleg wird gelesen…',
+  'receipts.scanningHint': 'Mit einem lokalen Modell kann das bis zu einer Minute dauern.',
+  'receipts.scanAction': 'Scannen',
+  'receipts.unsupportedFormat': 'Dieser Dateityp kann nicht gescannt werden.',
+  'receipts.fileTooLarge': '{name} ist größer als 10 MB.',
+  'receipts.notConfigured': 'Das Scannen von Belegen benötigt das Addon „KI-Parsing“ mit einem bildfähigen Modell.',
+  'receipts.error': 'Der Beleg konnte nicht gescannt werden.',
+  'receipts.nothingFound': 'Auf diesem Beleg war nichts Lesbares zu finden.',
+  'receipts.reviewTitle': 'Vor dem Speichern prüfen',
+  'receipts.reviewSubtitle': '{count} Beleg(e) gelesen. Korrigiere, was nicht stimmt, und speichere.',
+  'receipts.needsReview': 'Bitte prüfen',
+  'receipts.merchant': 'Händler',
+  'receipts.docType': 'Dokumenttyp',
+  'receipts.attachReceipt': 'Beleg in den Dokumenten behalten',
+  'receipts.lineItems': '{count} Positionen auf dem Beleg',
+  'receipts.save': 'Ausgabe speichern',
+  'receipts.savePlural': '{count} Ausgaben speichern',
+  'receipts.saved': 'Ausgabe aus deinem Beleg hinzugefügt.',
+  'receipts.savedPlural': '{count} Ausgaben aus deinen Belegen hinzugefügt.',
+  'receipts.saveError': 'Die Ausgabe konnte nicht gespeichert werden.',
+  'receipts.scanExpired': 'Dieser Scan ist abgelaufen, bevor du zurück warst — scanne den Beleg erneut.',
+  'receipts.discard': 'Verwerfen',
+  'receipts.type.meal': 'Essen',
+  'receipts.type.groceries': 'Lebensmittel',
+  'receipts.type.accommodation': 'Unterkunft',
+  'receipts.type.transport': 'Transport',
+  'receipts.type.flight': 'Flug',
+  'receipts.type.fuel': 'Kraftstoff',
+  'receipts.type.activity': 'Aktivität',
+  'receipts.type.shopping': 'Shopping',
+  'receipts.type.health': 'Gesundheit',
+  'receipts.type.fees': 'Gebühren',
+  'receipts.type.other': 'Sonstiges',
 };
 export default budget;

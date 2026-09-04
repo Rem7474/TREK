@@ -147,5 +147,62 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Soma das partes: {sum} de {total} (faltam {diff})',
   'costs.splitSumOver': 'Soma das partes: {sum} de {total} (sobram {diff})',
   'costs.toggleSign': 'Alternar entre despesa e reembolso',
+
+  // Leitor de recibos — fotografe a conta e tenha a despesa (Custos → Escanear recibo).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Escanear recibo',
+  'receipts.title': 'Escanear um recibo',
+  'receipts.subtitle':
+    'Tire uma foto de um recibo ou envie uma fatura em PDF. O TREK identifica o que é e prepara a despesa.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML ou EML · até 5 arquivos, 10 MB cada',
+  'receipts.takePhoto': 'Tirar uma foto',
+  'receipts.pickOrPhoto': 'Fotografar ou escolher um arquivo',
+  'receipts.dropHere': 'Solte um recibo aqui, ou clique para escolher',
+  'receipts.dropActive': 'Solte para escanear',
+  'receipts.scanning': 'Lendo seu recibo…',
+  'receipts.scanningHint': 'Com um modelo local isso pode levar até um minuto.',
+  'receipts.scanAction': 'Escanear',
+  'receipts.unsupportedFormat': 'Esse tipo de arquivo não pode ser escaneado.',
+  'receipts.fileTooLarge': '{name} tem mais de 10 MB.',
+  'receipts.notConfigured':
+    'Escanear recibos exige o complemento de análise por IA configurado com um modelo capaz de ler imagens.',
+  'receipts.error': 'Não foi possível escanear o recibo.',
+  'receipts.nothingFound': 'Nada legível foi encontrado neste recibo.',
+  'receipts.reviewTitle': 'Confira antes de salvar',
+  'receipts.reviewSubtitle': '{count} recibo(s) lido(s). Corrija o que estiver errado e salve.',
+  'receipts.needsReview': 'Confira este',
+  'receipts.merchant': 'Estabelecimento',
+  'receipts.docType': 'Tipo de documento',
+  'receipts.attachReceipt': 'Manter o recibo nos Documentos',
+  'receipts.lineItems': '{count} itens no recibo',
+  'receipts.save': 'Salvar despesa',
+  'receipts.savePlural': 'Salvar {count} despesas',
+  'receipts.saved': 'Despesa adicionada a partir do seu recibo.',
+  'receipts.savedPlural': '{count} despesas adicionadas a partir dos seus recibos.',
+  'receipts.saveError': 'Não foi possível salvar a despesa.',
+  'receipts.scanExpired': 'Esta digitalização expirou antes de você voltar — escaneie o recibo novamente.',
+  'receipts.discard': 'Descartar',
+  'receipts.type.meal': 'Refeição',
+  'receipts.type.groceries': 'Mercado',
+  'receipts.type.accommodation': 'Hospedagem',
+  'receipts.type.transport': 'Transporte',
+  'receipts.type.flight': 'Voo',
+  'receipts.type.fuel': 'Combustível',
+  'receipts.type.activity': 'Atividade',
+  'receipts.type.shopping': 'Compras',
+  'receipts.type.health': 'Saúde',
+  'receipts.type.fees': 'Taxas',
+  'receipts.type.other': 'Outros',
 };
 export default budget;

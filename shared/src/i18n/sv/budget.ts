@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Summan av delarna: {sum} av {total} ({diff} saknas)',
   'costs.splitSumOver': 'Summan av delarna: {sum} av {total} ({diff} för mycket)',
   'costs.toggleSign': 'Växla mellan utgift och återbetalning',
+
+  // Kvittoskanner — fotografera en nota och få utgiften (Kostnader → Skanna kvitto).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Skanna kvitto',
+  'receipts.title': 'Skanna ett kvitto',
+  'receipts.subtitle':
+    'Fotografera ett kvitto eller ladda upp en PDF-faktura. TREK känner igen vad det är och förbereder utgiften.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML eller EML · upp till 5 filer, 10 MB styck',
+  'receipts.takePhoto': 'Ta ett foto',
+  'receipts.pickOrPhoto': 'Fotografera eller välj en fil',
+  'receipts.dropHere': 'Släpp ett kvitto här, eller klicka för att välja',
+  'receipts.dropActive': 'Släpp för att skanna',
+  'receipts.scanning': 'Läser ditt kvitto…',
+  'receipts.scanningHint': 'Med en lokal modell kan det ta upp till en minut.',
+  'receipts.scanAction': 'Skanna',
+  'receipts.unsupportedFormat': 'Den filtypen går inte att skanna.',
+  'receipts.fileTooLarge': '{name} är större än 10 MB.',
+  'receipts.notConfigured': 'Kvittoskanning kräver tillägget för AI-tolkning med en modell som kan läsa bilder.',
+  'receipts.error': 'Kvittot kunde inte skannas.',
+  'receipts.nothingFound': 'Inget läsbart hittades på det här kvittot.',
+  'receipts.reviewTitle': 'Kontrollera innan du sparar',
+  'receipts.reviewSubtitle': '{count} kvitto(n) inlästa. Rätta det som ser fel ut och spara.',
+  'receipts.needsReview': 'Kolla den här',
+  'receipts.merchant': 'Säljare',
+  'receipts.docType': 'Dokumenttyp',
+  'receipts.attachReceipt': 'Behåll kvittot bland Dokument',
+  'receipts.lineItems': '{count} rader på kvittot',
+  'receipts.save': 'Spara utgift',
+  'receipts.savePlural': 'Spara {count} utgifter',
+  'receipts.saved': 'Utgift tillagd från ditt kvitto.',
+  'receipts.savedPlural': '{count} utgifter tillagda från dina kvitton.',
+  'receipts.saveError': 'Utgiften kunde inte sparas.',
+  'receipts.scanExpired': 'Den här skanningen gick ut innan du kom tillbaka — skanna kvittot igen.',
+  'receipts.discard': 'Kasta',
+  'receipts.type.meal': 'Måltid',
+  'receipts.type.groceries': 'Livsmedel',
+  'receipts.type.accommodation': 'Boende',
+  'receipts.type.transport': 'Transport',
+  'receipts.type.flight': 'Flyg',
+  'receipts.type.fuel': 'Bränsle',
+  'receipts.type.activity': 'Aktivitet',
+  'receipts.type.shopping': 'Shopping',
+  'receipts.type.health': 'Hälsa',
+  'receipts.type.fees': 'Avgifter',
+  'receipts.type.other': 'Annat',
 };
 export default budget;

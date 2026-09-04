@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { screen, act, waitFor } from '@testing-library/react'
 import { render, fireEvent } from '../../../tests/helpers/render'
-import { reservationsApi, healthApi } from '../../api/client'
+import { reservationsApi, receiptsApi, healthApi } from '../../api/client'
 import { addListener } from '../../api/websocket'
 import { useBackgroundTasksStore, type BackgroundImportTask } from '../../store/backgroundTasksStore'
 import BackgroundTasksWidget from './BackgroundTasksWidget'
@@ -15,6 +15,7 @@ vi.mock('react-router', async () => {
 vi.mock('../../api/websocket', () => ({ addListener: vi.fn(), removeListener: vi.fn() }))
 vi.mock('../../api/client', () => ({
   reservationsApi: { importJobStatus: vi.fn(), importBookingAsync: vi.fn() },
+  receiptsApi: { scanJobStatus: vi.fn() },
   healthApi: { features: vi.fn() },
 }))
 vi.mock('../../db/offlineDb', () => ({ saveImportFiles: vi.fn(() => Promise.resolve()) }))
@@ -172,6 +173,32 @@ describe('BackgroundTasksWidget — rehydrate', () => {
     render(<BackgroundTasksWidget />)
 
     await waitFor(() => expect(useBackgroundTasksStore.getState().tasks).toHaveLength(0))
+  })
+
+  it('FE-W4BGT-021: a finished scan the server forgot keeps its review, having kept the result', async () => {
+    const receipt = { scanId: 's1', items: [{ title: 'Chez Marcel' }], warnings: [] }
+    useBackgroundTasksStore.setState({
+      tasks: [task({ job: 'receipt', items: undefined, receipt: receipt as never })],
+    })
+    vi.mocked(receiptsApi.scanJobStatus).mockRejectedValue({ response: { status: 404 } })
+
+    render(<BackgroundTasksWidget />)
+
+    // Nothing to fetch, so nothing is asked — and nothing can 404 the card away.
+    await waitFor(() => expect(useBackgroundTasksStore.getState().tasks).toHaveLength(1))
+    expect(receiptsApi.scanJobStatus).not.toHaveBeenCalled()
+  })
+
+  it('FE-W4BGT-022: a scan whose result is gone says so instead of vanishing', async () => {
+    useBackgroundTasksStore.setState({
+      tasks: [task({ job: 'receipt', status: 'running', items: undefined, receipt: undefined })],
+    })
+    vi.mocked(receiptsApi.scanJobStatus).mockRejectedValue({ response: { status: 404 } })
+
+    render(<BackgroundTasksWidget />)
+
+    expect(await screen.findByText(/expired before you came back/)).toBeInTheDocument()
+    expect(useBackgroundTasksStore.getState().tasks).toHaveLength(1)
   })
 
   it('FE-W4BGT-015: a non-404 failure keeps the card', async () => {

@@ -71,6 +71,10 @@ Deleting the booking or the place deletes its linked expense with it. Removing t
 
 An expense with no payer is flagged **Unfinished** on its row and counted into the **Outstanding amount** card, which is where to look when the balances show money owed that nobody is down as having paid.
 
+## Scanning a receipt
+
+With the **AI Parsing** addon on, **Scan receipt** (next to *Add expense*) turns a photo of a bill into an expense: the document type, merchant, amount, currency and date are read for you. See [Receipt-Scanning](Receipt-Scanning).
+
 ## Splitting costs
 
 **Split** decides who owes for the expense. Every trip member is listed and can be included or excluded, and there are three modes:
@@ -120,6 +124,7 @@ All write operations (adding/editing/deleting expenses and settle-up payments, a
 ## See also
 
 - [Currencies](Currencies)
+- [Receipt-Scanning](Receipt-Scanning)
 - [Admin-Addons](Admin-Addons)
 - [Reservations-and-Bookings](Reservations-and-Bookings)
 - [Trip-Planner-Overview](Trip-Planner-Overview)
