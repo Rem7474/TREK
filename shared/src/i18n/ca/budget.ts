@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML o EML · fins a 5 fitxers, 10 MB cadascun',
   'receipts.takePhoto': 'Fer una foto',
   'receipts.pickOrPhoto': 'Fotografia o tria un fitxer',
+  'receipts.quickMode': 'Lectura ràpida',
+  'receipts.quickModeHint': "Només llegeix l'import i el comerç: molt més ràpid, però sense les línies per dividir.",
   'receipts.dropHere': 'Deixa anar un rebut aquí, o clica per triar-lo',
   'receipts.dropActive': 'Deixa anar per escanejar',
   'receipts.scanning': 'Llegint el teu rebut…',

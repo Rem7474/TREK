@@ -55,14 +55,14 @@ export class ReceiptScanJobsService {
   ) {}
 
   /** Create a job and queue it behind the user's other scans; returns the job id at once. */
-  start(tripId: string, files: Express.Multer.File[], userId: number): string {
+  start(tripId: string, files: Express.Multer.File[], userId: number, quick = false): string {
     const id = randomUUID();
     const job: ScanJob = { id, tripId, userId, status: 'running', done: 0, total: files.length, createdAt: Date.now() };
     this.jobs.set(id, job);
     // Chain onto the user's previous scan so they run sequentially: two vision
     // inferences at once on one CPU is slower than the same two in a row.
     const prev = this.chains.get(userId) ?? Promise.resolve();
-    const next = prev.then(() => this.run(job, files)).catch(() => {});
+    const next = prev.then(() => this.run(job, files, quick)).catch(() => {});
     this.chains.set(userId, next);
     void next.finally(() => {
       if (this.chains.get(userId) === next) this.chains.delete(userId);
@@ -75,7 +75,7 @@ export class ReceiptScanJobsService {
     return job && job.userId === userId ? job : undefined;
   }
 
-  private async run(job: ScanJob, files: Express.Multer.File[]): Promise<void> {
+  private async run(job: ScanJob, files: Express.Multer.File[], quick = false): Promise<void> {
     this.push(job, 'receipt:progress', { status: 'running', done: 0, total: job.total });
     try {
       const result = await this.receipts.scan(
@@ -86,6 +86,7 @@ export class ReceiptScanJobsService {
           job.done = done;
           this.push(job, 'receipt:progress', { status: 'running', done, total, fileName });
         },
+        quick,
       );
       job.status = 'done';
       job.result = result;

@@ -98,6 +98,8 @@ export class ReceiptsService {
     files: Express.Multer.File[],
     userId: number,
     onProgress?: (done: number, total: number, fileName: string) => void,
+    /** Read the amount and little else — measurably faster on a local model. */
+    quick = false,
   ): Promise<ReceiptScanResponse> {
     if (!this.llmParse.isAvailable(userId)) {
       throw new HttpException({ error: 'AI parsing is not configured' }, 409);
@@ -113,6 +115,7 @@ export class ReceiptsService {
       const { receipts, warnings: parseWarnings, failureCode } = await this.llmParse.parseReceipt(
         { buffer: file.buffer, originalName: file.originalname },
         userId,
+        quick,
       );
       warnings.push(...parseWarnings);
 

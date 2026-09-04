@@ -13,6 +13,37 @@ export const RECEIPT_ROOT_KEY = 'receipts';
  * with the nested schema.org shape the booking import uses. Pure (no I/O) so
  * it's unit-testable.
  */
+/**
+ * The short read: what the money was, and nothing else.
+ *
+ * Measured on a local Qwen3.5 against the same restaurant bill, this answered in
+ * 84-154s where the full prompt took 396-569s. What it gives up is the receipt's
+ * own lines — so the per-item split — along with the address and the reference
+ * number. For a coffee or a parking meter there is nothing there to give up.
+ *
+ * It is deliberately not a *shorter* prompt: a trimmed version of the full one
+ * was measured too, and the model rambled to its token ceiling and returned
+ * nothing at all. This asks for less, in the same voice.
+ */
+export function buildQuickReceiptPrompt(today: Date = new Date()): string {
+  const todayIso = today.toISOString().slice(0, 10);
+  return [
+    'You read a receipt, bill or invoice (often a photo of a paper till roll, possibly crumpled, skewed or in a foreign language).',
+    'Return ONLY a JSON object of the form { "receipts": [ ... ] } — no prose, no markdown.',
+    'Emit ONE object per receipt in the document (usually exactly one).',
+    'Read only these fields, and nothing else: "doc_type", "merchant", "date", "time", "total", "currency".',
+    'First classify the document. "doc_type" is one of:',
+    RECEIPT_DOC_TYPES.map((t) => `  - ${t}`).join('\n'),
+    'Always fill "total" (the grand total actually paid, after tax and tip — the largest "TOTAL"/"AMOUNT DUE" line, NOT the subtotal) and "currency" (ISO 4217, inferred from the symbol and the country when not printed).',
+    'Fill "merchant" with the business name printed at the top, "date" as YYYY-MM-DD and "time" as HH:MM (24h).',
+    'A date printed as DD/MM/YYYY or MM/DD/YYYY must be normalized to YYYY-MM-DD; use the country of the merchant to resolve the ambiguity.',
+    `Today is ${todayIso}. A receipt is scanned within days or weeks of payment, so when a two-digit or otherwise ambiguous date could be read several ways, choose the reading nearest to today; never choose one in the future.`,
+    'Do NOT read the itemized lines, the address, the tax breakdown or any reference number — they are not wanted here.',
+    'Never invent a value: leave a field out when the document does not show it. Numbers are plain numbers (12.5, not "12,50 €").',
+    'If the image is unreadable or shows no receipt at all, return { "receipts": [] }.',
+  ].join('\n');
+}
+
 export function buildReceiptPrompt(today: Date = new Date()): string {
   const todayIso = today.toISOString().slice(0, 10);
   return [

@@ -98,6 +98,10 @@ export function useReceiptScan({
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
+  // The short read. Off by default: it gives up the receipt's own lines, and
+  // with them the per-item split, which is not a trade to make on the user's
+  // behalf. On a coffee or a parking meter there is nothing there to give up.
+  const [quick, setQuick] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -223,7 +227,7 @@ export function useReceiptScan({
     try {
       // The scan runs server-side: reading a photograph on a CPU vision model
       // outlasts proxy timeouts, and the work must survive this modal closing.
-      const { jobId } = await receiptsApi.scanAsync(tripId, files);
+      const { jobId } = await receiptsApi.scanAsync(tripId, files, quick);
       // Hand the wait to the background widget and get out of the way: reading a
       // photograph takes minutes, and there is nothing to watch on this screen.
       addTask({
@@ -300,6 +304,8 @@ export function useReceiptScan({
     cameraInputRef,
     accept: acceptedExts.join(','),
     photos,
+    quick,
+    setQuick,
     selectFiles,
     handleScan,
     handleSave,

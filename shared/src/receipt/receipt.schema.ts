@@ -241,6 +241,18 @@ export const receiptConfirmItemSchema = receiptScanItemSchema.extend({
 });
 export type ReceiptConfirmItem = z.infer<typeof receiptConfirmItemSchema>;
 
+/**
+ * The text fields alongside the uploaded files on the async scan.
+ *
+ * Multipart carries everything as strings, so the flag arrives as "true" rather
+ * than a boolean. Only an explicit "true" shortens the read — anything else,
+ * including the field being absent, is the full one.
+ */
+export const receiptScanOptionsSchema = z.object({
+  quick: z.string().optional(),
+});
+export type ReceiptScanOptions = z.infer<typeof receiptScanOptionsSchema>;
+
 export const receiptConfirmRequestSchema = z.object({
   scanId: z.string().optional(),
   items: z.array(receiptConfirmItemSchema).min(1),

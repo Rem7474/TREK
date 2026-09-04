@@ -26,6 +26,12 @@ They also differ in what they can read. Booking import parses structured confirm
 3. Pick up to 5 files at once, 10 MB each. Photos are shrunk and re-encoded in the browser before they are uploaded — a phone photo is far larger than the model needs.
 4. Reading starts in the background. The scan appears in the **background tasks** tray, and you can leave the panel, change tab or lock the phone — when it is done the tray offers **Review**.
 
+### Quick read
+
+**Quick read** asks for the amount, the merchant, the date and the currency, and nothing else. What it gives up is the receipt's own itemized lines — and with them the per-item split — plus the address and the reference number. For a coffee or a parking meter there is nothing there to give up; for a shared restaurant table there is.
+
+It is worth measuring on your own hardware before reaching for it. With reasoning turned off on the native Ollama transport, the full read of one restaurant bill took about 25 seconds on `qwen3.5:4b` — the shorter prompt saves less than it did when reasoning was still eating the token budget.
+
 ### How long it takes
 
 A cloud provider answers in seconds. A local model on CPU takes minutes on a photograph, which is why the scan is a background job rather than something you wait on: nothing in the browser holds the request open, and a proxy timeout can no longer lose the work. Scans queue one at a time per user — two inferences at once on one CPU is slower than the same two in a row.

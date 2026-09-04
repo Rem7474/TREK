@@ -90,6 +90,8 @@ export default function ReceiptScanModal({
     cameraInputRef,
     accept,
     photos,
+    quick,
+    setQuick,
     selectFiles,
     handleScan,
     handleSave,
@@ -298,6 +300,28 @@ export default function ReceiptScanModal({
             )}
           </div>
 
+          {phase === 'pick' && (
+            <label
+              className="border border-edge bg-surface-secondary"
+              style={{ display: 'flex', alignItems: 'flex-start', gap: 9, borderRadius: 10, padding: '9px 11px', cursor: 'pointer' }}
+            >
+              <input type="checkbox" checked={quick} onChange={(e) => setQuick(e.target.checked)} style={{ marginTop: 3 }} />
+              <span style={{ minWidth: 0 }}>
+                <span
+                  className="text-content"
+                  style={{ display: 'block', fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500 }}
+                >
+                  {t('receipts.quickMode')}
+                </span>
+                <span
+                  className="text-content-faint"
+                  style={{ display: 'block', fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', lineHeight: 1.5 }}
+                >
+                  {t('receipts.quickModeHint')}
+                </span>
+              </span>
+            </label>
+          )}
 
           {/* No camera when the model cannot see: offering it would spend minutes
               reaching a refusal. The scanner still reads a PDF invoice. */}

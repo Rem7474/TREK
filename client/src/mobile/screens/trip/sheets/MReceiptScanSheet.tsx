@@ -69,7 +69,7 @@ export default function MReceiptScanSheet({
 
   const {
     files, phase, drafts, warnings, error, saving,
-    fileInputRef, accept, photos,
+    fileInputRef, accept, photos, quick, setQuick,
     selectFiles, handleScan, handleSave, patch, setSplit, removeDraft, splitsOk,
   } = useReceiptScan({ tripId, base, intent, photos: photosAvailable, initialFiles, initialResult, onClose: requestClose, onSaved })
 
@@ -111,6 +111,18 @@ export default function MReceiptScanSheet({
             </button>
             <p className="mt-2 text-[0.6875rem] leading-relaxed text-m-faint">{t('receipts.accepted')}</p>
 
+            <label className="mt-3 flex items-start gap-[10px] rounded-[12px] border border-[color:var(--m-rowbr)] bg-[color:var(--m-ic)] px-3 py-[10px]">
+              <input
+                type="checkbox"
+                checked={quick}
+                onChange={(e) => setQuick(e.target.checked)}
+                className="mt-[2px] flex-none"
+              />
+              <span className="min-w-0">
+                <span className="block text-[0.8125rem] font-medium text-m-ink">{t('receipts.quickMode')}</span>
+                <span className="block text-[0.6875rem] leading-relaxed text-m-faint">{t('receipts.quickModeHint')}</span>
+              </span>
+            </label>
 
             <input
               ref={fileInputRef}

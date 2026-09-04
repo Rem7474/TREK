@@ -172,6 +172,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML hoặc EML · tối đa 5 tệp, mỗi tệp 10 MB',
   'receipts.takePhoto': 'Chụp ảnh',
   'receipts.pickOrPhoto': 'Chụp ảnh hoặc chọn tệp',
+  'receipts.quickMode': 'Đọc nhanh',
+  'receipts.quickModeHint': 'Chỉ đọc số tiền và cửa hàng — nhanh hơn nhiều, nhưng không có các mục để chia.',
   'receipts.dropHere': 'Thả hóa đơn vào đây, hoặc bấm để chọn',
   'receipts.dropActive': 'Thả để quét',
   'receipts.scanning': 'Đang đọc hóa đơn của bạn…',

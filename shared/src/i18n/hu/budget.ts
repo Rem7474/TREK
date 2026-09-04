@@ -173,6 +173,8 @@ const budget: TranslationStrings = {
   'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML vagy EML · legfeljebb 5 fájl, egyenként 10 MB',
   'receipts.takePhoto': 'Fénykép készítése',
   'receipts.pickOrPhoto': 'Fényképezés vagy fájl választása',
+  'receipts.quickMode': 'Gyors olvasás',
+  'receipts.quickModeHint': 'Csak az összeget és a kereskedőt olvassa — sokkal gyorsabb, de tételek nélkül.',
   'receipts.dropHere': 'Húzz ide egy nyugtát, vagy kattints a kiválasztáshoz',
   'receipts.dropActive': 'Engedd el a beolvasáshoz',
   'receipts.scanning': 'A nyugta olvasása…',
