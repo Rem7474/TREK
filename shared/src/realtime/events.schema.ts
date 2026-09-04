@@ -361,6 +361,28 @@ export const TREK_WS_EVENTS = {
     scope: 'user',
     payload: z.object({ jobId: z.string(), tripId: id.nullish(), message: z.string() }),
   },
+
+  // ── Receipt scanning (user-scoped; same shape as the booking import above,
+  //    so one background-task widget can follow either) ────────────────────
+  'receipt:progress': {
+    scope: 'user',
+    payload: z.object({
+      jobId: z.string(),
+      tripId: id.nullish(),
+      status: z.string(),
+      done: z.number(),
+      total: z.number(),
+      fileName: z.string().optional(),
+    }),
+  },
+  'receipt:done': {
+    scope: 'user',
+    payload: z.object({ jobId: z.string(), tripId: id.nullish(), result: z.unknown() }),
+  },
+  'receipt:error': {
+    scope: 'user',
+    payload: z.object({ jobId: z.string(), tripId: id.nullish(), message: z.string() }),
+  },
 } as const satisfies Record<string, TrekWsEventContract>;
 
 /** Every registered event name. The registry above is the count; this derives from it. */

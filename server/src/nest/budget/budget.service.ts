@@ -350,6 +350,7 @@ export class BudgetService {
       members?: { user_id: number; amount?: number | null }[];
       persons?: number | null; days?: number | null; note?: string | null; expense_date?: string | null;
       ticket_json?: string | null;
+      split_mode?: 'equally' | 'custom' | 'ticket' | null;
       reservation_id?: number | null;
       place_id?: number | null;
     },
@@ -382,7 +383,7 @@ export class BudgetService {
       const { note, ticket } = splitLegacyTicketNote(data.note, data.ticket_json);
 
       const result = this.db.run(
-        'INSERT INTO budget_items (trip_id, category, name, total_price, currency, exchange_rate, persons, days, note, ticket_json, sort_order, expense_date, reservation_id, place_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO budget_items (trip_id, category, name, total_price, currency, exchange_rate, persons, days, note, ticket_json, split_mode, sort_order, expense_date, reservation_id, place_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         tripId,
         cat,
         data.name,
@@ -393,6 +394,9 @@ export class BudgetService {
         data.days !== undefined && data.days !== null ? data.days : null,
         note || null,
         ticket || null,
+        // Absent means "as before": a stored ticket is a ticket split. Saying it
+        // outright is what lets the lines be kept without deciding the split.
+        data.split_mode ?? (ticket ? 'ticket' : null),
         sortOrder,
         data.expense_date || null,
         data.reservation_id != null ? data.reservation_id : null,
@@ -445,6 +449,7 @@ export class BudgetService {
       members?: { user_id: number; amount?: number | null }[];
       persons?: number | null; days?: number | null; note?: string | null; sort_order?: number; expense_date?: string | null;
       ticket_json?: string | null;
+      split_mode?: 'equally' | 'custom' | 'ticket' | null;
     },
   ) {
     return this.db.transaction(() => {
@@ -468,6 +473,7 @@ export class BudgetService {
       days = CASE WHEN ? THEN ? ELSE days END,
       note = CASE WHEN ? THEN ? ELSE note END,
       ticket_json = CASE WHEN ? THEN ? ELSE ticket_json END,
+      split_mode = CASE WHEN ? THEN ? ELSE split_mode END,
       sort_order = CASE WHEN ? IS NOT NULL THEN ? ELSE sort_order END,
       expense_date = CASE WHEN ? THEN ? ELSE expense_date END
     WHERE id = ?
@@ -481,6 +487,11 @@ export class BudgetService {
         data.days !== undefined ? 1 : 0, data.days !== undefined ? data.days : null,
         noteTouched ? 1 : 0, noteTouched ? note : null,
         ticketTouched ? 1 : 0, ticketTouched ? ticket : null,
+        // A client that says nothing about the mode leaves it alone; one that
+        // sends a ticket without naming a mode is an older one, and for it a
+        // ticket still means a ticket split.
+        data.split_mode !== undefined || ticketTouched ? 1 : 0,
+        data.split_mode !== undefined ? data.split_mode : ticketTouched ? (ticket ? 'ticket' : null) : null,
         data.sort_order !== undefined ? 1 : null, data.sort_order !== undefined ? data.sort_order : 0,
         data.expense_date !== undefined ? 1 : 0, data.expense_date !== undefined ? (data.expense_date || null) : null,
         id,

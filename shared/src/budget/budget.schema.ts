@@ -120,12 +120,25 @@ export const budgetItemSchema = z.object({
   persons: z.number().nullable().optional(),
   days: z.number().nullable().optional(),
   note: z.string().nullable().optional(),
-  /** Itemized receipt behind a per-item split, as JSON. Its own column since #1658. */
+  /**
+   * The receipt's own lines, as JSON. Its own column since #1658.
+   *
+   * Kept whenever they are known — a scan reads them off the paper — and no
+   * longer a statement about how the expense is shared: that is `split_mode`.
+   */
   ticket_json: z.string().nullable().optional(),
+  /**
+   * How the total is divided: equally between the members, by an amount typed
+   * per person, or line by line off the receipt. Absent on everything written
+   * before the column existed, where a stored ticket meant a ticket split.
+   */
+  split_mode: expenseSplitModeSchema.nullable().optional(),
   reservation_id: z.number().nullable().optional(),
   /** Set when the expense was created from a place (#1298) — the same link
    *  reservation_id is for a booking, on the other side of the planner. */
   place_id: z.number().nullable().optional(),
+  /** Trip document holding the scanned receipt this expense came from, if any. */
+  receipt_file_id: z.number().nullable().optional(),
   paid_by_user_id: z.number().nullable().optional(),
   expense_date: z.string().nullable().optional(),
   sort_order: z.number().optional(),
@@ -161,6 +174,7 @@ export const budgetCreateItemRequestSchema = z.object({
   days: z.number().nullable().optional(),
   note: z.string().nullable().optional(),
   ticket_json: z.string().nullable().optional(),
+  split_mode: expenseSplitModeSchema.nullable().optional(),
   expense_date: z.string().nullable().optional(),
   // Link this expense to a reservation (e.g. created from a booking's
   // "add expense" flow). The server stores it on budget_items.reservation_id.
@@ -185,6 +199,7 @@ export const budgetUpdateItemRequestSchema = z.object({
   days: z.number().nullable().optional(),
   note: z.string().nullable().optional(),
   ticket_json: z.string().nullable().optional(),
+  split_mode: expenseSplitModeSchema.nullable().optional(),
   expense_date: z.string().nullable().optional(),
 });
 export type BudgetUpdateItemRequest = z.infer<typeof budgetUpdateItemRequestSchema>;

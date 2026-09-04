@@ -108,6 +108,9 @@ export default defineConfig({
         'src/nest/plugins/**/*.ts': { statements: 86, branches: 81, functions: 78, lines: 89 },
         'src/nest/query-helpers/**/*.ts': { statements: 90, branches: 75, functions: 99, lines: 92 },
         'src/nest/realtime/**/*.ts': { statements: 99, branches: 100, functions: 99, lines: 99 },
+        // The receipt scanner. The mapper and the store are pure and heavily pinned;
+        // the service's uncovered arms are the geocoder and filesystem failure paths.
+        'src/nest/receipts/**/*.ts': { statements: 89, branches: 80, functions: 87, lines: 94 },
         'src/nest/reservation-import/**/*.ts': { statements: 61, branches: 55, functions: 41, lines: 61 },
         'src/nest/reservations/**/*.ts': { statements: 92, branches: 83, functions: 96, lines: 96 },
         'src/nest/settings/**/*.ts': { statements: 87, branches: 71, functions: 99, lines: 88 },
