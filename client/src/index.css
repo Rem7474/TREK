@@ -496,7 +496,13 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   will-change: transform, opacity;
 }
 
-/* Mobile-Drawer-Feel — Modal slidet von unten rein, wird unten am Screen angedockt */
+/* Mobile-Drawer-Feel — Modal slidet von unten rein und sitzt tief im Bild.
+ *
+ * Die unteren Ecken waren hier eckig gesetzt, weil das Blatt am Bildschirmrand
+ * andocken sollte. Es dockt aber nie an: der Backdrop haelt unten Platz fuer die
+ * Navigationsleiste frei, also schwebt das Blatt mit einer eckigen Unterkante
+ * ueber einer sichtbaren Luecke — oben rund, unten kantig, ohne Anlass. Es
+ * bleibt eine Karte, also bleibt sie rundum rund. */
 @keyframes trek-drawer-enter {
   from { opacity: 0; transform: translateY(100%); }
   to   { opacity: 1; transform: translateY(0); }
@@ -504,8 +510,6 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 @media (max-width: 639px) {
   .trek-modal-enter {
     animation: trek-drawer-enter 320ms cubic-bezier(0.32, 0.72, 0, 1);
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
     margin-top: auto !important;
     align-self: flex-end;
   }

@@ -32,6 +32,20 @@ describe('Modal', () => {
     expect(screen.getByText('Hello World')).toBeTruthy();
   });
 
+  it('FE-COMP-MODAL-021: the panel is bounded by its backdrop, not by its own viewport maths', () => {
+    render(
+      <Modal isOpen={true} onClose={onClose} footer={<button>Save</button>}>
+        <p>body</p>
+      </Modal>
+    );
+
+    const panel = screen.getByText('body').closest('.trek-modal-enter') as HTMLElement;
+    // A second copy of the backdrop's padding arithmetic is what let the panel
+    // outgrow the space it sits in, losing its rounded bottom to the clip.
+    expect(panel.className).toContain('max-h-full');
+    expect(panel.className).not.toMatch(/max-h-\[calc/);
+  });
+
   it('FE-COMP-MODAL-005: renders footer prop', () => {
     render(
       <Modal isOpen={true} onClose={onClose} footer={<button>Save</button>}>
