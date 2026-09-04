@@ -48,6 +48,10 @@ import {
   type BookingImportPreviewResponse,
   type BookingImportConfirmResponse,
   type BookingImportMode,
+  type ReceiptScanResponse,
+  type ReceiptConfirmItem,
+  type ReceiptConfirmRequest,
+  type ReceiptConfirmResponse,
   type StorageAdminState,
   type StorageBackend,
   type StorageConfigPut,
@@ -1126,7 +1130,39 @@ export const reservationsApi = {
 }
 
 export const healthApi = {
-  features: (): Promise<{ bookingImport: boolean; aiParsing: boolean }> => apiClient.get('/health/features').then(r => r.data),
+  features: (): Promise<{ bookingImport: boolean; aiParsing: boolean; receiptScan?: boolean }> => apiClient.get('/health/features').then(r => r.data),
+}
+
+export const llmApi = {
+  /**
+   * What the caller's own AI configuration can do. /health/features answers for
+   * the instance and is public, so it cannot tell whether the model configured
+   * for this user is able to look at a photograph.
+   */
+  capabilities: (): Promise<{ configured: boolean; photos: boolean }> =>
+    apiClient.get('/llm/capabilities').then(r => r.data),
+}
+
+export const receiptsApi = {
+  /**
+   * Upload receipt photos/PDFs and start reading them. Nothing is persisted — the
+   * job's result carries the editable preview and the `scanId` that keeps the
+   * uploads around so confirm() can file them as trip documents.
+   *
+   * Always in the background: reading a photograph outlasts proxy timeouts on a
+   * CPU vision model, so the request returns a job id and the result arrives over
+   * the WebSocket (receipt:progress / receipt:done / receipt:error).
+   */
+  scanAsync: (tripId: number | string, files: File[]): Promise<{ jobId: string }> => {
+    const fd = new FormData()
+    for (const f of files) fd.append('files', f)
+    return postMultipart(`/trips/${tripId}/receipts/scan/async`, fd)
+  },
+  /** Recovery path for a client that missed the push (navigation, reconnect). */
+  scanJobStatus: (tripId: number | string, jobId: string): Promise<{ status: 'running' | 'done' | 'error'; done: number; total: number; result?: ReceiptScanResponse; error?: string }> =>
+    apiClient.get(`/trips/${tripId}/receipts/scan/jobs/${jobId}`).then(r => r.data),
+  confirm: (tripId: number | string, scanId: string | undefined, items: ReceiptConfirmItem[]): Promise<ReceiptConfirmResponse> =>
+    apiClient.post(`/trips/${tripId}/receipts/confirm`, { scanId, items } satisfies ReceiptConfirmRequest).then(r => r.data),
 }
 
 export const weatherApi = {

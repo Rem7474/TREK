@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Suma podziałów: {sum} z {total} (brakuje {diff})',
   'costs.splitSumOver': 'Suma podziałów: {sum} z {total} (o {diff} za dużo)',
   'costs.toggleSign': 'Przełącz między wydatkiem a zwrotem',
+
+  // Skaner paragonów — sfotografuj rachunek i masz wydatek (Koszty → Skanuj paragon).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Skanuj paragon',
+  'receipts.title': 'Zeskanuj paragon',
+  'receipts.subtitle': 'Zrób zdjęcie paragonu albo wgraj fakturę PDF. TREK rozpozna, co to jest, i przygotuje wydatek.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML lub EML · do 5 plików, po 10 MB',
+  'receipts.takePhoto': 'Zrób zdjęcie',
+  'receipts.pickOrPhoto': 'Zrób zdjęcie lub wybierz plik',
+  'receipts.dropHere': 'Upuść tutaj paragon albo kliknij, aby wybrać',
+  'receipts.dropActive': 'Upuść, aby zeskanować',
+  'receipts.scanning': 'Odczytujemy twój paragon…',
+  'receipts.scanningHint': 'Z lokalnym modelem może to potrwać do minuty.',
+  'receipts.scanAction': 'Skanuj',
+  'receipts.unsupportedFormat': 'Tego typu pliku nie można zeskanować.',
+  'receipts.fileTooLarge': 'Plik {name} przekracza 10 MB.',
+  'receipts.notConfigured':
+    'Skanowanie paragonów wymaga dodatku analizy AI skonfigurowanego z modelem czytającym obrazy.',
+  'receipts.error': 'Nie udało się zeskanować paragonu.',
+  'receipts.nothingFound': 'Na tym paragonie nie znaleziono nic czytelnego.',
+  'receipts.reviewTitle': 'Sprawdź przed zapisaniem',
+  'receipts.reviewSubtitle': 'Odczytano paragonów: {count}. Popraw to, co się nie zgadza, i zapisz.',
+  'receipts.needsReview': 'Sprawdź ten',
+  'receipts.merchant': 'Sprzedawca',
+  'receipts.docType': 'Typ dokumentu',
+  'receipts.attachReceipt': 'Zachowaj paragon w Dokumentach',
+  'receipts.lineItems': 'Pozycji na paragonie: {count}',
+  'receipts.save': 'Zapisz wydatek',
+  'receipts.savePlural': 'Zapisz {count} wydatków',
+  'receipts.saved': 'Wydatek dodany z twojego paragonu.',
+  'receipts.savedPlural': 'Z twoich paragonów dodano wydatków: {count}.',
+  'receipts.saveError': 'Nie udało się zapisać wydatku.',
+  'receipts.scanExpired': 'To skanowanie wygasło, zanim wróciłeś — zeskanuj paragon ponownie.',
+  'receipts.discard': 'Odrzuć',
+  'receipts.type.meal': 'Posiłek',
+  'receipts.type.groceries': 'Zakupy spożywcze',
+  'receipts.type.accommodation': 'Nocleg',
+  'receipts.type.transport': 'Transport',
+  'receipts.type.flight': 'Lot',
+  'receipts.type.fuel': 'Paliwo',
+  'receipts.type.activity': 'Atrakcja',
+  'receipts.type.shopping': 'Zakupy',
+  'receipts.type.health': 'Zdrowie',
+  'receipts.type.fees': 'Opłaty',
+  'receipts.type.other': 'Inne',
 };
 export default budget;

@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Som van de delen: {sum} van {total} ({diff} te weinig)',
   'costs.splitSumOver': 'Som van de delen: {sum} van {total} ({diff} te veel)',
   'costs.toggleSign': 'Wisselen tussen uitgave en terugbetaling',
+
+  // Bonnenscanner — fotografeer een rekening en krijg de uitgave (Kosten → Bon scannen).
+  'receipts.failure.noVision':
+    "Het AI-model kan geen afbeeldingen lezen. Kies een model met beeldherkenning in de AI-instellingen.",
+  'receipts.failure.contextTooSmall':
+    "Het document paste niet in het contextvenster van het model. Verhoog dit op de AI-server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 of meer voor foto's).",
+  'receipts.failure.authRejected':
+    "De AI-aanbieder heeft de inloggegevens geweigerd. Controleer de API-sleutel in de AI-instellingen.",
+  'receipts.failure.rateLimited':
+    "De AI-aanbieder beperkt deze server. Probeer het zo meteen opnieuw.",
+  'receipts.failure.unreachable':
+    "Het AI-model antwoordde niet op tijd. Het laadt mogelijk nog, of de server is onbereikbaar.",
+  'receipts.failure.rejected':
+    "De AI-aanbieder heeft het verzoek geweigerd. Het serverlog bevat het antwoord.",
+  'receipts.scan': 'Bon scannen',
+  'receipts.title': 'Een bon scannen',
+  'receipts.subtitle':
+    'Maak een foto van een bon of upload een pdf-factuur. TREK herkent wat het is en zet de uitgave klaar.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML of EML · maximaal 5 bestanden, elk 10 MB',
+  'receipts.takePhoto': 'Foto maken',
+  'receipts.pickOrPhoto': 'Fotograferen of een bestand kiezen',
+  'receipts.dropHere': 'Sleep hier een bon naartoe, of klik om te kiezen',
+  'receipts.dropActive': 'Loslaten om te scannen',
+  'receipts.scanning': 'Je bon wordt gelezen…',
+  'receipts.scanningHint': 'Met een lokaal model kan dit tot een minuut duren.',
+  'receipts.scanAction': 'Scannen',
+  'receipts.unsupportedFormat': 'Dit bestandstype kan niet worden gescand.',
+  'receipts.fileTooLarge': '{name} is groter dan 10 MB.',
+  'receipts.notConfigured': 'Bonnen scannen vereist de AI-parsing-add-on met een model dat afbeeldingen kan lezen.',
+  'receipts.error': 'De bon kon niet worden gescand.',
+  'receipts.nothingFound': 'Er is niets leesbaars gevonden op deze bon.',
+  'receipts.reviewTitle': 'Controleer voor het opslaan',
+  'receipts.reviewSubtitle': '{count} bon(nen) gelezen. Corrigeer wat niet klopt en sla op.',
+  'receipts.needsReview': 'Even controleren',
+  'receipts.merchant': 'Verkoper',
+  'receipts.docType': 'Documenttype',
+  'receipts.attachReceipt': 'Bon bewaren bij Documenten',
+  'receipts.lineItems': '{count} regels op de bon',
+  'receipts.save': 'Uitgave opslaan',
+  'receipts.savePlural': '{count} uitgaven opslaan',
+  'receipts.saved': 'Uitgave toegevoegd vanaf je bon.',
+  'receipts.savedPlural': '{count} uitgaven toegevoegd vanaf je bonnen.',
+  'receipts.saveError': 'De uitgave kon niet worden opgeslagen.',
+  'receipts.scanExpired': 'Deze scan is verlopen voordat je terugkwam — scan de bon opnieuw.',
+  'receipts.discard': 'Weggooien',
+  'receipts.type.meal': 'Maaltijd',
+  'receipts.type.groceries': 'Boodschappen',
+  'receipts.type.accommodation': 'Accommodatie',
+  'receipts.type.transport': 'Vervoer',
+  'receipts.type.flight': 'Vlucht',
+  'receipts.type.fuel': 'Brandstof',
+  'receipts.type.activity': 'Activiteit',
+  'receipts.type.shopping': 'Winkelen',
+  'receipts.type.health': 'Gezondheid',
+  'receipts.type.fees': 'Kosten',
+  'receipts.type.other': 'Overig',
 };
 export default budget;

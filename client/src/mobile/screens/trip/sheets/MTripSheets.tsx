@@ -17,6 +17,7 @@ import MPlaceEditSheet from './MPlaceEditSheet'
 import MReservationSheet from './MReservationSheet'
 import MTransportFormSheet from './MTransportFormSheet'
 import MCostSheet from './MCostSheet'
+import MReceiptScanSheet from './MReceiptScanSheet'
 import MTransportSheet from './MTransportSheet'
 import MBrowseActionsSheet from './MBrowseActionsSheet'
 import MNoteSheet, { type MNoteSheetPayload } from './MNoteSheet'
@@ -138,6 +139,18 @@ export default function MTripSheets({ planner, shell }: MTripSheetsProps) {
       )}
 
       <BookingImportModal isOpen={planner.showBookingImport} onClose={() => planner.setShowBookingImport(false)} tripId={tripId} kind={planner.bookingImportKind} />
+      {planner.showReceiptScan && (
+        <MReceiptScanSheet
+          tripId={tripId}
+          base={costsBase}
+          people={planner.tripMembers}
+          me={meId}
+          photosAvailable={planner.receiptPhotosAvailable}
+          initialResult={planner.receiptScanResult}
+          onClose={() => { planner.setShowReceiptScan(false); planner.setReceiptScanResult(undefined) }}
+          onSaved={() => { planner.setShowReceiptScan(false); planner.setReceiptScanResult(undefined); loadBudgetItems(tripId) }}
+        />
+      )}
       <AirTrailImportModal isOpen={planner.showAirTrailImport} onClose={() => planner.setShowAirTrailImport(false)} tripId={tripId} pushUndo={planner.pushUndo} />
 
       {/* Trip edit + share/members, opened from the Mehr sheet. */}

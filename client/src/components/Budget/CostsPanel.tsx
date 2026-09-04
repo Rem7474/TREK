@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect, useMemo, useCallback } from 'react'
 import { useSearchParams } from 'react-router'
-import { ArrowDown, ArrowUp, BarChart3, Plus, Search, ArrowRight, ArrowLeftRight, Check, RotateCcw, Pencil, Trash2, AlertCircle, Download, StickyNote, ChevronDown } from 'lucide-react'
+import { ArrowDown, ArrowUp, BarChart3, Plus, Search, ArrowRight, ArrowLeftRight, Check, RotateCcw, Pencil, Trash2, AlertCircle, Download, StickyNote, ChevronDown, ScanLine } from 'lucide-react'
 import { useTripStore } from '../../store/tripStore'
 import { useAuthStore } from '../../store/authStore'
 import { useSettingsStore } from '../../store/settingsStore'
@@ -10,6 +10,7 @@ import { useTranslation } from '../../i18n'
 import { budgetApi } from '../../api/client'
 import { useExchangeRates } from '../../hooks/useExchangeRates'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useReceiptScanCapability } from '../../hooks/useReceiptScanCapability'
 import { formatMoney, currencyDecimals, currencyLocale, localizeAmountInput, amountToInputString } from '../../utils/formatters'
 import { downloadBlob } from '../../utils/fileDownload'
 import Modal from '../shared/Modal'
@@ -25,6 +26,7 @@ import type { BudgetItem } from '../../types'
 import type { TripMember } from './BudgetPanelMemberChips'
 import { NumericInput } from '../shared/NumericInput'
 import EmptyState from '../shared/EmptyState'
+import ReceiptScanModal from './ReceiptScanModal'
 
 interface CostsPanelProps {
   tripId: number
@@ -90,6 +92,12 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   const [expandedNoteId, setExpandedNoteId] = useState<number | null>(null)
   const [editingSettlement, setEditingSettlement] = useState<Settlement | null>(null)
   const [addingPayment, setAddingPayment] = useState(false)
+  const [scanOpen, setScanOpen] = useState(false)
+  // Receipt scanning reads the photo with the LLM addon — hide the entry point
+  // entirely on an instance where that isn't set up. `photos` says whether the
+  // configured model can be handed a photograph; without it the scanner stays,
+  // minus the camera and the image file types.
+  const { available: scanAvailable, photos: photosAvailable } = useReceiptScanCapability()
 
   const people = tripMembers
   const personById = useCallback((id: number) => people.find(p => p.id === id), [people])
@@ -355,6 +363,13 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
               style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 16px', borderRadius: 12, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
               <Check size={16} /> {t('costs.settleUp')}
             </button>
+            {scanAvailable && (
+              <button type="button" onClick={() => setScanOpen(true)}
+                className="bg-surface-card border border-edge text-content"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 16px', borderRadius: 12, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
+                <ScanLine size={16} /> {t('receipts.scan')}
+              </button>
+            )}
             <button type="button" onClick={() => { setEditing(null); setModalOpen(true) }}
               className="bg-[var(--text-primary)] text-[var(--bg-primary)]"
               style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 18px', borderRadius: 12, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, border: 0, cursor: 'pointer', fontFamily: 'inherit' }}>
@@ -484,6 +499,12 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
           onSaved={() => { setModalOpen(false); loadBudgetItems(tripId); loadSettlement() }} />
       )}
 
+      {scanOpen && (
+        <ReceiptScanModal tripId={tripId} base={base} people={people} me={me} photosAvailable={photosAvailable}
+          onClose={() => setScanOpen(false)}
+          onSaved={() => { setScanOpen(false); loadBudgetItems(tripId); loadSettlement() }} />
+      )}
+
       {(editingSettlement || addingPayment) && (
         <SettlementModal tripId={tripId} people={people} me={me} editing={editingSettlement} currency={base}
           onClose={() => { setEditingSettlement(null); setAddingPayment(false) }}
@@ -595,6 +616,11 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
               <button type="button" onClick={() => { setEditing(null); setModalOpen(true) }} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.16)', color: '#fff', padding: 13, borderRadius: 14, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
                 <Plus size={17} /> {t('costs.addExpense')}
               </button>
+              {scanAvailable && (
+                <button type="button" onClick={() => setScanOpen(true)} aria-label={t('receipts.scan')} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.16)', color: '#fff', padding: '13px 16px', borderRadius: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
+                  <ScanLine size={17} />
+                </button>
+              )}
             </div>
           )}
         </section>
@@ -1068,8 +1094,8 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
     if (prefill?.amount != null) return amountToInputString(prefill.amount, base)
     return ''
   })
-  // Who paid, how it is shared and the note live in useExpenseSplit, so the
-  // dialog and the phone sheet render the same controls from one definition.
+  // Who paid, how it is shared and the note live in the shared split editor —
+  // the same one the receipt scanner reviews a scanned expense with.
   const split = useExpenseSplit({ people, me, editing, total: parseFloat(total) || 0, currency })
 
   const [saving, setSaving] = useState(false)

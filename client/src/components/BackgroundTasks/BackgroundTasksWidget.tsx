@@ -1,10 +1,10 @@
 import { createPortal } from 'react-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Loader2, CheckCircle2, AlertCircle, X } from 'lucide-react'
 import { useTranslation } from '../../i18n'
 import { addListener, removeListener } from '../../api/websocket'
-import { reservationsApi, healthApi } from '../../api/client'
+import { reservationsApi, receiptsApi, healthApi } from '../../api/client'
 import { saveImportFiles } from '../../db/offlineDb'
 import { useBackgroundTasksStore, type BackgroundImportTask } from '../../store/backgroundTasksStore'
 
@@ -21,6 +21,7 @@ export default function BackgroundTasksWidget() {
   const tasks = useBackgroundTasksStore((s) => s.tasks)
   const setProgress = useBackgroundTasksStore((s) => s.setProgress)
   const setDone = useBackgroundTasksStore((s) => s.setDone)
+  const setReceiptDone = useBackgroundTasksStore((s) => s.setReceiptDone)
   const setError = useBackgroundTasksStore((s) => s.setError)
   const requestReview = useBackgroundTasksStore((s) => s.requestReview)
   const dismiss = useBackgroundTasksStore((s) => s.dismiss)
@@ -57,23 +58,56 @@ export default function BackgroundTasksWidget() {
   // that was still running when the page reloaded must keep its widget, so re-fetch each
   // job's real status (and its parsed items) once. A job the server has since dropped
   // (404, expired) is removed so no stale card lingers.
+  /**
+   * Ask the server where a job got to. Which endpoint depends on the job: both
+   * jobs answer the same shape, but a receipt scan is not a booking import and
+   * polling the wrong one 404s the task straight out of the widget.
+   */
+  /** A finished job we already hold the payload for — nothing left to fetch. */
+  const settled = (task: BackgroundImportTask) =>
+    task.job === 'receipt' ? task.receipt !== undefined : task.items !== undefined
+
+  /**
+   * `rehydrate` marks the one-shot pass over what localStorage restored, because
+   * a 404 means something different there: a card the page was never watching is
+   * stale and simply goes, while a job we followed to the end and then lost has
+   * to say so rather than vanish from under the reader.
+   */
+  const pollTask = useCallback(
+    (task: BackgroundImportTask, opts?: { rehydrate?: boolean }) => {
+      const request =
+        task.job === 'receipt'
+          ? receiptsApi.scanJobStatus(task.tripId, task.id).then((s) => {
+              if (s.status === 'done' && s.result) setReceiptDone(task.id, task.tripId, s.result)
+              else if (s.status === 'error') setError(task.id, task.tripId, s.error ?? 'error')
+              else setProgress(task.id, task.tripId, s.done, s.total)
+            })
+          : reservationsApi.importJobStatus(task.tripId, task.id).then((s) => {
+              if (s.status === 'done') setDone(task.id, task.tripId, (s.result?.items ?? []) as never, s.result?.warnings ?? [])
+              else if (s.status === 'error') setError(task.id, task.tripId, s.error ?? 'error')
+              else setProgress(task.id, task.tripId, s.done, s.total)
+            })
+
+      request.catch((err: { response?: { status?: number } }) => {
+        if (err?.response?.status !== 404) return
+        // The server has forgotten this job. If we kept its result we lose
+        // nothing — the review runs off what we already hold. If we didn't, the
+        // work is genuinely gone, and saying so beats the card quietly
+        // disappearing while the user was away waiting for exactly it.
+        if (settled(task)) return
+        if (task.job === 'receipt') setError(task.id, task.tripId, t('receipts.scanExpired'))
+        else if (opts?.rehydrate) dismiss(task.id)
+        else setError(task.id, task.tripId, t('common.unknownError'))
+      })
+    },
+    [setDone, setReceiptDone, setError, setProgress, dismiss, t],
+  )
+
   const didRehydrate = useRef(false)
   useEffect(() => {
     if (didRehydrate.current) return
     didRehydrate.current = true
-    const restored = useBackgroundTasksStore.getState().tasks
-    for (const task of restored) {
-      reservationsApi
-        .importJobStatus(task.tripId, task.id)
-        .then((s) => {
-          if (s.status === 'done') setDone(task.id, task.tripId, (s.result?.items ?? []) as never, s.result?.warnings ?? [])
-          else if (s.status === 'error') setError(task.id, task.tripId, s.error ?? 'error')
-          else setProgress(task.id, task.tripId, s.done, s.total)
-        })
-        .catch((err: { response?: { status?: number } }) => {
-          if (err?.response?.status === 404) dismiss(task.id)
-        })
-    }
+    for (const task of useBackgroundTasksStore.getState().tasks) if (!settled(task)) pollTask(task, { rehydrate: true })
     // run once on mount against whatever was rehydrated from storage
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -82,45 +116,51 @@ export default function BackgroundTasksWidget() {
   useEffect(() => {
     const handler = (e: Record<string, unknown>) => {
       const type = typeof e.type === 'string' ? e.type : ''
-      if (!type.startsWith('import:')) return
+      const isImport = type.startsWith('import:')
+      const isReceipt = type.startsWith('receipt:')
+      if (!isImport && !isReceipt) return
       const id = String(e.jobId ?? '')
       const tripId = String(e.tripId ?? '')
       if (!id) return
-      if (type === 'import:progress') setProgress(id, tripId, Number(e.done ?? 0), Number(e.total ?? 1))
+      if (type.endsWith(':progress')) setProgress(id, tripId, Number(e.done ?? 0), Number(e.total ?? 1))
       else if (type === 'import:done') {
         const result = e.result as { items?: unknown[]; warnings?: string[] } | undefined
         setDone(id, tripId, (result?.items ?? []) as never, result?.warnings ?? [])
-      } else if (type === 'import:error') setError(id, tripId, String(e.message ?? 'error'))
+      } else if (type === 'receipt:done') {
+        setReceiptDone(id, tripId, e.result as never)
+      } else if (type.endsWith(':error')) setError(id, tripId, String(e.message ?? 'error'))
     }
     addListener(handler)
     return () => removeListener(handler)
-  }, [setProgress, setDone, setError])
+  }, [setProgress, setDone, setReceiptDone, setError])
 
   // Backstop: poll jobs whose state we still need — running ones (in case a WebSocket push
   // was missed) and a restored 'done' task whose items haven't been re-fetched yet (so a
   // failed one-shot rehydrate self-heals instead of getting stuck on "preview empty").
   useEffect(() => {
-    const pending = tasks.filter((task) => task.status === 'running' || (task.status === 'done' && task.items === undefined))
+    const pending = tasks.filter((task) => task.status === 'running' || (task.status === 'done' && !settled(task)))
     if (pending.length === 0) return
     const iv = setInterval(() => {
-      for (const task of pending) {
-        reservationsApi
-          .importJobStatus(task.tripId, task.id)
-          .then((s) => {
-            if (s.status === 'done') setDone(task.id, task.tripId, (s.result?.items ?? []) as never, s.result?.warnings ?? [])
-            else if (s.status === 'error') setError(task.id, task.tripId, s.error ?? 'error')
-            else setProgress(task.id, task.tripId, s.done, s.total)
-          })
-          .catch((err: { response?: { status?: number } }) => {
-            // The server 404s a job once it has expired (or after a restart). Nothing is
-            // ever coming, so end the card instead of spinning and re-polling forever.
-            // Not the parse-failure message — the file was fine, the job is just gone.
-            if (err?.response?.status === 404) setError(task.id, task.tripId, t('common.unknownError'))
-          })
-      }
+      for (const task of pending) pollTask(task)
     }, 5000)
     return () => clearInterval(iv)
-  }, [tasks, setProgress, setDone, setError, t])
+  }, [tasks, pollTask])
+
+  const finished = settled
+  const count = (task: BackgroundImportTask) =>
+    task.job === 'receipt' ? (task.receipt?.items.length ?? 0) : (task.items?.length ?? 0)
+
+  /**
+   * Why a finished job produced nothing, in the reader's language when the
+   * server named a cause. The English `warnings` line is the fallback — it is
+   * what the log has, and what a locale TREK does not ship still gets.
+   */
+  const emptyReason = (task: BackgroundImportTask): string[] => {
+    const coded = (task.receipt?.files ?? [])
+      .filter((f) => f.failureCode)
+      .map((f) => `${f.fileName}: ${t(`receipts.failure.${f.failureCode}`)}`)
+    return coded.length > 0 ? coded : (task.warnings ?? [])
+  }
 
   if (tasks.length === 0) return null
 
@@ -140,8 +180,12 @@ export default function BackgroundTasksWidget() {
           style={{ borderRadius: 12, border: '1px solid var(--border-primary)', boxShadow: '0 8px 24px rgba(0,0,0,0.18)', padding: '11px 13px', backdropFilter: 'blur(8px)', display: 'flex', gap: 10, alignItems: 'flex-start' }}
         >
           <div style={{ flexShrink: 0, marginTop: 1 }}>
-            {(task.status === 'running' || (task.status === 'done' && task.items === undefined)) && <Loader2 size={16} className="animate-spin" color="var(--accent)" />}
-            {task.status === 'done' && task.items !== undefined && <CheckCircle2 size={16} color="#10b981" />}
+            {(task.status === 'running' || (task.status === 'done' && !finished(task))) && <Loader2 size={16} className="animate-spin" color="var(--accent)" />}
+            {task.status === 'done' && finished(task) && count(task) > 0 && <CheckCircle2 size={16} color="#10b981" />}
+            {/* Finished with nothing to show is not a success: a green tick above
+                "could not read this" reads as a contradiction, and the eye trusts
+                the tick over the sentence. */}
+            {task.status === 'done' && finished(task) && count(task) === 0 && <AlertCircle size={16} color="#f59e0b" />}
             {task.status === 'error' && <AlertCircle size={16} color="#ef4444" />}
           </div>
 
@@ -152,16 +196,16 @@ export default function BackgroundTasksWidget() {
 
             {task.status === 'running' && (
               <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>
-                {t('reservations.import.parsing')}
+                {t(task.job === 'receipt' ? 'receipts.scanning' : 'reservations.import.parsing')}
                 {task.total > 1 ? ` · ${task.done}/${task.total}` : ''}
               </div>
             )}
 
             {task.status === 'done' && (
-              task.items === undefined ? (
+              !finished(task) ? (
                 // Restored from a reload; items are being re-fetched (see the poll backstop).
-                <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>{t('reservations.import.parsing')}</div>
-              ) : task.items.length > 0 ? (
+                <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>{t(task.job === 'receipt' ? 'receipts.scanning' : 'reservations.import.parsing')}</div>
+              ) : count(task) > 0 ? (
                 <div>
                   <button type="button"
                     onClick={() => review(task)}
@@ -184,10 +228,10 @@ export default function BackgroundTasksWidget() {
               ) : (
                 <div>
                   <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>
-                    {t('reservations.import.previewEmpty')}
-                    {(task.warnings?.length ?? 0) > 0 && (
+                    {t(task.job === 'receipt' ? 'receipts.nothingFound' : 'reservations.import.previewEmpty')}
+                    {emptyReason(task).length > 0 && (
                       <div style={{ color: '#b45309', marginTop: 3, whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxHeight: 96, overflowY: 'auto' }}>
-                        {task.warnings!.join('\n')}
+                        {emptyReason(task).join('\n')}
                       </div>
                     )}
                   </div>

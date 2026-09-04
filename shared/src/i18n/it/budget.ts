@@ -147,5 +147,62 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Somma delle quote: {sum} di {total} (mancano {diff})',
   'costs.splitSumOver': 'Somma delle quote: {sum} di {total} ({diff} in più)',
   'costs.toggleSign': 'Passa da spesa a rimborso',
+
+  // Scanner di scontrini — fotografa un conto e ottieni la spesa (Costi → Scansiona scontrino).
+  'receipts.failure.noVision':
+    "Il modello IA non sa leggere le immagini. Scegli un modello con visione nelle impostazioni di analisi IA.",
+  'receipts.failure.contextTooSmall':
+    "Il documento non è entrato nella finestra di contesto del modello. Aumentala sul server IA (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 o più per le foto).",
+  'receipts.failure.authRejected':
+    "Il fornitore IA ha rifiutato le credenziali. Controlla la chiave API nelle impostazioni di analisi IA.",
+  'receipts.failure.rateLimited':
+    "Il fornitore IA sta limitando questo server. Riprova tra un momento.",
+  'receipts.failure.unreachable':
+    "Il modello IA non ha risposto in tempo. Potrebbe essere ancora in caricamento, o il server non è raggiungibile.",
+  'receipts.failure.rejected':
+    "Il fornitore IA ha rifiutato la richiesta. Il log del server contiene la sua risposta.",
+  'receipts.scan': 'Scansiona scontrino',
+  'receipts.title': 'Scansiona uno scontrino',
+  'receipts.subtitle':
+    'Fotografa uno scontrino o carica una fattura PDF. TREK riconosce di cosa si tratta e prepara la spesa.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML o EML · fino a 5 file, 10 MB ciascuno',
+  'receipts.takePhoto': 'Scatta una foto',
+  'receipts.pickOrPhoto': 'Fotografa o scegli un file',
+  'receipts.dropHere': 'Trascina qui uno scontrino, o clicca per sceglierlo',
+  'receipts.dropActive': 'Rilascia per scansionare',
+  'receipts.scanning': 'Lettura dello scontrino…',
+  'receipts.scanningHint': 'Con un modello locale può richiedere fino a un minuto.',
+  'receipts.scanAction': 'Scansiona',
+  'receipts.unsupportedFormat': 'Questo tipo di file non può essere scansionato.',
+  'receipts.fileTooLarge': '{name} supera i 10 MB.',
+  'receipts.notConfigured':
+    'La scansione degli scontrini richiede il componente aggiuntivo di analisi AI configurato con un modello in grado di leggere le immagini.',
+  'receipts.error': 'Non è stato possibile scansionare lo scontrino.',
+  'receipts.nothingFound': 'Su questo scontrino non è stato trovato nulla di leggibile.',
+  'receipts.reviewTitle': 'Controlla prima di salvare',
+  'receipts.reviewSubtitle': '{count} scontrino/i letto/i. Correggi ciò che non torna, poi salva.',
+  'receipts.needsReview': 'Da controllare',
+  'receipts.merchant': 'Esercente',
+  'receipts.docType': 'Tipo di documento',
+  'receipts.attachReceipt': 'Conserva lo scontrino nei Documenti',
+  'receipts.lineItems': '{count} voci sullo scontrino',
+  'receipts.save': 'Salva spesa',
+  'receipts.savePlural': 'Salva {count} spese',
+  'receipts.saved': 'Spesa aggiunta dal tuo scontrino.',
+  'receipts.savedPlural': '{count} spese aggiunte dai tuoi scontrini.',
+  'receipts.saveError': 'Non è stato possibile salvare la spesa.',
+  'receipts.scanExpired': 'Questa scansione è scaduta prima del tuo ritorno: scansiona di nuovo lo scontrino.',
+  'receipts.discard': 'Scarta',
+  'receipts.type.meal': 'Pasto',
+  'receipts.type.groceries': 'Spesa alimentare',
+  'receipts.type.accommodation': 'Alloggio',
+  'receipts.type.transport': 'Trasporto',
+  'receipts.type.flight': 'Volo',
+  'receipts.type.fuel': 'Carburante',
+  'receipts.type.activity': 'Attività',
+  'receipts.type.shopping': 'Shopping',
+  'receipts.type.health': 'Salute',
+  'receipts.type.fees': 'Tariffe',
+  'receipts.type.other': 'Altro',
 };
 export default budget;

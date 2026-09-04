@@ -147,6 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Tổng các phần: {sum} trên {total} (thiếu {diff})',
   'costs.splitSumOver': 'Tổng các phần: {sum} trên {total} (thừa {diff})',
   'costs.toggleSign': 'Chuyển giữa khoản chi và khoản hoàn',
+
+  // Quét hóa đơn — chụp ảnh hóa đơn để tạo chi phí (Chi phí → Quét hóa đơn).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Quét hóa đơn',
+  'receipts.title': 'Quét hóa đơn',
+  'receipts.subtitle': 'Chụp ảnh hóa đơn, hoặc tải lên hóa đơn PDF. TREK nhận biết đó là gì và chuẩn bị khoản chi.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML hoặc EML · tối đa 5 tệp, mỗi tệp 10 MB',
+  'receipts.takePhoto': 'Chụp ảnh',
+  'receipts.pickOrPhoto': 'Chụp ảnh hoặc chọn tệp',
+  'receipts.dropHere': 'Thả hóa đơn vào đây, hoặc bấm để chọn',
+  'receipts.dropActive': 'Thả để quét',
+  'receipts.scanning': 'Đang đọc hóa đơn của bạn…',
+  'receipts.scanningHint': 'Với mô hình cục bộ, việc này có thể mất tới một phút.',
+  'receipts.scanAction': 'Quét',
+  'receipts.unsupportedFormat': 'Không thể quét loại tệp này.',
+  'receipts.fileTooLarge': '{name} lớn hơn 10 MB.',
+  'receipts.notConfigured': 'Quét hóa đơn cần tiện ích phân tích AI được thiết lập với mô hình đọc được hình ảnh.',
+  'receipts.error': 'Không quét được hóa đơn.',
+  'receipts.nothingFound': 'Không tìm thấy nội dung nào đọc được trên hóa đơn này.',
+  'receipts.reviewTitle': 'Kiểm tra trước khi lưu',
+  'receipts.reviewSubtitle': 'Đã đọc {count} hóa đơn. Sửa những chỗ chưa đúng rồi lưu.',
+  'receipts.needsReview': 'Cần kiểm tra',
+  'receipts.merchant': 'Người bán',
+  'receipts.docType': 'Loại chứng từ',
+  'receipts.attachReceipt': 'Giữ hóa đơn trong Tài liệu',
+  'receipts.lineItems': '{count} mục trên hóa đơn',
+  'receipts.save': 'Lưu chi phí',
+  'receipts.savePlural': 'Lưu {count} chi phí',
+  'receipts.saved': 'Đã thêm chi phí từ hóa đơn của bạn.',
+  'receipts.savedPlural': 'Đã thêm {count} chi phí từ hóa đơn của bạn.',
+  'receipts.saveError': 'Không lưu được chi phí.',
+  'receipts.scanExpired': 'Lần quét này đã hết hạn trước khi bạn quay lại — hãy quét lại hóa đơn.',
+  'receipts.discard': 'Bỏ',
+  'receipts.type.meal': 'Bữa ăn',
+  'receipts.type.groceries': 'Cửa hàng tạp hóa',
+  'receipts.type.accommodation': 'Chỗ ở',
+  'receipts.type.transport': 'Chuyên chở',
+  'receipts.type.flight': 'Chuyến bay',
+  'receipts.type.fuel': 'Nhiên liệu',
+  'receipts.type.activity': 'Hoạt động',
+  'receipts.type.shopping': 'Mua sắm',
+  'receipts.type.health': 'Sức khỏe',
+  'receipts.type.fees': 'Phí',
+  'receipts.type.other': 'Khác',
 };
 
 export default budget;

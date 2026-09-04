@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': '分割の合計: {total} のうち {sum}（{diff} 不足）',
   'costs.splitSumOver': '分割の合計: {total} のうち {sum}（{diff} 超過）',
   'costs.toggleSign': '支出と返金を切り替える',
+
+  // レシートスキャン — 伝票を撮影すると支出になります（費用 → レシートをスキャン）。
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'レシートをスキャン',
+  'receipts.title': 'レシートをスキャン',
+  'receipts.subtitle':
+    'レシートを撮影するか、PDF の請求書をアップロードしてください。TREK が種類を判別し、支出を用意します。',
+  'receipts.accepted': 'JPG、PNG、HEIC、WEBP、PDF、TXT、HTML、EML · 最大 5 ファイル、各 10 MB',
+  'receipts.takePhoto': '写真を撮る',
+  'receipts.pickOrPhoto': '撮影するかファイルを選択',
+  'receipts.dropHere': 'ここにレシートをドロップ、またはクリックして選択',
+  'receipts.dropActive': 'ドロップしてスキャン',
+  'receipts.scanning': 'レシートを読み取り中…',
+  'receipts.scanningHint': 'ローカルモデルでは 1 分ほどかかることがあります。',
+  'receipts.scanAction': 'スキャン',
+  'receipts.unsupportedFormat': 'このファイル形式はスキャンできません。',
+  'receipts.fileTooLarge': '{name} は 10 MB を超えています。',
+  'receipts.notConfigured': 'レシートのスキャンには、画像を読めるモデルを設定した AI 解析アドオンが必要です。',
+  'receipts.error': 'レシートをスキャンできませんでした。',
+  'receipts.nothingFound': 'このレシートから読み取れる内容が見つかりませんでした。',
+  'receipts.reviewTitle': '保存前に確認',
+  'receipts.reviewSubtitle': 'レシートを {count} 件読み取りました。おかしい箇所を直して保存してください。',
+  'receipts.needsReview': '要確認',
+  'receipts.merchant': '店舗',
+  'receipts.docType': '書類の種類',
+  'receipts.attachReceipt': 'レシートをドキュメントに保存する',
+  'receipts.lineItems': 'レシートの明細 {count} 件',
+  'receipts.save': '支出を保存',
+  'receipts.savePlural': '{count} 件の支出を保存',
+  'receipts.saved': 'レシートから支出を追加しました。',
+  'receipts.savedPlural': 'レシートから {count} 件の支出を追加しました。',
+  'receipts.saveError': '支出を保存できませんでした。',
+  'receipts.scanExpired': 'このスキャンは戻る前に期限切れになりました。レシートをもう一度スキャンしてください。',
+  'receipts.discard': '破棄',
+  'receipts.type.meal': '食事',
+  'receipts.type.groceries': '食料品',
+  'receipts.type.accommodation': '宿泊',
+  'receipts.type.transport': '交通',
+  'receipts.type.flight': '航空券',
+  'receipts.type.fuel': '燃料',
+  'receipts.type.activity': 'アクティビティ',
+  'receipts.type.shopping': '買い物',
+  'receipts.type.health': '健康',
+  'receipts.type.fees': '手数料',
+  'receipts.type.other': 'その他',
 };
 export default budget;

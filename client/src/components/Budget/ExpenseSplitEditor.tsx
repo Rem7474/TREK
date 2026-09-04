@@ -12,8 +12,8 @@ import type { ExpenseSplit } from './useExpenseSplit'
 /**
  * The panels behind every screen that writes an expense: who fronted the bill,
  * how it is shared, and the note that travels with it. Moved verbatim out of the
- * Costs dialog, so the controls are defined once and rendered wherever an
- * expense is written — see useExpenseSplit for the state.
+ * Costs dialog so the receipt scanner reviews a scan with the same controls
+ * rather than a reduced copy of them — see useExpenseSplit for the state.
  */
 interface PanelProps {
   split: ExpenseSplit

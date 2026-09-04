@@ -147,6 +147,62 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Sum of splits: {sum} of {total} (under by {diff})',
   'costs.splitSumOver': 'Sum of splits: {sum} of {total} (over by {diff})',
   'costs.toggleSign': 'Switch between expense and refund',
+
+  // Receipt scanner — photograph a bill, get an expense (Costs → Scan receipt).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Scan receipt',
+  'receipts.title': 'Scan a receipt',
+  'receipts.subtitle':
+    'Take a photo of a receipt, or upload a PDF invoice. TREK detects what it is and prepares the expense.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML or EML · up to 5 files, 10 MB each',
+  'receipts.takePhoto': 'Take a photo',
+  'receipts.pickOrPhoto': 'Photograph or choose a file',
+  'receipts.dropHere': 'Drop a receipt here, or click to choose',
+  'receipts.dropActive': 'Drop to scan',
+  'receipts.scanning': 'Reading your receipt…',
+  'receipts.scanningHint': 'This can take up to a minute on a local model.',
+  'receipts.scanAction': 'Scan',
+  'receipts.unsupportedFormat': 'That file type cannot be scanned.',
+  'receipts.fileTooLarge': '{name} is larger than 10 MB.',
+  'receipts.notConfigured': 'Receipt scanning needs the AI parsing addon set up with a vision-capable model.',
+  'receipts.error': 'The receipt could not be scanned.',
+  'receipts.nothingFound': 'Nothing readable was found on this receipt.',
+  'receipts.reviewTitle': 'Check before saving',
+  'receipts.reviewSubtitle': '{count} receipt(s) read. Fix anything that looks wrong, then save.',
+  'receipts.needsReview': 'Check this one',
+  'receipts.merchant': 'Merchant',
+  'receipts.docType': 'Document type',
+  'receipts.attachReceipt': 'Keep the receipt in Documents',
+  'receipts.lineItems': '{count} items on the receipt',
+  'receipts.save': 'Save expense',
+  'receipts.savePlural': 'Save {count} expenses',
+  'receipts.saved': 'Expense added from your receipt.',
+  'receipts.savedPlural': '{count} expenses added from your receipts.',
+  'receipts.saveError': 'The expense could not be saved.',
+  'receipts.scanExpired': 'This scan expired before you came back — scan the receipt again.',
+  'receipts.discard': 'Discard',
+  'receipts.type.meal': 'Meal',
+  'receipts.type.groceries': 'Groceries',
+  'receipts.type.accommodation': 'Accommodation',
+  'receipts.type.transport': 'Transport',
+  'receipts.type.flight': 'Flight',
+  'receipts.type.fuel': 'Fuel',
+  'receipts.type.activity': 'Activity',
+  'receipts.type.shopping': 'Shopping',
+  'receipts.type.health': 'Health',
+  'receipts.type.fees': 'Fees',
+  'receipts.type.other': 'Other',
 };
 
 export default budget;

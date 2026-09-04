@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Jumlah bagian: {sum} dari {total} (kurang {diff})',
   'costs.splitSumOver': 'Jumlah bagian: {sum} dari {total} (lebih {diff})',
   'costs.toggleSign': 'Beralih antara pengeluaran dan pengembalian dana',
+
+  // Pemindai struk — foto tagihan, pengeluaran langsung jadi (Biaya → Pindai struk).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Pindai struk',
+  'receipts.title': 'Pindai struk',
+  'receipts.subtitle':
+    'Foto sebuah struk, atau unggah faktur PDF. TREK mengenali jenisnya dan menyiapkan pengeluarannya.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML atau EML · maksimal 5 berkas, masing-masing 10 MB',
+  'receipts.takePhoto': 'Ambil foto',
+  'receipts.pickOrPhoto': 'Foto atau pilih berkas',
+  'receipts.dropHere': 'Letakkan struk di sini, atau klik untuk memilih',
+  'receipts.dropActive': 'Lepaskan untuk memindai',
+  'receipts.scanning': 'Membaca struk kamu…',
+  'receipts.scanningHint': 'Dengan model lokal ini bisa memakan waktu hingga satu menit.',
+  'receipts.scanAction': 'Pindai',
+  'receipts.unsupportedFormat': 'Jenis berkas ini tidak bisa dipindai.',
+  'receipts.fileTooLarge': '{name} lebih besar dari 10 MB.',
+  'receipts.notConfigured': 'Pemindaian struk memerlukan add-on penguraian AI dengan model yang dapat membaca gambar.',
+  'receipts.error': 'Struk tidak dapat dipindai.',
+  'receipts.nothingFound': 'Tidak ada yang terbaca pada struk ini.',
+  'receipts.reviewTitle': 'Periksa sebelum menyimpan',
+  'receipts.reviewSubtitle': '{count} struk terbaca. Perbaiki yang keliru, lalu simpan.',
+  'receipts.needsReview': 'Periksa yang ini',
+  'receipts.merchant': 'Penjual',
+  'receipts.docType': 'Jenis dokumen',
+  'receipts.attachReceipt': 'Simpan struk di Dokumen',
+  'receipts.lineItems': '{count} item pada struk',
+  'receipts.save': 'Simpan pengeluaran',
+  'receipts.savePlural': 'Simpan {count} pengeluaran',
+  'receipts.saved': 'Pengeluaran ditambahkan dari struk kamu.',
+  'receipts.savedPlural': '{count} pengeluaran ditambahkan dari struk kamu.',
+  'receipts.saveError': 'Pengeluaran tidak dapat disimpan.',
+  'receipts.scanExpired': 'Pemindaian ini kedaluwarsa sebelum kamu kembali — pindai struk lagi.',
+  'receipts.discard': 'Buang',
+  'receipts.type.meal': 'Makan',
+  'receipts.type.groceries': 'Belanja kebutuhan',
+  'receipts.type.accommodation': 'Akomodasi',
+  'receipts.type.transport': 'Transportasi',
+  'receipts.type.flight': 'Penerbangan',
+  'receipts.type.fuel': 'Bahan bakar',
+  'receipts.type.activity': 'Aktivitas',
+  'receipts.type.shopping': 'Belanja',
+  'receipts.type.health': 'Kesehatan',
+  'receipts.type.fees': 'Biaya',
+  'receipts.type.other': 'Lainnya',
 };
 export default budget;

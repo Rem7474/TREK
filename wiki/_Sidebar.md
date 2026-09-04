@@ -42,6 +42,7 @@
 - [[Transport: Flights, Trains, Cars|Transport-Flights-Trains-Cars]]
 - [[Accommodations]]
 - [[Costs|Budget-Tracking]]
+- [[Receipt Scanning|Receipt-Scanning]]
 - [[Currencies]]
 - [[Packing Lists|Packing-Lists]]
 - [[Packing Templates|Packing-Templates]]

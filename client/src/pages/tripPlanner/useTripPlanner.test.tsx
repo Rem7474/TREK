@@ -13,7 +13,7 @@ import { resetAllStores, seedStore } from '../../../tests/helpers/store'
 import { buildUser, buildTrip, buildDay, buildPlace, buildAssignment, buildReservation } from '../../../tests/helpers/factories'
 import {
   addonsApi, accommodationsApi, authApi, tripsApi, assignmentsApi,
-  healthApi, airtrailApi, mapsApi, placesApi,
+  healthApi, llmApi, airtrailApi, mapsApi, placesApi,
 } from '../../api/client'
 import { accommodationRepo } from '../../repo/accommodationRepo'
 import { offlineDb } from '../../db/offlineDb'
@@ -190,6 +190,7 @@ beforeEach(() => {
   vi.spyOn(addonsApi, 'enabled').mockResolvedValue({ addons: [] })
   vi.spyOn(authApi, 'getAppConfig').mockResolvedValue({})
   vi.spyOn(healthApi, 'features').mockResolvedValue({ bookingImport: false, aiParsing: false })
+  vi.spyOn(llmApi, 'capabilities').mockResolvedValue({ configured: false, photos: false })
   vi.spyOn(tripsApi, 'getMembers').mockResolvedValue({ owner: null, members: [] })
   vi.spyOn(accommodationsApi, 'list').mockResolvedValue({ accommodations: [] })
   vi.spyOn(assignmentsApi, 'updateTime').mockResolvedValue({})

@@ -8,12 +8,12 @@ import { amountPattern, calculateTicketShares, hasTicketSplit, payersBalanced, r
  * How an expense is paid for and shared — the one editor behind every screen
  * that writes an expense.
  *
- * It used to live inline in the Costs dialog (ExpenseModal), which made the
- * dialog the only place that could offer the full set of controls: anything
- * else writing an expense had to reimplement the payer/split/note rules or
- * settle for a reduced copy of them. Holding them in one hook keeps every
- * screen in step by construction rather than by vigilance. The panels that
- * render it live in ExpenseSplitEditor.
+ * It used to live inline in the Costs dialog (ExpenseModal). The receipt scanner
+ * writes the same expense from a photograph, and reviewing a scan with a lesser
+ * set of controls than typing the same expense by hand is a difference the user
+ * has no reason to expect: the scan fills the fields in, it does not take any
+ * away. Extracting the state keeps the two in step by construction rather than
+ * by vigilance. The panels that render it live in ExpenseSplitEditor.
  */
 
 export type SplitMode = 'equally' | 'custom' | 'ticket'

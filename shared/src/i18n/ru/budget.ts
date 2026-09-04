@@ -147,5 +147,61 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Сумма долей: {sum} из {total} (не хватает {diff})',
   'costs.splitSumOver': 'Сумма долей: {sum} из {total} (больше на {diff})',
   'costs.toggleSign': 'Переключить между расходом и возвратом',
+
+  // Сканер чеков — сфотографируйте счёт и получите расход (Расходы → Сканировать чек).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Сканировать чек',
+  'receipts.title': 'Сканирование чека',
+  'receipts.subtitle': 'Сфотографируйте чек или загрузите счёт в PDF. TREK определит, что это, и подготовит расход.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML или EML · до 5 файлов, по 10 МБ',
+  'receipts.takePhoto': 'Сделать фото',
+  'receipts.pickOrPhoto': 'Сфотографировать или выбрать файл',
+  'receipts.dropHere': 'Перетащите чек сюда или нажмите, чтобы выбрать',
+  'receipts.dropActive': 'Отпустите, чтобы отсканировать',
+  'receipts.scanning': 'Читаем ваш чек…',
+  'receipts.scanningHint': 'С локальной моделью это может занять до минуты.',
+  'receipts.scanAction': 'Сканировать',
+  'receipts.unsupportedFormat': 'Файл такого типа отсканировать нельзя.',
+  'receipts.fileTooLarge': '{name} больше 10 МБ.',
+  'receipts.notConfigured':
+    'Для сканирования чеков нужен аддон ИИ-разбора, настроенный на модель, которая умеет читать изображения.',
+  'receipts.error': 'Не удалось отсканировать чек.',
+  'receipts.nothingFound': 'На этом чеке не найдено ничего читаемого.',
+  'receipts.reviewTitle': 'Проверьте перед сохранением',
+  'receipts.reviewSubtitle': 'Прочитано чеков: {count}. Исправьте неточности и сохраните.',
+  'receipts.needsReview': 'Проверьте это',
+  'receipts.merchant': 'Продавец',
+  'receipts.docType': 'Тип документа',
+  'receipts.attachReceipt': 'Сохранить чек в «Документах»',
+  'receipts.lineItems': 'Позиций в чеке: {count}',
+  'receipts.save': 'Сохранить расход',
+  'receipts.savePlural': 'Сохранить расходы: {count}',
+  'receipts.saved': 'Расход добавлен из вашего чека.',
+  'receipts.savedPlural': 'Из ваших чеков добавлено расходов: {count}.',
+  'receipts.saveError': 'Не удалось сохранить расход.',
+  'receipts.scanExpired': 'Это сканирование истекло до вашего возвращения — отсканируйте чек ещё раз.',
+  'receipts.discard': 'Отменить',
+  'receipts.type.meal': 'Питание',
+  'receipts.type.groceries': 'Продукты',
+  'receipts.type.accommodation': 'Проживание',
+  'receipts.type.transport': 'Транспорт',
+  'receipts.type.flight': 'Авиаперелёт',
+  'receipts.type.fuel': 'Топливо',
+  'receipts.type.activity': 'Развлечение',
+  'receipts.type.shopping': 'Покупки',
+  'receipts.type.health': 'Здоровье',
+  'receipts.type.fees': 'Сборы',
+  'receipts.type.other': 'Прочее',
 };
 export default budget;

@@ -148,5 +148,62 @@ const budget: TranslationStrings = {
   'costs.splitSumUnder': 'Άθροισμα μεριδίων: {sum} από {total} (λείπουν {diff})',
   'costs.splitSumOver': 'Άθροισμα μεριδίων: {sum} από {total} ({diff} παραπάνω)',
   'costs.toggleSign': 'Εναλλαγή μεταξύ εξόδου και επιστροφής',
+
+  // Σαρωτής αποδείξεων — φωτογραφίστε έναν λογαριασμό και γίνεται έξοδο (Έξοδα → Σάρωση απόδειξης).
+  'receipts.failure.noVision':
+    "The AI model cannot read images. Choose a vision-capable model in the AI Parsing settings.",
+  'receipts.failure.contextTooSmall':
+    "The document did not fit in the model's context window. Raise it on the AI server (Ollama: OLLAMA_CONTEXT_LENGTH, 16384 or more for photos).",
+  'receipts.failure.authRejected':
+    "The AI provider rejected the credentials. Check the API key in the AI Parsing settings.",
+  'receipts.failure.rateLimited':
+    "The AI provider is rate-limiting this server. Try again in a moment.",
+  'receipts.failure.unreachable':
+    "The AI model did not answer in time. It may still be loading, or the server is unreachable.",
+  'receipts.failure.rejected':
+    "The AI provider rejected the request. The server log has its response.",
+  'receipts.scan': 'Σάρωση απόδειξης',
+  'receipts.title': 'Σάρωση απόδειξης',
+  'receipts.subtitle':
+    'Φωτογραφίστε μια απόδειξη ή ανεβάστε ένα τιμολόγιο PDF. Το TREK αναγνωρίζει τι είναι και ετοιμάζει το έξοδο.',
+  'receipts.accepted': 'JPG, PNG, HEIC, WEBP, PDF, TXT, HTML ή EML · έως 5 αρχεία, 10 MB το καθένα',
+  'receipts.takePhoto': 'Λήψη φωτογραφίας',
+  'receipts.pickOrPhoto': 'Φωτογραφήστε ή επιλέξτε αρχείο',
+  'receipts.dropHere': 'Αφήστε εδώ μια απόδειξη ή κάντε κλικ για επιλογή',
+  'receipts.dropActive': 'Αφήστε για σάρωση',
+  'receipts.scanning': 'Διαβάζουμε την απόδειξή σας…',
+  'receipts.scanningHint': 'Με τοπικό μοντέλο μπορεί να πάρει έως ένα λεπτό.',
+  'receipts.scanAction': 'Σάρωση',
+  'receipts.unsupportedFormat': 'Αυτός ο τύπος αρχείου δεν μπορεί να σαρωθεί.',
+  'receipts.fileTooLarge': 'Το {name} ξεπερνά τα 10 MB.',
+  'receipts.notConfigured':
+    'Η σάρωση αποδείξεων απαιτεί το πρόσθετο ανάλυσης AI ρυθμισμένο με μοντέλο που διαβάζει εικόνες.',
+  'receipts.error': 'Η απόδειξη δεν μπόρεσε να σαρωθεί.',
+  'receipts.nothingFound': 'Δεν βρέθηκε τίποτα αναγνώσιμο σε αυτή την απόδειξη.',
+  'receipts.reviewTitle': 'Ελέγξτε πριν την αποθήκευση',
+  'receipts.reviewSubtitle': 'Διαβάστηκαν {count} αποδείξεις. Διορθώστε ό,τι δεν στέκει και αποθηκεύστε.',
+  'receipts.needsReview': 'Ελέγξτε το',
+  'receipts.merchant': 'Κατάστημα',
+  'receipts.docType': 'Τύπος εγγράφου',
+  'receipts.attachReceipt': 'Διατήρηση της απόδειξης στα Έγγραφα',
+  'receipts.lineItems': '{count} είδη στην απόδειξη',
+  'receipts.save': 'Αποθήκευση εξόδου',
+  'receipts.savePlural': 'Αποθήκευση {count} εξόδων',
+  'receipts.saved': 'Προστέθηκε έξοδο από την απόδειξή σας.',
+  'receipts.savedPlural': 'Προστέθηκαν {count} έξοδα από τις αποδείξεις σας.',
+  'receipts.saveError': 'Το έξοδο δεν μπόρεσε να αποθηκευτεί.',
+  'receipts.scanExpired': 'Αυτή η σάρωση έληξε πριν επιστρέψετε — σαρώστε ξανά την απόδειξη.',
+  'receipts.discard': 'Απόρριψη',
+  'receipts.type.meal': 'Γεύμα',
+  'receipts.type.groceries': 'Ψώνια σούπερ μάρκετ',
+  'receipts.type.accommodation': 'Διαμονή',
+  'receipts.type.transport': 'Μεταφορά',
+  'receipts.type.flight': 'Πτήση',
+  'receipts.type.fuel': 'Καύσιμα',
+  'receipts.type.activity': 'Δραστηριότητα',
+  'receipts.type.shopping': 'Ψώνια',
+  'receipts.type.health': 'Υγεία',
+  'receipts.type.fees': 'Τέλη',
+  'receipts.type.other': 'Άλλα',
 };
 export default budget;

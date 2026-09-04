@@ -95,6 +95,7 @@ Most of what follows is an addon an admin switches on or off. Lists, Costs, Docu
 - **AirTrail** (off by default): link a self-hosted AirTrail instance to import flights as reservations and keep them in sync
 - **Costs**: split expenses in integer cents with equal or custom shares, several payers per expense, settle-up suggestions, a settlement log, and CSV export
 - **Currencies**: a currency per expense with the rate frozen at entry. Rates come from Frankfurter, no key
+- **Receipt scanning**: photograph a bill and the AI Parsing addon reads it — the document type, merchant, amount and date become an expense, with the receipt filed in Documents
 - **Packing lists**: categories, admin-managed templates, assignees, three visibility tiers, and a packed-of-total line. Bags with weight roll-up are a separate admin switch, off by default
 - **To-dos**: assignee, due date, priority, and a reminder before one falls due
 - **Files**: attach to a trip, place, day entry or reservation. 50 MB each, 500 MB for video, with trash and restore
