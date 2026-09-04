@@ -203,9 +203,8 @@ export async function safeFetchAdminConfigured(url: string, init?: RequestInit, 
       throw new SsrfBlockedError('Requests to link-local / cloud-metadata addresses are not allowed');
     }
 
-    // This lane is the LLM's: pass its ceiling, or undici silently caps the wait
-    // for response headers at five minutes and the AbortController never gets a
-    // say. A local vision model reading a photograph routinely needs longer.
+    // This lane is the LLM's: it allows unifying the time limit between 
+    // the LLM timeout and Undici (defaulting to 5 minutes).
     const dispatcher = createPinnedDispatcher(resolvedIp, true, readEnv().integrations.llmTimeoutMs);
     const response = await fetch(currentUrl, { ...init, redirect: 'manual', dispatcher } as any);
 
