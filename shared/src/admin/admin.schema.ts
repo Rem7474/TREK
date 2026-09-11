@@ -110,3 +110,16 @@ export const adminTestNotificationRequestSchema = z.object({
   inApp: z.union([z.boolean(), z.record(z.string(), z.unknown())]).optional(),
 });
 export type AdminTestNotificationRequest = z.infer<typeof adminTestNotificationRequestSchema>;
+
+/**
+ * Whether a model id belongs to a family that advertises reading images.
+ *
+ * A guess from the name, for the cases with nothing better to go on: a cloud
+ * provider has no endpoint that reports a model's capabilities, and a local
+ * server may be unreachable or too old to say. It errs toward letting a model
+ * try — a guess that hides a working model is worse than one that lets it fail
+ * loudly — which is why the admin switch overrides it.
+ */
+export function modelReadsPhotos(id: string): boolean {
+  return /qwen3\.5|-vl\b|vl:|llava|minicpm-v|vision|gpt-4o|gpt-5|claude|gemini/i.test(id.trim());
+}
