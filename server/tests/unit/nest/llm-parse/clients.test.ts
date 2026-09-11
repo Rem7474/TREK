@@ -257,3 +257,49 @@ describe('AnthropicClient', () => {
     expect(blocks.some((b: any) => b.type === 'document' && b.source.type === 'base64')).toBe(true);
   });
 });
+
+describe('clients — a caller other than the booking import', () => {
+  const receiptInput = (over: Partial<LlmExtractionInput> = {}): LlmExtractionInput => ({
+    ...baseInput,
+    text: undefined,
+    rootKey: 'receipts',
+    userText: 'Extract the receipt(s) in this document as JSON.',
+    file: { mimeType: 'image/jpeg', data: Buffer.from('photo') },
+    ...over,
+  });
+  const sentBody = () => JSON.parse((safeFetchLlmMock.mock.calls[0][1] as RequestInit).body as string);
+
+  it('OpenAI-compatible: names the schema after the root key and reads the array under it', async () => {
+    mockFetch(() => jsonResponse({ choices: [{ message: { content: '{"receipts":[{"total":9.13}],"reservations":[{"x":1}]}' } }] }));
+
+    const out = await new OpenAiCompatibleClient().extract(receiptInput());
+
+    expect(out).toEqual([{ total: 9.13 }]);
+    const body = sentBody();
+    expect(body.response_format.json_schema.name).toBe('receipts');
+    expect(body.messages[1].content[0]).toEqual({ type: 'text', text: 'Extract the receipt(s) in this document as JSON.' });
+    expect(body.messages[1].content[1].type).toBe('image_url');
+  });
+
+  it('Anthropic: sends a photo as an image block, not a document, and reads the emit_<rootKey> tool', async () => {
+    // A photo sent as a `document` block is rejected: only PDFs are documents.
+    mockFetch(() =>
+      jsonResponse({ stop_reason: 'tool_use', content: [{ type: 'tool_use', name: 'emit_receipts', input: { receipts: [{ total: 42 }] } }] }),
+    );
+
+    const out = await new AnthropicClient().extract(receiptInput());
+
+    expect(out).toEqual([{ total: 42 }]);
+    const body = sentBody();
+    expect(body.tool_choice).toEqual({ type: 'tool', name: 'emit_receipts' });
+    expect(body.messages[0].content[0]).toMatchObject({ type: 'image', source: { media_type: 'image/jpeg' } });
+    expect(body.messages[0].content[1].text).toBe('Extract the receipt(s) in this document as JSON.');
+  });
+
+  it('Anthropic: ignores a tool the model named after a different root key', async () => {
+    mockFetch(() =>
+      jsonResponse({ stop_reason: 'tool_use', content: [{ type: 'tool_use', name: 'emit_reservations', input: { reservations: [{ total: 42 }] } }] }),
+    );
+    expect(await new AnthropicClient().extract(receiptInput())).toEqual([]);
+  });
+});
