@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': '予約確認ファイルをここにドロップするか、クリックして選択',
   'reservations.import.dropActive': 'ファイルをドロップしてインポート',
   'reservations.import.acceptedFormats': '対応形式：EML、PDF、PKPass、HTML、TXT（各最大 10 MB、最大 5 ファイル）',
+  'reservations.import.acceptedPhotos': '写真（JPG、PNG、WEBP）は AI モデルが読み取ります。',
   'reservations.import.parsing': 'ファイルを解析中…',
   'reservations.import.previewHeading': '{count} 件の予約が見つかりました',
   'reservations.import.previewEmpty': 'アップロードされたファイルから予約を抽出できませんでした。',

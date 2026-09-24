@@ -396,9 +396,9 @@ const settings: TranslationStrings = {
     'Tempat model berjalan — server Ollama lokal atau endpoint yang kompatibel dengan OpenAI.',
   'settings.aiParsing.apiKey': 'Kunci API',
   'settings.aiParsing.apiKeyHint': 'Disimpan secara terenkripsi. Biarkan kosong untuk mempertahankan kunci saat ini.',
-  'settings.aiParsing.multimodal': 'Kirim dokumen sebagai gambar',
+  'settings.aiParsing.multimodal': 'Model membaca gambar',
   'settings.aiParsing.multimodalHint':
-    'Untuk model yang mendukung visi — mengirim PDF asli alih-alih teks yang diekstrak.',
+    'Aktifkan untuk model yang membaca gambar, agar foto dapat diimpor atau dipindai.',
   'settings.aiParsing.toast.saved': 'Pengaturan AI disimpan',
   'settings.aiParsing.toast.saveError': 'Tidak dapat menyimpan pengaturan AI',
   'settings.tabs.appearance': 'Appearance',

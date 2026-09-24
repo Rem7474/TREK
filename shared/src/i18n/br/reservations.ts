@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Solte os arquivos de confirmação de reserva aqui ou clique para selecionar',
   'reservations.import.dropActive': 'Solte os arquivos para importar',
   'reservations.import.acceptedFormats': 'Aceitos: EML, PDF, PKPass, HTML, TXT (máx. 10 MB cada, até 5 arquivos)',
+  'reservations.import.acceptedPhotos': 'As fotos (JPG, PNG, WEBP) são lidas pelo modelo de IA.',
   'reservations.import.parsing': 'Analisando arquivos…',
   'reservations.import.previewHeading': '{count} reserva(s) encontrada(s)',
   'reservations.import.previewEmpty': 'Nenhuma reserva pôde ser extraída dos arquivos enviados.',

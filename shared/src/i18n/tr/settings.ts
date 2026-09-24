@@ -395,9 +395,9 @@ const settings: TranslationStrings = {
     'Modelin çalıştığı yer — yerel bir Ollama sunucusu veya OpenAI uyumlu bir uç nokta.',
   'settings.aiParsing.apiKey': 'API anahtarı',
   'settings.aiParsing.apiKeyHint': 'Şifrelenmiş olarak saklanır. Mevcut anahtarı korumak için boş bırak.',
-  'settings.aiParsing.multimodal': 'Belgeleri görsel olarak gönder',
+  'settings.aiParsing.multimodal': 'Model görselleri okur',
   'settings.aiParsing.multimodalHint':
-    "Görüntü işleyebilen modeller için — çıkarılan metin yerine orijinal PDF'yi gönderir.",
+    'Görselleri okuyan bir model için aç; böylece bir fotoğraf içe aktarılabilir veya taranabilir.',
   'settings.aiParsing.toast.saved': 'Yapay zekâ ayarları kaydedildi',
   'settings.aiParsing.toast.saveError': 'Yapay zekâ ayarları kaydedilemedi',
   'settings.tabs.appearance': 'Appearance',

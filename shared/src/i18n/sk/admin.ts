@@ -676,6 +676,11 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.llm_parsing.name': 'Analýza pomocou AI',
   'admin.addons.catalog.llm_parsing.description':
     'Prečíta rezervácie, ktoré vstavaný analyzátor nezvládne, pomocou zvoleného modelu AI',
+  'admin.addons.llm.vision.auto': 'Automaticky',
+  'admin.addons.llm.vision.on': 'Áno',
+  'admin.addons.llm.vision.off': 'Nie',
+  'admin.addons.llm.vision.hintLocal': 'Automaticky sa opýta servera Ollama, či tento model číta obrázky.',
+  'admin.addons.llm.vision.hintCloud': 'Pri cloudovom modeli znamená Automaticky nie. Zvoľte Áno, ak tento model číta obrázky.',
   'admin.addons.enabled': 'Povolené',
   'admin.addons.disabled': 'Zakázané',
   'admin.addons.type.trip': 'Cesta',

@@ -130,6 +130,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Thả tập tin để nhập',
   'reservations.import.acceptedFormats':
     'Đã chấp nhận: EML, PDF, PKPass, HTML, TXT (tối đa 10 MB mỗi cái, tối đa 5 tệp)',
+  'reservations.import.acceptedPhotos': 'Ảnh (JPG, PNG, WEBP) được mô hình AI đọc.',
   'reservations.import.parsing': 'Đang phân tích tệp…',
   'reservations.import.previewHeading': '{count} đã tìm thấy (các) đặt chỗ',
   'reservations.import.previewEmpty': 'Không thể trích xuất đặt chỗ nào từ các tập tin đã tải lên.',

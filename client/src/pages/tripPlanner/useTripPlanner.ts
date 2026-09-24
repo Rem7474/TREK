@@ -22,6 +22,8 @@ import { accommodationRepo } from '../../repo/accommodationRepo'
 import { offlineDb, getImportFiles, deleteImportFiles } from '../../db/offlineDb'
 import { isEffectivelyOffline } from '../../sync/networkMode'
 import { useBackgroundTasksStore } from '../../store/backgroundTasksStore'
+import { receiptToPrefill } from '../../components/Budget/CostsPanel.helpers'
+import type { ExpensePrefill } from '../../components/Budget/CostsPanel'
 import { useAuthStore } from '../../store/authStore'
 import { useResizablePanels } from '../../hooks/useResizablePanels'
 import { useTripWebSocket } from '../../hooks/useTripWebSocket'
@@ -435,6 +437,8 @@ export function useTripPlanner() {
   const [reservationPrefill, setReservationPrefill] = useState<BookingReviewDraft | null>(null)
   const [transportPrefill, setTransportPrefill] = useState<BookingReviewDraft | null>(null)
   const [importReviewActive, setImportReviewActive] = useState(false)
+  // The expense a scanned receipt pre-fills, opened by the page's expense editor.
+  const [receiptExpense, setReceiptExpense] = useState<ExpensePrefill | null>(null)
   const importQueueRef = useRef<BookingImportPreviewItem[]>([])
   // The files this import was parsed from, so each reviewed booking can attach its source doc.
   const importSourceFilesRef = useRef<File[]>([])
@@ -2727,13 +2731,26 @@ export function useTripPlanner() {
     const task = bgTasks.find(
       (tk) => tk.tripId === String(tripId) && tk.status === 'done' && tk.reviewRequested && !tk.consumed,
     )
-    if (task && task.items && task.items.length > 0) {
+    if (task && task.kind === 'costs') {
+      // A scanned receipt is reviewed in the expense editor, pre-filled with what
+      // was read and with the photo waiting to be attached when it is saved.
+      const receipt = task.receipt
+      const jobId = task.id
+      const inMemory = task.sourceFiles
+      dismissBgTask(jobId)
+      if (!receipt) return
+      void (async () => {
+        const files = inMemory && inMemory.length ? inMemory : await getImportFiles(jobId)
+        deleteImportFiles(jobId)
+        setReceiptExpense(receiptToPrefill(receipt, files))
+      })()
+    } else if (task && task.items && task.items.length > 0) {
       // Hand the items (and the source files, to attach to each booking) to the review flow
       // and clear the widget entry — once the user hit "review", the background card is done.
       const items = task.items
       const jobId = task.id
       const inMemory = task.sourceFiles
-      const kind = task.kind ?? 'bookings'
+      const kind = task.kind === 'transports' ? 'transports' : 'bookings'
       dismissBgTask(jobId)
       // Prefer the in-memory files (immediate path); after a reload they live in IndexedDB.
       void (async () => {
@@ -2866,6 +2883,7 @@ export function useTripPlanner() {
     transportModalDayId, setTransportModalDayId,
     transportModalAutomated, setTransportModalAutomated, transitPrefill, setTransitPrefill, transitJourney, setTransitJourney,
     reservationPrefill, transportPrefill, importReviewActive, startImportReview, advanceImportReview,
+    receiptExpense, clearReceiptExpense: () => setReceiptExpense(null),
     routeShown, setRouteShown, autoShowRoute, transitRoutesShown, routeProfile, setRouteProfile, routeVias, fitKey, setFitKey,
     mobileSidebarOpen, setMobileSidebarOpen, mobilePlanScrollTopRef, mobilePlacesScrollTopRef,
     deletePlaceId, setDeletePlaceId, deletePlaceIds, setDeletePlaceIds, deletePlaceNote, deletePlacesNote,

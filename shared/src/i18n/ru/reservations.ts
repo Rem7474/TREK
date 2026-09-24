@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Перетащите файлы подтверждений бронирования сюда или нажмите для выбора',
   'reservations.import.dropActive': 'Отпустите файлы для импорта',
   'reservations.import.acceptedFormats': 'Принимаются: EML, PDF, PKPass, HTML, TXT (макс. 10 МБ каждый, до 5 файлов)',
+  'reservations.import.acceptedPhotos': 'Фотографии (JPG, PNG, WEBP) читает модель ИИ.',
   'reservations.import.parsing': 'Обработка файлов…',
   'reservations.import.previewHeading': 'Найдено {count} бронирование(й)',
   'reservations.import.previewEmpty': 'Из загруженных файлов не удалось извлечь бронирования.',

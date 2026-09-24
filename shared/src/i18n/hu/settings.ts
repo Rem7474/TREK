@@ -398,9 +398,9 @@ const settings: TranslationStrings = {
   'settings.aiParsing.baseUrlHint': 'Ahol a modell fut — helyi Ollama-kiszolgáló vagy OpenAI-kompatibilis végpont.',
   'settings.aiParsing.apiKey': 'API-kulcs',
   'settings.aiParsing.apiKeyHint': 'Titkosítva tárolva. Hagyd üresen a jelenlegi kulcs megtartásához.',
-  'settings.aiParsing.multimodal': 'Dokumentumok küldése képként',
+  'settings.aiParsing.multimodal': 'A modell olvas képeket',
   'settings.aiParsing.multimodalHint':
-    'Képfelismerésre képes modellekhez — az eredeti PDF-et küldi a kinyert szöveg helyett.',
+    'Kapcsold be képeket olvasó modellhez, így egy fotó importálható vagy beolvasható.',
   'settings.aiParsing.toast.saved': 'AI-beállítások elmentve',
   'settings.aiParsing.toast.saveError': 'Az AI-beállítások mentése nem sikerült',
   'settings.tabs.appearance': 'Appearance',

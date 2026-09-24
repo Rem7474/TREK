@@ -129,6 +129,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'أسقط الملفات للاستيراد',
   'reservations.import.acceptedFormats':
     'المقبول: EML، PDF، PKPass، HTML، TXT (بحد أقصى 10 ميغابايت لكل ملف، حتى 5 ملفات)',
+  'reservations.import.acceptedPhotos': 'يقرأ نموذج الذكاء الاصطناعي الصور (JPG وPNG وWEBP).',
   'reservations.import.parsing': 'جارٍ معالجة الملفات…',
   'reservations.import.previewHeading': 'تم العثور على {count} حجز/حجوزات',
   'reservations.import.previewEmpty': 'تعذّر استخراج أي حجوزات من الملفات المُحمَّلة.',

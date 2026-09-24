@@ -398,9 +398,9 @@ const settings: TranslationStrings = {
     'Waar het model draait — een lokale Ollama-server of een OpenAI-compatibel endpoint.',
   'settings.aiParsing.apiKey': 'API-sleutel',
   'settings.aiParsing.apiKeyHint': 'Versleuteld opgeslagen. Laat leeg om de huidige sleutel te behouden.',
-  'settings.aiParsing.multimodal': 'Documenten als afbeeldingen versturen',
+  'settings.aiParsing.multimodal': 'Model leest afbeeldingen',
   'settings.aiParsing.multimodalHint':
-    'Voor modellen met beeldherkenning — verstuurt de originele PDF in plaats van geëxtraheerde tekst.',
+    'Zet aan voor een model dat afbeeldingen leest, zodat een foto kan worden geïmporteerd of gescand.',
   'settings.aiParsing.toast.saved': 'AI-instellingen opgeslagen',
   'settings.aiParsing.toast.saveError': 'AI-instellingen konden niet worden opgeslagen',
   'settings.tabs.appearance': 'Appearance',

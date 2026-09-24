@@ -54,6 +54,7 @@ import {
   type BookingImportPreviewResponse,
   type BookingImportConfirmResponse,
   type BookingImportMode,
+  type ReceiptScanResult,
   type StorageAdminState,
   type StorageBackend,
   type StorageConfigPut,
@@ -1475,7 +1476,7 @@ export const reservationsApi = {
     return postMultipart(`/trips/${tripId}/reservations/import/booking/async`, fd)
   },
   // Poll a background job — recovery path when a WebSocket push was missed.
-  importJobStatus: (tripId: number | string, jobId: string): Promise<{ status: 'running' | 'done' | 'error'; done: number; total: number; result?: BookingImportPreviewResponse; error?: string }> =>
+  importJobStatus: (tripId: number | string, jobId: string): Promise<{ status: 'running' | 'done' | 'error'; done: number; total: number; result?: BookingImportPreviewResponse | ReceiptScanResult; error?: string }> =>
     apiClient.get(`/trips/${tripId}/reservations/import/jobs/${jobId}`).then(r => r.data),
 }
 

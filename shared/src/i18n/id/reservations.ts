@@ -129,6 +129,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Seret file konfirmasi pemesanan ke sini atau klik untuk memilih',
   'reservations.import.dropActive': 'Lepaskan file untuk mengimpor',
   'reservations.import.acceptedFormats': 'Diterima: EML, PDF, PKPass, HTML, TXT (maks. 10 MB per file, hingga 5 file)',
+  'reservations.import.acceptedPhotos': 'Foto (JPG, PNG, WEBP) dibaca oleh model AI.',
   'reservations.import.parsing': 'Memproses file…',
   'reservations.import.previewHeading': '{count} pemesanan ditemukan',
   'reservations.import.previewEmpty': 'Tidak ada pemesanan yang dapat diekstrak dari file yang diunggah.',

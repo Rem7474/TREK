@@ -681,6 +681,11 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.llm_parsing.name': 'Tehisintellektiga parsimine',
   'admin.addons.catalog.llm_parsing.description':
     'Loeb sinu valitud tehisintellektimudeli abil broneeringuid, mida sisseehitatud parser lugeda ei suuda',
+  'admin.addons.llm.vision.auto': 'Automaatne',
+  'admin.addons.llm.vision.on': 'Jah',
+  'admin.addons.llm.vision.off': 'Ei',
+  'admin.addons.llm.vision.hintLocal': 'Automaatne küsib Ollama serverilt, kas see mudel loeb pilte.',
+  'admin.addons.llm.vision.hintCloud': 'Pilvemudeli puhul tähendab Automaatne „ei”. Vali Jah, kui see mudel loeb pilte.',
   'admin.addons.enabled': 'Lubatud',
   'admin.addons.disabled': 'Keelatud',
   'admin.addons.type.trip': 'Reis',

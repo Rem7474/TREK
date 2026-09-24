@@ -134,6 +134,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Presuňte sem súbory s potvrdením rezervácie alebo kliknite pre výber',
   'reservations.import.dropActive': 'Pustite súbory pre import',
   'reservations.import.acceptedFormats': 'Prijímané: EML, PDF, PKPass, HTML, TXT (max. 10 MB každý, až 5 súborov)',
+  'reservations.import.acceptedPhotos': 'Fotografie (JPG, PNG, WEBP) číta model AI.',
   'reservations.import.parsing': 'Spracúvajú sa súbory…',
   'reservations.import.previewHeading': 'Nájdených {count} rezervácií',
   'reservations.import.previewEmpty': 'Z nahraných súborov sa nepodarilo extrahovať žiadne rezervácie.',

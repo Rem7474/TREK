@@ -132,6 +132,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Déposez les fichiers pour importer',
   'reservations.import.acceptedFormats':
     "Acceptés : EML, PDF, PKPass, HTML, TXT (max. 10 Mo chacun, jusqu'à 5 fichiers)",
+  'reservations.import.acceptedPhotos': "Les photos (JPG, PNG, WEBP) sont lues par le modèle d'IA.",
   'reservations.import.parsing': 'Analyse des fichiers…',
   'reservations.import.previewHeading': '{count} réservation(s) trouvée(s)',
   'reservations.import.previewEmpty': "Aucune réservation n'a pu être extraite des fichiers envoyés.",

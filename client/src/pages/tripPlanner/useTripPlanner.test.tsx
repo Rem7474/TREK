@@ -17,7 +17,7 @@ import {
   healthApi, airtrailApi, mapsApi,
 } from '../../api/client'
 import { accommodationRepo } from '../../repo/accommodationRepo'
-import { offlineDb } from '../../db/offlineDb'
+import { offlineDb, saveImportFiles, getImportFiles } from '../../db/offlineDb'
 import { getCached, fetchPhoto } from '../../services/photoService'
 import type { Accommodation, Place, Reservation, Settings } from '../../types'
 
@@ -2101,6 +2101,66 @@ describe('useTripPlanner — booking import review', () => {
     await waitFor(() => expect(result.current.tripId).toBe(42))
     expect(result.current.showTransportModal).toBe(false)
     expect(useBackgroundTasksStore.getState().tasks).toHaveLength(1)
+  })
+})
+
+describe('useTripPlanner — a receipt scanned from Costs', () => {
+  const RECEIPT = { merchant: 'Café', date: '2026-09-20', total: 12.5, currency: 'EUR', items: [{ name: 'Tart', price: 12.5 }] }
+
+  it('FE-TP-HOOK-160: a read receipt opens the expense editor pre-filled, with the photo to attach, and clears the widget', async () => {
+    seedTrip()
+    const photo = new File(['x'], 'bill.jpg', { type: 'image/jpeg' })
+    useBackgroundTasksStore.setState({
+      tasks: [{
+        id: 'job-r', tripId: '42', label: 'bill.jpg', status: 'done', done: 1, total: 1, kind: 'costs',
+        reviewRequested: true, items: [], receipt: RECEIPT, sourceFiles: [photo],
+      }] as never,
+    })
+
+    const { result } = await renderPlanner()
+
+    await waitFor(() => expect(result.current.receiptExpense).not.toBeNull())
+    expect(result.current.receiptExpense).toEqual({
+      name: 'Café', amount: 12.5, currency: 'EUR', date: '2026-09-20', lines: [{ name: 'Tart', price: 12.5 }], receiptFiles: [photo],
+    })
+    expect(result.current.showReservationModal).toBe(false)
+    expect(useBackgroundTasksStore.getState().tasks).toHaveLength(0)
+
+    act(() => { result.current.clearReceiptExpense() })
+    expect(result.current.receiptExpense).toBeNull()
+  })
+
+  it('FE-TP-HOOK-162: after a reload the photo comes back from IndexedDB for the review', async () => {
+    seedTrip()
+    const photo = new File(['x'], 'bill.jpg', { type: 'image/jpeg' })
+    await saveImportFiles('job-db', [photo])
+    useBackgroundTasksStore.setState({
+      tasks: [{
+        id: 'job-db', tripId: '42', label: 'bill.jpg', status: 'done', done: 1, total: 1, kind: 'costs',
+        reviewRequested: true, items: [], receipt: RECEIPT,
+      }] as never,
+    })
+
+    const { result } = await renderPlanner()
+
+    await waitFor(() => expect(result.current.receiptExpense).not.toBeNull())
+    expect(result.current.receiptExpense?.receiptFiles?.map(f => f.name)).toEqual(['bill.jpg'])
+    await waitFor(async () => expect(await getImportFiles('job-db')).toEqual([]))
+  })
+
+  it('FE-TP-HOOK-161: a scan that read nothing just clears the widget', async () => {
+    seedTrip()
+    useBackgroundTasksStore.setState({
+      tasks: [{
+        id: 'job-n', tripId: '42', label: 'bill.jpg', status: 'done', done: 1, total: 1, kind: 'costs',
+        reviewRequested: true, items: [], receipt: null,
+      }] as never,
+    })
+
+    const { result } = await renderPlanner()
+
+    await waitFor(() => expect(useBackgroundTasksStore.getState().tasks).toHaveLength(0))
+    expect(result.current.receiptExpense).toBeNull()
   })
 })
 

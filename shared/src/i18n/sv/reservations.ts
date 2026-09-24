@@ -130,6 +130,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Dra och släpp filerna som ska importeras',
   'reservations.import.acceptedFormats':
     'Godkända filformat: EML, PDF, PKPass, HTML, TXT (högst 10 MB per fil, upp till 5 filer)',
+  'reservations.import.acceptedPhotos': 'Foton (JPG, PNG, WEBP) läses av AI-modellen.',
   'reservations.import.parsing': 'Analyserar filer…',
   'reservations.import.previewHeading': '{count} reservation(er) hittades',
   'reservations.import.previewEmpty': 'Inga bokningar kunde extraheras från de uppladdade filerna.',

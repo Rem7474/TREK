@@ -409,9 +409,9 @@ const settings: TranslationStrings = {
     'Πού εκτελείται το μοντέλο — ένας τοπικός διακομιστής Ollama ή ένα τελικό σημείο συμβατό με OpenAI.',
   'settings.aiParsing.apiKey': 'Κλειδί API',
   'settings.aiParsing.apiKeyHint': 'Αποθηκεύεται κρυπτογραφημένο. Αφήστε το κενό για να διατηρήσετε το τρέχον κλειδί.',
-  'settings.aiParsing.multimodal': 'Αποστολή εγγράφων ως εικόνες',
+  'settings.aiParsing.multimodal': 'Το μοντέλο διαβάζει εικόνες',
   'settings.aiParsing.multimodalHint':
-    'Για μοντέλα με δυνατότητα όρασης — στέλνει το αρχικό PDF αντί για το εξαγόμενο κείμενο.',
+    'Ενεργοποιήστε το για μοντέλο που διαβάζει εικόνες, ώστε μια φωτογραφία να μπορεί να εισαχθεί ή να σαρωθεί.',
   'settings.aiParsing.toast.saved': 'Οι ρυθμίσεις AI αποθηκεύτηκαν',
   'settings.aiParsing.toast.saveError': 'Δεν ήταν δυνατή η αποθήκευση των ρυθμίσεων AI',
   'settings.tabs.appearance': 'Appearance',

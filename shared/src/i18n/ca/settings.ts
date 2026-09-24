@@ -379,9 +379,9 @@ const settings: TranslationStrings = {
     "On s'executa el model — un servidor local d'Ollama o un punt final compatible amb OpenAI.",
   'settings.aiParsing.apiKey': "Clau de l'API",
   'settings.aiParsing.apiKeyHint': "S'emmagatzema xifrada. Deixa-ho en blanc per mantenir la clau actual.",
-  'settings.aiParsing.multimodal': 'Enviar documents com a imatges',
+  'settings.aiParsing.multimodal': 'El model llegeix imatges',
   'settings.aiParsing.multimodalHint':
-    'Per a models amb capacitats de visió — envia el PDF original en comptes del text extret.',
+    'Activa-ho per a un model que llegeix imatges, així es pot importar o escanejar una foto.',
   'settings.aiParsing.toast.saved': "Ajustos d'IA desats",
   'settings.aiParsing.toast.saveError': "No s'han pogut desar els ajustos d'IA",
   'settings.tabs.appearance': 'Aparença',

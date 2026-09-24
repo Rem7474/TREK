@@ -129,6 +129,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Upuść pliki potwierdzeń rezerwacji tutaj lub kliknij, aby wybrać',
   'reservations.import.dropActive': 'Upuść pliki, aby zaimportować',
   'reservations.import.acceptedFormats': 'Akceptowane: EML, PDF, PKPass, HTML, TXT (maks. 10 MB każdy, do 5 plików)',
+  'reservations.import.acceptedPhotos': 'Zdjęcia (JPG, PNG, WEBP) odczytuje model AI.',
   'reservations.import.parsing': 'Przetwarzanie plików…',
   'reservations.import.previewHeading': 'Znaleziono {count} rezerwację/rezerwacje',
   'reservations.import.previewEmpty': 'Nie udało się wyodrębnić rezerwacji z przesłanych plików.',

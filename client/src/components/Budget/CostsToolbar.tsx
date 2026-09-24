@@ -1,4 +1,4 @@
-import { Check, Plus } from 'lucide-react'
+import { Check, Plus, ScanLine } from 'lucide-react'
 import { useTranslation } from '../../i18n'
 import type { TripMember } from './BudgetPanelMemberChips'
 
@@ -13,6 +13,8 @@ interface CostsToolbarProps {
   canSettle: boolean
   onSettleAll: () => void
   onAddExpense: () => void
+  /** Opens the receipt scan; left out when the AI model reads no images. */
+  onScanReceipt?: () => void
 }
 
 const BODY_SIZE = 'calc(13px * var(--fs-scale-body, 1))'
@@ -22,7 +24,7 @@ const BODY_SIZE = 'calc(13px * var(--fs-scale-body, 1))'
  * Bookings, Lists and Files open with: the tab's name, then what the numbers
  * cover (the trip's days and who travels), and the two actions on the right.
  */
-export default function CostsToolbar({ dateMeta, people, me, colorFor, canEdit, canSettle, onSettleAll, onAddExpense }: CostsToolbarProps) {
+export default function CostsToolbar({ dateMeta, people, me, colorFor, canEdit, canSettle, onSettleAll, onAddExpense, onScanReceipt }: CostsToolbarProps) {
   const { t } = useTranslation()
   const chip = 'inline-flex items-center whitespace-nowrap rounded-full bg-surface-card px-3 py-1.5 font-medium text-content-muted shadow-sm'
   const button = 'inline-flex items-center gap-1.5 rounded-[10px] border-0 px-[14px] py-[9px] font-medium hover:opacity-[0.88]'
@@ -64,6 +66,12 @@ export default function CostsToolbar({ dateMeta, people, me, colorFor, canEdit, 
             <Check size={14} strokeWidth={2.5} />
             {t('costs.settleUp')}
           </button>
+          {onScanReceipt && (
+            <button type="button" onClick={onScanReceipt} className={`${button} bg-surface-card text-content`}>
+              <ScanLine size={14} strokeWidth={2.5} />
+              {t('costs.scan.button')}
+            </button>
+          )}
           <button type="button" onClick={onAddExpense} className={`${button} bg-accent text-accent-text`}>
             <Plus size={14} strokeWidth={2.5} />
             {t('costs.addExpense')}

@@ -133,6 +133,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': "วางไฟล์ยืนยันการจองที่นี่ หรือคลิกเพื่อเลือก",
   'reservations.import.dropActive': "วางไฟล์ที่จะนำเข้า",
   'reservations.import.acceptedFormats': "ยอมรับ: EML, PDF, PKPass, HTML, TXT (สูงสุด 10 MB ต่อไฟล์ สูงสุด 5 ไฟล์)",
+  'reservations.import.acceptedPhotos': "โมเดล AI จะอ่านรูปถ่าย (JPG, PNG, WEBP)",
   'reservations.import.parsing': "กำลังแยกวิเคราะห์ไฟล์...",
   'reservations.import.previewHeading': "พบการจอง {count} แล้ว",
   'reservations.import.previewEmpty': "ไม่สามารถแยกการจองออกจากไฟล์ที่อัปโหลดได้",

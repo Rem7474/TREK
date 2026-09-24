@@ -130,6 +130,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Laat bestanden los om te importeren',
   'reservations.import.acceptedFormats':
     'Geaccepteerd: EML, PDF, PKPass, HTML, TXT (max. 10 MB per stuk, tot 5 bestanden)',
+  'reservations.import.acceptedPhotos': "Foto's (JPG, PNG, WEBP) worden door het AI-model gelezen.",
   'reservations.import.parsing': 'Bestanden verwerken…',
   'reservations.import.previewHeading': '{count} reservering(en) gevonden',
   'reservations.import.previewEmpty': 'Er konden geen reserveringen worden geëxtraheerd uit de geüploade bestanden.',

@@ -179,6 +179,7 @@ const reservations: TranslationStrings = {
     'İdxal etmək üçün faylları buraya buraxın',
   'reservations.import.acceptedFormats':
     'Qəbul edilən formatlar: EML, PDF, PKPass, HTML, TXT (hər biri maksimum 10 MB, 5 fayladək)',
+  'reservations.import.acceptedPhotos': 'Fotoları (JPG, PNG, WEBP) süni intellekt modeli oxuyur.',
   'reservations.import.parsing': 'Fayllar təhlil edilir…',
   'reservations.import.previewHeading':
     '{count} rezervasiya tapıldı',

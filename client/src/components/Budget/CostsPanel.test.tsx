@@ -1625,6 +1625,33 @@ describe('CostsPanel — expense modal', () => {
     expect(onSaved).toHaveBeenCalled()
   })
 
+  it('FE-W5COSTS-081: offers Scan receipt beside Add expense only when the AI model reads images', async () => {
+    server.use(http.get('/api/llm/capabilities', () => HttpResponse.json({ images: true })))
+    const { unmount } = render(<CostsPanel tripId={1} tripMembers={tripMembers} />)
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Scan receipt' }))[0])
+    expect(screen.getByRole('dialog', { name: 'Scan a receipt' })).toBeInTheDocument()
+    unmount()
+
+    server.use(http.get('/api/llm/capabilities', () => HttpResponse.json({ images: false })))
+    render(<CostsPanel tripId={1} tripMembers={tripMembers} />)
+    await screen.findAllByRole('button', { name: 'Add expense' })
+    expect(screen.queryByRole('button', { name: 'Scan receipt' })).not.toBeInTheDocument()
+  })
+
+  it('FE-W5COSTS-080: a scanned receipt opens in its own currency and day, with its photo waiting to be attached', () => {
+    const photo = new File(['x'], 'bill.jpg', { type: 'image/jpeg' })
+    render(
+      <ExpenseModal tripId={1} base="EUR" people={tripMembers} me={1} editing={null}
+        prefill={{ name: 'Sushi Dai', amount: 4200, currency: 'JPY', date: '2026-09-20', lines: [{ name: 'Omakase', price: 4200 }], receiptFiles: [photo] }}
+        onClose={() => {}} onSaved={() => {}} />
+    )
+
+    expect(screen.getByDisplayValue('Sushi Dai')).toBeInTheDocument()
+    // Yen has no minor unit, so the amount is not padded.
+    expect(screen.getByDisplayValue('4200')).toBeInTheDocument()
+    expect(screen.getByText('bill.jpg')).toBeInTheDocument()
+  })
+
   // The mobile sheet already dates a new expense by the traveller's own clock;
   // the desktop modal filed it under the UTC day, so the same expense entered
   // late in Tokyo or early in Los Angeles landed on a different day per surface.

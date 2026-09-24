@@ -399,9 +399,9 @@ const settings: TranslationStrings = {
   'settings.aiParsing.baseUrlHint': 'Nơi mô hình chạy — máy chủ Ollama cục bộ hoặc endpoint tương thích với OpenAI.',
   'settings.aiParsing.apiKey': 'Khóa API',
   'settings.aiParsing.apiKeyHint': 'Được lưu trữ mã hóa. Để trống để giữ khóa hiện tại.',
-  'settings.aiParsing.multimodal': 'Gửi tài liệu dưới dạng hình ảnh',
+  'settings.aiParsing.multimodal': 'Mô hình đọc được hình ảnh',
   'settings.aiParsing.multimodalHint':
-    'Dành cho các mô hình hỗ trợ thị giác — gửi PDF gốc thay vì văn bản đã trích xuất.',
+    'Bật cho mô hình đọc được hình ảnh để có thể nhập hoặc quét ảnh.',
   'settings.aiParsing.toast.saved': 'Đã lưu cài đặt AI',
   'settings.aiParsing.toast.saveError': 'Không thể lưu cài đặt AI',
   'settings.tabs.appearance': 'Giao diện',

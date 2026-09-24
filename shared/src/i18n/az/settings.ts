@@ -497,9 +497,9 @@ const settings: TranslationStrings = {
   'settings.aiParsing.apiKey': 'API açarı',
   'settings.aiParsing.apiKeyHint':
     'Şifrələnmiş şəkildə saxlanılır. Cari açarı saxlamaq üçün boş buraxın.',
-  'settings.aiParsing.multimodal': 'Sənədləri şəkil kimi göndər',
+  'settings.aiParsing.multimodal': 'Model şəkilləri oxuyur',
   'settings.aiParsing.multimodalHint':
-    'Görmə qabiliyyətli modellər üçün — çıxarılmış mətn əvəzinə orijinal PDF-i göndərir.',
+    'Şəkilləri oxuyan model üçün aç: onda foto idxal oluna və ya skan edilə bilər.',
   'settings.aiParsing.toast.saved': 'AI tənzimləmələri yadda saxlanıldı',
   'settings.aiParsing.toast.saveError':
     'AI tənzimləmələrini yadda saxlamaq mümkün olmadı',

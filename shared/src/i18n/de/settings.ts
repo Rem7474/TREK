@@ -401,9 +401,9 @@ const settings: TranslationStrings = {
     'Wo das Modell läuft — ein lokaler Ollama-Server oder ein OpenAI-kompatibler Endpunkt.',
   'settings.aiParsing.apiKey': 'API-Schlüssel',
   'settings.aiParsing.apiKeyHint': 'Verschlüsselt gespeichert. Leer lassen, um den aktuellen Schlüssel zu behalten.',
-  'settings.aiParsing.multimodal': 'Dokumente als Bilder senden',
+  'settings.aiParsing.multimodal': 'Modell liest Bilder',
   'settings.aiParsing.multimodalHint':
-    'Für Modelle mit Bildverständnis — sendet das Original-PDF statt extrahiertem Text.',
+    'Für ein Modell, das Bilder liest: Dann lässt sich ein Foto importieren oder scannen.',
   'settings.aiParsing.toast.saved': 'KI-Einstellungen gespeichert',
   'settings.aiParsing.toast.saveError': 'KI-Einstellungen konnten nicht gespeichert werden',
   'settings.tabs.appearance': 'Erscheinungsbild',

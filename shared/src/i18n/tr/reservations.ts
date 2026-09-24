@@ -130,6 +130,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'İçe aktarmak için dosyaları bırakın',
   'reservations.import.acceptedFormats':
     'Kabul edilenler: EML, PDF, PKPass, HTML, TXT (her biri maks. 10 MB, en fazla 5 dosya)',
+  'reservations.import.acceptedPhotos': 'Fotoğrafları (JPG, PNG, WEBP) yapay zekâ modeli okur.',
   'reservations.import.parsing': 'Dosyalar işleniyor…',
   'reservations.import.previewHeading': '{count} rezervasyon bulundu',
   'reservations.import.previewEmpty': 'Yüklenen dosyalardan hiçbir rezervasyon çıkarılamadı.',

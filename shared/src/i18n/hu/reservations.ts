@@ -130,6 +130,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Dobja ide a fájlokat az importáláshoz',
   'reservations.import.acceptedFormats':
     'Elfogadott: EML, PDF, PKPass, HTML, TXT (max. 10 MB darabonként, legfeljebb 5 fájl)',
+  'reservations.import.acceptedPhotos': 'A fotókat (JPG, PNG, WEBP) az MI-modell olvassa be.',
   'reservations.import.parsing': 'Fájlok feldolgozása…',
   'reservations.import.previewHeading': '{count} foglalás találva',
   'reservations.import.previewEmpty': 'A feltöltött fájlokból nem sikerült foglalásokat kinyerni.',

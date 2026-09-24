@@ -129,6 +129,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Deixa anar els fitxers per importar',
   'reservations.import.acceptedFormats':
     'Acceptats: EML, PDF, PKPass, HTML, TXT (màx. 10 MB per fitxer, fins a 5 fitxers)',
+  'reservations.import.acceptedPhotos': "El model d'IA llegeix les fotos (JPG, PNG, WEBP).",
   'reservations.import.parsing': 'Analitzant els fitxers…',
   'reservations.import.previewHeading': '{count} reserva(es) trobada(es)',
   'reservations.import.previewEmpty': "No s'han pogut extreure reserves dels fitxers pujats.",

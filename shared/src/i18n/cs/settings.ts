@@ -390,9 +390,9 @@ const settings: TranslationStrings = {
   'settings.aiParsing.baseUrlHint': 'Kde model běží — místní server Ollama nebo koncový bod kompatibilní s OpenAI.',
   'settings.aiParsing.apiKey': 'Klíč API',
   'settings.aiParsing.apiKeyHint': 'Ukládá se šifrovaně. Ponechte prázdné pro zachování aktuálního klíče.',
-  'settings.aiParsing.multimodal': 'Odesílat dokumenty jako obrázky',
+  'settings.aiParsing.multimodal': 'Model čte obrázky',
   'settings.aiParsing.multimodalHint':
-    'Pro modely se schopností zpracovat obraz — odešle původní PDF místo extrahovaného textu.',
+    'Zapněte pro model, který čte obrázky, aby šlo fotografii importovat nebo naskenovat.',
   'settings.aiParsing.toast.saved': 'Nastavení AI uloženo',
   'settings.aiParsing.toast.saveError': 'Nastavení AI se nepodařilo uložit',
   'settings.tabs.appearance': 'Appearance',

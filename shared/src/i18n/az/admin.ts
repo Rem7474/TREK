@@ -733,6 +733,11 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.llm_parsing.name': 'Süni intellektlə təhlil',
   'admin.addons.catalog.llm_parsing.description':
     'Daxili təhlilçinin oxuya bilmədiyi rezervasiyaları seçdiyiniz süni intellekt modeli ilə oxuyur',
+  'admin.addons.llm.vision.auto': 'Avtomatik',
+  'admin.addons.llm.vision.on': 'Bəli',
+  'admin.addons.llm.vision.off': 'Xeyr',
+  'admin.addons.llm.vision.hintLocal': 'Avtomatik rejim bu modelin şəkilləri oxuyub-oxumadığını Ollama serverindən soruşur.',
+  'admin.addons.llm.vision.hintCloud': 'Bulud modeli üçün Avtomatik "xeyr" deməkdir. Bu model şəkilləri oxuyursa, Bəli seç.',
   'admin.addons.enabled': 'Aktivdir',
   'admin.addons.disabled': 'Deaktivdir',
   'admin.addons.type.trip': 'Səyahət',

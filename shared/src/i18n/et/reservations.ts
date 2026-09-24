@@ -133,6 +133,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Lohista broneeringukinnituse failid siia või klõpsa valimiseks',
   'reservations.import.dropActive': 'Impordiks lohista failid siia',
   'reservations.import.acceptedFormats': 'Lubatud: EML, PDF, PKPass, HTML, TXT (kuni 10 MB faili kohta, kuni 5 faili)',
+  'reservations.import.acceptedPhotos': 'Fotosid (JPG, PNG, WEBP) loeb tehisintellekti mudel.',
   'reservations.import.parsing': 'Failide töötlemine…',
   'reservations.import.previewHeading': 'Leiti {count} broneeringut',
   'reservations.import.previewEmpty': 'Üleslaaditud failidest ei õnnestunud broneeringuid eraldada.',

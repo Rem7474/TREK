@@ -129,6 +129,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Pusťte soubory pro import',
   'reservations.import.acceptedFormats':
     'Přijímané formáty: EML, PDF, PKPass, HTML, TXT (max. 10 MB každý, až 5 souborů)',
+  'reservations.import.acceptedPhotos': 'Fotografie (JPG, PNG, WEBP) čte model AI.',
   'reservations.import.parsing': 'Zpracování souborů…',
   'reservations.import.previewHeading': 'Nalezeno {count} rezervace/í',
   'reservations.import.previewEmpty': 'Z nahraných souborů se nepodařilo extrahovat žádné rezervace.',

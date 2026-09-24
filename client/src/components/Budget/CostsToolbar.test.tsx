@@ -1,4 +1,4 @@
-// FE-COSTSBAR-001 to FE-COSTSBAR-007
+// FE-COSTSBAR-001 to FE-COSTSBAR-008
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '../../../tests/helpers/render'
 import CostsToolbar from './CostsToolbar'
@@ -65,5 +65,19 @@ describe('CostsToolbar', () => {
     setup({ canEdit: false })
     expect(screen.queryByRole('button')).toBeNull()
     expect(screen.getByText('8 days')).toBeInTheDocument()
+  })
+
+  it('FE-COSTSBAR-008: offers Scan receipt only when handed a way to open it', () => {
+    const onScanReceipt = vi.fn()
+    const { unmount } = render(
+      <CostsToolbar dateMeta={null} people={PEOPLE} me={1} colorFor={() => '#000'} canEdit canSettle
+        onSettleAll={vi.fn()} onAddExpense={vi.fn()} onScanReceipt={onScanReceipt} />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Scan receipt' }))
+    expect(onScanReceipt).toHaveBeenCalledTimes(1)
+    unmount()
+
+    setup()
+    expect(screen.queryByRole('button', { name: 'Scan receipt' })).toBeNull()
   })
 })

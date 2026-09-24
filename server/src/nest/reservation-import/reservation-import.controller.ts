@@ -27,8 +27,9 @@ import type { AirtrailImportResult } from '@trek/shared';
 import { bookingImportModeSchema } from '@trek/shared';
 import type { BookingImportPreviewItem, BookingImportPreviewResponse, BookingImportConfirmResponse, BookingImportMode } from '@trek/shared';
 import { BookingImportConfirmDto, BookingImportPreviewDto } from './reservation-import.dto';
+import { IMAGE_EXTENSIONS, imageMimeType } from '../llm-parse/image-input';
 
-const ACCEPTED_EXTS = new Set(['.eml', '.pdf', '.pkpass', '.html', '.htm', '.txt']);
+const ACCEPTED_EXTS = new Set(['.eml', '.pdf', '.pkpass', '.html', '.htm', '.txt', ...IMAGE_EXTENSIONS]);
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const MAX_FILES = 5;
 
@@ -99,7 +100,7 @@ export class ReservationImportController {
 
 
   /** Shared validation for both the sync and async import endpoints; returns the parsed mode. */
-  private validateImport(tripId: string, user: User, files: Express.Multer.File[] | undefined, rawMode?: string): BookingImportMode {
+  private async validateImport(tripId: string, user: User, files: Express.Multer.File[] | undefined, rawMode?: string): Promise<BookingImportMode> {
 
     const modeResult = bookingImportModeSchema.safeParse(rawMode ?? 'no-ai');
     if (!modeResult.success) throw new HttpException({ error: 'Invalid mode' }, 400);
@@ -118,12 +119,19 @@ export class ReservationImportController {
         throw new HttpException({ error: `Unsupported file type: ${f.originalname}. Accepted: EML, PDF, PKPass, HTML, TXT` }, 400);
       }
     }
+    // A photo has no text layer and no structure: only a model that reads images
+    // can do anything with it, so it is refused up front rather than coming back
+    // as an empty preview.
+    if (files.some((f) => imageMimeType(f.originalname)) && (mode === 'no-ai' || !(await this.bookingImport.readsImages(user.id)))) {
+      throw new HttpException({ error: 'The configured AI model does not read photos' }, 400);
+    }
     return mode;
   }
 
   /**
    * POST /api/trips/:tripId/reservations/import/booking
-   * Accepts up to 5 booking confirmation files (EML, PDF, PKPass, HTML, TXT).
+   * Accepts up to 5 booking confirmation files (EML, PDF, PKPass, HTML, TXT, and
+   * photos when the AI model reads images).
    * Returns a preview list without persisting anything.
    */
   @RequirePermission('reservation_edit')
@@ -135,7 +143,7 @@ export class ReservationImportController {
     @UploadedFiles() files: Express.Multer.File[] | undefined,
     @Body() body: BookingImportPreviewDto,
   ): Promise<BookingImportPreviewResponse> {
-    const mode = this.validateImport(tripId, user, files, body?.mode);
+    const mode = await this.validateImport(tripId, user, files, body?.mode);
     return this.bookingImport.preview(files!, mode, user.id);
   }
 
@@ -155,7 +163,7 @@ export class ReservationImportController {
     @UploadedFiles() files: Express.Multer.File[] | undefined,
     @Body() body: BookingImportPreviewDto,
   ): Promise<{ jobId: string }> {
-    const mode = this.validateImport(tripId, user, files, body?.mode);
+    const mode = await this.validateImport(tripId, user, files, body?.mode);
     const jobId = this.importJobs.start(tripId, files!, mode, user.id);
     return { jobId };
   }

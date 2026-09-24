@@ -398,9 +398,9 @@ const settings: TranslationStrings = {
   'settings.aiParsing.apiKey': 'Ключ API',
   'settings.aiParsing.apiKeyHint':
     'Зберігається в зашифрованому вигляді. Залиште порожнім, щоб зберегти поточний ключ.',
-  'settings.aiParsing.multimodal': 'Надсилати документи як зображення',
+  'settings.aiParsing.multimodal': 'Модель читає зображення',
   'settings.aiParsing.multimodalHint':
-    'Для моделей із підтримкою зображень — надсилає оригінальний PDF замість вилученого тексту.',
+    'Увімкніть для моделі, яка читає зображення, щоб фотографію можна було імпортувати чи відсканувати.',
   'settings.aiParsing.toast.saved': 'Налаштування ШІ збережено',
   'settings.aiParsing.toast.saveError': 'Не вдалося зберегти налаштування ШІ',
   'settings.tabs.appearance': 'Appearance',

@@ -397,9 +397,9 @@ const settings: TranslationStrings = {
     'Miejsce, w którym działa model — lokalny serwer Ollama lub punkt końcowy zgodny z OpenAI.',
   'settings.aiParsing.apiKey': 'Klucz API',
   'settings.aiParsing.apiKeyHint': 'Przechowywany w postaci zaszyfrowanej. Pozostaw puste, aby zachować bieżący klucz.',
-  'settings.aiParsing.multimodal': 'Wysyłaj dokumenty jako obrazy',
+  'settings.aiParsing.multimodal': 'Model czyta obrazy',
   'settings.aiParsing.multimodalHint':
-    'Dla modeli obsługujących obraz — wysyła oryginalny plik PDF zamiast wyodrębnionego tekstu.',
+    'Włącz dla modelu, który czyta obrazy, aby można było importować lub skanować zdjęcia.',
   'settings.aiParsing.toast.saved': 'Zapisano ustawienia AI',
   'settings.aiParsing.toast.saveError': 'Nie udało się zapisać ustawień AI',
   'settings.tabs.appearance': 'Appearance',

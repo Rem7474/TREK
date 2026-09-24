@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': '예약 확인 파일을 여기에 끌어다 놓거나 클릭하여 선택',
   'reservations.import.dropActive': '가져올 파일을 여기에 놓으세요',
   'reservations.import.acceptedFormats': '허용 형식: EML, PDF, PKPass, HTML, TXT (파일당 최대 10 MB, 최대 5개)',
+  'reservations.import.acceptedPhotos': '사진(JPG, PNG, WEBP)은 AI 모델이 읽습니다.',
   'reservations.import.parsing': '파일 분석 중…',
   'reservations.import.previewHeading': '{count}개 예약 발견',
   'reservations.import.previewEmpty': '업로드된 파일에서 예약을 추출할 수 없었습니다.',

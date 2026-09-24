@@ -28,6 +28,7 @@ import AirTrailImportModal from '../components/Planner/AirTrailImportModal'
 import ApplyTemplateButton from '../components/Packing/ApplyTemplateButton'
 import PackingExportMenu from '../components/Packing/PackingExportMenu'
 import type { ExpensePrefill } from '../components/Budget/CostsPanel'
+import { expenseEditorFor } from '../components/Budget/CostsPanel.helpers'
 import type { BookingExpenseRequest } from '../components/Planner/BookingCostsSection.types'
 import type { BudgetItem } from '../types'
 import PluginFrame from '../components/Plugins/PluginFrame'
@@ -309,6 +310,7 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
     transportModalDayId, setTransportModalDayId,
     transportModalAutomated, setTransportModalAutomated, transitPrefill, setTransitPrefill, transitJourney, setTransitJourney,
     reservationPrefill, transportPrefill, importReviewActive, advanceImportReview,
+    receiptExpense, clearReceiptExpense,
     routeShown, setRouteShown, transitRoutesShown, routeProfile, setRouteProfile, routeVias, fitKey, setFitKey,
     mobileSidebarOpen, setMobileSidebarOpen, mobilePlanScrollTopRef, mobilePlacesScrollTopRef,
     deletePlaceId, setDeletePlaceId, deletePlaceIds, setDeletePlaceIds, deletePlaceNote, deletePlacesNote,
@@ -375,6 +377,9 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
     if (req.editItem) setBookingExpense({ editing: req.editItem })
     else if (req.prefill) setBookingExpense({ editing: null, prefill: req.prefill })
   }
+  // One expense editor for both openers: a booking's Costs block, and a scanned
+  // receipt sent here from the background tasks widget.
+  const expenseEditor = expenseEditorFor(bookingExpense, () => setBookingExpense(null), receiptExpense, clearReceiptExpense)
 
   if (isLoading || !splashDone) {
     return (
@@ -1174,18 +1179,19 @@ function TripPlannerPageDesktop(): React.ReactElement | null {
           }}
         />
       )}
-      {bookingExpense && (
+      {expenseEditor && (
         <ErrorBoundary boundaryId="planner-panel:expense" fallback={null}>
           <Suspense fallback={null}>
             <ExpenseModal
+              key={expenseEditor.key}
               tripId={tripId}
               base={costsBase}
               people={tripMembers}
               me={meId}
-              editing={bookingExpense.editing}
-              prefill={bookingExpense.prefill}
-              onClose={() => setBookingExpense(null)}
-              onSaved={() => { setBookingExpense(null); loadBudgetItems(tripId) }}
+              editing={expenseEditor.editing}
+              prefill={expenseEditor.prefill}
+              onClose={expenseEditor.close}
+              onSaved={() => { expenseEditor.close(); loadBudgetItems(tripId) }}
             />
           </Suspense>
         </ErrorBoundary>

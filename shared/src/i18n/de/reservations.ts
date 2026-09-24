@@ -132,6 +132,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Dateien zum Importieren ablegen',
   'reservations.import.acceptedFormats':
     'Akzeptiert: EML, PDF, PKPass, HTML, TXT (max. 10 MB pro Datei, bis zu 5 Dateien)',
+  'reservations.import.acceptedPhotos': 'Fotos (JPG, PNG, WEBP) liest das KI-Modell.',
   'reservations.import.parsing': 'Dateien werden verarbeitet…',
   'reservations.import.previewHeading': '{count} Reservierung(en) gefunden',
   'reservations.import.previewEmpty': 'Aus den hochgeladenen Dateien konnten keine Reservierungen extrahiert werden.',

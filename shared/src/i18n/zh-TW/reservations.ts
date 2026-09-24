@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': '將訂位確認檔案拖放到此處，或點擊選擇',
   'reservations.import.dropActive': '放開檔案以匯入',
   'reservations.import.acceptedFormats': '支援格式：EML、PDF、PKPass、HTML、TXT（每個最大 10 MB，最多 5 個檔案）',
+  'reservations.import.acceptedPhotos': '照片（JPG、PNG、WEBP）由 AI 模型讀取。',
   'reservations.import.parsing': '正在解析檔案…',
   'reservations.import.previewHeading': '找到 {count} 筆預訂',
   'reservations.import.previewEmpty': '無法從上傳的檔案中提取任何預訂資訊。',

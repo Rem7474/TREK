@@ -78,6 +78,17 @@ A row with receipts shows a **Receipts** chip beside the name, with the count wh
 
 **Remove receipt** in the editor only unlinks the file from the expense. The file itself stays on the trip, because editing an expense (`budget_edit`) does not carry the file permission: to get rid of the file, delete it in the Files tab, which needs `file_delete`. Uploading a receipt goes through the trip's file upload, so it needs `file_upload` on top of `budget_edit`. A file that is also linked to a place or a booking keeps those links. See [Documents-and-Files](Documents-and-Files).
 
+### Scanning a receipt
+
+With the [AI Parsing](AI-Booking-Import) addon on and a model that reads images (see *Model reads images* there), a **Scan receipt** button sits beside **Add expense**, and on a phone the Costs header carries a scan icon. It is offered to whoever may add expenses.
+
+1. Click **Scan receipt**. A dialog like the booking import's takes one photo of the receipt (JPG, PNG or WEBP, up to 10 MB): drop it on the box, or click the box to pick one or, on a phone, take one. Then click **Scan**.
+2. The dialog closes and the model reads the photo in the background: the **background tasks** widget shows *Reading the receipt…*, and you can keep using TREK meanwhile. On a local model running on CPU this takes from a few seconds to a couple of minutes.
+3. When it is done, **Review expense** opens the expense editor pre-filled with what was read: the merchant as the name, the total, the currency and the day. The split stays **Equally**; switch it to **Ticket** and the receipt's lines are already listed, each shared by everyone. The photo is already in **Receipts & Invoices**, uploaded when you save like any receipt you attach yourself, which needs `file_upload` too.
+4. Check everything, pick the category, who paid and the split, and save. Nothing is stored before that.
+
+The scan reads one photo per expense and does not guess the category. A photo nothing could be read from ends on *No receipt could be read from this photo.*, with the reason under it. Scan jobs are kept for about 10 minutes after they finish, like [booking imports](AI-Booking-Import#good-to-know).
+
 ## Who paid
 
 **Who paid?** in the expense editor records who actually put the money down. It is the other half of the settlement maths — the split says who owes for the expense, this says who is out of pocket for it:

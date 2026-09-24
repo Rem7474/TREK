@@ -396,9 +396,9 @@ const settings: TranslationStrings = {
   'settings.aiParsing.baseUrlHint': 'Var modellen körs — en lokal Ollama-server eller en OpenAI-kompatibel slutpunkt.',
   'settings.aiParsing.apiKey': 'API-nyckel',
   'settings.aiParsing.apiKeyHint': 'Lagras krypterad. Lämna tomt för att behålla den nuvarande nyckeln.',
-  'settings.aiParsing.multimodal': 'Skicka dokument som bilder',
+  'settings.aiParsing.multimodal': 'Modellen läser bilder',
   'settings.aiParsing.multimodalHint':
-    'För modeller med bildstöd — skickar original-PDF:en istället för extraherad text.',
+    'Slå på för en modell som läser bilder, så att ett foto kan importeras eller skannas.',
   'settings.aiParsing.toast.saved': 'AI-inställningar sparade',
   'settings.aiParsing.toast.saveError': 'Kunde inte spara AI-inställningarna',
   'settings.tabs.appearance': 'Appearance',

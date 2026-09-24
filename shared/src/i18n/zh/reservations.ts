@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': '将预订确认文件拖放到此处，或点击选择',
   'reservations.import.dropActive': '松开文件以导入',
   'reservations.import.acceptedFormats': '支持格式：EML、PDF、PKPass、HTML、TXT（每个最大 10 MB，最多 5 个文件）',
+  'reservations.import.acceptedPhotos': '照片（JPG、PNG、WEBP）由 AI 模型读取。',
   'reservations.import.parsing': '正在解析文件…',
   'reservations.import.previewHeading': '找到 {count} 个预订',
   'reservations.import.previewEmpty': '无法从上传的文件中提取任何预订信息。',

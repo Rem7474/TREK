@@ -128,6 +128,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropHere': 'Перетягніть файли підтверджень бронювання сюди або натисніть для вибору',
   'reservations.import.dropActive': 'Відпустіть файли для імпорту',
   'reservations.import.acceptedFormats': 'Підтримуються: EML, PDF, PKPass, HTML, TXT (макс. 10 МБ кожен, до 5 файлів)',
+  'reservations.import.acceptedPhotos': 'Фотографії (JPG, PNG, WEBP) читає модель ШІ.',
   'reservations.import.parsing': 'Обробка файлів…',
   'reservations.import.previewHeading': 'Знайдено {count} бронювання(нь)',
   'reservations.import.previewEmpty': 'З завантажених файлів не вдалося витягти бронювання.',

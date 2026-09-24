@@ -131,6 +131,7 @@ const reservations: TranslationStrings = {
   'reservations.import.dropActive': 'Αποθέστε αρχεία για εισαγωγή',
   'reservations.import.acceptedFormats':
     'Αποδεκτά: EML, PDF, PKPass, HTML, TXT (μέγιστο 10 MB το καθένα, έως 5 αρχεία)',
+  'reservations.import.acceptedPhotos': 'Τις φωτογραφίες (JPG, PNG, WEBP) τις διαβάζει το μοντέλο ΤΝ.',
   'reservations.import.parsing': 'Επεξεργασία αρχείων…',
   'reservations.import.previewHeading': 'Βρέθηκαν {count} κράτηση/κρατήσεις',
   'reservations.import.previewEmpty': 'Δεν ήταν δυνατή η εξαγωγή κρατήσεων από τα μεταφορτωμένα αρχεία.',
