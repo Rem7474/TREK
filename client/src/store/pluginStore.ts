@@ -68,6 +68,10 @@ export interface ActivePlugin {
    * server only sends these when the hook permission is granted). Re-validated on
    * arrival by readPoiCategories, so everything here is safe to draw. */
   poiCategories?: PluginPoiCategory[]
+  /** The plugin holds hook:search-provider (#2221), so the place search also asks the
+   * plugin route while it is typed; that route only reaches the plugins whose build
+   * implements `suggest`. */
+  searchProvider?: true
   /** The plugin holds the geolocation:read grant — its frames may ask the host
    * for the browser position over the bridge. */
   geolocation?: true

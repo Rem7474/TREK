@@ -1107,7 +1107,7 @@ export const memoriesApi = {
  * They filter on the axios cancel code and on the DOMException name, so an
  * abort from the cache path has to look like one or it surfaces as a toast.
  */
-function abortedError(): Error & { code: string } {
+export function abortedError(): Error & { code: string } {
   const err = new Error('canceled') as Error & { code: string }
   err.name = 'CanceledError'
   err.code = 'ERR_CANCELED'

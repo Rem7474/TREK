@@ -148,6 +148,47 @@ outside `bounds` are dropped, and so is a hit whose own `category` names a diffe
 of those seven kinds. Both fields are absent on ordinary searches, so read them as
 optional.
 
+### Suggestions while the user types
+
+Implement `suggest` beside `search`, and your places also show up in the dropdown under
+the search box while the person is still typing: after TREK's own suggestions, marked
+with your plugin's name. It gets the same request as `search`, from the second typed
+character on, with `limit` 3 and 800 ms to answer. The dropdown keeps at most three
+plugin rows, all search plugins together, so send your best few.
+
+Leave it out when every call costs you something, such as a rate-limited API. `search`
+alone works as before, and your places then appear once the search is run. `suggest` is
+for an index you hold yourself, for example an [All the Places](https://alltheplaces.xyz/)
+extract in your plugin's own database, where a prefix match per keystroke is cheap. `near`
+tells you where the person is planning, so an index kept per country only has to load the
+country they are looking at.
+
+```js
+module.exports = {
+  hooks: {
+    searchProvider: {
+      async search(request, ctx) {
+        return lookUp(request, ctx)
+      },
+      async suggest({ query, limit }, ctx) {
+        const rows = await ctx.db.query(
+          'SELECT ref, name, lat, lng, address, website FROM places WHERE name LIKE ? LIMIT ?',
+          `${query}%`,
+          limit,
+        )
+        return rows.map(r => ({ id: r.ref, name: r.name, lat: r.lat, lng: r.lng, address: r.address, website: r.website }))
+      },
+    },
+  },
+}
+```
+
+(`ctx.db` needs `db:own`.) Picking one of your rows takes it as it is: TREK does not look
+the place up again, because no details service knows your ids. So send the address,
+website and phone with the row rather than later. TREK finds out whether your hook has
+`suggest` when the plugin starts, from the hook object itself, so a class instance with a
+`suggest` method counts as well as an object literal.
+
 ## Add your own place categories to the map
 
 **Needs:** `hook:poi-category-provider` and `capabilities.poiCategories` (+

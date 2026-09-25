@@ -21,6 +21,7 @@ After 2 or more characters, and a 300 ms pause, suggestions appear in a dropdown
 - Use **↑ / ↓** to move through them, **Enter** to pick one, **Esc** to close the list.
 - Suggestions come from the TREK API, from its index and from an OpenStreetMap layer it keeps. A suggestion from that layer shows the name that matched what you typed, with the name used on the spot underneath when the two differ.
 - Only when the TREK API has nothing does TREK ask the keyed provider (Google or Amap), or, without one, OpenStreetMap's own search service.
+- An installed [search plugin](Plugin-Cookbook#suggestions-while-the-user-types) whose index can keep up with typing adds up to three of its places under the suggestions, marked with the plugin's name. Picking one fills in what the plugin knows about the place, with no second lookup.
 
 ### The full search
 
@@ -28,11 +29,11 @@ Press **Enter** without picking a suggestion, or click the search button, to run
 
 A Google or Amap key does not change this. The keyed provider is asked only when the TREK API and OpenStreetMap both come back empty; see [Google and Amap](#google-and-amap).
 
-Installed [search plugins](Plugin-Cookbook#answer-place-searches-from-your-own-index) add their results below the core list, on the full search only.
+Installed [search plugins](Plugin-Cookbook#answer-place-searches-from-your-own-index) add their results below the core list. Only the ones built for it also answer while you type; the others appear here, once the search is run.
 
 ### Where each result came from
 
-On the desktop every row, in the suggestions and in the search results, carries a small mark naming its source: **TREK**, **OpenStreetMap**, **Google** or **Amap** (高德地图, or 高德地圖 in traditional Chinese). On the phone the suggestions carry it. A list that mixes the TREK API and OpenStreetMap stays readable that way. Results from the offline cache carry no mark; see [Searching offline](#searching-offline).
+Every row, in the suggestions and in the search results, on the desktop and on the phone, carries a small mark naming its source: **TREK**, **OpenStreetMap**, **Google** or **Amap** (高德地图, or 高德地圖 in traditional Chinese), and for a row from a search plugin the name the plugin was installed under. A list that mixes several sources stays readable that way. Results from the offline cache carry no mark; see [Searching offline](#searching-offline).
 
 ### The open day steers the search
 

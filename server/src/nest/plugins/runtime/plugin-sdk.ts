@@ -449,6 +449,8 @@ export interface SearchRequest {
 }
 export interface SearchProvider {
   search(request: SearchRequest, ctx: PluginContext): Promise<SearchResultPlace[]>;
+  /** Optional: the same question while it is typed (#2221). The host only calls it when the child reported it at load. */
+  suggest?(request: SearchRequest, ctx: PluginContext): Promise<SearchResultPlace[]>;
 }
 /**
  * A POI category provider (#1781). Only the hook's name and call are spelled out here:

@@ -29,6 +29,18 @@ describe('PluginsFeedController', () => {
   const c = new PluginsFeedController(new DatabaseService(dbConn));
   beforeEach(() => { pluginsEnabled.mockReturnValue(true); rows.value = []; });
 
+  it('marks a plugin as a search provider only alongside the recorded hook:search-provider grant (#2221)', () => {
+    rows.value = [
+      row({ id: 'index', granted_permissions: JSON.stringify(['hook:search-provider']) }),
+      row({ id: 'asked-only', permissions: JSON.stringify(['hook:search-provider']) }),
+      row({ id: 'poi-only', granted_permissions: JSON.stringify(['hook:poi-category-provider']) }),
+    ];
+    const { plugins } = c.list();
+    expect(plugins.find(p => p.id === 'index')?.searchProvider).toBe(true);
+    expect(plugins.find(p => p.id === 'asked-only')).not.toHaveProperty('searchProvider');
+    expect(plugins.find(p => p.id === 'poi-only')).not.toHaveProperty('searchProvider');
+  });
+
   it('returns an empty feed when the runtime is disabled', () => {
     pluginsEnabled.mockReturnValue(false);
     rows.value = [row()];

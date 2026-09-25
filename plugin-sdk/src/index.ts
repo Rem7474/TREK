@@ -517,6 +517,16 @@ export interface SearchProvider {
    * Called for an explicit search, not for every keystroke: an external index has rate
    * limits, and a request per typed letter would spend them on words nobody finished. */
   search(request: SearchRequest, ctx: PluginContext): Promise<SearchResultPlace[]>;
+  /** Optional: places for the query while it is still being typed, shown under the
+   * core suggestions in the place search's dropdown. Implement it only when your index
+   * can take a request per keystroke, such as one you keep locally; leave it out and
+   * your places appear once the search is run, as before.
+   *
+   * Called from the second typed character on, with `limit` 3, and given 800 ms. The
+   * host keeps at most 3 rows across every provider, so return your best few, and
+   * `near` is where the person is planning. Picking a row takes it as it is, so fill in
+   * what you know (address, website, phone) here rather than later. */
+  suggest?(request: SearchRequest, ctx: PluginContext): Promise<SearchResultPlace[]>;
 }
 /**
  * What the host asks a POI category provider for: the places of ONE of your declared

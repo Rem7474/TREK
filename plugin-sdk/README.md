@@ -225,7 +225,7 @@ skipped, never fatal):
 | `mapMarkerProvider` | ≤200 markers per provider |
 | `warningProvider` | ≤20 warnings per provider, each message ≤300 chars |
 | `placeDetailProvider` | ≤12 items per provider |
-| `searchProvider` | ≤20 places per provider, 2 s to answer |
+| `searchProvider` | `search`: ≤20 places per provider, 2 s to answer. `suggest` (optional): ≤3 places in the dropdown across all providers, 800 ms to answer |
 | `poiCategoryProvider` | ≤4 declared categories per plugin; ≤60 places per answer (inside `bounds` only), ≤6 detail rows per place, 8 s to answer |
 | `photoProvider` | ≤60 photos per page |
 | `calendarSource` | ≤500 events per source per request |
@@ -412,6 +412,10 @@ The SDK tooling in this repo is MIT. Your plugin is your own code under your own
 ### Roadtrip category searches
 
 The `searchProvider.search` request can include `category` and `bounds` (south, west, north, east). Search within that rectangle for the category; `query` remains a readable category query and `near` its centre, so existing providers continue to work. These optional fields are absent on older hosts and ordinary name searches. The host validates and filters coordinates, namespaces IDs, and applies the exact route corridor after combining sources. The existing permission and two-second hook timeout still apply.
+
+### Suggestions while the user types
+
+`searchProvider.suggest` is optional. Implement it only when your index can take a request per keystroke, typically one you keep in your own database; your rows then appear in the place search's dropdown while the person types, after TREK's own suggestions and labelled with your plugin's name. It gets the same `SearchRequest` as `search`, from the second typed character on, with `limit` 3 and 800 ms to answer, and the dropdown keeps at most three plugin rows across all providers. A picked row is taken as it is, without a details lookup, so fill in address, website and phone right away. The host learns whether your hook has `suggest` when the plugin loads (a class method counts), and never calls it on a plugin without one.
 
 ### POI categories on the trip map
 

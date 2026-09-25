@@ -1,4 +1,4 @@
-// FE-COMP-PLACEFORM-001 to FE-COMP-PLACEFORM-036, FE-PLANNER-PLACEFORM-016 to FE-PLANNER-PLACEFORM-067, plus FE-PLANNER-PLACEFORM-068 to -092
+// FE-COMP-PLACEFORM-001 to FE-COMP-PLACEFORM-036, FE-PLANNER-PLACEFORM-016 to FE-PLANNER-PLACEFORM-067, plus FE-PLANNER-PLACEFORM-068 to -095
 import { render, screen, waitFor, fireEvent, within, act } from '../../../tests/helpers/render';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
@@ -7,6 +7,7 @@ import { useAuthStore } from '../../store/authStore';
 import { useTripStore } from '../../store/tripStore';
 import { useAddonStore } from '../../store/addonStore';
 import { usePermissionsStore } from '../../store/permissionsStore';
+import { usePluginStore } from '../../store/pluginStore';
 import { resetAllStores, seedStore } from '../../../tests/helpers/store';
 import { buildUser, buildTrip, buildPlace, buildCategory, buildAssignment } from '../../../tests/helpers/factories';
 import PlaceFormModal from './PlaceFormModal';
@@ -2200,5 +2201,83 @@ describe('PlaceFormModal as a road trip service stop', () => {
     expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
       _serviceStop: { dayId: 5, position: 2, offRouteKm: 0 },
     }));
+  });
+});
+
+describe('PlaceFormModal plugin search (#2221)', () => {
+  const ATP = { id: 'all-the-places', name: 'All the Places', type: 'integration' as const, icon: null };
+  const hit = {
+    osm_id: 'plugin:all-the-places:ichiran-ueno', name: 'Ichiran Ueno', address: 'Ueno 6-11-12, Taito',
+    lat: 35.7101, lng: 139.7745, rating: 4.3, website: 'https://ichiran.com/shop/ueno', phone: '+81 3 5818 3531',
+    category: 'restaurant', description: null, source: 'plugin:all-the-places', pluginId: 'all-the-places',
+  };
+
+  afterEach(() => {
+    usePluginStore.setState({ plugins: [] });
+  });
+
+  it('FE-PLANNER-PLACEFORM-093: a search plugin that answers as you type lists its places under the core ones, marked with its name', async () => {
+    usePluginStore.setState({ plugins: [{ ...ATP, searchProvider: true }] });
+    const user = userEvent.setup();
+    server.use(
+      http.post('/api/maps/autocomplete', () =>
+        HttpResponse.json({ suggestions: [{ placeId: 'gers:1', mainText: 'Ichiran Shibuya', secondaryText: 'Jinnan', source: 'trek-places' }], source: 'trek-places' })),
+      http.get('/api/plugin-search/suggest', () => HttpResponse.json({ places: [hit] })),
+    );
+    render(<PlaceFormModal {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText('Search places...'), 'Ichiran');
+
+    const pluginRow = (await screen.findByText('Ichiran Ueno')).closest('button')!;
+    const coreRow = screen.getByText('Ichiran Shibuya').closest('button')!;
+    expect(within(pluginRow).getByText('All the Places')).toBeInTheDocument();
+    expect(within(coreRow).getByText('TREK')).toBeInTheDocument();
+    // Appended, never ahead of the ranked core list.
+    expect(coreRow.compareDocumentPosition(pluginRow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('FE-PLANNER-PLACEFORM-094: picking a plugin row takes its place as it is, with no details lookup and no search', async () => {
+    usePluginStore.setState({ plugins: [{ ...ATP, searchProvider: true }] });
+    const user = userEvent.setup();
+    const onSave = vi.fn().mockResolvedValue(undefined);
+    const detour = vi.fn();
+    server.use(
+      http.post('/api/maps/autocomplete', () => HttpResponse.json({ suggestions: [], source: 'trek-places' })),
+      http.get('/api/plugin-search/suggest', () => HttpResponse.json({ places: [hit] })),
+      http.get('/api/maps/details/:placeId', () => { detour(); return HttpResponse.json({ place: null }); }),
+      http.post('/api/maps/search', () => { detour(); return HttpResponse.json({ places: [], source: 'trek-places' }); }),
+    );
+    render(<PlaceFormModal {...defaultProps} onSave={onSave} />);
+    await user.type(screen.getByPlaceholderText('Search places...'), 'Ichiran');
+    await user.click(await screen.findByText('Ichiran Ueno'));
+
+    expect(await screen.findByDisplayValue('35.7101')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('139.7745')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('https://ichiran.com/shop/ueno')).toBeInTheDocument();
+    expect(detour).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('button', { name: /^Add$/i }));
+    await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1));
+    expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+      name: 'Ichiran Ueno', address: 'Ueno 6-11-12, Taito', osm_id: 'plugin:all-the-places:ichiran-ueno',
+    }));
+  });
+
+  it('FE-PLANNER-PLACEFORM-095: without a search plugin nothing is asked per keystroke, and a searched plugin row still names its plugin', async () => {
+    usePluginStore.setState({ plugins: [ATP] });
+    const user = userEvent.setup();
+    const perKeystroke = vi.fn();
+    server.use(
+      http.post('/api/maps/autocomplete', () => HttpResponse.json({ suggestions: [], source: 'trek-places' })),
+      http.get('/api/plugin-search/suggest', () => { perKeystroke(); return HttpResponse.json({ places: [] }); }),
+      http.post('/api/maps/search', () =>
+        HttpResponse.json({ places: [{ name: 'Ichiran Shibuya', address: 'Jinnan', lat: 35.66, lng: 139.7, source: 'trek-places' }], source: 'trek-places' })),
+      http.get('/api/plugin-search', () => HttpResponse.json({ places: [hit] })),
+    );
+    render(<PlaceFormModal {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText('Search places...'), 'Ichiran{Enter}');
+
+    const pluginRow = (await screen.findByText('Ichiran Ueno')).closest('button')!;
+    expect(within(pluginRow).getByText('All the Places')).toBeInTheDocument();
+    expect(perKeystroke).not.toHaveBeenCalled();
   });
 });

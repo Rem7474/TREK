@@ -1,4 +1,5 @@
 import { normalizePlaceWebsite } from '@trek/shared';
+import type { HookSearchRequest } from '../plugin-hooks.service';
 import { stripEmoji } from '../text-sanitize';
 
 /**
@@ -111,6 +112,23 @@ export function normalizeSearchHits(pluginId: string, raw: unknown): SearchHit[]
   return out;
 }
 
+/**
+ * Every provider's normalized hits for one question, in provider order. A provider
+ * that throws or runs out of time contributes nothing rather than failing the rest:
+ * a list that breaks when an optional index is unwell is worse than one without it.
+ */
+export function collectHits(ids: string[], ask: (pluginId: string) => Promise<unknown>): Promise<SearchHit[][]> {
+  return Promise.all(
+    ids.map(async (id) => {
+      try {
+        return normalizeSearchHits(id, await ask(id));
+      } catch {
+        return [];
+      }
+    }),
+  );
+}
+
 /** The bias, when the caller supplied a real coordinate rather than two strings. */
 export function nearFrom(latRaw: unknown, lngRaw: unknown): { lat: number; lng: number } | undefined {
   const lat = Number(latRaw);
@@ -118,6 +136,24 @@ export function nearFrom(latRaw: unknown, lngRaw: unknown): { lat: number; lng: 
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) return undefined;
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return undefined;
   return { lat, lng };
+}
+
+/**
+ * The question a provider is handed, read off the query string, or null when there is
+ * nothing to ask. `minLength` is 2 for the typed-ahead list: one letter is not worth a
+ * round trip into every provider.
+ */
+export function searchRequestFrom(
+  q: unknown,
+  lat: unknown,
+  lng: unknown,
+  lang: unknown,
+  limit: number,
+  minLength = 1,
+): HookSearchRequest | null {
+  const query = String(q ?? '').trim().slice(0, MAX_QUERY);
+  if (query.length < minLength) return null;
+  return { query, limit, lang: lang ? String(lang).slice(0, 20) : undefined, near: nearFrom(lat, lng) };
 }
 
 export function limitFrom(raw: unknown): number {

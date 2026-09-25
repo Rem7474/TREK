@@ -33,6 +33,7 @@ const CONTRACTS: Array<[hook: string, fn: string, timeoutMs: number]> = [
   ['calendarSource', 'getEvents', 5000],
   ['placeDetailProvider', 'getDetails', 5000],
   ['searchProvider', 'search', 2000],
+  ['searchProvider', 'suggest', 800],
   ['poiCategoryProvider', 'getPois', 8000],
   ['warningProvider', 'getWarnings', 5000],
   ['tableContributor', 'getContributions', 5000],
@@ -82,7 +83,7 @@ describe('PluginHooks contracts', () => {
   it('PLUGHOOK-005 providersOf is passed straight through to the runtime', () => {
     const { hooks: h, providersOf } = hooks();
     expect(h.providersOf('photoProvider')).toEqual(['p1', 'p2']);
-    expect(providersOf).toHaveBeenCalledWith('photoProvider');
+    expect(providersOf).toHaveBeenCalledWith('photoProvider', undefined);
   });
 
   it('PLUGHOOK-006 the read hooks forward their arguments and the acting user', async () => {
@@ -158,6 +159,18 @@ describe('PluginHooks contracts', () => {
     const request = { category: 'trailheads', bounds: { south: 47, west: 11, north: 47.5, east: 11.5 }, lang: 'de', limit: 60 };
     await h.categoryPois('p', request, 7);
     expect(invokeHook).toHaveBeenCalledWith('p', 'poiCategoryProvider', 'getPois', [request], 7, 8000);
+  });
+
+  it('PLUGHOOK-012: a typed-ahead suggestion binds the requesting user and takes the shortest budget (#2221)', async () => {
+    // Asked per keystroke, beside core suggestions that arrive in a few hundred
+    // milliseconds; the next keystroke replaces the question, so a later answer is dead.
+    const { hooks: h, invokeHook, providersOf } = hooks();
+    const request = { query: 'ichi', limit: 3, lang: 'ja', near: { lat: 35.66, lng: 139.7 } };
+    await h.suggestPlaces('p', request, 7);
+    expect(invokeHook).toHaveBeenCalledWith('p', 'searchProvider', 'suggest', [request], 7, 800);
+    // Only the providers whose hook carries the optional function are asked.
+    h.providersOf('searchProvider', 'suggest');
+    expect(providersOf).toHaveBeenLastCalledWith('searchProvider', 'suggest');
   });
 
   it('PLUGHOOK-009 the class is listed in its module providers', () => {

@@ -84,9 +84,9 @@ export interface HookRouteRequest {
 export class PluginHooks {
   constructor(private readonly runtime: PluginRuntimeService) {}
 
-  /** The plugins that declared `hook`, in manifest order. */
-  providersOf(hook: string): string[] {
-    return this.runtime.providersOf(hook);
+  /** The plugins that declared `hook`, in manifest order; with `fn`, only those whose hook also has that function. */
+  providersOf(hook: string, fn?: string): string[] {
+    return this.runtime.providersOf(hook, fn);
   }
 
   @PluginHook('photoProvider', { permission: 'hook:photo-provider', fn: 'search', timeoutMs: 5000 })
@@ -117,7 +117,7 @@ export class PluginHooks {
   }
 
   /**
-   * The shortest leash of any hook here, because a person is waiting on a list.
+   * A short leash, because a person is waiting on a list.
    *
    * The core search and this one run side by side, so the wait is the slower of the
    * two rather than their sum, and the client stops waiting at two and a half seconds
@@ -128,6 +128,20 @@ export class PluginHooks {
   @PluginHook('searchProvider', { permission: 'hook:search-provider', fn: 'search', timeoutMs: 2000 })
   searchPlaces(pluginId: string, request: HookSearchRequest, userId: number): Promise<unknown> {
     return this.runtime.invokeHook(pluginId, 'searchProvider', 'search', [request], userId, 2000);
+  }
+
+  /**
+   * The same question asked while it is still being typed (#2221), and the shortest
+   * leash of any hook here.
+   *
+   * Only for a provider that implements `suggest`, which says its index can take a
+   * request per keystroke. The typed-ahead list waits for it beside the core
+   * suggestions, which arrive in a few hundred milliseconds, and the next keystroke
+   * replaces the question anyway, so an answer later than this is one nobody reads.
+   */
+  @PluginHook('searchProvider', { permission: 'hook:search-provider', fn: 'suggest', timeoutMs: 800 })
+  suggestPlaces(pluginId: string, request: HookSearchRequest, userId: number): Promise<unknown> {
+    return this.runtime.invokeHook(pluginId, 'searchProvider', 'suggest', [request], userId, 800);
   }
 
   /**

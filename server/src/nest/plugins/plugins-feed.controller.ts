@@ -26,6 +26,13 @@ interface ActivePlugin {
   routeProfiles?: Array<{ id: string; label: string; icon?: string }>;
   /** Categories the explore pill offers (poiCategoryProvider hook, granted only, #1781). */
   poiCategories?: PluginPoiCategory[];
+  /**
+   * The plugin holds hook:search-provider, so the place search asks the plugin routes
+   * while it is typed too (#2221). Read off the grant rather than the running child, so
+   * a feed loaded while plugins are still starting says the same; the suggest route
+   * itself only asks the providers whose build implements `suggest`.
+   */
+  searchProvider?: true;
   /** The plugin holds the geolocation:read grant — its frames may request the
    * browser position over the host bridge (the browser prompt still applies). */
   geolocation?: true;
@@ -53,6 +60,7 @@ export class PluginsFeedController {
         ...(settingsUiOf(capabilities) ? { settingsUi: true as const } : {}),
         ...(routeProfiles ? { routeProfiles } : {}),
         ...(poiCategories.length ? { poiCategories } : {}),
+        ...(hasGrant(granted_permissions, 'hook:search-provider') ? { searchProvider: true as const } : {}),
         ...(hasGrant(granted_permissions, 'geolocation:read') ? { geolocation: true as const } : {}),
       };
     });
