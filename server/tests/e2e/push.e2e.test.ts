@@ -17,7 +17,7 @@ vi.mock('../../src/db/database', async () => {
   const { createTempDb } = await import('./harness');
   const db = createTempDb();
   db.exec('CREATE TABLE app_settings (key TEXT PRIMARY KEY, value TEXT);');
-  // Same DDL as migration 244.
+  // Same DDL as migration 245.
   db.exec(`CREATE TABLE push_subscriptions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

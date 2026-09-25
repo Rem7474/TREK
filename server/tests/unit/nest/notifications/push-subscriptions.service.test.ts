@@ -1,6 +1,6 @@
 /**
  * Web Push subscriptions: what the browser may hand over (PUSHSUB-CHK-*) and
- * the table behind it (PUSHSUB-*), on the real schema including migration 244.
+ * the table behind it (PUSHSUB-*), on the real schema including migration 245.
  */
 import { describe, it, expect, vi, beforeAll, beforeEach, afterAll } from 'vitest';
 import { createECDH } from 'node:crypto';
@@ -267,7 +267,7 @@ describe('PushSubscriptionsService', () => {
     expect(testDb.prepare('SELECT COUNT(*) AS n FROM push_subscriptions').get()).toEqual({ n: 0 });
   });
 
-  it('PUSHSUB-008: migration 244 created the table with its user index', () => {
+  it('PUSHSUB-008: migration 245 created the table with its user index', () => {
     const index = testDb
       .prepare("SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'push_subscriptions'")
       .all() as { name: string }[];
