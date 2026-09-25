@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { server } from '../../tests/helpers/msw/server'
-import { convertBooked, fetchExchangeRates, clearExchangeRateCache } from './useExchangeRates'
+import { bookedInTrip, convertBooked, convertedLine, crossRate, fetchExchangeRates, clearExchangeRateCache, tripAmountOf, useExchangeRates } from './useExchangeRates'
 
 const FX_URL = 'https://api.frankfurter.dev/v2/rates'
 
@@ -91,5 +92,146 @@ describe('convertBooked', () => {
   it('treats currency case as noise', () => {
     expect(convertBooked(120, 'usd', 1.2, 'eur', live)).toBe(100)
     expect(convertBooked(100, 'eur', 1, 'EUR', live)).toBe(100)
+  })
+
+  // #2525: a euro trip read in dollars, the bill entered in dollars. It was booked at 685.26
+  // EUR, and that is what the balances and settle-up net and then show at today's rate. The
+  // row has to show the same figure, or paying back the "you lent" it printed reopens the trip.
+  it('reads an amount in the display currency through the trip currency too', () => {
+    const liveUsd = (amount: number, from: string | null | undefined): number => {
+      const rates: Record<string, number> = { USD: 1, EUR: 1 / 1.1398 }
+      const r = rates[(from || 'USD').toUpperCase()]
+      return r && r > 0 ? amount / r : amount
+    }
+    // 685.26 EUR, then at today's 1.1398 dollars to the euro.
+    expect(convertBooked(801.76, 'USD', 1.17, 'EUR', liveUsd)).toBeCloseTo((801.76 / 1.17) * 1.1398, 6)
+    expect(convertBooked(801.76, 'USD', 1.17, 'EUR', liveUsd)).not.toBeCloseTo(801.76, 1)
+    // Without a booked rate there is nothing to go through, and dollars stay dollars.
+    expect(convertBooked(801.76, 'USD', 1, 'EUR', liveUsd)).toBe(801.76)
+  })
+})
+
+describe('bookedInTrip', () => {
+  it('gives the trip-currency amount a foreign row was booked at', () => {
+    expect(bookedInTrip(801.76, 'USD', 1.17, 'EUR')).toBeCloseTo(685.26, 2)
+    expect(bookedInTrip(12000, 'jpy', 170, 'eur')).toBeCloseTo(70.59, 2)
+  })
+
+  it('has nothing to give for a row in the trip currency or one that never froze a rate', () => {
+    expect(bookedInTrip(100, 'EUR', 1.17, 'EUR')).toBeNull()
+    expect(bookedInTrip(100, null, 1.17, 'EUR')).toBeNull()
+    expect(bookedInTrip(100, 'USD', 1, 'EUR')).toBeNull()
+    expect(bookedInTrip(100, 'USD', null, 'EUR')).toBeNull()
+    expect(bookedInTrip(100, 'USD', 0, 'EUR')).toBeNull()
+  })
+})
+
+// #2525: the server freezes an entry rate from the trip currency's quote and converts the
+// settlement back with it. Read through the display currency's own quote, a separately
+// rounded figure, a same-day 12,345.67 USD bill on a euro trip came back as $12,346.05.
+describe('useExchangeRates anchored on the trip currency (#2525)', () => {
+  beforeEach(() => {
+    clearExchangeRateCache()
+  })
+
+  const quotes = (): void => {
+    server.use(http.get(FX_URL, ({ request }) => {
+      const base = new URL(request.url).searchParams.get('base')
+      if (base === 'EUR') return HttpResponse.json([{ quote: 'USD', rate: 1.1398 }, { quote: 'JPY', rate: 170 }])
+      if (base === 'USD') return HttpResponse.json([{ quote: 'EUR', rate: 0.87732 }, { quote: 'JPY', rate: 149.1 }])
+      return HttpResponse.error()
+    }))
+  }
+
+  it('converts the trip currency with its own quote, so a same-day bill reads as typed', async () => {
+    quotes()
+    const { result } = renderHook(() => useExchangeRates('usd', 'eur'))
+    await waitFor(() => expect(result.current.convert(1, 'EUR')).toBe(1.1398))
+    const shown = convertBooked(12345.67, 'USD', 1.1398, 'EUR', result.current.convert)
+    expect(Math.round(shown * 100)).toBe(1234567)
+    expect(Math.round(convertBooked(250, 'USD', 1.1398, 'EUR', result.current.convert) * 100)).toBe(25000)
+    // A foreign row that never froze a rate goes through the same quote as well.
+    expect(result.current.convert(170, 'JPY')).toBeCloseTo(1.1398, 10)
+    // The display currency's own rates stay what the hook hands out.
+    expect(result.current.rates).toEqual({ USD: 1, EUR: 0.87732, JPY: 149.1 })
+  })
+
+  it('falls back to the display currency\'s quote while the trip\'s is missing', async () => {
+    server.use(http.get(FX_URL, ({ request }) => (new URL(request.url).searchParams.get('base') === 'USD'
+      ? HttpResponse.json([{ quote: 'EUR', rate: 0.8 }])
+      : HttpResponse.error())))
+    const { result } = renderHook(() => useExchangeRates('USD', 'EUR'))
+    await waitFor(() => expect(result.current.convert(8, 'EUR')).toBe(10))
+    expect(result.current.convert(5, 'USD')).toBe(5)
+  })
+
+  it('fetches one set of rates when the trip is in the display currency', async () => {
+    let calls = 0
+    server.use(http.get(FX_URL, () => { calls++; return HttpResponse.json([{ quote: 'USD', rate: 1.1398 }]) }))
+    const { result } = renderHook(() => useExchangeRates('EUR', 'EUR'))
+    await waitFor(() => expect(result.current.convert(1.1398, 'USD')).toBe(1))
+    expect(calls).toBe(1)
+  })
+})
+
+describe('crossRate', () => {
+  it('reads units of one currency per another from rates on any base', () => {
+    expect(crossRate({ EUR: 1, USD: 1.25, GBP: 0.8 }, 'USD', 'GBP')).toBe(1.5625)
+    expect(crossRate({ EUR: 1, USD: 1.25 }, 'USD', 'EUR')).toBe(1.25)
+  })
+
+  it('has nothing to say without both quotes', () => {
+    expect(crossRate(null, 'USD', 'EUR')).toBeNull()
+    expect(crossRate({ EUR: 1 }, 'USD', 'EUR')).toBeNull()
+    expect(crossRate({ EUR: 0, USD: 1 }, 'USD', 'EUR')).toBeNull()
+  })
+})
+
+describe('tripAmountOf', () => {
+  // Display USD, trip EUR: one euro buys 1.25 dollars and 100 yen.
+  const live = (amount: number, from: string | null | undefined): number =>
+    amount * ({ EUR: 1.25, USD: 1, JPY: 0.0125 } as Record<string, number>)[(from || 'USD').toUpperCase()]
+
+  it('is the booked amount for a row booked through the trip currency', () => {
+    expect(tripAmountOf(801.76, 'USD', 1.17, 'EUR', live)).toBeCloseTo(685.26, 2)
+  })
+
+  it('is the amount itself for a row in the trip currency', () => {
+    expect(tripAmountOf(100, null, null, 'eur', live)).toBe(100)
+    expect(tripAmountOf(100, 'EUR', 1, 'EUR', live)).toBe(100)
+  })
+
+  it('counts a row that never froze a rate at today\'s', () => {
+    expect(tripAmountOf(1000, 'JPY', 1, 'EUR', live)).toBeCloseTo(10, 10)
+    // Without rates the conversion is the identity, as it is on the server.
+    expect(tripAmountOf(1000, 'JPY', null, 'EUR', (a: number) => a)).toBe(1000)
+  })
+})
+
+describe('convertedLine', () => {
+  it('shows the entered amount and the booked trip amount for a bill booked through the trip currency', () => {
+    expect(convertedLine(801.76, 'usd', 1.17, 'EUR', 'USD', 791.55)).toEqual({
+      entered: { amount: 801.76, currency: 'USD' },
+      into: { amount: 801.76 / 1.17, currency: 'EUR' },
+    })
+    expect(convertedLine(12000, 'JPY', 170, 'EUR', 'USD', 80.46)?.into).toEqual({ amount: 12000 / 170, currency: 'EUR' })
+  })
+
+  it('has no line for a bill in the display currency that still reads as typed', () => {
+    expect(convertedLine(12345.67, 'USD', 1.1398, 'EUR', 'USD', 12345.670000000002)).toBeNull()
+    // Rounded to the display currency's own decimals.
+    expect(convertedLine(1500, 'JPY', 0.0125, 'EUR', 'JPY', 1500.2)).toBeNull()
+  })
+
+  it('has no line for an amount of 0 or a row that was never converted', () => {
+    expect(convertedLine(0, 'USD', 1.17, 'EUR', 'USD', 0)).toBeNull()
+    expect(convertedLine(0, 'JPY', 170, 'EUR', 'USD', 0)).toEqual({ entered: { amount: 0, currency: 'JPY' }, into: { amount: 0, currency: 'USD' } })
+    expect(convertedLine(50, 'USD', 1, 'EUR', 'USD', 50)).toBeNull()
+    expect(convertedLine(50, null, null, 'USD', '', 50)).toBeNull()
+  })
+
+  it('goes straight to the display value for a row in the trip currency, or when the viewer reads the trip currency', () => {
+    expect(convertedLine(100, null, null, 'EUR', 'USD', 113.98)).toEqual({ entered: { amount: 100, currency: 'EUR' }, into: { amount: 113.98, currency: 'USD' } })
+    expect(convertedLine(801.76, 'USD', 1.17, 'EUR', 'EUR', 685.26)).toEqual({ entered: { amount: 801.76, currency: 'USD' }, into: { amount: 685.26, currency: 'EUR' } })
   })
 })

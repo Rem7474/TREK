@@ -77,7 +77,8 @@ export function useSharedTrip() {
   // Convert every expense into it via live FX, mirroring CostsPanel — a public
   // viewer has no settings store, so the base comes from the payload (#1361).
   const base = String(data?.baseCurrency || data?.trip?.currency || 'EUR').toUpperCase()
-  const { convert } = useExchangeRates(base)
+  // Anchored on the trip currency's quote, as the Costs tab converts (#2525).
+  const { convert } = useExchangeRates(base, data?.trip?.currency)
 
   return {
     data,

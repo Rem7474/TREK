@@ -62,8 +62,8 @@ export class BudgetController {
   }
 
   @Get('summary/per-person')
-  perPerson(@CurrentUser() user: User, @Param('tripId') tripId: string) {
-    return { summary: this.budget.perPersonSummary(tripId) };
+  async perPerson(@CurrentUser() user: User, @Param('tripId') tripId: string) {
+    return { summary: await this.budget.perPersonSummary(tripId) };
   }
 
   @Get('settlement')

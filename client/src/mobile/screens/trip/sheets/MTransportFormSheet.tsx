@@ -12,6 +12,7 @@ import { BookingCodeInput } from '../../../../components/shared/BookingCode'
 import AirportSelect, { type Airport } from '../../../../components/Planner/AirportSelect'
 import LocationSelect, { type LocationPoint } from '../../../../components/Planner/LocationSelect'
 import { toLocationPicks } from '../../../../components/Planner/locationPicks'
+import { importedPriceEntry } from '../../../../components/Planner/importedPrice'
 import TransitSearchPanel from '../../../../components/Planner/TransitSearchPanel'
 import { Eyebrow, FIELD_AREA_CLS, FIELD_CLS, FormSheetFooter, FormSheetHeader } from './PlSheetChrome'
 import MBookingFilesCosts from './MBookingFilesCosts'
@@ -572,11 +573,8 @@ export default function MTransportFormSheet({ planner, onOpenExpense }: MTranspo
       // Imported booking → auto-create the linked cost from the parsed price
       // (only on create and only when a price is present).
       if (!res && prefill && isBudgetEnabled) {
-        const pmeta = prefill.metadata && typeof prefill.metadata === 'object' ? (prefill.metadata as Record<string, unknown>) : {}
-        const price = Number(pmeta.price)
-        if (Number.isFinite(price) && price > 0) {
-          payload.create_budget_entry = { total_price: price, category: typeToCostCategory(form.type) }
-        }
+        const entry = importedPriceEntry(prefill.metadata, form.type)
+        if (entry) payload.create_budget_entry = entry
       }
       const saved = await saveTransport(payload)
       // Persist the traveler assignment once we have the reservation id (from the

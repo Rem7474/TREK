@@ -1,4 +1,4 @@
-// FE-PLANNER-COSTSEC-001 to FE-PLANNER-COSTSEC-018
+// FE-PLANNER-COSTSEC-001 to FE-PLANNER-COSTSEC-019
 import { render, screen, waitFor, within } from '../../../tests/helpers/render';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
@@ -206,13 +206,17 @@ describe('BookingCostsSection', () => {
     expect(screen.queryByRole('button', { name: /Create expense/ })).not.toBeInTheDocument();
   });
 
-  it('FE-PLANNER-COSTSEC-016: amounts without a currency use the display currency, then the trip currency', () => {
+  it('FE-PLANNER-COSTSEC-016: an amount without a currency is in the trip currency, whatever the display currency (#2525)', () => {
+    // The booking saves its cost without a currency, which the server and Costs
+    // read as the trip's. Previewing it in the display currency said 12 GBP for
+    // what was then stored as 12 JPY.
     seedStore(useTripStore, { budgetItems: [], trip: buildTrip({ id: 1, currency: 'JPY' }) });
     seedStore(useSettingsStore, { settings: { default_currency: 'gbp' } });
     const { unmount } = render(
       <BookingCostsSection reservationId={null} pendingExpense={{ total_price: 12, category: 'food' }} onCreate={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />,
     );
-    expect(screen.getByText(money(12, 'GBP'))).toBeInTheDocument();
+    expect(screen.getByText(money(12, 'JPY'))).toBeInTheDocument();
+    expect(screen.queryByText(money(12, 'GBP'))).not.toBeInTheDocument();
     unmount();
 
     seedStore(useSettingsStore, { settings: { default_currency: '' } });
@@ -234,5 +238,19 @@ describe('BookingCostsSection', () => {
     expect(screen.queryByText('Linked expense')).not.toBeInTheDocument();
     expect(screen.getByText('Linked expenses')).toBeInTheDocument();
     expect(screen.getByText('Flight LH 400')).toBeInTheDocument();
+  });
+
+  it('FE-PLANNER-COSTSEC-019: linked and offered expenses without a currency read in the trip currency (#2525)', async () => {
+    const user = userEvent.setup();
+    const deposit = buildBudgetItem({ id: 17, trip_id: 1, name: 'Hotel deposit', total_price: 120, currency: null, category: 'accommodation', reservation_id: 9 });
+    const tram = buildBudgetItem({ id: 18, trip_id: 1, name: 'Tram pass', total_price: 9, currency: null, category: 'transport' });
+    seedStore(useTripStore, { budgetItems: [deposit, tram] });
+    seedStore(useSettingsStore, { settings: { default_currency: 'USD' } });
+    renderSection();
+
+    expect(within(rowOf('Hotel deposit')).getByText(money(120, 'EUR'))).toBeInTheDocument();
+    expect(screen.queryByText(money(120, 'USD'))).not.toBeInTheDocument();
+    await user.click(linkSelect());
+    expect(screen.getByRole('button', { name: /Tram pass/ })).toHaveTextContent(money(9, 'EUR'));
   });
 });

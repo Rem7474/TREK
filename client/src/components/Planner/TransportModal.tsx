@@ -19,6 +19,7 @@ import { parseReservationMetadata, orderedEndpoints, stripAirportCode } from '..
 import { BookingCostsSection } from './BookingCostsSection'
 import { BookingLinkAndFiles } from './BookingLinkAndFiles'
 import { BookingTypeSelect } from './BookingTypeSelect'
+import { importedPriceEntry } from './importedPrice'
 import { TravelerPicker } from './TravelerPicker'
 import type { TripMember } from '../Budget/BudgetPanelMemberChips'
 import type { BookingExpenseRequest } from './BookingCostsSection.types'
@@ -603,11 +604,8 @@ export function TransportModal({ isOpen, onClose, onSave, reservation, days, sel
       // Imported booking → auto-create the linked cost from the parsed price (what the
       // old direct import did). Only on create (not edit) and only when there's a price.
       if (!reservation && prefill && isBudgetEnabled) {
-        const pmeta = prefill.metadata && typeof prefill.metadata === 'object' ? (prefill.metadata as Record<string, unknown>) : {}
-        const price = Number(pmeta.price)
-        if (Number.isFinite(price) && price > 0) {
-          ;(payload as Record<string, unknown>).create_budget_entry = { total_price: price, category: typeToCostCategory(form.type) }
-        }
+        const entry = importedPriceEntry(prefill.metadata, form.type)
+        if (entry) (payload as Record<string, unknown>).create_budget_entry = entry
       }
       const saved = await onSave(payload)
       // Persist the traveler assignment once we have the reservation id (create → save
@@ -651,12 +649,10 @@ export function TransportModal({ isOpen, onClose, onSave, reservation, days, sel
     try { await deleteBudgetItem(Number(tripId), item.id) } catch { toast.error(t('common.unknownError')) }
   }
 
-  // On an import review (not yet saved), preview the parsed price as the cost that will be linked.
-  const prefillMeta = prefill?.metadata && typeof prefill.metadata === 'object' ? (prefill.metadata as Record<string, unknown>) : null
-  const prefillPrice = Number(prefillMeta?.price)
-  const pendingExpense = !reservation && Number.isFinite(prefillPrice) && prefillPrice > 0
-    ? { total_price: prefillPrice, currency: (prefillMeta?.priceCurrency as string | null) ?? null, category: typeToCostCategory(form.type) }
-    : null
+  // On an import review (not yet saved), preview the parsed price as the cost that will be
+  // linked: the same entry the save sends, so the two cannot name different currencies.
+  const importedEntry = !reservation && prefill ? importedPriceEntry(prefill.metadata, form.type) : null
+  const pendingExpense = importedEntry ? { ...importedEntry, currency: importedEntry.currency ?? null } : null
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

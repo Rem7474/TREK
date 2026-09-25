@@ -39,6 +39,9 @@ const { RATES } = vi.hoisted(() => ({
   RATES: {
     RUB: { RUB: 1, USD: 0.013042, EUR: 0.011412 },
     EUR: { EUR: 1, USD: 1.1429, RUB: 87.63 },
+    // The dollar's own quote, as Frankfurter prints it: rounded, so not the exact
+    // inverse of the euro's 1.1429 (1 / 0.87497 = 1.142896...).
+    USD: { USD: 1, EUR: 0.87497 },
   } as Record<string, Record<string, number>>,
 }));
 // Constructor-injected since the fold; the class is mocked at the module path
@@ -1382,5 +1385,159 @@ describe('an expense whose split leaves a remainder', () => {
     budget.updateBudgetItem(item.id, trip.id, { name: 'Hotel 2', receipt_file_ids: [file] });
     const after = testDb.prepare('SELECT id FROM file_links WHERE file_id = ? AND budget_item_id = ?').get(file, item.id) as { id: number };
     expect(after.id).toBe(before.id);
+  });
+});
+
+// #2525: a bill entered in dollars on a euro trip was booked at the rate of the day. The
+// totals the MCP summary, the budget prompt and the per-person resource hand out added its
+// dollars to the euros as they stood and called the sum euros.
+describe('trip totals read every row in the trip currency (#2525)', () => {
+  function seedDollarBill() {
+    const { user: me } = createUser(testDb);
+    const { user: bob } = createUser(testDb);
+    const trip = createTrip(testDb, me.id);
+    addTripMember(testDb, trip.id, bob.id);
+    const members = [{ user_id: me.id }, { user_id: bob.id }];
+    const hotel = budget.createBudgetItem(trip.id, {
+      name: 'Aparthotel Silver', category: 'accommodation', currency: 'USD', exchange_rate: 1.17,
+      payers: [{ user_id: me.id, amount: 801.76 }], members,
+    });
+    budget.createBudgetItem(trip.id, {
+      name: 'Dinner', category: 'food', currency: 'EUR',
+      payers: [{ user_id: bob.id, amount: 100 }], members,
+    });
+    return { trip, me, bob, hotel };
+  }
+
+  it('BUDGET-SVC-DB-044: adds each row up at the rate it was booked at, in whole cents', async () => {
+    const { trip } = seedDollarBill();
+    // 801.76 USD at 1.17 is 685.26 EUR, the figure the settlement nets as well.
+    expect(budget.tripTotals(trip.id, 'EUR')).toEqual({
+      total: 785.26,
+      byCategory: { accommodation: 685.26, food: 100 },
+    });
+    // Both rows carry what they need, so nothing waits on today's rates.
+    expect(await budget.ratesForTripTotals(trip.id, 'EUR')).toBeNull();
+  });
+
+  it('BUDGET-SVC-DB-045: fetches today\'s rate only for a row that never froze one', async () => {
+    const { user: me } = createUser(testDb);
+    const trip = createTrip(testDb, me.id);
+    // Written before the freeze existed: the column default of 1 is not a booked rate.
+    budget.createBudgetItem(trip.id, { name: 'Old taxi', category: 'transport', total_price: 114.29, currency: 'USD' });
+    const rates = await budget.ratesForTripTotals(trip.id, 'EUR');
+    expect(rates).toEqual(RATES.EUR);
+    // 114.29 USD at 1.1429 per euro, the same way the settlement reads such a row.
+    expect(budget.tripTotals(trip.id, 'EUR', rates).total).toBe(100);
+  });
+
+  it('BUDGET-SVC-DB-046: the per-person summary splits trip cents, not raw amounts', async () => {
+    const { trip, me, bob, hotel } = seedDollarBill();
+    budget.toggleMemberPaid(hotel.id, trip.id, bob.id, true);
+
+    const summary = await budget.perPersonSummary(trip.id);
+    const of = (id: number) => summary.find(s => s.user_id === id)!;
+    // Half of 685.26 EUR plus half of 100 EUR each. The query this replaced put
+    // 450.88 on both, half the dollars counted as euros, and never said which.
+    expect(of(me.id)).toMatchObject({ total_assigned: 392.63, total_paid: 0, items_count: 2, currency: 'EUR' });
+    expect(of(bob.id)).toMatchObject({ total_assigned: 392.63, total_paid: 342.63, items_count: 2, currency: 'EUR' });
+  });
+
+  it('BUDGET-SVC-DB-047: an equal split hands out the odd cent instead of a float tail', async () => {
+    const { user: a } = createUser(testDb);
+    const { user: b } = createUser(testDb);
+    const { user: c } = createUser(testDb);
+    const trip = createTrip(testDb, a.id);
+    addTripMember(testDb, trip.id, b.id);
+    addTripMember(testDb, trip.id, c.id);
+    budget.createBudgetItem(trip.id, {
+      name: 'Boat', currency: 'EUR', payers: [{ user_id: a.id, amount: 100 }],
+      members: [{ user_id: a.id }, { user_id: b.id }, { user_id: c.id }],
+    });
+
+    const shares = (await budget.perPersonSummary(trip.id)).map(s => Math.round(s.total_assigned * 100));
+    expect(shares.slice().sort((x, y) => x - y)).toEqual([3333, 3333, 3334]);
+    expect(shares.reduce((x, y) => x + y, 0)).toBe(10000);
+  });
+});
+
+// #2525: a euro trip read in dollars froze a dollar bill's rate from the euro's quote and
+// converted the ledger back with the dollar's. The two quotes are not exact inverses, so a
+// bill entered today read a few cents off and paying what settle-up offered left a balance.
+describe('the settlement converts with the quote the entry rate was frozen from (#2525)', () => {
+  function seedSameDayBill() {
+    const { user: me } = createUser(testDb);
+    const { user: bob } = createUser(testDb);
+    const trip = createTrip(testDb, me.id);
+    addTripMember(testDb, trip.id, bob.id);
+    return { trip, me, bob };
+  }
+
+  it('BUDGET-SVC-DB-048: a same-day bill in the display currency reads as typed and settles to zero', async () => {
+    const { trip, me, bob } = seedSameDayBill();
+    // Frozen now, from the euro's quote: 1.1429.
+    const bill = await budget.create(String(trip.id), {
+      name: 'Villa', category: 'accommodation', currency: 'USD', total_price: 12345.67,
+      payers: [{ user_id: me.id, amount: 12345.67 }], members: [{ user_id: me.id }, { user_id: bob.id }],
+    }) as { id: number; exchange_rate: number };
+    expect(bill.exchange_rate).toBe(1.1429);
+
+    const before = await budget.settlement(trip.id, 'USD', 'EUR');
+    const mine = before.finalBudgets.find(f => f.user_id === me.id)!;
+    expect(mine.expenses).toBe(12345.67);
+    expect(mine.sources.fronted).toEqual([{ item_id: bill.id, cents: 1234567 }]);
+    expect(before.flows.map(f => f.amount)).toEqual([6172.84]);
+
+    // Bob pays exactly what settle-up offers, in dollars, as the Costs screen records it.
+    await budget.createSettlement(trip.id, { from_user_id: bob.id, to_user_id: me.id, amount: 6172.84, currency: 'USD' }, me.id);
+    const after = await budget.settlement(trip.id, 'USD', 'EUR');
+    expect(after.balances.map(b => b.balance)).toEqual([0, 0]);
+    expect(after.flows).toEqual([]);
+    expect((await budget.settlement(trip.id, 'EUR', 'EUR')).balances.map(b => b.balance)).toEqual([0, 0]);
+  });
+
+  it('BUDGET-SVC-DB-051: the final budget lists a bill at what was typed even where its trip cent rounds away', async () => {
+    const { trip, me, bob } = seedSameDayBill();
+    // 123.45 USD is 108.0147 EUR. As a whole trip cent, 108.01 EUR, it came back as 123.44.
+    const bill = await budget.create(String(trip.id), {
+      name: 'Taxi', currency: 'USD', total_price: 123.45,
+      payers: [{ user_id: me.id, amount: 123.45 }], members: [{ user_id: me.id }, { user_id: bob.id }],
+    }) as { id: number };
+    const s = await budget.settlement(trip.id, 'USD', 'EUR');
+    const mine = s.finalBudgets.find(f => f.user_id === me.id)!;
+    const bobs = s.finalBudgets.find(f => f.user_id === bob.id)!;
+    expect(mine.sources.fronted).toEqual([{ item_id: bill.id, cents: 12345 }]);
+    expect(mine.expenses).toBe(123.45);
+    // The two shares still add up to the bill, and the ledger in euros is untouched.
+    expect(Math.round((mine.final + bobs.final) * 100)).toBe(12345);
+    const inEur = await budget.settlement(trip.id, 'EUR', 'EUR');
+    expect(inEur.finalBudgets.find(f => f.user_id === me.id)!.sources.fronted).toEqual([{ item_id: bill.id, cents: 10801 }]);
+  });
+
+  it('BUDGET-SVC-DB-049: a transfer saved without a currency reads back in the display currency as entered', async () => {
+    const { trip, me, bob } = seedSameDayBill();
+    await budget.createSettlement(trip.id, { from_user_id: bob.id, to_user_id: me.id, amount: 30 }, me.id);
+    const s = await budget.settlement(trip.id, 'USD', 'EUR');
+    const mine = s.finalBudgets.find(f => f.user_id === me.id)!;
+    expect(mine.reimbursed).toBe(30);
+    expect(s.balances.find(b => b.user_id === me.id)!.balance).toBe(-30);
+  });
+
+  it('BUDGET-SVC-DB-050: falls back to the display currency\'s quote when the trip\'s is unavailable', async () => {
+    const { trip, me, bob } = seedSameDayBill();
+    budget.createBudgetItem(trip.id, {
+      name: 'Dinner', currency: 'EUR', payers: [{ user_id: me.id, amount: 100 }],
+      members: [{ user_id: me.id }, { user_id: bob.id }],
+    });
+    const rates = (budget as unknown as { exchangeRates: ExchangeRatesService }).exchangeRates;
+    const spy = vi.spyOn(rates, 'getRates').mockImplementation(async (base: string) => (base === 'EUR' ? null : RATES[base] ?? null));
+    try {
+      const s = await budget.settlement(trip.id, 'USD', 'EUR');
+      expect(spy.mock.calls.map(c => c[0])).toEqual(['EUR', 'USD']);
+      // 50 EUR at 1 / 0.87497 USD per euro.
+      expect(s.balances.find(b => b.user_id === me.id)!.balance).toBe(57.14);
+    } finally {
+      spy.mockRestore();
+    }
   });
 });

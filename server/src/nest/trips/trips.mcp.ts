@@ -265,7 +265,7 @@ export class TripsMcp {
   })
   async getTripSummary({ tripId }: { tripId: number }, ctx: McpContext) {
     if (!this.trips.canAccessTrip(tripId, ctx.userId)) return noAccess();
-    const summary = this.readModel.getTripSummary(tripId, ctx.userId);
+    const summary = await this.readModel.getTripSummary(tripId, ctx.userId);
     if (!summary) return noAccess();
     const R = canReadTrips(ctx.scopes);
     // Addon availability gates
@@ -599,7 +599,7 @@ export class TripsMcp {
     if (!this.trips.canAccessTrip(tripId, ctx.userId)) {
       return { messages: [{ role: 'user' as const, content: { type: 'text' as const, text: 'Trip not found or access denied.' } }] };
     }
-    const summary = this.readModel.getTripSummary(tripId, ctx.userId);
+    const summary = await this.readModel.getTripSummary(tripId, ctx.userId);
     if (!summary) {
       return { messages: [{ role: 'user' as const, content: { type: 'text' as const, text: 'Trip not found.' } }] };
     }

@@ -27,13 +27,14 @@ import { getCategoryIcon } from '../components/shared/categoryIcons';
 import PublicLanguagePicker from '../components/shared/PublicLanguagePicker';
 import { OFM_POSITRON, DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, MAP_MAX_ZOOM, attributionForTile } from '../constants/mapDefaults';
 import VectorBasemap from '../components/Map/VectorBasemap';
+import { convertBooked, convertedLine } from '../hooks/useExchangeRates';
 import { useTranslation } from '../i18n';
 import { avatarSrc } from '../utils/avatarSrc';
 import { safeHexColor } from '../utils/safeColor';
 import { getMergedItems, getTransportForDay, hidesOnMiddleDay } from '../utils/dayMerge';
 import { isDayInAccommodationRange } from '../utils/dayOrder';
 import { getFlightLegs, getTrainLegs } from '../utils/flightLegs';
-import { splitReservationDateTime } from '../utils/formatters';
+import { currencyDecimals, splitReservationDateTime } from '../utils/formatters';
 import { computeMapViewport, TILE_SIZE_RASTER } from '../utils/mapViewport';
 import { resolveBasemap } from '../utils/tileUrl';
 import { useSharedTrip } from './sharedTrip/useSharedTrip';
@@ -981,16 +982,31 @@ export default function SharedTripPage() {
         {activeTab === 'budget' &&
           (budget || []).length > 0 &&
           (() => {
-            // Pre-rework rows store currency = NULL ("the trip's own currency"); convert
-            // each expense into the owner's display base via live FX, mirroring CostsPanel.
-            const curOf = (i: any) => i.currency || trip.currency || base;
+            // Pre-rework rows store currency = NULL ("the trip's own currency"). Each
+            // expense is read the way CostsPanel reads it (#2525): at the rate frozen when
+            // it was entered, into the trip currency, then into the owner's display base.
+            // Reading it at today's rate alone made the shared page disagree with the
+            // trip's own Costs tab.
+            type Expense = { total_price?: number | string | null; currency?: string | null; exchange_rate?: number | null };
+            const tripCurrency = String(trip.currency || base).toUpperCase();
+            const amountOf = (i: Expense) => Number.parseFloat(String(i.total_price ?? '')) || 0;
+            const valueOf = (i: Expense) => convertBooked(amountOf(i), i.currency, i.exchange_rate, tripCurrency, convert);
+            // Whole cents: a converted amount otherwise printed a third decimal.
+            const money = (v: number) =>
+              v.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            // What was entered, beside a row shown converted, as the Costs list prints it.
+            const enteredOf = (i: Expense): string | null => {
+              const entered = convertedLine(amountOf(i), i.currency, i.exchange_rate, tripCurrency, base, valueOf(i))?.entered;
+              if (!entered) return null;
+              const d = currencyDecimals(entered.currency);
+              return `${entered.amount.toLocaleString(locale, { minimumFractionDigits: d, maximumFractionDigits: d })} ${entered.currency}`;
+            };
             const grouped = (budget || []).reduce((g: any, i: any) => {
               const c = i.category || t('shared.other');
               (g[c] = g[c] || []).push(i);
               return g;
             }, {});
-            const sumIn = (items: any[]) =>
-              items.reduce((s: number, i: any) => s + convert(Number.parseFloat(i.total_price) || 0, curOf(i)), 0);
+            const sumIn = (items: any[]) => items.reduce((s: number, i: any) => s + valueOf(i), 0);
             const total = sumIn(budget || []);
             return (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -1015,7 +1031,7 @@ export default function SharedTripPage() {
                     {t('shared.totalBudget')}
                   </div>
                   <div style={{ fontSize: 'calc(28px * var(--fs-scale-title, 1))', fontWeight: 700, marginTop: 4 }}>
-                    {total.toLocaleString(locale, { minimumFractionDigits: 2 })} {base}
+                    {money(total)} {base}
                   </div>
                 </div>
                 {/* By category */}
@@ -1045,7 +1061,7 @@ export default function SharedTripPage() {
                         className="text-[#6b7280]"
                         style={{ fontSize: 'calc(12px * var(--fs-scale-body, 1))', fontWeight: 600 }}
                       >
-                        {sumIn(items).toLocaleString(locale, { minimumFractionDigits: 2 })} {base}
+                        {money(sumIn(items))} {base}
                       </span>
                     </div>
                     {items.map((item: any) => (
@@ -1061,13 +1077,16 @@ export default function SharedTripPage() {
                       >
                         <span className="text-[#111827]" style={{ fontSize: 'calc(13px * var(--fs-scale-body, 1))' }}>
                           {item.name}
+                          {item.total_price && enteredOf(item) ? (
+                            <span className="text-content-faint"> · {enteredOf(item)}</span>
+                          ) : null}
                         </span>
                         <span
                           className="text-[#111827]"
                           style={{ fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 600 }}
                         >
                           {item.total_price
-                            ? `${convert(Number.parseFloat(item.total_price) || 0, curOf(item)).toLocaleString(locale, { minimumFractionDigits: 2 })} ${base}`
+                            ? `${money(valueOf(item))} ${base}`
                             : '—'}
                         </span>
                       </div>

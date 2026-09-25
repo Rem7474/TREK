@@ -43,18 +43,20 @@ export class TripPromptsMcp {
     if (!this.trips.canAccessTrip(tripId, ctx.userId)) {
       return { messages: [{ role: 'user' as const, content: { type: 'text' as const, text: 'Trip not found or access denied.' } }] };
     }
-    const summary = this.readModel.getTripSummary(tripId, ctx.userId);
+    const summary = await this.readModel.getTripSummary(tripId, ctx.userId);
     if (!summary) {
       return { messages: [{ role: 'user' as const, content: { type: 'text' as const, text: 'Trip not found.' } }] };
     }
     const { trip, budget } = summary;
     const currency = trip?.currency || 'EUR';
-    const byCategory = (budget?.items || []).reduce((acc: Record<string, number>, item: { category?: string; total_price?: number }) => {
-      const cat = item.category || 'Uncategorized';
-      acc[cat] = (acc[cat] || 0) + (item.total_price || 0);
-      return acc;
-    }, {} as Record<string, number>);
-    const total = Object.values(byCategory).reduce((sum, v) => sum + v, 0);
+    // The summary's own totals, each row in the trip currency at the rate it was booked
+    // at (#2525). Adding total_price up here printed a dollar bill as that many euros.
+    const byCategory: Record<string, number> = {};
+    for (const [cat, amount] of Object.entries(budget?.by_category || {})) {
+      const key = cat || 'Uncategorized';
+      byCategory[key] = Math.round(((byCategory[key] || 0) + amount) * 100) / 100;
+    }
+    const total = budget?.total || 0;
     const lines = Object.entries(byCategory)
       .sort(([, a], [, b]) => b - a)
       .map(([cat, amount]) => `- ${cat}: ${amount} ${currency}`)
@@ -94,7 +96,9 @@ export class TripPromptsMcp {
     const lines = Object.entries(grouped).map(([cat, catItems]) =>
       `## ${cat}\n${(catItems as { checked?: unknown; name?: string }[]).map((i) => `- [${i.checked ? 'x' : ' '}] ${i.name}`).join('\n')}`
     ).join('\n\n');
-    const { trip } = this.readModel.getTripSummary(tripId, ctx.userId) || {};
+    // Only the title is needed. The whole summary also adds up the budget, which can
+    // wait on a rates fetch for a row that never froze its rate.
+    const trip = this.trips.getRaw(tripId);
     return {
       description: `Packing list for "${trip?.title || tripId}"`,
       messages: [{ role: 'user' as const, content: { type: 'text' as const, text: `# Packing List: ${trip?.title || 'Trip'}\n\n${lines}\n\n_${items.length} items across ${Object.keys(grouped).length} categories_` } }],

@@ -842,6 +842,18 @@ describe('MTransportFormSheet', () => {
     expect((addFile.mock.calls[0][1] as FormData).get('description')).toBe('Rental car')
   })
 
+  it('FE-MOB-TRFRM-029b: a parsed price keeps the currency it was quoted in (#2525)', async () => {
+    const handleSaveTransport = makeSave()
+    const planner = makePlanner({
+      transportPrefill: { type: 'train', title: 'Amtrak', metadata: { price: 117, priceCurrency: 'USD' }, endpoints: [] },
+      handleSaveTransport,
+    })
+    renderSheet(planner)
+    await submit()
+    // Sent without it, the server stored 117 in the trip currency.
+    expect(handleSaveTransport.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 117, category: 'transport', currency: 'USD' })
+  })
+
   it('FE-MOB-TRFRM-030: a prefill without a price and with the budget addon off skips the cost entry', async () => {
     seedStore(useAddonStore, { addons: [] })
     const handleSaveTransport = makeSave()

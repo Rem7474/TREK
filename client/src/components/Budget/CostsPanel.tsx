@@ -9,7 +9,8 @@ import { useToast } from '../shared/Toast'
 import { useTranslation } from '../../i18n'
 import { budgetApi } from '../../api/client'
 import { saveWithReceipts } from './receiptUploads'
-import { convertBooked, useExchangeRates } from '../../hooks/useExchangeRates'
+import { convertBooked, convertedLine, tripAmountOf, useExchangeRates } from '../../hooks/useExchangeRates'
+import { splitShareLabel, useExpenseFx } from './expenseFx'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { formatMoney, currencyDecimals, currencyLocale, localizeAmountInput, amountToInputString } from '../../utils/formatters'
 import { downloadBlob, openFile } from '../../utils/fileDownload'
@@ -86,7 +87,8 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   const base = (displayCurrency || trip?.currency || 'EUR').toUpperCase()
   // Pre-rework rows stored currency = NULL, meaning "the trip's own currency".
   const tripCurrency = (trip?.currency || base).toUpperCase()
-  const { convert } = useExchangeRates(base)
+  // Anchored on the trip currency's quote, the one the server books with (#2525).
+  const { convert } = useExchangeRates(base, tripCurrency)
   const curOf = useCallback((e: BudgetItem) => (e.currency || tripCurrency), [tripCurrency])
   const [settlement, setSettlement] = useState<SettlementData | null>(null)
   // A failed settlement read leaves `settlement` null, which the empty views would
@@ -146,12 +148,17 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     [convert, tripCurrency],
   )
   const baseTotal = (e: BudgetItem) => booked(e.total_price || 0, e)
-  // A transfer freezes its own rate at settle time, in its own table (#1445).
+  // A transfer freezes its own rate at settle time, in its own table (#1445). One
+  // without a currency predates that and was entered in the display currency, which
+  // is how the server settles it too, not in the trip's.
   const settled = useCallback(
-    (s: Settlement) => convertBooked(s.amount, s.currency, s.exchange_rate, tripCurrency, convert),
-    [convert, tripCurrency],
+    (s: Settlement) => convertBooked(s.amount, s.currency || base, s.exchange_rate, tripCurrency, convert),
+    [convert, tripCurrency, base],
   )
   const myPaidOf = (e: BudgetItem) => booked(paidByUser(e, me), e)
+  // The line under an amount shown converted: what was entered, then where it went (#2525).
+  const lineOf = (amount: number, e: BudgetItem, shown: number) =>
+    convertedLine(amount, e.currency, e.exchange_rate, tripCurrency, base, shown)
   // "Unfinished": a recorded total nobody has paid yet — counts toward the trip
   // total but stays out of settlements until who-paid is filled in. A negative
   // total (a refund, #2176) is just as unfinished until its recipient is named.
@@ -170,6 +177,8 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     return booked(myShare, e)
   }
 
+  // `booked` carries the rates. They can land after the expenses, and without it in the
+  // deps the cards kept the sums they were first added up with while the rows moved on.
   const totals = useMemo(() => {
     const totalSpend = budgetItems.reduce((a, e) => a + baseTotal(e), 0)
     const myPaid = budgetItems.reduce((a, e) => a + myPaidOf(e), 0)
@@ -179,7 +188,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     const outstanding = budgetItems.reduce((a, e) => (isUnfinished(e) ? a + baseTotal(e) : a), 0)
     const outstandingCount = budgetItems.filter(isUnfinished).length
     return { totalSpend, myPaid, myShare, owe, owed, outstanding, outstandingCount }
-  }, [budgetItems, settlement, me])
+  }, [budgetItems, settlement, me, booked])
 
   // ── filtering + day grouping ────────────────────────────────────────────
   const filtered = useMemo(() => {
@@ -193,7 +202,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     const q = search.trim().toLowerCase()
     if (q) list = list.filter(e => e.name.toLowerCase().includes(q))
     return list
-  }, [budgetItems, filter, search, catFilter, dayFilter, me])
+  }, [budgetItems, filter, search, catFilter, dayFilter, me, booked])
 
   // Settlements ("payments") shown inline in the ledger. They have no name, so a
   // text search hides them; they're excluded from the "owed" expense filter and,
@@ -291,15 +300,20 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     }
     const fmtDate = (iso: string) => { if (!iso) return ''; try { return new Date(iso + 'T00:00:00Z').toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' }) } catch { return iso } }
 
-    const header = ['Date', 'Name', 'Category', 'Amount', 'Currency', 'Amount (' + base + ')', 'Note']
+    // Read in another currency than the trip's, what each row counts as in the trip
+    // currency too, the figure every sum is built from (#2525).
+    const tripCol = tripCurrency !== base
+    const header = ['Date', 'Name', 'Category', 'Amount', 'Currency', ...(tripCol ? ['Amount (' + tripCurrency + ')'] : []), 'Amount (' + base + ')', 'Note']
     const rows = [header.join(sep)]
     const items = budgetItems.slice().sort((a, b) => (a.expense_date || '').localeCompare(b.expense_date || ''))
     for (const e of items) {
       const cur = curOf(e)
       const note = readUserNote(e)
+      const inTrip = tripAmountOf(e.total_price || 0, e.currency, e.exchange_rate, tripCurrency, convert)
       rows.push([
         esc(fmtDate(e.expense_date || '')), esc(e.name), esc(t(catMeta(e.category).labelKey)),
         (e.total_price || 0).toFixed(currencyDecimals(cur)), cur,
+        ...(tripCol ? [inTrip.toFixed(currencyDecimals(tripCurrency))] : []),
         baseTotal(e).toFixed(currencyDecimals(base)),
         esc(note),
       ].join(sep))
@@ -737,7 +751,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   function ExpenseRow({ e }: { e: BudgetItem }) {
     const c = catMeta(e.category)
     const Icon = c.Icon
-    const cur = curOf(e)
+    const line = lineOf(e.total_price || 0, e, baseTotal(e))
     const payers = (e.payers || []).filter(p => p.amount !== 0)
     const net = round2(myPaidOf(e) - myShareOf(e))
     const unfinished = isUnfinished(e)
@@ -806,9 +820,9 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
               </button>
             )}
           </div>
-          {cur !== base && (
+          {line && (
             <div className="text-content-faint" style={{ marginTop: 4, fontSize: 'calc(12px * var(--fs-scale-body, 1))', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {fmt(e.total_price, cur)} {'→'} {fmt(baseTotal(e))}
+              {fmt(line.entered.amount, line.entered.currency)} {'→'} {fmt(line.into.amount, line.into.currency)}
             </div>
           )}
           {/* Under the name, because a chip reading "Y 122,00" says nothing on
@@ -863,6 +877,8 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   function SettlementRow({ s }: { s: Settlement }) {
     // Legacy transfers carry no currency and were entered in the display base.
     const cur = (s.currency || base).toUpperCase()
+    // Booked in the trip currency like an expense, so it is explained the same way.
+    const line = convertedLine(s.amount, cur, s.exchange_rate, tripCurrency, base, settled(s))
     return (
       <div style={{ display: 'flex', alignItems: 'stretch', gap: 8 }}>
       <div className="bg-surface-card border border-edge exp-row" style={{ flex: 1, minWidth: 0, display: 'grid', gridTemplateColumns: isMobile ? '46px 1fr auto' : '46px minmax(200px, 1fr) minmax(0, 1.5fr) auto', gap: isMobile ? 16 : 18, alignItems: 'center', borderRadius: 18, padding: '16px 20px' }}>
@@ -870,7 +886,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
         <div style={{ minWidth: 0 }}>
           <div className="text-content" style={{ fontSize: 'calc(15px * var(--fs-scale-subtitle, 1))', fontWeight: 600, marginBottom: 6 }}>
             {t('costs.payment')}
-            {cur !== base && <span className="text-content-faint" style={{ fontWeight: 400, fontSize: 'calc(12px * var(--fs-scale-body, 1))' }}> · {fmt(s.amount, cur)} → {fmt(settled(s))}</span>}
+            {line && <span className="text-content-faint" style={{ fontWeight: 400, fontSize: 'calc(12px * var(--fs-scale-body, 1))' }}> · {fmt(line.entered.amount, line.entered.currency)} → {fmt(line.into.amount, line.into.currency)}</span>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, minWidth: 0 }} title={`${personName(s.from_user_id)} → ${personName(s.to_user_id)}`}>
             <Avatar id={s.from_user_id} size={20} /><ArrowRight size={13} className="text-content-faint" /><Avatar id={s.to_user_id} size={20} />
@@ -969,6 +985,13 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     // server's display cents, not a conversion of the expense list done here.
     const signed = (v: number) => (v < 0 ? '−' : '+') + fmt(Math.abs(v))
     const { fronted, moved, outstanding } = finalBudgetSources(row, budgetItems)
+    // Beside a converted row's name, what was entered, so the breakdown names the bill
+    // the way the list above it does rather than by a figure nobody typed.
+    const enteredOf = (itemId: number, shown: number) => {
+      const e = budgetItems.find(i => i.id === itemId)
+      const line = e ? lineOf(paidByUser(e, row.user_id), e, shown) : null
+      return line ? fmt(line.entered.amount, line.entered.currency) : null
+    }
     const lineCls = { display: 'flex', alignItems: 'baseline', gap: 10, fontSize: 'calc(12px * var(--fs-scale-body, 1))' } as const
     const detail = (label: string, value: string) => (
       <div style={lineCls}>
@@ -991,12 +1014,17 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
           <div>
             <div className={labelCls}>{t('costs.finalExpenses')}</div>
             <div style={listCls}>
-              {fronted.map(r => (
-                <div key={r.item_id} style={lineCls}>
-                  <span className="text-content-muted" style={{ minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.name}</span>
-                  <span className="text-content" style={{ whiteSpace: 'nowrap' }}>{signed(r.amount)}</span>
-                </div>
-              ))}
+              {fronted.map(r => {
+                const entered = enteredOf(r.item_id, r.amount)
+                return (
+                  <div key={r.item_id} style={lineCls}>
+                    <span className="text-content-muted" style={{ minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {r.name}{entered && <span className="text-content-faint"> · {entered}</span>}
+                    </span>
+                    <span className="text-content" style={{ whiteSpace: 'nowrap' }}>{signed(r.amount)}</span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )}
@@ -1206,12 +1234,13 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
   const toast = useToast()
   const isMobile = useIsMobile()
   const { addBudgetItem, updateBudgetItem } = useTripStore()
-  const { convert } = useExchangeRates(base)
   const sym = (c: string) => SYMBOLS[c] || (c + ' ')
+  // A saved expense without a currency opens in the trip's own (#2525).
+  const { tripCurrency: tripCur, editingCurrency, preview } = useExpenseFx(base, editing)
 
   const [name, setName] = useState(editing?.name || prefill?.name || '')
   const [cat, setCat] = useState<string>(editing ? catMeta(editing.category).key : (prefill?.category || 'food'))
-  const [currency, setCurrency] = useState((editing?.currency || base).toUpperCase())
+  const [currency, setCurrency] = useState(editingCurrency)
   const [day, setDay] = useState(editing?.expense_date || localToday())
   const [note, setNote] = useState(() => readUserNote(editing))
   // Edit and prefill seeds are padded to the currency's decimals (#2175): the DB
@@ -1219,7 +1248,7 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
   // 5,00 as "5". A prefill has no currency of its own — it is read as `base`,
   // which is also what the currency field starts on.
   const [total, setTotal] = useState<string>(() => {
-    if (editing) return editing.total_price ? amountToInputString(editing.total_price, (editing.currency || base).toUpperCase()) : ''
+    if (editing) return editing.total_price ? amountToInputString(editing.total_price, editingCurrency) : ''
     if (prefill?.amount != null) return amountToInputString(prefill.amount, base)
     return ''
   })
@@ -1303,6 +1332,7 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
   }, [ticketItems])
 
   const totalNum = isTicketMode ? ticketInfo.total : (Number.parseFloat(total) || 0)
+  const fx = preview(totalNum, currency)
   const splitSum = [...participants].reduce((sum, id) => sum + (Number.parseFloat(customAmounts[id]) || 0), 0)
   const customBalanced = Math.round(splitSum * 100) === Math.round(totalNum * 100)
   // How much is still to be handed out, read on the total's own side: on a refund
@@ -1560,12 +1590,18 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
           </div>
         </div>
 
-        {currency !== base && totalNum !== 0 && (
+        {fx && (
           <div className="bg-surface-secondary border border-edge text-content-muted" style={{ borderRadius: 10, padding: '10px 12px', fontSize: 'calc(12.5px * var(--fs-scale-body, 1))', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span>{formatMoney(totalNum, currency, locale)}</span>
-            <span className="text-content-faint">≈</span>
-            <span className="text-content" style={{ fontWeight: 600 }}>{formatMoney(convert(totalNum, currency), base, locale)}</span>
-            <span className="text-content-faint">· {t('costs.liveRate')}</span>
+            {fx.inTrip != null && <>
+              <span className="text-content-faint">→</span>
+              <span className={fx.shown == null ? 'text-content' : undefined} style={fx.shown == null ? { fontWeight: 600 } : undefined}>{formatMoney(fx.inTrip, tripCur, locale)}</span>
+            </>}
+            {fx.shown != null && <>
+              <span className="text-content-faint">≈</span>
+              <span className="text-content" style={{ fontWeight: 600 }}>{formatMoney(fx.shown, base, locale)}</span>
+              <span className="text-content-faint">· {t('costs.liveRate')}</span>
+            </>}
           </div>
         )}
 
@@ -1792,7 +1828,7 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
               <div style={{ marginTop: 10, fontSize: 12.5, display: 'flex', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
                 {splitMode === 'equally' ? (
                   <span className="text-content-faint">
-                    {participants.size > 0 && t('costs.splitSummary', { count: participants.size, amount: sym(currency) + each.toFixed(2) })}
+                    {participants.size > 0 && t('costs.splitSummary', { count: participants.size, amount: splitShareLabel(each, currency, fx, participants.size, base, sym, locale) })}
                   </span>
                 ) : (
                   <span style={{ fontWeight: 600, color: customBalanced ? '#16a34a' : '#dc2626' }}>

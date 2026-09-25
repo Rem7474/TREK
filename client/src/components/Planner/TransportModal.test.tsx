@@ -1144,7 +1144,9 @@ describe('TransportModal', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /^Add$/i }));
     await waitFor(() => expect(onSave).toHaveBeenCalled());
-    expect(onSave.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 189.5, category: 'flights' });
+    // The parsed currency travels with the price (#2525), or the server would store
+    // it in whatever the trip currency is.
+    expect(onSave.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 189.5, category: 'flights', currency: 'EUR' });
   });
 
   // ── File edge cases ─────────────────────────────────────────────────────────

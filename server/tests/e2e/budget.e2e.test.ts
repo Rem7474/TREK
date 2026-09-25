@@ -235,6 +235,27 @@ describe('Budget e2e (real auth guard + temp SQLite, real budget SQL)', () => {
     }
   });
 
+  it('GET /summary/per-person reads a dollar bill on a euro trip at its booked rate (#2525)', async () => {
+    const hotel = await request(server)
+      .post(`/api/trips/${tripId}/budget`)
+      .set('Cookie', sessionCookie(1))
+      .send({ name: 'Aparthotel Silver', currency: 'USD', exchange_rate: 1.17, payers: [{ user_id: 1, amount: 801.76 }], member_ids: [1, 2] });
+    expect(hotel.status).toBe(201);
+
+    const res = await request(server)
+      .get(`/api/trips/${tripId}/budget/summary/per-person`)
+      .set('Cookie', sessionCookie(1));
+    expect(res.status).toBe(200);
+    // 801.76 USD at 1.17 is 685.26 EUR, half of it each. The summary used to put
+    // 400.88 on both and leave the reader to guess the currency.
+    const row = (uid: number) => res.body.summary.find((r: { user_id: number }) => r.user_id === uid);
+    expect(row(1)).toMatchObject({ total_assigned: 342.63, total_paid: 0, items_count: 1, currency: 'EUR' });
+    expect(row(2)).toMatchObject({ total_assigned: 342.63, total_paid: 0, items_count: 1, currency: 'EUR' });
+
+    const del = await request(server).delete(`/api/trips/${tripId}/budget/${hotel.body.item.id}`).set('Cookie', sessionCookie(1));
+    expect(del.status).toBe(200);
+  });
+
   it('200 on settlement update with permission, persisting the new amount and day', async () => {
     const created = await request(server)
       .post(`/api/trips/${tripId}/budget/settlements`)

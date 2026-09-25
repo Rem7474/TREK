@@ -408,10 +408,9 @@ export class BudgetMcp {
   async getSettlementSummary({ tripId, base }: { tripId: number; base?: string }, ctx: McpContext) {
     if (!this.budget.verifyTripAccess(tripId, ctx.userId)) return noAccess();
     const trip = this.db.get<{ currency?: string }>('SELECT currency FROM trips WHERE id = ?', tripId);
-    const tripCurrency = trip?.currency || 'EUR';
-    const effectiveBase = (base || tripCurrency).toUpperCase();
-    const rates = await this.exchangeRates.getRates(effectiveBase);
-    const summary = this.budget.calculateSettlement(tripId, { base: effectiveBase, rates, tripCurrency });
+    // The same call the REST route makes, so both convert with the trip currency's own
+    // quote and an amount entered in `base` reads back to the cent (#2525).
+    const summary = await this.budget.settlement(tripId, base, trip?.currency || 'EUR');
     return ok({ summary });
   }
 
@@ -562,7 +561,8 @@ export class BudgetMcp {
         }],
       };
     }
-    const summary = this.budget.getPerPersonSummary(id);
+    // In the trip currency, each share at the rate its expense was booked at (#2525).
+    const summary = await this.budget.perPersonSummary(id);
     return {
       contents: [{
         uri: uri.href,

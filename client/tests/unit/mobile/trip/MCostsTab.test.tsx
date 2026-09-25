@@ -639,7 +639,8 @@ describe('MCostsTab', () => {
     expect(mine).toHaveAttribute('aria-expanded', 'false')
     expect(within(card).getAllByText('+$58.00')).toHaveLength(2)
     expect(within(card).queryByText(/60\.00/)).not.toBeInTheDocument()
-    expect(within(card).getByText('Museum')).toBeInTheDocument()
+    // Named by what Bob entered, as the list names it (#2525), never re-converted.
+    expect(within(card).getByText('Museum · £30.00')).toBeInTheDocument()
 
     fireEvent.click(bob)
     expect(bob).toHaveAttribute('aria-expanded', 'false')
@@ -723,6 +724,74 @@ describe('MCostsTab', () => {
 
     fireEvent.click(within(dialog).getByRole('button', { name: 'common.save' }))
     expect(update).toHaveBeenCalledWith(7, 505, { from_user_id: 1, to_user_id: 2, amount: 10, currency: 'GBP', settled_at: '2026-04-28' })
+  })
+
+  it('FE-MOB-COSTT-045: a bill whose rate moved shows what was entered and what it was booked at (#2525)', async () => {
+    // A euro trip read in dollars, the bill entered in dollars at a frozen 1.17 to the
+    // euro while today the euro buys 1.1551. It is 685.26 EUR of trip money, $791.55
+    // today, and that is what settle-up offers too; the row now says where the
+    // 801.76 that was entered went instead of hiding it. Converted with the euro's own
+    // quote, not the dollar's separately rounded one.
+    seedStore(useSettingsStore, { settings: { ...useSettingsStore.getState().settings, default_currency: 'USD' } })
+    localStorage.setItem('trek_fx_USD', JSON.stringify({ rates: { USD: 1, EUR: 0.865706 }, ts: Date.now() }))
+    localStorage.setItem('trek_fx_EUR', JSON.stringify({ rates: { EUR: 1, USD: 1.1551 }, ts: Date.now() }))
+    const hotel = {
+      id: 21, trip_id: 7, name: 'Aparthotel Silver', category: 'accommodation', total_price: 801.76, currency: 'USD', exchange_rate: 1.17,
+      expense_date: '2026-05-01', note: null,
+      members: [
+        { user_id: 1, paid: 1, username: 'Me', amount: null, avatar_url: null },
+        { user_id: 2, paid: 0, username: 'Ada', amount: null, avatar_url: null },
+      ],
+      payers: [{ user_id: 1, amount: 801.76, username: 'Me' }],
+    } as unknown as BudgetItem
+    serveSettlement({
+      ...SETTLEMENT,
+      settlements: [
+        { id: 601, from_user_id: 2, to_user_id: 1, amount: 400.88, currency: 'USD', exchange_rate: 1.17, settled_at: '2026-05-02', created_at: '2026-05-02T09:00:00Z' },
+        // A transfer from before they carried a currency was entered in the display currency.
+        { id: 602, from_user_id: 3, to_user_id: 1, amount: 30, currency: null, settled_at: '2026-05-03', created_at: '2026-05-03T09:00:00Z' },
+      ],
+    })
+    await renderTab(planner({ trip: { ...TRIP, currency: 'EUR' } as Trip, budgetItems: [hotel] }))
+
+    const card = cardOf('Aparthotel Silver')
+    expect(within(card).getByText(/^\$801\.76 → 685,26\s€$/)).toBeInTheDocument()
+    expect(within(card).getByText('$791.55')).toBeInTheDocument()
+    // Each share is half of the booked euros, the figure the balances net.
+    expect(within(card).getAllByText('$395.77')).toHaveLength(2)
+    expect(within(card).queryByText('$400.88')).toBeNull()
+    expect(up(screen.getByText('costs.totalSpend'), 1).textContent).toContain('$791.55')
+    expect(screen.getByText('costs.spent:$791.55')).toBeInTheDocument()
+
+    expect(screen.getAllByText('costs.payment')).toHaveLength(2)
+    const paid = up(screen.getByText('Ada → costs.you'), 2)
+    expect(within(paid).getByText(/^\$400\.88 → 342,63\s€$/)).toBeInTheDocument()
+    expect(within(up(screen.getByText('Bob → costs.you'), 2)).getByText('$30.00')).toBeInTheDocument()
+    expect(screen.queryByText('$34.65')).toBeNull()
+  })
+
+  it('FE-MOB-COSTT-046: a bill booked at today\'s rate reads exactly as typed (#2525)', async () => {
+    seedStore(useSettingsStore, { settings: { ...useSettingsStore.getState().settings, default_currency: 'USD' } })
+    localStorage.setItem('trek_fx_USD', JSON.stringify({ rates: { USD: 1, EUR: 0.87732 }, ts: Date.now() }))
+    localStorage.setItem('trek_fx_EUR', JSON.stringify({ rates: { EUR: 1, USD: 1.1398 }, ts: Date.now() }))
+    const villa = {
+      id: 22, trip_id: 7, name: 'Villa', category: 'accommodation', total_price: 12345.67, currency: 'USD', exchange_rate: 1.1398,
+      expense_date: '2026-05-01', note: null,
+      members: [
+        { user_id: 1, paid: 1, username: 'Me', amount: null, avatar_url: null },
+        { user_id: 2, paid: 0, username: 'Ada', amount: null, avatar_url: null },
+      ],
+      payers: [{ user_id: 1, amount: 12345.67, username: 'Me' }],
+    } as unknown as BudgetItem
+    serveSettlement(SETTLEMENT)
+    await renderTab(planner({ trip: { ...TRIP, currency: 'EUR' } as Trip, budgetItems: [villa] }))
+
+    const card = cardOf('Villa')
+    // Through the dollar's own quote it read $12,346.05.
+    expect(within(card).getByText('$12,345.67')).toBeInTheDocument()
+    expect(within(card).queryByText(/^\$12,345\.67 →/)).toBeNull()
+    expect(screen.getByText('costs.spent:$12,345.67')).toBeInTheDocument()
+    expect(up(screen.getByText('costs.totalSpend'), 1).textContent).toContain('$12,345.67')
   })
 
   it('FE-MOB-COSTT-044: a payment cannot be saved without a day', async () => {

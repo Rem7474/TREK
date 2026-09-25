@@ -1,4 +1,4 @@
-// FE-PLANNER-RESMODAL-001 to FE-PLANNER-RESMODAL-102
+// FE-PLANNER-RESMODAL-001 to FE-PLANNER-RESMODAL-105
 import { render, screen, waitFor, fireEvent, within, act } from '../../../tests/helpers/render';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
@@ -1049,7 +1049,7 @@ describe('ReservationModal', () => {
     expect(screen.getByText('Linked expense')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /^Add$/i }));
     await waitFor(() => expect(onSave).toHaveBeenCalled());
-    expect(onSave.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 240, category: 'accommodation' });
+    expect(onSave.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 240, category: 'accommodation', currency: 'EUR' });
   });
 
   it('FE-PLANNER-RESMODAL-061: a prefill without a price creates no cost entry', async () => {
@@ -1358,6 +1358,55 @@ describe('ReservationModal', () => {
     await waitFor(() => expect(deleted).toBe(true));
     await waitFor(() => expect(addToast).toHaveBeenCalledWith(expect.any(String), 'error', undefined));
     delete window.__addToast;
+  });
+
+  it('FE-PLANNER-RESMODAL-103: a linked cost saved without a currency is shown in the trip currency, not the display one (#2525)', () => {
+    // A booking's own cost entry is written without a currency, which means the
+    // trip's. Reading in USD on a EUR trip must not turn the 120 EUR into $120.00.
+    budgetEnabled();
+    seedStore(useSettingsStore, { settings: { default_currency: 'USD' } });
+    seedStore(useTripStore, {
+      trip: buildTrip({ id: 1, currency: 'EUR' }),
+      budgetItems: [
+        { id: 7, trip_id: 1, name: 'Hotel deposit', total_price: 120, currency: null, category: 'accommodation', reservation_id: 9, members: [], payers: [], persons: 1, expense_date: null, paid_by_user_id: null },
+      ],
+    });
+    render(
+      <ReservationModal {...defaultProps} reservation={buildReservation({ id: 9, type: 'hotel', title: 'Hotel Paris' })} />,
+    );
+
+    expect(screen.getByText('Hotel deposit')).toBeInTheDocument();
+    expect(screen.getByText('120,00 €')).toBeInTheDocument();
+    expect(screen.queryByText('$120.00')).toBeNull();
+  });
+
+  it('FE-PLANNER-RESMODAL-104: an imported price keeps the currency it was quoted in, in the preview and on save (#2525)', async () => {
+    // A euro trip, a confirmation priced in dollars. The preview said $801.76 and the
+    // save sent the amount alone, which the server stored as 801.76 EUR.
+    budgetEnabled();
+    seedStore(useTripStore, { trip: buildTrip({ id: 1, currency: 'EUR' }) });
+    const onSave = vi.fn().mockResolvedValue({ id: 82 });
+    const prefill = hotelPrefill({ metadata: { price: 801.76, priceCurrency: 'usd' } });
+    render(<ReservationModal {...defaultProps} onSave={onSave} prefill={prefill} days={reviewDays()} />);
+
+    expect(screen.getByText('$801.76')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /^Add$/i }));
+    await waitFor(() => expect(onSave).toHaveBeenCalled());
+    expect(onSave.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 801.76, category: 'accommodation', currency: 'USD' });
+  });
+
+  it('FE-PLANNER-RESMODAL-105: a parsed currency that is not a code previews and saves in the trip currency', async () => {
+    budgetEnabled();
+    seedStore(useTripStore, { trip: buildTrip({ id: 1, currency: 'EUR' }) });
+    const onSave = vi.fn().mockResolvedValue({ id: 83 });
+    const prefill = hotelPrefill({ metadata: { price: 50, priceCurrency: 'dollars' } });
+    render(<ReservationModal {...defaultProps} onSave={onSave} prefill={prefill} days={reviewDays()} />);
+
+    // The server drops such a currency too, so the preview names the one it will store.
+    expect(screen.getByText('50,00 €')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /^Add$/i }));
+    await waitFor(() => expect(onSave).toHaveBeenCalled());
+    expect(onSave.mock.calls[0][0].create_budget_entry).toEqual({ total_price: 50, category: 'accommodation' });
   });
 
   // ── File error paths ────────────────────────────────────────────────────────

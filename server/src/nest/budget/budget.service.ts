@@ -89,6 +89,44 @@ function allocateDisplayCents(cents: number[], factor: number, total = Math.roun
 }
 
 /**
+ * An amount of a row, in the row's own currency, in the trip currency. The rate frozen
+ * when the row was entered wins (#1335), so a booked expense keeps the value it was
+ * booked at. A row written before the freeze existed (rate 1 or none) converts through
+ * today's `rates`, units of each currency per 1 of their base, and without them stays
+ * as it is. Pre-rework rows store currency = NULL, which means the trip's own.
+ *
+ * The settlement nets with it and every trip total adds up with it, so the two can never
+ * read the same rows differently.
+ */
+function toTripAmount(
+  amount: number,
+  itemCurrency: string | null | undefined,
+  itemRate: number | null | undefined,
+  tripCurrency: string,
+  rates: Record<string, number> | null,
+): number {
+  const cur = (itemCurrency || tripCurrency).toUpperCase();
+  if (cur === tripCurrency) return amount;
+  if (itemRate != null && itemRate > 0 && itemRate !== 1) return amount / itemRate;
+  if (!rates) return amount;
+  const rCur = rates[cur];
+  const rTrip = rates[tripCurrency];
+  if (rCur && rCur > 0 && rTrip && rTrip > 0) return (amount / rCur) * rTrip;
+  return amount;
+}
+
+/**
+ * Units of `to` per 1 `from`, from a set of rates quoted against any base (each rate is
+ * units of that currency per 1 base). 1 when either quote is missing, which leaves an
+ * amount as it is, the way every conversion here degrades without rates.
+ */
+function quoteRatio(rates: Record<string, number> | null, to: string, from: string): number {
+  const rTo = rates?.[to];
+  const rFrom = rates?.[from];
+  return rTo && rTo > 0 && rFrom && rFrom > 0 ? rTo / rFrom : 1;
+}
+
+/**
  * Budget domain service — owns the budget SQL (moved from the legacy
  * services/budgetService.ts: identical statements, the `||` falsy-coercion
  * defaults, the COALESCE / CASE WHEN sentinel conventions on update and the
@@ -541,7 +579,7 @@ export class BudgetService {
   linkBudgetItemToReservation(
     tripId: string | number,
     reservationId: number,
-    data: { name: string; category?: string; total_price: number },
+    data: { name: string; category?: string; total_price: number; currency?: string | null; exchange_rate?: number },
   ) {
     // createBudgetItem accepts reservation_id directly — the legacy separate
     // UPDATE after the insert was redundant (and non-atomic).
@@ -882,20 +920,101 @@ export class BudgetService {
   // Per-person summary
   // -------------------------------------------------------------------------
 
-  getPerPersonSummary(tripId: string | number) {
-    const summary = this.db.all<{ user_id: number; username: string; avatar: string | null; total_assigned: number; total_paid: number; items_count: number }>(`
-    SELECT bm.user_id, COALESCE(u.display_name, u.username) AS username, u.avatar,
-      SUM(COALESCE(bm.amount, bi.total_price * 1.0 / (SELECT COUNT(*) FROM budget_item_members WHERE budget_item_id = bi.id))) as total_assigned,
-      SUM(CASE WHEN bm.paid = 1 THEN COALESCE(bm.amount, bi.total_price * 1.0 / (SELECT COUNT(*) FROM budget_item_members WHERE budget_item_id = bi.id)) ELSE 0 END) as total_paid,
-      COUNT(bi.id) as items_count
+  /**
+   * What each member is down for across the trip (`total_assigned`), and how much of
+   * that is marked paid (`total_paid`), in the trip currency.
+   *
+   * Each share is converted to trip cents the way the settlement converts it, at the
+   * rate frozen when the expense was entered, and an equal split is a largest-remainder
+   * split of those cents (#2525). The SQL this replaces summed raw amounts across
+   * currencies and divided them in floats, so a bill of 801.76 USD counted as 801.76 of
+   * the trip's euros and a third of 100 came out as 33.333…
+   */
+  getPerPersonSummary(tripId: string | number, rates: Record<string, number> | null = null) {
+    const trip = this.db.get<{ currency?: string | null }>('SELECT currency FROM trips WHERE id = ?', tripId);
+    const tripCurrency = (trip?.currency || 'EUR').toUpperCase();
+    const items = this.db.all<{ id: number; total_price: number | null; currency: string | null; exchange_rate: number | null }>(
+      'SELECT id, total_price, currency, exchange_rate FROM budget_items WHERE trip_id = ?', tripId,
+    );
+    const members = this.db.all<{ budget_item_id: number; user_id: number; amount: number | null; paid: number | null; username: string; avatar: string | null }>(`
+    SELECT bm.budget_item_id, bm.user_id, bm.amount, bm.paid, COALESCE(u.display_name, u.username) AS username, u.avatar
     FROM budget_item_members bm
     JOIN budget_items bi ON bm.budget_item_id = bi.id
     JOIN users u ON bm.user_id = u.id
     WHERE bi.trip_id = ?
-    GROUP BY bm.user_id
   `, tripId);
+    const toTripCents = (amount: number, item: { currency: string | null; exchange_rate: number | null }) =>
+      Math.round(toTripAmount(amount, item.currency, item.exchange_rate, tripCurrency, rates) * 100);
 
-    return summary.map(s => ({ ...s, avatar_url: avatarUrl(s) }));
+    const people = new Map<number, { user_id: number; username: string; avatar: string | null; assigned: number; paid: number; items_count: number }>();
+    for (const item of items) {
+      const own = members.filter(m => m.budget_item_id === item.id);
+      if (own.length === 0) continue;
+      // A member with an amount of their own owes exactly that; the rest split the
+      // total evenly, as the query this replaces did.
+      const equal = this.splitEqualShares(toTripCents(item.total_price || 0, item), own, item.id);
+      for (const m of own) {
+        const share = m.amount !== null && m.amount !== undefined ? toTripCents(m.amount, item) : (equal[m.user_id] || 0);
+        let p = people.get(m.user_id);
+        if (!p) {
+          p = { user_id: m.user_id, username: m.username, avatar: m.avatar, assigned: 0, paid: 0, items_count: 0 };
+          people.set(m.user_id, p);
+        }
+        p.assigned += share;
+        if (m.paid === 1) p.paid += share;
+        p.items_count += 1;
+      }
+    }
+
+    return [...people.values()]
+      .sort((a, b) => a.user_id - b.user_id)
+      .map(p => ({
+        user_id: p.user_id, username: p.username, avatar: p.avatar,
+        total_assigned: p.assigned / 100, total_paid: p.paid / 100, items_count: p.items_count,
+        currency: tripCurrency,
+        avatar_url: avatarUrl(p),
+      }));
+  }
+
+  /**
+   * What the trip's expenses add up to in the trip currency, overall and per category
+   * (#2525). Every row is converted once, the way the settlement converts it, and
+   * rounded to a whole cent before anything is added. Summing total_price as stored adds
+   * dollars to euros and labels the result with the trip currency.
+   */
+  tripTotals(tripId: string | number, tripCurrency: string, rates: Record<string, number> | null = null): { total: number; byCategory: Record<string, number> } {
+    const trip = (tripCurrency || 'EUR').toUpperCase();
+    const rows = this.db.all<{ category: string | null; total_price: number | null; currency: string | null; exchange_rate: number | null }>(
+      'SELECT category, total_price, currency, exchange_rate FROM budget_items WHERE trip_id = ? ORDER BY id', tripId,
+    );
+    let total = 0;
+    const byCategory: Record<string, number> = {};
+    for (const r of rows) {
+      const cents = Math.round(toTripAmount(r.total_price || 0, r.currency, r.exchange_rate, trip, rates) * 100);
+      total += cents;
+      const cat = r.category || '';
+      byCategory[cat] = (byCategory[cat] || 0) + cents;
+    }
+    return {
+      total: total / 100,
+      byCategory: Object.fromEntries(Object.entries(byCategory).map(([cat, cents]) => [cat, cents / 100])),
+    };
+  }
+
+  /**
+   * Today's rates against the trip currency, for the totals above. Fetched only when a
+   * row in another currency never froze a rate of its own: every other row converts
+   * without them, so a trip whose rows were all booked never waits on the network.
+   */
+  async ratesForTripTotals(tripId: string | number, tripCurrency: string): Promise<Record<string, number> | null> {
+    const trip = (tripCurrency || 'EUR').toUpperCase();
+    const unbooked = this.db.get(`
+    SELECT 1 FROM budget_items
+    WHERE trip_id = ? AND currency IS NOT NULL AND currency != '' AND UPPER(currency) != ?
+      AND (exchange_rate IS NULL OR exchange_rate <= 0 OR exchange_rate = 1)
+    LIMIT 1
+  `, tripId, trip);
+    return unbooked ? this.exchangeRates.getRates(trip) : null;
   }
 
   /**
@@ -963,26 +1082,23 @@ export class BudgetService {
     // is the identity, so behaviour is unchanged.
     // rates[X] = units of X per 1 base; the frozen exchange_rate is units of item-currency
     // per 1 trip-currency. Pre-rework rows store currency = NULL = "the trip's own currency".
-    const toTrip = (amount: number, itemCurrency: string | null | undefined, itemRate?: number | null): number => {
-      const cur = (itemCurrency || tripCurrency).toUpperCase();
-      if (cur === tripCurrency) return amount;
-      // Prefer the FX rate frozen at entry time (#1335): a settled expense keeps the rate
-      // it was booked at, so a later live-rate drift doesn't re-open it with a residual.
-      if (itemRate != null && itemRate > 0 && itemRate !== 1) return amount / itemRate;
-      // Legacy rows without a frozen rate: convert via base with live rates.
-      if (!rates) return amount;
-      const rCur = rates[cur];
-      const rTrip = rates[tripCurrency];
-      if (rCur && rCur > 0 && rTrip && rTrip > 0) return (amount / rCur) * rTrip;
-      return amount;
-    };
+    // Prefer the FX rate frozen at entry time (#1335): a settled expense keeps the rate
+    // it was booked at, so a later live-rate drift doesn't re-open it with a residual.
+    // Legacy rows without a frozen rate convert via base with live rates.
+    const toTrip = (amount: number, itemCurrency: string | null | undefined, itemRate?: number | null): number =>
+      toTripAmount(amount, itemCurrency, itemRate, tripCurrency, rates);
     // trip-currency → display currency, applied once to the final netted totals.
     // Held as a plain factor so it is exactly linear: the balances are converted as
     // one set (allocateDisplayCents) rather than one at a time, which is what keeps
     // them adding up to zero in whatever currency the viewer picked (#1382).
-    const displayFactor = base === tripCurrency
-      ? 1
-      : (rates && rates[tripCurrency] > 0 ? 1 / rates[tripCurrency] : 1);
+    //
+    // `rates` may be quoted against any base; the ratio of the two quotes is the
+    // factor either way. Callers pass the trip currency's own quote (see settlement()),
+    // the one freezeForeignRate froze every entry rate from, so a bill entered today in
+    // the display currency converts back to exactly what was typed (#2525). Taken the
+    // other way round, from the display currency's quote, the two quotes are not exact
+    // inverses and 12,345.67 USD came back as 12,346.06.
+    const displayFactor = base === tripCurrency ? 1 : quoteRatio(rates, base, tripCurrency);
     // A recorded settle-up amount is entered in whatever display currency the payer
     // was viewing. New rows capture that currency and the rate frozen at settle time
     // (#1445), so a settled position stays balanced when live rates drift — mirroring
@@ -1002,7 +1118,8 @@ export class BudgetService {
         }
         return amount;
       }
-      return base === tripCurrency ? amount : (rates && rates[tripCurrency] > 0 ? amount * rates[tripCurrency] : amount);
+      // The inverse of the display factor, so such a transfer reads back as entered.
+      return amount / displayFactor;
     };
 
     const items = this.db.all<BudgetItem>('SELECT * FROM budget_items WHERE trip_id = ?', tripId);
@@ -1042,6 +1159,12 @@ export class BudgetService {
     // cents rather than converting the expense list a second time on the client.
     const frontedRows: Record<number, { item_id: number; cents: number }[]> = {};
     const movedRows: Record<number, { settlement_id: number; from_user_id: number; to_user_id: number; cents: number }[]> = {};
+    // Read in the trip currency, those figures are the ledger's own trip cents. Read in
+    // another one, they are built from each row's unrounded trip amount instead: a trip
+    // cent is worth more than a dollar cent on a euro trip, so a bill of 12,345.67 USD
+    // rounded to 10,831.44 EUR first came back as 12,345.68 (#2525). The balances, and
+    // with them settle-up, still net whole trip cents.
+    const finalUnit = (exactTripCents: number) => (displayFactor === 1 ? Math.round(exactTripCents) : exactTripCents);
 
     for (const item of items) {
       const members = allMembers.filter(m => m.budget_item_id === item.id);
@@ -1071,10 +1194,11 @@ export class BudgetService {
       // refund (#2176) — is debited by the same arithmetic: their credit is negative.
       let creditCents = 0;
       for (const p of payers) {
-        const paid = toTripCents(p.amount, item.currency, item.exchange_rate);
+        const exact = toTrip(p.amount, item.currency, item.exchange_rate) * 100;
+        const paid = Math.round(exact);
         ensure(p.user_id, p).cents += paid;
-        frontedCents[p.user_id] = (frontedCents[p.user_id] || 0) + paid;
-        if (paid !== 0) (frontedRows[p.user_id] ??= []).push({ item_id: item.id, cents: paid });
+        frontedCents[p.user_id] = (frontedCents[p.user_id] || 0) + finalUnit(exact);
+        if (paid !== 0) (frontedRows[p.user_id] ??= []).push({ item_id: item.id, cents: finalUnit(exact) });
         creditCents += paid;
       }
       // …and each split participant owes their share — a custom per-member amount
@@ -1111,17 +1235,19 @@ export class BudgetService {
     for (const s of settlements) {
       // Rounded to a trip cent per transfer, so recording one in a display currency
       // can't leave a sliver of a cent behind to accumulate over a trip's lifetime.
-      const inTrip = Math.round(settleToTrip(s.amount, s.currency, s.exchange_rate) * 100);
+      const exact = settleToTrip(s.amount, s.currency, s.exchange_rate) * 100;
+      const inTrip = Math.round(exact);
       ensureSettled(s.from_user_id, s.from_username, s.from_avatar_url).cents += inTrip;
       ensureSettled(s.to_user_id, s.to_username, s.to_avatar_url).cents -= inTrip;
       // Net of the transfers in both directions: sending one back is a reimbursement
       // received in reverse, and netting them is what keeps the final budget's
       // subtraction equal to the balance it is taken from.
-      reimbursedCents[s.to_user_id] = (reimbursedCents[s.to_user_id] || 0) + inTrip;
-      reimbursedCents[s.from_user_id] = (reimbursedCents[s.from_user_id] || 0) - inTrip;
+      const shown = finalUnit(exact);
+      reimbursedCents[s.to_user_id] = (reimbursedCents[s.to_user_id] || 0) + shown;
+      reimbursedCents[s.from_user_id] = (reimbursedCents[s.from_user_id] || 0) - shown;
       const moved = { settlement_id: s.id, from_user_id: s.from_user_id, to_user_id: s.to_user_id };
-      (movedRows[s.to_user_id] ??= []).push({ ...moved, cents: inTrip });
-      (movedRows[s.from_user_id] ??= []).push({ ...moved, cents: -inTrip });
+      (movedRows[s.to_user_id] ??= []).push({ ...moved, cents: shown });
+      (movedRows[s.from_user_id] ??= []).push({ ...moved, cents: -shown });
     }
 
     // Into the display currency as one set, then simplify — balances and flows are
@@ -1305,14 +1431,24 @@ export class BudgetService {
     return this.listBudgetItems(tripId);
   }
 
-  perPersonSummary(tripId: string) {
-    return this.getPerPersonSummary(tripId);
+  async perPersonSummary(tripId: string | number) {
+    const trip = this.db.get<{ currency?: string | null }>('SELECT currency FROM trips WHERE id = ?', tripId);
+    return this.getPerPersonSummary(tripId, await this.ratesForTripTotals(tripId, trip?.currency || 'EUR'));
   }
 
-  async settlement(tripId: string, base: string | undefined, tripCurrency: string) {
-    const effectiveBase = (base || tripCurrency || 'EUR').toUpperCase();
-    const rates = await this.exchangeRates.getRates(effectiveBase);
-    return this.calculateSettlement(tripId, { base: effectiveBase, rates, tripCurrency });
+  /**
+   * The settlement in the viewer's currency, for REST and MCP alike. Converted with the
+   * trip currency's own quote, the one every entry rate was frozen from, so a same-day
+   * amount in the display currency round-trips to the cent and paying what settle-up
+   * offers closes the balance (#2525). The display currency's quote only stands in when
+   * the trip's cannot be fetched.
+   */
+  async settlement(tripId: string | number, base: string | undefined, tripCurrency: string) {
+    const trip = (tripCurrency || 'EUR').toUpperCase();
+    const effectiveBase = (base || trip).toUpperCase();
+    const rates = (await this.exchangeRates.getRates(trip))
+      ?? (effectiveBase === trip ? null : await this.exchangeRates.getRates(effectiveBase));
+    return this.calculateSettlement(tripId, { base: effectiveBase, rates, tripCurrency: trip });
   }
 
   async create(tripId: string, data: Parameters<BudgetService['createBudgetItem']>[1]) {

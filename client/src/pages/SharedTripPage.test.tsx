@@ -597,6 +597,112 @@ describe('SharedTripPage', () => {
     });
   });
 
+  describe('FE-PAGE-SHARED-043: a foreign expense reads at the rate it was booked at, as in Costs (#2525)', () => {
+    it('shows the frozen-rate value in whole cents, not today\'s rate', async () => {
+      // CHF so no earlier test has cached rates for this base. Today 1 CHF buys 1.1395
+      // USD; the expense froze 1.17 when it was entered. Costs reads 801.76 / 1.17 =
+      // 685.26 CHF. Today's rate alone gives 703.61, printed as "703.607".
+      server.use(
+        http.get('https://api.frankfurter.dev/v2/rates', () => HttpResponse.json([{ quote: 'USD', rate: 1.1395 }])),
+        http.get('/api/shared/:token', ({ params }) => {
+          if (params.token !== 'booked-token') return;
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Shared Paris Trip', start_date: '2026-07-01', end_date: '2026-07-05', currency: 'CHF' },
+            baseCurrency: 'CHF',
+            days: [], assignments: {}, dayNotes: {}, places: [], reservations: [], accommodations: [], packing: [],
+            budget: [
+              { id: 1, name: 'Aparthotel Silver', total_price: 801.76, category: 'Accommodation', currency: 'USD', exchange_rate: 1.17 },
+              { id: 2, name: 'Tram pass', total_price: 100, category: 'Transport', currency: null, exchange_rate: 1 },
+            ],
+            categories: [],
+            permissions: { share_bookings: false, share_packing: false, share_budget: true, share_collab: false },
+            collab: [],
+          });
+        }),
+      );
+
+      renderSharedTrip('booked-token');
+      await waitFor(() => expect(screen.getByText('Shared Paris Trip')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: /costs/i }));
+
+      await waitFor(() => expect(screen.getByText('Aparthotel Silver')).toBeInTheDocument());
+      // Row and its category both read the booked value; the trip total adds the
+      // 100 CHF tram pass to it.
+      await waitFor(() => expect(screen.getAllByText('685.26 CHF')).toHaveLength(2));
+      expect(screen.getByText('785.26 CHF')).toBeInTheDocument();
+      expect(screen.queryByText(/703\.6/)).toBeNull();
+      // What was entered stays beside the converted row, as the Costs list shows it.
+      expect(screen.getByText('· 801.76 USD')).toBeInTheDocument();
+    });
+
+    it('reads a same-day bill in the display currency exactly as typed, with the trip currency\'s quote', async () => {
+      // ZAR trip read in USD (ZAR so no earlier test has cached its rates). The bill froze
+      // 0.05911 USD per rand, today's ZAR quote. The USD quote, 16.918 rand per dollar, is
+      // rounded on its own and is not its inverse.
+      server.use(
+        http.get('https://api.frankfurter.dev/v2/rates', ({ request }) => {
+          const base = new URL(request.url).searchParams.get('base');
+          return HttpResponse.json(base === 'ZAR' ? [{ quote: 'USD', rate: 0.05911 }] : [{ quote: 'ZAR', rate: 16.918 }]);
+        }),
+        http.get('/api/shared/:token', ({ params }) => {
+          if (params.token !== 'same-day-token') return;
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Shared Paris Trip', start_date: '2026-07-01', end_date: '2026-07-05', currency: 'ZAR' },
+            baseCurrency: 'USD',
+            days: [], assignments: {}, dayNotes: {}, places: [], reservations: [], accommodations: [], packing: [],
+            budget: [
+              { id: 1, name: 'Villa', total_price: 12345.67, category: 'Accommodation', currency: 'USD', exchange_rate: 0.05911 },
+            ],
+            categories: [],
+            permissions: { share_bookings: false, share_packing: false, share_budget: true, share_collab: false },
+            collab: [],
+          });
+        }),
+      );
+
+      renderSharedTrip('same-day-token');
+      await waitFor(() => expect(screen.getByText('Shared Paris Trip')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: /costs/i }));
+
+      await waitFor(() => expect(screen.getAllByText('12,345.67 USD')).toHaveLength(3));
+      expect(screen.queryByText(/^· /)).toBeNull();
+    });
+
+    it('reads a bill in the display currency through the trip currency too, beside what was entered', async () => {
+      // The owner reads in USD on a CHF trip. The USD bill was booked at 685.26 CHF,
+      // which today is 780.86 USD, the figure Costs and its balances use; the CHF one
+      // converts at today's rate (100 CHF = 113.95 USD).
+      server.use(
+        http.get('https://api.frankfurter.dev/v2/rates', () => HttpResponse.json([{ quote: 'CHF', rate: 1 / 1.1395 }])),
+        http.get('/api/shared/:token', ({ params }) => {
+          if (params.token !== 'display-token') return;
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Shared Paris Trip', start_date: '2026-07-01', end_date: '2026-07-05', currency: 'CHF' },
+            baseCurrency: 'USD',
+            days: [], assignments: {}, dayNotes: {}, places: [], reservations: [], accommodations: [], packing: [],
+            budget: [
+              { id: 1, name: 'Aparthotel Silver', total_price: 801.76, category: 'Accommodation', currency: 'USD', exchange_rate: 1.17 },
+              { id: 2, name: 'Tram pass', total_price: 100, category: 'Transport', currency: null, exchange_rate: 1 },
+            ],
+            categories: [],
+            permissions: { share_bookings: false, share_packing: false, share_budget: true, share_collab: false },
+            collab: [],
+          });
+        }),
+      );
+
+      renderSharedTrip('display-token');
+      await waitFor(() => expect(screen.getByText('Shared Paris Trip')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: /costs/i }));
+
+      await waitFor(() => expect(screen.getAllByText('113.95 USD')).toHaveLength(2));
+      expect(screen.getAllByText('780.86 USD')).toHaveLength(2);
+      expect(screen.getByText('894.81 USD')).toBeInTheDocument();
+      expect(screen.getByText('· 801.76 USD')).toBeInTheDocument();
+      expect(screen.getByText('· 100.00 CHF')).toBeInTheDocument();
+    });
+  });
+
   // FE-PAGE-SHARED-021 to FE-PAGE-SHARED-037 drive the remaining render branches of
   // the page: header variants, the permission-driven tab strip, and every item kind
   // the day timeline, bookings, packing, costs and chat sections can produce.

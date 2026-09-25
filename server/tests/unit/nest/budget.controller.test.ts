@@ -54,13 +54,13 @@ describe('BudgetController (parity with the legacy /api/trips/:tripId/budget rou
     expect(new BudgetController(svc).list(user, '5')).toEqual({ items: [{ id: 1 }] });
   });
 
-  it('GET /summary/per-person + /settlement delegate', () => {
+  it('GET /summary/per-person + /settlement delegate', async () => {
     const settlement = vi.fn().mockReturnValue({ transfers: [] });
     const svc = makeService({
       perPersonSummary: vi.fn().mockReturnValue([{ userId: 1, owes: 10 }]),
       settlement,
     } as Partial<BudgetService>);
-    expect(new BudgetController(svc).perPerson(user, '5')).toEqual({ summary: [{ userId: 1, owes: 10 }] });
+    expect(await new BudgetController(svc).perPerson(user, '5')).toEqual({ summary: [{ userId: 1, owes: 10 }] });
     // A trip with no currency set falls back to EUR rather than passing undefined on.
     expect(new BudgetController(svc).settlement(user, { id: 5, user_id: 42 } as never, '5')).toEqual({ transfers: [] });
     expect(settlement).toHaveBeenLastCalledWith('5', undefined, 'EUR');
