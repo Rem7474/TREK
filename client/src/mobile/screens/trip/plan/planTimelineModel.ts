@@ -1,6 +1,9 @@
 import { Cloud, CloudDrizzle, CloudLightning, CloudRain, CloudSnow, Sun, Wind } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { getAssignmentReservations, getDisplayTimeForDay, getSpanPhase, hidesOnMiddleDay, parseTimeToMinutes } from '../../../../utils/dayMerge'
+import {
+  TRANSPORT_TYPES, getAssignmentReservations, getDisplayTimeForDay, getSpanPhase, getTransportRouteEndpoints, hidesOnMiddleDay,
+  parseTimeToMinutes,
+} from '../../../../utils/dayMerge'
 import { getDayBookendHotels, isDayInAccommodationRange } from '../../../../utils/dayOrder'
 import type { MergedItem } from '../../../../utils/dayMerge'
 import type { TransitLegDisplay } from '../../../../components/Planner/transitDisplay'
@@ -73,10 +76,9 @@ const sameCoord = (a: [number, number], b: [number, number]): boolean =>
 
 /**
  * Map the day's merged items to render rows and slot a travel-time connector
- * after every located place whose next located stop is again a place. Segments
- * are matched by their exact waypoint coordinates (the calculator echoes the
- * input waypoints back on each leg), so transport legs in the pool simply never
- * match and no index bookkeeping is needed. The hotel bookends are left out up
+ * under the row each drawn leg belongs to. Segments are matched by their exact
+ * waypoint coordinates (the calculator echoes the input waypoints back on each
+ * leg), so no index bookkeeping is needed. The hotel bookends are left out up
  * front: they belong to the day's edges, and a stop planned on the hotel's own
  * spot would otherwise pair with them (#2501).
  */
@@ -123,31 +125,61 @@ export function buildPlanRows(opts: {
     }
   }
 
-  const coordOf = (row: PlanRow): [number, number] | null =>
-    row.kind === 'place' && row.assignment.place?.lat != null && row.assignment.place?.lng != null
-      ? [row.assignment.place.lat, row.assignment.place.lng]
-      : null
-
-  const out: PlanRow[] = []
+  // Walk the rows the way the route calc walks the day (buildDayRouteRuns). A
+  // located place is a waypoint, possibly across notes. A located booking ends the
+  // drive before it at its departure point and starts the next one at its arrival
+  // point, so the drive from the arrival airport to the first stop gets its
+  // connector too (#2502). Each leg goes under the row it leaves from, the place or
+  // the booking it landed with, as on the desktop day plan.
+  //
+  // The route rides straight past a booking it has no location for, a taxi saved
+  // without its stops or a concert, and draws the drive through it. The desktop
+  // shows that leg under the booking, so it goes there, and it keeps the mode menu
+  // of the stop it left, since that stop's mode is the one it was routed in. Only
+  // transport bookings count, as in the route calc: a transit booking changed to
+  // another type in the booking form keeps its stations, but the route ignores it.
+  //
+  // A booking whose station is the stop itself leaves a leg that goes nowhere: the
+  // transit planner saves a journey between two of the day's places at their own
+  // coordinates. That is no walk and no drive, so it gets no connector.
+  type Origin = { at: [number, number]; row: number; assignmentId?: number }
+  const legs = new Map<number, { seg: RouteSegment; assignmentId?: number }>()
+  const connect = (origin: Origin | null, to: [number, number], toBooking = false) => {
+    if (!origin) return
+    const seg = takeSegment(origin.at, to)
+    const fromBooking = origin.assignmentId == null
+    if (!seg || ((toBooking || fromBooking) && sameCoord(origin.at, to))) return
+    legs.set(origin.row, { seg, assignmentId: origin.assignmentId })
+  }
+  let prev: Origin | null = null
   for (let i = 0; i < base.length; i++) {
     const row = base[i]
-    out.push(row)
-    const from = coordOf(row)
-    if (!from) continue
-    // Next located stop: a following place connects (possibly across notes);
-    // any transport/transit in between means that hop is the ride, not a walk.
-    let seg: RouteSegment | null = null
-    for (let j = i + 1; j < base.length; j++) {
-      const next = base[j]
-      if (next.kind === 'transport' || next.kind === 'transit') break
-      const to = coordOf(next)
-      if (to) { seg = takeSegment(from, to); break }
+    if (row.kind === 'place') {
+      const place = row.assignment.place
+      if (place?.lat == null || place?.lng == null) continue
+      const at: [number, number] = [place.lat, place.lng]
+      connect(prev, at)
+      // The leg's mode is stored on its ORIGIN place assignment (#1281), so carry
+      // that id for the tap-to-change menu.
+      prev = { at, row: i, assignmentId: row.assignment.id }
+    } else if (row.kind === 'transport' || row.kind === 'transit') {
+      const { from, to } = TRANSPORT_TYPES.has(row.res.type)
+        ? getTransportRouteEndpoints(row.res, dayId)
+        : { from: null, to: null }
+      if (!from && !to) {
+        if (prev) prev = { ...prev, row: i }
+        continue
+      }
+      // Only out of a stop: two bookings back to back are no drive (#1394).
+      if (from && prev?.assignmentId != null) connect(prev, [from.lat, from.lng], true)
+      prev = to ? { at: [to.lat, to.lng], row: i } : null
     }
-    // The leg's mode is stored on its ORIGIN place assignment (#1281), so carry
-    // that id for the tap-to-change menu.
-    if (seg) out.push({ key: `conn-${row.key}`, kind: 'conn', seg, assignmentId: row.kind === 'place' ? row.assignment.id : undefined })
   }
-  return out
+
+  return base.flatMap((row, i): PlanRow[] => {
+    const leg = legs.get(i)
+    return leg ? [row, { key: `conn-${row.key}`, kind: 'conn', seg: leg.seg, assignmentId: leg.assignmentId }] : [row]
+  })
 }
 
 export interface HotelChip {

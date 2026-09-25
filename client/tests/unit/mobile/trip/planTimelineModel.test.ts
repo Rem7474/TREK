@@ -12,7 +12,7 @@ import type {
   Accommodation, Assignment, Day, DayNote, Reservation, RouteSegment, TranslationFn,
 } from '../../../../src/types'
 
-// FE-MOB-PTLM-001 to FE-MOB-PTLM-050
+// FE-MOB-PTLM-001 to FE-MOB-PTLM-060
 
 const DAYS = [
   { id: 1, trip_id: 1, day_number: 1, date: '2026-05-01', title: null },
@@ -231,7 +231,9 @@ describe('planTimelineModel — buildPlanRows', () => {
     expect(rows.map(r => r.kind)).toEqual(['place', 'conn', 'note', 'place'])
   })
 
-  it('FE-MOB-PTLM-019: draws no connector when a transport is the hop between the places', () => {
+  it('FE-MOB-PTLM-019: puts the drive past a booking without a location under that booking (#2502)', () => {
+    // The route rides straight past a bus saved without its stops and draws the road
+    // between the two places; the desktop day plan shows that leg under the bus.
     const bus = buildReservation({ id: 51, type: 'bus', day_id: 2 })
     const rows = buildPlanRows({
       merged: [placeItem(museum), transportItem(bus), placeItem(park)],
@@ -239,7 +241,9 @@ describe('planTimelineModel — buildPlanRows', () => {
       routeSegments: [seg([48.1, 16.1], [48.2, 16.2])],
       dayId: 2,
     })
-    expect(rows.map(r => r.kind)).toEqual(['place', 'transport', 'place'])
+    expect(rows.map(r => r.key)).toEqual(['pl-11', 'tr-51', 'conn-tr-51', 'pl-12'])
+    // The leg was routed in the mode of the stop it left, so the menu edits that stop.
+    expect(rows[2]).toMatchObject({ kind: 'conn', assignmentId: 11 })
   })
 
   it('FE-MOB-PTLM-020: skips places without coordinates and unmatched segments', () => {
@@ -396,10 +400,9 @@ describe('planTimelineModel — hotel chips and legs', () => {
   })
 })
 
-describe('planTimelineModel: a day that lands and then drives to the hotel (#2501)', () => {
+describe('planTimelineModel: a day that lands and then drives to the hotel (#2501, #2502)', () => {
   // Day 1 checks into a Hamburg hotel at three. The flight lands at one, and the
   // traveller put the hotel on the day as a stop of their own, then the town hall.
-  const DAY1 = DAYS[0]
   const HOTEL = { lat: 53.5465, lng: 9.9727 }
   const AMS = { lat: 52.3105, lng: 4.7683 }
   const HAM = { lat: 53.6304, lng: 9.9882 }
@@ -419,24 +422,24 @@ describe('planTimelineModel: a day that lands and then drives to the hotel (#250
   const hotelStop = buildAssignment({ id: 21, day_id: 1, order_index: 0, place: place(900, 'Hotel Hafen', HOTEL.lat, HOTEL.lng) })
   const townHall = buildAssignment({ id: 22, day_id: 1, order_index: 1, place: place(901, 'Town Hall', TOWN_HALL.lat, TOWN_HALL.lng) })
 
-  // The day as the phone timeline builds it: merged the way useMPlanTimeline merges,
+  // A day as the phone timeline builds it: merged the way useMPlanTimeline merges,
   // segments the way useRouteCalculation routes the same day.
-  const dayOne = () => {
-    const dayAssignments = [hotelStop, townHall]
+  const planOf = (dayId: number, dayAssignments: Assignment[], reservations: Reservation[], stays: Accommodation[]) => {
     const merged = getMergedItems({
       dayAssignments,
       dayNotes: [],
-      dayTransports: getTransportForDay({ reservations: [flight], dayId: 1, dayAssignmentIds: dayAssignments.map(a => a.id), days: DAYS }),
-      dayId: 1,
+      dayTransports: getTransportForDay({ reservations, dayId, dayAssignmentIds: dayAssignments.map(a => a.id), days: DAYS }),
+      dayId,
     })
-    const segments = segmentsOf(buildDayRouteRuns(1, {
-      days: DAYS, assignments: { '1': dayAssignments }, reservations: [flight], accommodations: [stay], optimizeFromAccommodation: true,
+    const segments = segmentsOf(buildDayRouteRuns(dayId, {
+      days: DAYS, assignments: { [String(dayId)]: dayAssignments }, reservations, accommodations: stays, optimizeFromAccommodation: true,
     }))
     return {
-      rows: buildPlanRows({ merged, reservations: [flight], routeSegments: segments, dayId: 1 }),
-      legs: hotelLegsForDay(DAY1, DAYS, [stay], segments),
+      rows: buildPlanRows({ merged, reservations, routeSegments: segments, dayId }),
+      legs: hotelLegsForDay(DAYS.find(d => d.id === dayId)!, DAYS, stays, segments),
     }
   }
+  const dayOne = () => planOf(1, [hotelStop, townHall], [flight], [stay])
   const ends = (s: RouteSegment) => [s.from, s.to]
 
   it('FE-MOB-PTLM-048: opens with the flight, shows the hop from the hotel stop once and ends at the hotel', () => {
@@ -458,6 +461,181 @@ describe('planTimelineModel: a day that lands and then drives to the hotel (#250
       merged: [placeItem(hotelStop), placeItem(townHall)], reservations: [], routeSegments: [bookend], dayId: 1,
     })
     expect(rows.map(r => r.kind)).toEqual(['place', 'place'])
+  })
+
+  it('FE-MOB-PTLM-051: the drive from the arrival airport to the first stop sits under the flight (#2502)', () => {
+    const { rows } = dayOne()
+    expect(rows.map(r => r.kind)).toEqual(['transport', 'conn', 'place', 'conn', 'place'])
+    const landed = rows[1]
+    expect(landed).toMatchObject({ key: 'conn-tr-7', seg: { from: [HAM.lat, HAM.lng], to: [HOTEL.lat, HOTEL.lng] } })
+    // It leaves no stop, so there is no stop whose outgoing mode it would change.
+    expect(landed.kind === 'conn' && landed.assignmentId).toBeUndefined()
+  })
+
+  it('FE-MOB-PTLM-052: the drive to the departure airport sits under the stop it leaves from', () => {
+    const HARBOUR = { lat: 53.5436, lng: 9.9661 }
+    const homeFlight = buildReservation({
+      id: 8, type: 'flight', title: 'KL 1790', day_id: 3, end_day_id: 3, day_plan_position: 5,
+      reservation_time: '2026-05-03T18:00', reservation_end_time: '2026-05-03T19:10',
+      endpoints: [
+        { role: 'from', sequence: 0, name: 'HAM', code: null, ...HAM, timezone: null, local_date: null, local_time: null },
+        { role: 'to', sequence: 1, name: 'AMS', code: null, ...AMS, timezone: null, local_date: null, local_time: null },
+      ],
+    })
+    const harbour = buildAssignment({ id: 23, day_id: 3, order_index: 0, place: place(902, 'Harbour', HARBOUR.lat, HARBOUR.lng) })
+    const { rows } = planOf(3, [harbour], [homeFlight], [])
+    expect(rows.map(r => r.kind)).toEqual(['place', 'conn', 'transport'])
+    // Its mode is the stop's own, so the row keeps the stop's menu.
+    expect(rows[1]).toMatchObject({ key: 'conn-pl-23', assignmentId: 23, seg: { from: [HARBOUR.lat, HARBOUR.lng], to: [HAM.lat, HAM.lng] } })
+  })
+
+  it('FE-MOB-PTLM-053: two flights back to back get no drive between the airports (#1394)', () => {
+    const endpoint = (role: 'from' | 'to', at: { lat: number; lng: number }) =>
+      ({ role, sequence: role === 'from' ? 0 : 1, name: role, code: null, ...at, timezone: null, local_date: null, local_time: null })
+    const IST = { lat: 41.2753, lng: 28.7519 }
+    const SAW = { lat: 40.8986, lng: 29.3092 }
+    const inbound = buildReservation({ id: 9, type: 'flight', day_id: 2, endpoints: [endpoint('from', AMS), endpoint('to', IST)] })
+    const onward = buildReservation({ id: 10, type: 'flight', day_id: 2, endpoints: [endpoint('from', SAW), endpoint('to', HAM)] })
+    const rows = buildPlanRows({
+      merged: [transportItem(inbound), transportItem(onward)],
+      reservations: [],
+      routeSegments: [seg([IST.lat, IST.lng], [SAW.lat, SAW.lng])],
+      dayId: 2,
+    })
+    expect(rows.map(r => r.kind)).toEqual(['transport', 'transport'])
+  })
+
+  it('FE-MOB-PTLM-054: a located transit ride gets the walk to its first stop and from its last one', () => {
+    const S1 = { lat: 48.11, lng: 16.11 }
+    const S2 = { lat: 48.19, lng: 16.19 }
+    const ride = buildReservation({
+      id: 64, type: 'transit', day_id: 2,
+      metadata: JSON.stringify({ transit: { legs: [{ mode: 'subway', line: 'U2' }], transfers: 0 } }),
+      endpoints: [
+        { role: 'from', sequence: 0, name: 'S1', code: null, ...S1, timezone: null, local_date: null, local_time: null },
+        { role: 'to', sequence: 1, name: 'S2', code: null, ...S2, timezone: null, local_date: null, local_time: null },
+      ],
+    })
+    const museum = assignment(11, 0, place(101, 'Museum', 48.1, 16.1))
+    const park = assignment(12, 1, place(102, 'Park', 48.2, 16.2))
+    const rows = buildPlanRows({
+      merged: [placeItem(museum), transportItem(ride), placeItem(park)],
+      reservations: [],
+      routeSegments: [seg([48.1, 16.1], [S1.lat, S1.lng]), seg([S2.lat, S2.lng], [48.2, 16.2])],
+      dayId: 2,
+    })
+    expect(rows.map(r => r.key)).toEqual(['pl-11', 'conn-pl-11', 'tr-64', 'conn-tr-64', 'pl-12'])
+  })
+
+  it('FE-MOB-PTLM-055: a transit ride saved on the stops themselves gets no connector that goes nowhere', () => {
+    // The transit planner saves a journey between two of the day's places at their
+    // own coordinates, so the route has a leg of no length on either side of it.
+    const LANDING = { lat: 53.5457, lng: 9.9666 }
+    const ride = buildReservation({
+      id: 65, type: 'transit', title: 'Town Hall → Landungsbruecken', day_id: 2, end_day_id: 2, day_plan_position: 0.5,
+      reservation_time: '2026-05-02T10:00', reservation_end_time: '2026-05-02T10:12',
+      metadata: JSON.stringify({ transit: { legs: [{ mode: 'SUBWAY', line: 'U3' }], transfers: 0 } }),
+      endpoints: [
+        { role: 'from', sequence: 0, name: 'Town Hall', code: null, ...TOWN_HALL, timezone: null, local_date: null, local_time: null },
+        { role: 'to', sequence: 1, name: 'Landungsbruecken', code: null, ...LANDING, timezone: null, local_date: null, local_time: null },
+      ],
+    })
+    const hall = buildAssignment({ id: 24, day_id: 2, order_index: 0, place: place(901, 'Town Hall', TOWN_HALL.lat, TOWN_HALL.lng) })
+    const landing = buildAssignment({ id: 25, day_id: 2, order_index: 1, place: place(903, 'Landungsbruecken', LANDING.lat, LANDING.lng) })
+    const drawn = segmentsOf(buildDayRouteRuns(2, {
+      days: DAYS, assignments: { '2': [hall, landing] }, reservations: [ride], accommodations: [stay], optimizeFromAccommodation: true,
+    }))
+    expect(drawn.filter(s => JSON.stringify(s.from) === JSON.stringify(s.to))).toHaveLength(2)
+
+    const { rows, legs } = planOf(2, [hall, landing], [ride], [stay])
+    expect(rows.map(r => r.key)).toEqual(['pl-24', 'tr-65', 'pl-25'])
+    // The drives out of and back to the hotel are real and stay.
+    expect(legs.top).toMatchObject({ seg: { from: [HOTEL.lat, HOTEL.lng], to: [TOWN_HALL.lat, TOWN_HALL.lng] } })
+    expect(legs.bottom).toMatchObject({ seg: { from: [LANDING.lat, LANDING.lng], to: [HOTEL.lat, HOTEL.lng] } })
+  })
+
+  it('FE-MOB-PTLM-056: two stops on the very same spot keep their connector', () => {
+    // Only a booking's station on the stop is no leg; the stop's own menu stays.
+    const inn = assignment(13, 0, place(103, 'Inn', 48.1, 16.1))
+    const bar = assignment(14, 1, place(104, 'Bar in the inn', 48.1, 16.1))
+    const rows = buildPlanRows({
+      merged: [placeItem(inn), placeItem(bar)], reservations: [], routeSegments: [seg([48.1, 16.1], [48.1, 16.1])], dayId: 2,
+    })
+    expect(rows.map(r => r.key)).toEqual(['pl-13', 'conn-pl-13', 'pl-14'])
+  })
+
+  describe('a booking the route has no location for', () => {
+    // The route rides straight past it, so the drive through it is drawn on the map,
+    // and the desktop day plan shows that leg under the booking.
+    const station = (role: 'from' | 'to', p: { lat: number; lng: number }, name: string) =>
+      ({ role, sequence: role === 'from' ? 0 : 1, name, code: null, ...p, timezone: null, local_date: null, local_time: null })
+    const LANDING = { lat: 53.5457, lng: 9.9666 }
+
+    it('FE-MOB-PTLM-057: the drive to the departure airport past a taxi without its stops goes under the taxi (#2502)', () => {
+      const hall = buildAssignment({ id: 26, day_id: 3, order_index: 0, place: place(901, 'Town Hall', TOWN_HALL.lat, TOWN_HALL.lng) })
+      const taxi = buildReservation({ id: 70, type: 'taxi', title: 'Taxi to the airport', day_id: 3, end_day_id: 3, day_plan_position: 0.5 })
+      const homeFlight = buildReservation({
+        id: 71, type: 'flight', title: 'KL 1790', day_id: 3, end_day_id: 3, day_plan_position: 0.8,
+        reservation_time: '2026-05-03T18:00', reservation_end_time: '2026-05-03T19:10',
+        endpoints: [station('from', HAM, 'HAM'), station('to', AMS, 'AMS')],
+      })
+      const { rows } = planOf(3, [hall], [taxi, homeFlight], [])
+      expect(rows.map(r => r.key)).toEqual(['pl-26', 'tr-70', 'conn-tr-70', 'tr-71'])
+      // Routed in the mode of the stop it left, so the menu edits that stop.
+      expect(rows[2]).toMatchObject({ assignmentId: 26, seg: { from: [TOWN_HALL.lat, TOWN_HALL.lng], to: [HAM.lat, HAM.lng] } })
+    })
+
+    it('FE-MOB-PTLM-058: an event between two stops carries the drive between them, stations or not (#2502)', () => {
+      const hall = buildAssignment({ id: 27, day_id: 2, order_index: 0, place: place(901, 'Town Hall', TOWN_HALL.lat, TOWN_HALL.lng) })
+      const landing = buildAssignment({ id: 28, day_id: 2, order_index: 1, place: place(903, 'Landungsbruecken', LANDING.lat, LANDING.lng) })
+      const concert = buildReservation({ id: 72, type: 'event', title: 'Concert', day_id: 2, end_day_id: 2, day_plan_position: 0.5 })
+      // A transit booking turned into an event in the booking form keeps its stations,
+      // and the route still only rides transport bookings.
+      const retyped = { ...concert, endpoints: [station('from', TOWN_HALL, 'Town Hall'), station('to', HAM, 'HAM')] }
+      for (const booking of [concert, retyped]) {
+        const { rows } = planOf(2, [hall, landing], [booking], [])
+        expect(rows.map(r => r.key)).toEqual(['pl-27', 'tr-72', 'conn-tr-72', 'pl-28'])
+        expect(rows[2]).toMatchObject({ assignmentId: 27, seg: { from: [TOWN_HALL.lat, TOWN_HALL.lng], to: [LANDING.lat, LANDING.lng] } })
+      }
+    })
+
+    it('FE-MOB-PTLM-059: an arrival carries past it into the next drive, and two flights around it stay apart (#1394)', () => {
+      const taxi = buildReservation({ id: 73, type: 'taxi', title: 'Taxi', day_id: 1, end_day_id: 1, day_plan_position: -0.2 })
+      const { rows } = planOf(1, [hotelStop, townHall], [flight, taxi], [stay])
+      expect(rows.map(r => r.key)).toEqual(['tr-7', 'tr-73', 'conn-tr-73', 'pl-21', 'conn-pl-21', 'pl-22'])
+      expect(rows[2]).toMatchObject({ seg: { from: [HAM.lat, HAM.lng], to: [HOTEL.lat, HOTEL.lng] } })
+      // It leaves the airport, not a stop, so there is no stop's mode to change.
+      expect(rows[2].kind === 'conn' && rows[2].assignmentId).toBeUndefined()
+
+      const IST = { lat: 41.2753, lng: 28.7519 }
+      const SAW = { lat: 40.8986, lng: 29.3092 }
+      const inbound = buildReservation({ id: 9, type: 'flight', day_id: 2, endpoints: [station('from', AMS, 'AMS'), station('to', IST, 'IST')] })
+      const shuttle = buildReservation({ id: 74, type: 'bus', day_id: 2 })
+      const onward = buildReservation({ id: 10, type: 'flight', day_id: 2, endpoints: [station('from', SAW, 'SAW'), station('to', HAM, 'HAM')] })
+      const transfer = buildPlanRows({
+        merged: [transportItem(inbound), transportItem(shuttle), transportItem(onward)],
+        reservations: [],
+        routeSegments: [seg([IST.lat, IST.lng], [SAW.lat, SAW.lng])],
+        dayId: 2,
+      })
+      expect(transfer.map(r => r.kind)).toEqual(['transport', 'transport', 'transport'])
+    })
+
+    it('FE-MOB-PTLM-060: the drive goes under the last of several such bookings, and none of them opens the day', () => {
+      const museum = assignment(11, 0, place(101, 'Museum', 48.1, 16.1))
+      const park = assignment(12, 1, place(102, 'Park', 48.2, 16.2))
+      const early = buildReservation({ id: 75, type: 'taxi', day_id: 2 })
+      const taxi = buildReservation({ id: 76, type: 'taxi', day_id: 2 })
+      const note = buildDayNote({ id: 42, day_id: 2 })
+      const concert = buildReservation({ id: 77, type: 'event', day_id: 2 })
+      const rows = buildPlanRows({
+        merged: [transportItem(early), placeItem(museum), transportItem(taxi), noteItem(note), transportItem(concert), placeItem(park)],
+        reservations: [],
+        routeSegments: [seg([48.1, 16.1], [48.2, 16.2])],
+        dayId: 2,
+      })
+      expect(rows.map(r => r.key)).toEqual(['tr-75', 'pl-11', 'tr-76', 'note-42', 'tr-77', 'conn-tr-77', 'pl-12'])
+    })
   })
 })
 
