@@ -650,6 +650,32 @@ function LeafletLocationLayer({ position, mode }: { position: GeoPosition | null
   )
 }
 
+/**
+ * Make a place pin a drag source without losing its clicks to an old pan.
+ *
+ * The drag wiring swallows mousedown so the map holds still while a drag starts. Leaflet
+ * tells a click from the end of a pan by a flag it only clears on the next mousedown it
+ * sees, so once the map had been dragged, every click on a pin was taken for the tail of
+ * that pan and dropped, until something else on the map was pressed (#2504). A press on
+ * the pin now clears that flag itself, as the map would have. Switching the pan handler
+ * off and on again is the public way to do that, and nothing is being panned at that
+ * moment. The click then takes Leaflet's normal route, so it still closes open popups
+ * and still reaches listeners further up the page, like an open context menu.
+ */
+function wireDraggablePin(el: HTMLElement, placeId: number, map: L.Map): () => void {
+  const undoDrag = makeMarkerDraggable(el, placeId)
+  const forgetPan = (e: MouseEvent) => {
+    if (e.button !== 0 || !map.dragging.enabled()) return
+    map.dragging.disable()
+    map.dragging.enable()
+  }
+  el.addEventListener('mousedown', forgetPan)
+  return () => {
+    undoDrag()
+    el.removeEventListener('mousedown', forgetPan)
+  }
+}
+
 interface MemoMarkerProps {
   place: any
   isSelected: boolean
@@ -668,6 +694,7 @@ const MemoMarker = memo(function MemoMarker({
   place, isSelected, orderNumbers, photoUrl, onClickPlace, onHover, onHoverOut, draggable, onRegister,
 }: MemoMarkerProps) {
   const icon = createPlaceIcon({ ...place, image_url: photoUrl }, orderNumbers, isSelected)
+  const map = useMap()
   const cleanupRef = useRef<(() => void) | null>(null)
   // react-leaflet compares `position` by reference and calls setLatLng whenever it
   // differs, and the cluster group answers a moved child by taking it out and putting
@@ -686,7 +713,7 @@ const MemoMarker = memo(function MemoMarker({
         // so the wiring is redone on every add rather than once on mount.
         add: (e: any) => {
           cleanupRef.current?.()
-          cleanupRef.current = draggable ? makeMarkerDraggable(e.target.getElement() as HTMLElement, place.id) : null
+          cleanupRef.current = draggable ? wireDraggablePin(e.target.getElement() as HTMLElement, place.id, map) : null
         },
         remove: () => { cleanupRef.current?.(); cleanupRef.current = null },
         click: () => onClickPlace(place.id),
