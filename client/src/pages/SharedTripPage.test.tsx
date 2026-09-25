@@ -2,7 +2,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '../../tests/helpers/render';
 import { Routes, Route } from 'react-router';
 import { http, HttpResponse } from 'msw';
+import { AxiosError } from 'axios';
 import { server } from '../../tests/helpers/msw/server';
+import { shareApi } from '../api/client';
 import { resetAllStores, seedStore } from '../../tests/helpers/store';
 import { buildSettings } from '../../tests/helpers/factories';
 import { useSettingsStore } from '../store/settingsStore';
@@ -1542,6 +1544,179 @@ describe('SharedTripPage', () => {
       const header = document.querySelector<HTMLElement>('div[style*="linear-gradient(135deg"]');
       expect(header?.textContent).toContain('Shared Paris Trip');
       expect(header?.style.overflow).toBe('hidden');
+    });
+  });
+
+  // ── #2505: only a 404 means the link is dead ────────────────────────────
+
+  describe('FE-PAGE-SHARED-043: a failed load is not an expired link (#2505)', () => {
+    const failWith = (status: number) =>
+      server.use(http.get('/api/shared/:token', () => HttpResponse.json({ error: 'nope' }, { status })));
+
+    it.each([500, 502, 503, 429])('keeps the link when the server answers %i', async (status) => {
+      failWith(status);
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    });
+
+    // A request with no response makes the api client probe /api/health for a
+    // proxy wall first; answer it the way a healthy server does.
+    const healthy = () => http.get('/api/health', () => HttpResponse.json({ status: 'ok' }));
+
+    it('keeps the link when the request never reaches the server', async () => {
+      server.use(healthy(), http.get('/api/shared/:token', () => HttpResponse.error()));
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+    });
+
+    it('keeps the link when the request times out', async () => {
+      // What axios rejects with once its 8s deadline passes: no response at all.
+      const timeout = new AxiosError('timeout of 8000ms exceeded', AxiosError.ECONNABORTED);
+      const spy = vi.spyOn(shareApi, 'getSharedTrip').mockRejectedValueOnce(timeout);
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+      spy.mockRestore();
+    });
+
+    it('still calls a 404 from the share endpoint an expired link, without a retry', async () => {
+      server.use(
+        http.get('/api/shared/:token', () => HttpResponse.json({ error: 'Invalid or expired link' }, { status: 404 })),
+      );
+      renderSharedTrip('gone-token');
+
+      await waitFor(() => expect(screen.getByText(/link expired or invalid/i)).toBeInTheDocument());
+      expect(screen.queryByText(/could not be loaded/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /try again/i })).not.toBeInTheDocument();
+    });
+
+    // A reverse proxy that has no upstream for TREK (Traefik while the
+    // container is stopped or still in its start period, nginx with a missing
+    // location) answers 404 on its own. That is the restart window of the
+    // report, not a dead link.
+    it.each([
+      ['a plain text 404 from Traefik', '404 page not found\n', 'text/plain; charset=utf-8'],
+      ['an HTML 404 from nginx', '<html><head><title>404 Not Found</title></head><body></body></html>', 'text/html'],
+    ])('keeps the link on %s', async (_label, body, contentType) => {
+      server.use(
+        http.get('/api/shared/:token', () => new HttpResponse(body, { status: 404, headers: { 'content-type': contentType } })),
+      );
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    });
+
+    it('shows the failed screen instead of crashing when a 200 is not the share payload', async () => {
+      // An auth wall or a captive portal answering the API call with its own page.
+      let calls = 0;
+      server.use(
+        http.get('/api/shared/:token', () => {
+          calls += 1;
+          if (calls === 1) {
+            return new HttpResponse('<!doctype html><html><body>Sign in</body></html>', {
+              status: 200,
+              headers: { 'content-type': 'text/html' },
+            });
+          }
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Past The Wall', start_date: '2026-07-01', end_date: '2026-07-02' },
+            days: [],
+            assignments: {},
+            dayNotes: {},
+            places: [],
+            reservations: [],
+            accommodations: [],
+            permissions: { share_map: true },
+          });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      fireEvent.click(await screen.findByRole('button', { name: /try again/i }));
+
+      await waitFor(() => expect(screen.getByText('Past The Wall')).toBeInTheDocument());
+      expect(calls).toBe(2);
+    });
+
+    it('loads the trip when the retry gets through', async () => {
+      let calls = 0;
+      server.use(
+        http.get('/api/shared/:token', () => {
+          calls += 1;
+          if (calls === 1) return new HttpResponse(null, { status: 503 });
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Back Online Trip', start_date: '2026-07-01', end_date: '2026-07-02' },
+            days: [],
+            assignments: {},
+            dayNotes: {},
+            places: [],
+            reservations: [],
+            accommodations: [],
+            permissions: { share_map: true },
+          });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      const retry = await screen.findByRole('button', { name: /try again/i });
+      fireEvent.click(retry);
+
+      await waitFor(() => expect(screen.getByText('Back Online Trip')).toBeInTheDocument());
+      expect(calls).toBe(2);
+    });
+
+    it('keeps the failed screen up with a busy button while the retry runs, and sends it once', async () => {
+      let calls = 0;
+      let release: () => void = () => {};
+      server.use(
+        http.get('/api/shared/:token', async () => {
+          calls += 1;
+          if (calls === 1) return new HttpResponse(null, { status: 500 });
+          await new Promise<void>((resolve) => { release = resolve; });
+          return new HttpResponse(null, { status: 500 });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      const retry = await screen.findByRole('button', { name: /try again/i });
+      fireEvent.click(retry);
+      await waitFor(() => expect(retry).toBeDisabled());
+      expect(retry).toHaveAttribute('aria-busy', 'true');
+      expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument();
+      fireEvent.click(retry);
+
+      await waitFor(() => expect(calls).toBe(2));
+      release();
+      await waitFor(() => expect(retry).not.toBeDisabled());
+      expect(calls).toBe(2);
+      expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument();
+    });
+
+    it('lands on the expired screen when the retry finds the link gone', async () => {
+      let calls = 0;
+      server.use(
+        healthy(),
+        http.get('/api/shared/:token', () => {
+          calls += 1;
+          return calls === 1
+            ? HttpResponse.error()
+            : HttpResponse.json({ error: 'Invalid or expired link' }, { status: 404 });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      fireEvent.click(await screen.findByRole('button', { name: /try again/i }));
+
+      await waitFor(() => expect(screen.getByText(/link expired or invalid/i)).toBeInTheDocument());
+      expect(calls).toBe(2);
     });
   });
 });

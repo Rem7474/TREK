@@ -39,6 +39,7 @@ import { resolveBasemap } from '../utils/tileUrl';
 import { useSharedTrip } from './sharedTrip/useSharedTrip';
 import { SharedPlaceDetails } from './sharedTrip/SharedPlaceDetails';
 import { SharedBookingDetails } from './sharedTrip/SharedBookingDetails';
+import { SharedTripErrorScreen } from './sharedTrip/SharedTripErrorScreen';
 
 const TRANSPORT_ICONS = { flight: Plane, train: Train, bus: Bus, car: Car, cruise: Ship };
 
@@ -98,6 +99,8 @@ export default function SharedTripPage() {
   const {
     data,
     error,
+    retry,
+    retrying,
     base,
     convert,
     selectedDay,
@@ -108,23 +111,7 @@ export default function SharedTripPage() {
     setShowLangPicker,
   } = useSharedTrip();
 
-  if (error)
-    return (
-      <div
-        className="bg-[#f3f4f6]"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}
-      >
-        <div style={{ textAlign: 'center', padding: 40 }}>
-          <div style={{ fontSize: 'calc(48px * var(--fs-scale-title, 1))', marginBottom: 16 }}>🔒</div>
-          <h1 className="text-[#111827]" style={{ fontSize: 'calc(20px * var(--fs-scale-title, 1))', fontWeight: 700 }}>
-            {t('shared.expired')}
-          </h1>
-          <p className="text-[#6b7280]" style={{ marginTop: 8 }}>
-            {t('shared.expiredHint')}
-          </p>
-        </div>
-      </div>
-    );
+  if (error) return <SharedTripErrorScreen reason={error} retrying={retrying} onRetry={retry} />;
 
   if (!data)
     return (
