@@ -75,6 +75,10 @@ const shareOverlay = (page: Page): Locator => page.locator('div[role="presentati
 /** The bulk-import dialog: its own portal, with none of the shared backdrop classes. */
 const importCard = (page: Page): Locator =>
   page.getByText('Import Packing List', { exact: true }).locator('xpath=..')
+/** The Export button's menu: print, Markdown and CSV. */
+const exportMenu = (page: Page): Locator => page.getByRole('menu')
+/** The printable page inside the preview, a srcdoc frame of its own. */
+const printFrame = (page: Page) => page.frameLocator('iframe[title^="Packing List"]')
 /** The bags column. Total weight is a span two divs inside it, under the rule. */
 const bagSidebar = (page: Page): Locator =>
   page.getByText('Total weight', { exact: true }).locator('xpath=ancestor::div[3]')
@@ -367,7 +371,7 @@ const SCRIPTS: Record<string, GuideScript> = {
       },
       // Clicking it would open the operating system's file chooser, which is
       // not part of the picture; the button is shown, not pressed.
-      only(p => importCard(p).getByRole('button', { name: 'Load CSV/TXT' })),
+      only(p => importCard(p).getByRole('button', { name: 'Load CSV/TXT/MD' })),
       {
         target: p => importCard(p).getByRole('button', { name: /^Import \d+$/ }),
         act: async p => {
@@ -379,6 +383,39 @@ const SCRIPTS: Record<string, GuideScript> = {
       },
     ],
     cleanup: p => deleteItems(p, row => IMPORTED.includes(row.name)),
+  },
+  'export-packing-list': {
+    guide: guide('export-packing-list'),
+    start: openLists,
+    steps: [
+      {
+        target: p => p.getByRole('button', { name: 'Export', exact: true }),
+        act: async p => {
+          await p.getByRole('button', { name: 'Export', exact: true }).click()
+          await expect(exportMenu(p)).toBeVisible()
+          await settle(p)
+        },
+      },
+      // The two file entries download at once; the step shows them, it does not press them.
+      only(exportMenu),
+      {
+        target: p => exportMenu(p).getByRole('menuitem', { name: 'Print or save as PDF' }),
+        act: async p => {
+          await exportMenu(p).getByRole('menuitem', { name: 'Print or save as PDF' }).click()
+          await expect(printFrame(p).locator('h1')).toBeVisible({ timeout: 15_000 })
+          // The page carries the app's own Poppins; the result picture waits for it.
+          await printFrame(p).locator('body').evaluate(async () => { await document.fonts.ready })
+          await settle(p)
+        },
+      },
+      // Pressing it opens the operating system's print dialog, which is not part
+      // of the picture; the button is shown, not pressed. The result picture is the
+      // preview itself.
+      only(p => p.getByRole('button', { name: 'Print or save as PDF' })),
+    ],
+    cleanup: async p => {
+      await p.getByRole('button', { name: 'Close', exact: true }).click()
+    },
   },
   'share-packing-item': {
     guide: guide('share-packing-item'),

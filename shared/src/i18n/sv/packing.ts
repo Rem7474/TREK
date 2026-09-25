@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Ett föremål per rad. Format: Kategori, Namn, Vikt i g (valfritt), Väska (valfritt), checked/unchecked (valfritt)',
   'packing.importPlaceholder':
     'Hygien, Tandborste\nKläder, T-shirts, 200\nDokument, Pass, , Handbagage\nElektronik, Laddare, 50, Resväska, checked',
-  'packing.importCsv': 'Ladda CSV/TXT',
+  'packing.importCsv': 'Ladda CSV/TXT/MD',
+  'packing.export': 'Exportera',
+  'packing.exportPrint': 'Skriv ut eller spara som PDF',
+  'packing.exportMarkdown': 'Checklista i Markdown (.md)',
+  'packing.exportCsv': 'CSV för import (.csv)',
+  'packing.printItems': 'Saker',
+  'packing.printPacked': 'Packade',
+  'packing.importHintMarkdown':
+    'En Markdown-lista fungerar också: en rubrik anger kategorin, "- [ ]" och "- [x]" blir objekt och "3x" före ett namn anger antalet.',
   'packing.importAction': 'Importera {count}',
   'packing.importSuccess': '{count} föremål imported',
   'packing.importError': 'Importen misslyckades',

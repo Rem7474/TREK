@@ -3043,7 +3043,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Jagatud ja Minu nimekiri jagavad pakkimisnimekirja kaheks: ühine osa, mida kõik näevad, ja sinu oma. Kõik, Avatud ja Valmis kitsendavad parajasti avatud nimekirja ning ülal olev riba loendab pakitut.',
   'help.ctx.trip-lists.bullet.5':
-    'Rakenda mall, Impordi ja Salvesta mallina täidavad või salvestavad nimekirja ilma seda käsitsi sisestamata ning nende kõrval olev punane nupp näitab, mitu eset on märgitud, ja eemaldab need.',
+    'Rakenda mall ja Salvesta mallina täidavad või salvestavad nimekirja ilma seda käsitsi sisestamata ning nende kõrval olevad kaks ikooni ekspordivad nimekirja väljatrükina, PDF-ina või failina ja impordivad nimekirja. Punane nupp näitab, mitu eset on märgitud, ja eemaldab need.',
   'help.ctx.trip-lists.bullet.6':
     'Ülesannetel on oma külgriba: edenemise kaart, filtrid Kõik, Minu ülesanded, Üle tähtaja ja Valmis, Sordi valikutega Tähtsus või Tähtaeg ning üks rida iga nimekirja kohta. Klõps ülesandel avab selle paremal paanil ja Lisa uus ülesanne avab ekraani keskel vormi Uus ülesanne.',
   // packing-categories
@@ -3108,18 +3108,35 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Kleebi sisse terve pakkimisnimekiri',
   'help.guide.import-packing-list.goal': 'Muuda mujal olemasolev nimekiri korraga pakkimisesemeteks.',
-  'help.guide.import-packing-list.step.1': 'Klõpsa nimekirja kohal olevas ribas nuppu Impordi.',
+  'help.guide.import-packing-list.step.1': 'Klõpsa nimekirja kohal olevas ribas allanoolega impordinuppu.',
   'help.guide.import-packing-list.step.2':
-    'Üks ese rea kohta: Kategooria, Nimi, Kaal grammides (valikuline), Kott (valikuline), checked/unchecked (valikuline). Kastis olev hall näidis näitab kõiki nelja kuju.',
+    'Üks ese rea kohta: Kategooria, Nimi, Kaal grammides (valikuline), Kott (valikuline), checked/unchecked (valikuline). Kastis olev hall näidis näitab kõiki nelja kuju. Sobib ka Markdowni loend: pealkiri annab nimekirjale nime ning "- [ ]" ja "- [x]" muutuvad esemeteks.',
   'help.guide.import-packing-list.step.3':
-    'Või laadi read failist nupuga Laadi CSV/TXT. See võtab vastu .csv- või .txt-faili ja asendab kogu kasti sisu.',
+    'Või laadi read failist nupuga Laadi CSV/TXT/MD. See võtab vastu .csv-, .txt- või .md-faili ja asendab kogu kasti sisu.',
   'help.guide.import-packing-list.step.4': 'Klõpsa nuppu Impordi. Nupp näitab, mitu rida see ära tundis.',
   'help.guide.import-packing-list.result':
     'Igast reast saab kirje nimekirjas, mille nimi on rea esimeses väljas, ja olemasolevat sisu ei muudeta.',
   'help.guide.import-packing-list.tip.1':
-    'Välju eraldavad komad, semikoolonid ja tabulaatorid ning jutumärgid hoiavad välja koos, nii et "Särk, sinine" jääb üheks nimeks. Ühe väärtusega rida on lihtsalt nimi ja ilma oma nimekirjata rida satub nimekirja Muu.',
+    'Välju eraldavad komad, semikoolonid ja tabulaatorid ning jutumärgid hoiavad välja koos, nii et "Särk, sinine" jääb üheks nimeks. Ühe väärtusega rida on lihtsalt nimi, ilma oma nimekirjata rida satub nimekirja Muu ja "3x" nime ees määrab koguse.',
   'help.guide.import-packing-list.tip.2':
     'Neljandas väljas nimetatud kott luuakse, kui reisil seda veel pole. See on ainus koht, kus saab kaale ja kotte hulgi laadida; mall toob ainult nimed ja nimekirjad.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Prindi või ekspordi pakkimisnimekiri',
+  'help.guide.export-packing-list.goal':
+    'Võta nimekiri kaasa paberil, PDF-ina või failina teise rakenduse või järgmise reisi jaoks.',
+  'help.guide.export-packing-list.step.1': 'Klõpsa nimekirja kohal olevas ribas ülesnoolega ekspordinuppu.',
+  'help.guide.export-packing-list.step.2':
+    'Markdowni kontrollnimekiri (.md) ja CSV importimiseks (.csv) salvestavad nimekirja kohe failina.',
+  'help.guide.export-packing-list.step.3':
+    'Klõpsa valikut Prindi või salvesta PDF-ina. Eelvaade näitab nimekirja lehena: üleval reis ja selle kuupäevad, seejärel iga nimekiri kaardina, millel on märkeruut.',
+  'help.guide.export-packing-list.step.4':
+    'Klõpsa eelvaate all nuppu Prindi või salvesta PDF-ina. Brauser avab oma printimisakna: vali printer või Salvesta PDF-ina, et fail alles hoida.',
+  'help.guide.export-packing-list.result':
+    'Väljatrükk ja failid sisaldavad parajasti avatud vaadet, Ühine või Minu nimekiri, koos koguste, kaalude ja linnukestega.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV on vorming, mida Impordi loeb, kotid kaasa arvatud, nii et see toimib sinu enda pakkimismallina: impordi see järgmisse reisi.',
+  'help.guide.export-packing-list.tip.2':
+    'Markdowni fail avaneb Obsidianis, Notionis või GitHubis kontrollnimekirjana ja tuleb nupu Impordi kaudu samamoodi tagasi.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Otsusta, kes eset näeb ja kes selle kaasa võtab',
   'help.guide.share-packing-item.goal':

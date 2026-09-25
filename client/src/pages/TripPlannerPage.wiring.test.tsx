@@ -90,6 +90,7 @@ vi.mock('../components/Trips/TripFormModal', () => ({ default: stub('tripForm') 
 vi.mock('../components/Trips/TripMembersModal', () => ({ default: stub('membersModal') }))
 vi.mock('../components/Packing/PackingListPanel', () => ({ default: stub('packingPanel', 'packing-list-panel') }))
 vi.mock('../components/Packing/ApplyTemplateButton', () => ({ default: stub('applyTemplate', 'apply-template') }))
+vi.mock('../components/Packing/PackingExportMenu', () => ({ default: stub('exportMenu', 'export-menu') }))
 vi.mock('../components/Todo/TodoListPanel', () => ({ default: stub('todoPanel', 'todo-list-panel') }))
 vi.mock('../components/Files/FileManager', () => ({ default: stub('fileManager', 'file-manager') }))
 vi.mock('../components/Budget/CostsPanel', () => ({
@@ -1079,6 +1080,21 @@ describe('TripPlannerPage — lists tab', () => {
     expect(props('applyTemplate').visibility).toBe('common')
     act(() => { props('packingPanel').onViewChange('personal') })
     expect(props('applyTemplate').visibility).toBe('personal')
+  })
+
+  it('FE-PAGE-TPW-044b: export and import sit in the header as icons, export following the open view (#875, #1420)', async () => {
+    renderPage({ activeTab: 'listen', packingItems: [buildPackingItem({ checked: 0 })] })
+    await screen.findByTestId('packing-list-panel')
+
+    expect(screen.getByTestId('export-menu')).toBeInTheDocument()
+    expect(props('exportMenu').tripId).toBe(42)
+    expect(props('exportMenu').view).toBe('common')
+    act(() => { props('packingPanel').onViewChange('personal') })
+    expect(props('exportMenu').view).toBe('personal')
+
+    const importButton = screen.getByRole('button', { name: 'Import' })
+    expect(importButton).toHaveAttribute('title', 'Import')
+    expect(importButton).toHaveTextContent('')
   })
 })
 

@@ -56,7 +56,7 @@ On phones the row keeps the name and reduces everything else: sharing shows as a
 
 ## Importing a list
 
-**Import** in the Lists header opens a paste box, or use **Load CSV/TXT** to pick a file. One item per line:
+The **import** button (down arrow) in the Lists header opens a paste box, or use **Load CSV/TXT/MD** to pick a file. One item per line:
 
 ```
 Category, Name, Weight in g (optional), Bag (optional), checked/unchecked (optional)
@@ -69,9 +69,29 @@ Documents, Passport, , Carry-on
 Electronics, Charger, 50, Suitcase, checked
 ```
 
-Commas, semicolons and tabs all work as separators, and a quoted value keeps its commas (`"Shirt, blue"`). A line with a single value is treated as just a name. A line without a category lands in **Other**, and a bag name that does not exist yet is created for you. Imported items are appended; nothing already on the list is removed.
+Commas, semicolons and tabs all work as separators, and a quoted value keeps its commas (`"Shirt, blue"`). A line with a single value is treated as just a name. A line without a category lands in **Other**, and a bag name that does not exist yet is created for you. `3x` in front of a name sets the quantity (`3x Socks`). Imported items are appended; nothing already on the list is removed.
+
+A Markdown list is read as well, the way Obsidian, Notion, GitHub and most notes apps write one. Every heading names the category of the items under it, `- [ ]` and `- [x]` become items (the second one already packed), plain bullets and numbered items work too, and a weight in brackets at the end of a line is picked up:
+
+```
+## Clothing
+- [ ] 3x T-Shirts (200 g)
+- [x] Rain jacket
+```
+
+Anything that is neither a heading nor a list item, a note or a blank line, is left out.
 
 Import is the only place in the UI that loads weights and bag assignments in bulk — applying a template brings across names and categories only. It requires the `packing_edit` permission.
+
+## Printing and exporting
+
+The **export** button (up arrow) next to the import button takes the list along. It covers the view that is open, **Shared** or **My list**, and is there for everyone who can see the list, not only those who can edit it. On phones the same three entries are in the packing list's **⋯** menu.
+
+- **Print or save as PDF** opens a preview of the list as a page: the trip and its dates in a dark block on top with the number of items, how many are packed, the total weight and the bags, then one card per category with a box to tick for every item, its quantity, weight and bag, and the bags with what each holds at the end. **Print or save as PDF** under the preview opens the browser's print dialog, where **Save as PDF** makes the PDF. The page is laid out for A4, in two columns, and a category never breaks across a column or a page.
+- **Markdown checklist (.md)** saves the list as a Markdown checklist: a heading per category and a `- [ ]` or `- [x]` line per item, with its quantity and its weight per piece. It keeps everything but the bags.
+- **CSV for import (.csv)** saves the list in exactly the format the import reads, bags included. Kept on your computer, it works as a packing template of your own that needs no admin: import it into the next trip.
+
+Both files come back in through the import unchanged.
 
 ## Sharing packing items
 

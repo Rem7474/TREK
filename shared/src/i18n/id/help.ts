@@ -3033,7 +3033,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     '“Bersama” dan “Daftar saya” membelah daftar bawaan menjadi dua: kumpulan yang dilihat semua orang, dan milik Anda sendiri. “Semua”, “Belum” dan “Selesai” mempersempit mana pun yang terbuka, dan bilah di atas menghitung apa yang sudah dikemas.',
   'help.ctx.trip-lists.bullet.5':
-    '“Terapkan template”, “Impor” dan “Simpan sebagai template” mengisi atau menyimpan sebuah daftar tanpa mengetiknya, dan tombol merah di sebelahnya menyebut berapa item yang tercentang lalu menyingkirkannya.',
+    '“Terapkan template” dan “Simpan sebagai template” mengisi atau menyimpan sebuah daftar tanpa mengetiknya, dan dua ikon di sebelahnya mengekspor daftar, sebagai cetakan, PDF, atau file, dan mengimpor daftar. Tombol merah menyebut berapa item yang tercentang lalu menyingkirkannya.',
   'help.ctx.trip-lists.bullet.6':
     '“Tugas” punya bilah sisi sendiri: kartu kemajuan, filter “Semua”, “Tugasku”, “Terlambat” dan “Selesai”, “Urutkan” menurut “Prioritas” atau “Tenggat waktu”, dan satu baris per daftar. Klik pada sebuah tugas membukanya di panel sebelah kanan, dan “Tugas baru” membuka formulir “Tugas baru” di atas bagian tengah layar.',
   // packing-categories
@@ -3102,18 +3102,35 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Menempelkan seluruh daftar bawaan',
   'help.guide.import-packing-list.goal':
     'Ubah daftar yang sudah Anda punya di tempat lain menjadi item bawaan sekaligus.',
-  'help.guide.import-packing-list.step.1': 'Klik “Impor” di bilah atas daftar.',
+  'help.guide.import-packing-list.step.1': 'Klik tombol impor dengan panah ke bawah di bilah atas daftar.',
   'help.guide.import-packing-list.step.2':
-    'Satu item per baris: Kategori, Nama, Berat dalam g (opsional), Tas (opsional), checked/unchecked (opsional). Contoh abu-abu di dalam kotak memperlihatkan keempat bentuknya.',
+    'Satu item per baris: Kategori, Nama, Berat dalam g (opsional), Tas (opsional), checked/unchecked (opsional). Contoh abu-abu di dalam kotak memperlihatkan keempat bentuknya. Daftar Markdown juga bisa: judul menjadi nama daftar, dan "- [ ]" serta "- [x]" menjadi item.',
   'help.guide.import-packing-list.step.3':
-    'Atau muat barisnya dari sebuah file dengan “Muat CSV/TXT”. Ia menerima .csv atau .txt dan menggantikan apa pun yang ada di kotak.',
+    'Atau muat barisnya dari sebuah file dengan “Muat CSV/TXT/MD”. Ia menerima .csv, .txt, atau .md dan menggantikan apa pun yang ada di kotak.',
   'help.guide.import-packing-list.step.4': 'Klik “Impor”. Tombolnya menghitung baris yang berhasil dipahami.',
   'help.guide.import-packing-list.result':
     'Setiap baris menjadi satu baris item, di daftar yang disebut bidang pertamanya, dan tidak ada yang sudah ada di sana yang tersentuh.',
   'help.guide.import-packing-list.tip.1':
-    'Koma, titik koma dan tab sama-sama memisahkan bidang, dan tanda kutip ganda menyatukan sebuah bidang, jadi “Shirt, blue” tetap satu nama. Baris dengan satu nilai hanyalah sebuah nama, dan baris tanpa daftar sendiri mendarat di “Lainnya”.',
+    'Koma, titik koma dan tab sama-sama memisahkan bidang, dan tanda kutip ganda menyatukan sebuah bidang, jadi “Shirt, blue” tetap satu nama. Baris dengan satu nilai hanyalah sebuah nama, baris tanpa daftar sendiri mendarat di “Lainnya”, dan "3x" di depan nama menentukan jumlahnya.',
   'help.guide.import-packing-list.tip.2':
     'Tas yang disebut di bidang keempat dibuat jika perjalanan belum memilikinya. Ini satu-satunya tempat yang memuat berat dan tas secara massal; sebuah template hanya membawa nama dan daftar.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Mencetak atau mengekspor daftar bawaan',
+  'help.guide.export-packing-list.goal':
+    'Bawa daftar di atas kertas, sebagai PDF, atau sebagai file untuk aplikasi lain atau perjalanan berikutnya.',
+  'help.guide.export-packing-list.step.1': 'Klik tombol ekspor dengan panah ke atas di bilah atas daftar.',
+  'help.guide.export-packing-list.step.2':
+    '“Daftar periksa Markdown (.md)” dan “CSV untuk impor (.csv)” langsung menyimpan daftar sebagai file.',
+  'help.guide.export-packing-list.step.3':
+    'Klik “Cetak atau simpan sebagai PDF”. Pratinjau menampilkan daftar sebagai satu halaman: perjalanan dan tanggalnya di atas, lalu setiap daftar sebagai kartu dengan kotak untuk dicentang.',
+  'help.guide.export-packing-list.step.4':
+    'Klik “Cetak atau simpan sebagai PDF” di bawah pratinjau. Browser membuka dialog cetaknya: pilih printer, atau “Simpan sebagai PDF” untuk menyimpan file.',
+  'help.guide.export-packing-list.result':
+    'Hasil cetak dan file berisi tampilan yang sedang terbuka, “Bersama” atau “Daftar saya”, lengkap dengan jumlah, berat, dan tanda centang.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV adalah format yang dibaca “Impor”, termasuk tas, jadi bisa dipakai sebagai template bawaan milik Anda sendiri: impor ke perjalanan berikutnya.',
+  'help.guide.export-packing-list.tip.2':
+    'File Markdown terbuka sebagai daftar periksa di Obsidian, Notion, atau GitHub, dan bisa masuk kembali lewat “Impor” dengan cara yang sama.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Menentukan siapa melihat sebuah item dan siapa membawanya',
   'help.guide.share-packing-item.goal':

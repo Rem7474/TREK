@@ -2424,7 +2424,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     '“共享”和“我的清单”把行李清单一分为二：所有人都看得到的公共池，和你自己的那份。“全部”“未完成”“已完成”收窄当前打开的那一边，上方的进度条数出已经打包了多少。',
   'help.ctx.trip-lists.bullet.5':
-    '“应用模板”“导入”和“保存为模板”不用一条条敲就能填满或留下一份清单，旁边的红色按钮写出有多少物品已勾选，并把它们清走。',
+    '“应用模板”和“保存为模板”不用一条条敲就能填满或留下一份清单，旁边的两个图标把清单导出为打印件、PDF 或文件，也能导入一份。红色按钮写出有多少物品已勾选，并把它们清走。',
   'help.ctx.trip-lists.bullet.6':
     '“待办事项”有自己的侧栏：进度卡片，“全部”“我的任务”“已逾期”“已完成”几个筛选，按“优先级”或“截止日期”的“排序方式”，以及每份清单一行。点击一个任务会在右侧面板里打开它，“新建任务”则在屏幕中央打开“新任务”表单。',
   // packing-categories
@@ -2477,18 +2477,33 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': '整份行李清单粘贴进来',
   'help.guide.import-packing-list.goal': '把你已经放在别处的一份清单，一次性变成行李物品。',
-  'help.guide.import-packing-list.step.1': '点击清单上方工具条里的“导入”。',
+  'help.guide.import-packing-list.step.1': '点击清单上方工具条里带向下箭头的导入按钮。',
   'help.guide.import-packing-list.step.2':
-    '每行一个物品：类别, 名称, 以克计的重量（可选）, 行李（可选）, checked/unchecked（可选）。框里的灰色示例把四种写法都展示了。',
+    '每行一个物品：类别, 名称, 以克计的重量（可选）, 行李（可选）, checked/unchecked（可选）。框里的灰色示例把四种写法都展示了。Markdown 列表也可以：标题就是清单名，"- [ ]" 和 "- [x]" 会变成物品。',
   'help.guide.import-packing-list.step.3':
-    '或者用“加载 CSV/TXT”从文件里读入这些行。它接受一个 .csv 或 .txt，并替换掉框里的内容。',
+    '或者用“加载 CSV/TXT/MD”从文件里读入这些行。它接受 .csv、.txt 或 .md 文件，并替换掉框里的内容。',
   'help.guide.import-packing-list.step.4': '点击“导入”。按钮会数出它读懂了多少行。',
   'help.guide.import-packing-list.result':
     '每一行都成了一条物品，落在它第一个字段指定的清单里，原来就有的东西一点没动。',
   'help.guide.import-packing-list.tip.1':
-    '逗号、分号和制表符都能分隔字段，双引号把一个字段拢在一起，所以“Shirt, blue”还是一个名称。只有一个值的行就只是一个名称，没有自己清单的行落进“其他”。',
+    '逗号、分号和制表符都能分隔字段，双引号把一个字段拢在一起，所以“Shirt, blue”还是一个名称。只有一个值的行就只是一个名称，没有自己清单的行落进“其他”，名称前的 "3x" 设定数量。',
   'help.guide.import-packing-list.tip.2':
     '第四个字段里点名的行李，如果旅行里还没有就会被创建。这是唯一一处能批量载入重量和行李的地方；模板只带来名称和清单。',
+  // export-packing-list
+  'help.guide.export-packing-list.title': '打印或导出行李清单',
+  'help.guide.export-packing-list.goal': '把清单带走：印在纸上、存成 PDF，或者存成文件，给别的应用或下次旅行用。',
+  'help.guide.export-packing-list.step.1': '点击清单上方工具条里带向上箭头的导出按钮。',
+  'help.guide.export-packing-list.step.2': '“Markdown 清单 (.md)”和“用于导入的 CSV (.csv)”会直接把清单保存为文件。',
+  'help.guide.export-packing-list.step.3':
+    '点击“打印或另存为 PDF”。预览把清单排成一页：顶部是旅行和日期，下面每份清单是一张带勾选框的卡片。',
+  'help.guide.export-packing-list.step.4':
+    '点击预览下方的“打印或另存为 PDF”。浏览器会打开打印对话框：选一台打印机，或选“另存为 PDF”保存成文件。',
+  'help.guide.export-packing-list.result':
+    '打印件和文件包含当前打开的视图，即“共享”或“我的清单”，连同数量、重量和勾选状态。',
+  'help.guide.export-packing-list.tip.1':
+    'CSV 正是“导入”读取的格式，连行李也包括在内，所以可以当作你自己的行李模板：导入到下一次旅行里即可。',
+  'help.guide.export-packing-list.tip.2':
+    'Markdown 文件在 Obsidian、Notion 或 GitHub 里会显示为勾选清单，也同样可以通过“导入”再导回来。',
   // share-packing-item
   'help.guide.share-packing-item.title': '决定谁看得到一件物品、谁来带',
   'help.guide.share-packing-item.goal': '把一件物品在小组公共池、你自己的清单和你替他们带的人之间挪来挪去。',

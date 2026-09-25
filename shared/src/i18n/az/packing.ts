@@ -20,7 +20,15 @@ const packing: TranslationStrings = {
     'Hər sətirdə bir element. Format: Kateqoriya, Ad, qramla çəki (istəyə bağlı), Çanta (istəyə bağlı), checked/unchecked (istəyə bağlı)',
   'packing.importPlaceholder':
     'Gigiyena, Diş fırçası\nGeyim, Köynəklər, 200\nSənədlər, Pasport, , Əl yükü\nElektronika, Şarj cihazı, 50, Çamadan, checked',
-  'packing.importCsv': 'CSV/TXT yüklə',
+  'packing.importCsv': 'CSV/TXT/MD yüklə',
+  'packing.export': 'İxrac et',
+  'packing.exportPrint': 'Çap et və ya PDF kimi saxla',
+  'packing.exportMarkdown': 'Markdown yoxlama siyahısı (.md)',
+  'packing.exportCsv': 'İdxal üçün CSV (.csv)',
+  'packing.printItems': 'Elementlər',
+  'packing.printPacked': 'Yığılıb',
+  'packing.importHintMarkdown':
+    'Markdown siyahısı da işləyir: başlıq kateqoriyanı adlandırır, "- [ ]" və "- [x]" elementə çevrilir, adın önündəki "3x" isə miqdarı təyin edir.',
   'packing.importAction': '{count} elementi idxal et',
   'packing.importSuccess': '{count} element idxal edildi',
   'packing.importError': 'İdxal uğursuz oldu',

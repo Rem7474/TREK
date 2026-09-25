@@ -17,7 +17,15 @@ const packing: TranslationStrings = {
   'packing.importHint': '每行一個物品。格式：類別, 名稱, 重量（公克，可選）, 包（可選）, checked/unchecked（可選）',
   'packing.importPlaceholder':
     '盥洗, 牙刷\n衣物, T恤, 200\n證件, 護照, , 隨身包\n電子產品, 充電器, 50, 行李箱, checked',
-  'packing.importCsv': '載入 CSV/TXT',
+  'packing.importCsv': '載入 CSV/TXT/MD',
+  'packing.export': '匯出',
+  'packing.exportPrint': '列印或儲存為 PDF',
+  'packing.exportMarkdown': 'Markdown 清單 (.md)',
+  'packing.exportCsv': '用於匯入的 CSV (.csv)',
+  'packing.printItems': '物品',
+  'packing.printPacked': '已打包',
+  'packing.importHintMarkdown':
+    '也可以使用 Markdown 清單：標題作為分類，「- [ ]」和「- [x]」會變成物品，名稱前的「3x」用於設定數量。',
   'packing.importAction': '匯入 {count}',
   'packing.importSuccess': '已匯入 {count} 項',
   'packing.importError': '匯入失敗',

@@ -3031,7 +3031,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Compartido y Mi lista parten la lista de equipaje en dos: el fondo común que ve todo el mundo, y la tuya. Todo, Pendientes y Hecho estrechan la que esté abierta, y la barra de arriba cuenta lo que está preparado.',
   'help.ctx.trip-lists.bullet.5':
-    'Aplicar plantilla, Importar y Guardar como plantilla llenan o conservan una lista sin teclearla, y el botón rojo de al lado dice cuántos artículos están marcados y los quita.',
+    'Aplicar plantilla y Guardar como plantilla llenan o conservan una lista sin teclearla, y los dos iconos de al lado exportan la lista, como impresión, PDF o archivo, e importan una. El botón rojo dice cuántos artículos están marcados y los quita.',
   'help.ctx.trip-lists.bullet.6':
     'Por hacer tiene su propia barra lateral: la tarjeta de progreso, los filtros Todo, Mis tareas, Vencida y Hecho, Ordenar por Prioridad o Fecha límite, y una fila por lista. Un clic en una tarea la abre en el panel de la derecha, y Nueva tarea abre el formulario Nueva tarea sobre el centro de la pantalla.',
   // packing-categories
@@ -3100,18 +3100,37 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Pegar una lista de equipaje entera',
   'help.guide.import-packing-list.goal':
     'Convierte de una vez una lista que ya tienes en otro sitio en artículos de equipaje.',
-  'help.guide.import-packing-list.step.1': 'Haz clic en Importar en la barra de encima de la lista.',
+  'help.guide.import-packing-list.step.1':
+    'Haz clic en el botón de importar con la flecha hacia abajo en la barra de encima de la lista.',
   'help.guide.import-packing-list.step.2':
-    'Un artículo por línea: Categoría, Nombre, Peso en g (opcional), Equipaje (opcional), checked/unchecked (opcional). El ejemplo gris del recuadro muestra las cuatro formas.',
+    'Un artículo por línea: Categoría, Nombre, Peso en g (opcional), Equipaje (opcional), checked/unchecked (opcional). El ejemplo gris del recuadro muestra las cuatro formas. También sirve una lista en Markdown: un encabezado da nombre a la lista, y "- [ ]" y "- [x]" se convierten en artículos.',
   'help.guide.import-packing-list.step.3':
-    'O carga las líneas desde un archivo con Cargar CSV/TXT. Acepta un .csv o un .txt y sustituye lo que haya en el recuadro.',
+    'O carga las líneas desde un archivo con Cargar CSV/TXT/MD. Acepta un .csv, un .txt o un .md y sustituye lo que haya en el recuadro.',
   'help.guide.import-packing-list.step.4': 'Haz clic en Importar. El botón cuenta las líneas que ha entendido.',
   'help.guide.import-packing-list.result':
     'Cada línea es una fila, en la lista que nombra su primer campo, y nada de lo que ya había se toca.',
   'help.guide.import-packing-list.tip.1':
-    'Las comas, los puntos y comas y los tabuladores separan campos, y las comillas mantienen un campo unido, de modo que «Camisa, azul» sigue siendo un solo nombre. Una línea con un único valor es solo un nombre, y una línea sin lista propia cae en Otros.',
+    'Las comas, los puntos y comas y los tabuladores separan campos, y las comillas mantienen un campo unido, de modo que «Camisa, azul» sigue siendo un solo nombre. Una línea con un único valor es solo un nombre, una línea sin lista propia cae en Otros, y "3x" delante de un nombre fija la cantidad.',
   'help.guide.import-packing-list.tip.2':
     'Un equipaje nombrado en el cuarto campo se crea si el viaje aún no lo tiene. Este es el único sitio que carga pesos y equipaje en bloque; una plantilla trae solo nombres y listas.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Imprimir o exportar la lista de equipaje',
+  'help.guide.export-packing-list.goal':
+    'Llévate la lista en papel, en PDF o como archivo para otra aplicación o para el próximo viaje.',
+  'help.guide.export-packing-list.step.1':
+    'Haz clic en el botón de exportar con la flecha hacia arriba en la barra de encima de la lista.',
+  'help.guide.export-packing-list.step.2':
+    'Lista de verificación en Markdown (.md) y CSV para importar (.csv) guardan la lista como archivo al instante.',
+  'help.guide.export-packing-list.step.3':
+    'Haz clic en Imprimir o guardar como PDF. La vista previa muestra la lista como una página: el viaje y sus fechas arriba, y luego cada lista como una tarjeta con una casilla para marcar.',
+  'help.guide.export-packing-list.step.4':
+    'Haz clic en Imprimir o guardar como PDF debajo de la vista previa. El navegador abre su diálogo de impresión: elige una impresora, o Guardar como PDF para quedarte con un archivo.',
+  'help.guide.export-packing-list.result':
+    'La impresión y los archivos recogen la vista que está abierta, Compartido o Mi lista, con las cantidades, los pesos y las marcas.',
+  'help.guide.export-packing-list.tip.1':
+    'El CSV es el formato que lee Importar, equipaje incluido, así que sirve como plantilla de equipaje propia: impórtalo en el próximo viaje.',
+  'help.guide.export-packing-list.tip.2':
+    'El archivo Markdown se abre como lista de verificación en Obsidian, Notion o GitHub, y vuelve a entrar igual por Importar.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Decidir quién ve un artículo y quién lo lleva',
   'help.guide.share-packing-item.goal':

@@ -3090,7 +3090,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Partagé et Ma liste coupent la liste de bagages en deux : le fonds commun que tout le monde voit, et la vôtre. Tous, À faire et Fait restreignent celle qui est ouverte, et la barre au-dessus compte ce qui est emballé.',
   'help.ctx.trip-lists.bullet.5':
-    'Appliquer un modèle, Importer et Enregistrer comme modèle remplissent ou conservent une liste sans la retaper, et le bouton rouge à côté indique combien d’articles sont cochés et les efface.',
+    'Appliquer un modèle et Enregistrer comme modèle remplissent ou conservent une liste sans la retaper, et les deux icônes à côté exportent la liste, en impression, en PDF ou en fichier, et en importent une. Le bouton rouge indique combien d’articles sont cochés et les efface.',
   'help.ctx.trip-lists.bullet.6':
     'À faire a sa propre barre latérale : la carte de progression, les filtres Tout, Mes tâches, En retard et Terminé, Trier par Priorité ou Date d’échéance, et une ligne par liste. Un clic sur une tâche l’ouvre dans le panneau de droite, et Nouvelle tâche ouvre le formulaire Nouvelle tâche au milieu de l’écran.',
   // packing-categories
@@ -3159,18 +3159,37 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Coller une liste de bagages entière',
   'help.guide.import-packing-list.goal':
     'Transformez d’un seul coup une liste que vous avez déjà ailleurs en articles de bagages.',
-  'help.guide.import-packing-list.step.1': 'Cliquez sur Importer dans la barre au-dessus de la liste.',
+  'help.guide.import-packing-list.step.1':
+    'Cliquez sur le bouton d’import avec la flèche vers le bas dans la barre au-dessus de la liste.',
   'help.guide.import-packing-list.step.2':
-    'Un article par ligne : Catégorie, Nom, Poids en g (facultatif), Bagage (facultatif), checked/unchecked (facultatif). L’exemple gris dans le cadre montre les quatre formes.',
+    'Un article par ligne : Catégorie, Nom, Poids en g (facultatif), Bagage (facultatif), checked/unchecked (facultatif). L’exemple gris dans le cadre montre les quatre formes. Une liste Markdown fonctionne aussi : un titre nomme la liste, et "- [ ]" et "- [x]" deviennent des articles.',
   'help.guide.import-packing-list.step.3':
-    'Ou chargez les lignes depuis un fichier avec Charger CSV/TXT. Il prend un .csv ou un .txt et remplace ce qui est dans le cadre.',
+    'Ou chargez les lignes depuis un fichier avec Charger CSV/TXT/MD. Il prend un .csv, un .txt ou un .md et remplace ce qui est dans le cadre.',
   'help.guide.import-packing-list.step.4': 'Cliquez sur Importer. Le bouton compte les lignes qu’il a comprises.',
   'help.guide.import-packing-list.result':
     'Chaque ligne devient un article, dans la liste que nomme son premier champ, et rien de ce qui était déjà là n’est touché.',
   'help.guide.import-packing-list.tip.1':
-    'Les virgules, les points-virgules et les tabulations séparent les champs de la même façon, et les guillemets tiennent un champ ensemble, de sorte que « Chemise, bleue » reste un seul nom. Une ligne avec une seule valeur n’est qu’un nom, et une ligne sans liste à elle atterrit dans Autre.',
+    'Les virgules, les points-virgules et les tabulations séparent les champs de la même façon, et les guillemets tiennent un champ ensemble, de sorte que « Chemise, bleue » reste un seul nom. Une ligne avec une seule valeur n’est qu’un nom, une ligne sans liste à elle atterrit dans Autre, et "3x" devant un nom fixe la quantité.',
   'help.guide.import-packing-list.tip.2':
     'Un bagage nommé dans le quatrième champ est créé si le voyage ne l’a pas encore. C’est le seul endroit qui charge des poids et des bagages en masse ; un modèle n’apporte que des noms et des listes.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Imprimer ou exporter la liste de bagages',
+  'help.guide.export-packing-list.goal':
+    'Emportez la liste sur papier, en PDF ou sous forme de fichier pour une autre application ou le prochain voyage.',
+  'help.guide.export-packing-list.step.1':
+    'Cliquez sur le bouton d’export avec la flèche vers le haut dans la barre au-dessus de la liste.',
+  'help.guide.export-packing-list.step.2':
+    'Checklist Markdown (.md) et CSV pour l’import (.csv) enregistrent aussitôt la liste dans un fichier.',
+  'help.guide.export-packing-list.step.3':
+    'Cliquez sur Imprimer ou enregistrer en PDF. L’aperçu montre la liste sous forme de page : le voyage et ses dates en haut, puis chaque liste sous forme de carte avec une case à cocher.',
+  'help.guide.export-packing-list.step.4':
+    'Cliquez sur Imprimer ou enregistrer en PDF sous l’aperçu. Le navigateur ouvre sa boîte de dialogue d’impression : choisissez une imprimante, ou Enregistrer au format PDF pour garder un fichier.',
+  'help.guide.export-packing-list.result':
+    'L’impression et les fichiers reprennent la vue ouverte, Partagé ou Ma liste, avec les quantités, les poids et les coches.',
+  'help.guide.export-packing-list.tip.1':
+    'Le CSV est le format que lit Importer, bagages compris, il sert donc de modèle de bagages bien à vous : importez-le dans le prochain voyage.',
+  'help.guide.export-packing-list.tip.2':
+    'Le fichier Markdown s’ouvre comme une checklist dans Obsidian, Notion ou GitHub, et revient de la même façon par Importer.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Décider qui voit un article et qui l’apporte',
   'help.guide.share-packing-item.goal':

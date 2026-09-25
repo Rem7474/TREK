@@ -3129,7 +3129,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Paylaşılan və Mənim siyahım baqaj siyahısını ikiyə bölür: hər kəsin gördüyü ümumi siyahı və sizin şəxsi siyahınız. Hamısı, Açıq və Hazır hansı açıqdırsa onu daraldır, yuxarıdakı zolaq isə yığılanları sayır.',
   'help.ctx.trip-lists.bullet.5':
-    'Şablonu tətbiq et, İdxal et və Şablon kimi yadda saxla siyahını əl ilə yazmadan doldurur və ya saxlayır, yanlarındakı qırmızı düymə isə neçə elementin işarələndiyini göstərir və onları silir.',
+    'Şablonu tətbiq et və Şablon kimi yadda saxla siyahını əl ilə yazmadan doldurur və ya saxlayır, yanlarındakı iki ikon isə siyahını çap, PDF və ya fayl kimi ixrac edir və bir siyahı idxal edir. Qırmızı düymə neçə elementin işarələndiyini göstərir və onları silir.',
   'help.ctx.trip-lists.bullet.6':
     'Tapşırıqların öz yan paneli var: irəliləyiş kartı, Hamısı, Mənim tapşırıqlarım, Vaxtı keçmiş və Hazır filtrləri, Prioritet və ya Son tarix üzrə Sırala və hər siyahı üçün bir sətir. Tapşırığa klikləmək onu sağdakı paneldə açır, Yeni tapşırıq əlavə et isə ekranın ortasında Yeni tapşırıq formasını açır.',
   // packing-categories
@@ -3195,19 +3195,36 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Bütöv baqaj siyahısını yapışdırın',
   'help.guide.import-packing-list.goal': 'Başqa yerdə artıq olan siyahını bir dəfəyə baqaj elementlərinə çevirin.',
-  'help.guide.import-packing-list.step.1': 'Siyahının üstündəki paneldə İdxal et düyməsinə klikləyin.',
+  'help.guide.import-packing-list.step.1': 'Siyahının üstündəki paneldə aşağı oxlu idxal düyməsinə klikləyin.',
   'help.guide.import-packing-list.step.2':
-    'Hər sətirdə bir element: Kateqoriya, Ad, qramla çəki (istəyə bağlı), Çanta (istəyə bağlı), checked/unchecked (istəyə bağlı). Xanadakı boz nümunə dörd formanın hamısını göstərir.',
+    'Hər sətirdə bir element: Kateqoriya, Ad, qramla çəki (istəyə bağlı), Çanta (istəyə bağlı), checked/unchecked (istəyə bağlı). Xanadakı boz nümunə dörd formanın hamısını göstərir. Markdown siyahısı da işləyir: başlıq siyahını adlandırır, "- [ ]" və "- [x]" isə elementə çevrilir.',
   'help.guide.import-packing-list.step.3':
-    'Və ya sətirləri CSV/TXT yüklə ilə fayldan yükləyin. O, .csv və ya .txt faylı qəbul edir və xanadakı hər şeyi əvəz edir.',
+    'Və ya sətirləri CSV/TXT/MD yüklə ilə fayldan yükləyin. O, .csv, .txt və ya .md faylı qəbul edir və xanadakı hər şeyi əvəz edir.',
   'help.guide.import-packing-list.step.4':
     'İdxal et düyməsinə klikləyin. Düymə başa düşdüyü sətirlərin sayını göstərir.',
   'help.guide.import-packing-list.result':
     'Hər sətir birinci sahədə adı çəkilən siyahıda bir element olur, əvvəlcədən olanlara isə toxunulmur.',
   'help.guide.import-packing-list.tip.1':
-    'Vergüllər, nöqtəli vergüllər və tab simvolları sahələri ayırır, qoşa dırnaqlar isə sahəni bir yerdə saxlayır, beləliklə "Köynək, mavi" tək ad kimi qalır. Tək dəyərli sətir sadəcə addır, öz siyahısı olmayan sətir isə Digər siyahısına düşür.',
+    'Vergüllər, nöqtəli vergüllər və tab simvolları sahələri ayırır, qoşa dırnaqlar isə sahəni bir yerdə saxlayır, beləliklə "Köynək, mavi" tək ad kimi qalır. Tək dəyərli sətir sadəcə addır, öz siyahısı olmayan sətir Digər siyahısına düşür, adın önündəki "3x" isə miqdarı təyin edir.',
   'help.guide.import-packing-list.tip.2':
     'Dördüncü sahədə adı çəkilən çanta səyahətdə hələ yoxdursa, yaradılır. Çəkiləri və çantaları toplu şəkildə yükləyən yeganə yer budur; şablon yalnız adları və siyahıları gətirir.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Baqaj siyahısını çap edin və ya ixrac edin',
+  'help.guide.export-packing-list.goal':
+    'Siyahını kağız üzərində, PDF kimi və ya başqa tətbiq ya da növbəti səyahət üçün fayl kimi özünüzlə götürün.',
+  'help.guide.export-packing-list.step.1': 'Siyahının üstündəki paneldə yuxarı oxlu ixrac düyməsinə klikləyin.',
+  'help.guide.export-packing-list.step.2':
+    'Markdown yoxlama siyahısı (.md) və İdxal üçün CSV (.csv) siyahını dərhal fayl kimi saxlayır.',
+  'help.guide.export-packing-list.step.3':
+    'Çap et və ya PDF kimi saxla düyməsinə klikləyin. Önizləmə siyahını səhifə kimi göstərir: yuxarıda səyahət və onun tarixləri, sonra hər siyahı işarələmək üçün qutusu olan kart kimi.',
+  'help.guide.export-packing-list.step.4':
+    'Önizləmənin altındakı Çap et və ya PDF kimi saxla düyməsinə klikləyin. Brauzer öz çap pəncərəsini açır: printer seçin və ya faylı saxlamaq üçün PDF kimi yadda saxla seçimini edin.',
+  'help.guide.export-packing-list.result':
+    'Çap nüsxəsi və fayllar açıq olan görünüşü, Paylaşılan və ya Mənim siyahım, miqdarlar, çəkilər və işarələrlə birlikdə saxlayır.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV İdxal et funksiyasının oxuduğu formatdır, çantalar da daxil, ona görə də sizin öz baqaj şablonunuz kimi işləyir: onu növbəti səyahətə idxal edin.',
+  'help.guide.export-packing-list.tip.2':
+    'Markdown faylı Obsidian, Notion və ya GitHub-da yoxlama siyahısı kimi açılır və İdxal et ilə eyni şəkildə geri gəlir.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Elementi kimin görəcəyini və kimin gətirəcəyini müəyyən edin',
   'help.guide.share-packing-item.goal':

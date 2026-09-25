@@ -2962,7 +2962,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Wspólne i Moja lista dzielą listę pakowania na dwie części: pulę, którą widzą wszyscy, i Twoją własną. Wszystkie, Do spakowania i Spakowane zawężają tę, która jest otwarta, a pasek u góry liczy, co jest spakowane.',
   'help.ctx.trip-lists.bullet.5':
-    'Zastosuj szablon, Importuj i Zapisz jako szablon wypełniają albo zachowują listę bez pisania jej od nowa, a czerwony przycisk obok nich mówi, ile przedmiotów jest zaznaczonych, i sprząta je.',
+    'Zastosuj szablon i Zapisz jako szablon wypełniają albo zachowują listę bez pisania jej od nowa, a dwie ikony obok nich eksportują listę, jako wydruk, PDF albo plik, i importują listę. Czerwony przycisk mówi, ile przedmiotów jest zaznaczonych, i sprząta je.',
   'help.ctx.trip-lists.bullet.6':
     'Do zrobienia ma własny panel boczny: kartę postępu, filtry Wszystkie, Moje zadania, Przeterminowane i Gotowe, Sortuj wg Priorytet albo Termin, oraz jeden wiersz na listę. Kliknięcie zadania otwiera je w panelu po prawej, a Nowe zadanie otwiera na środku ekranu formularz Nowe zadanie.',
   // packing-categories
@@ -3028,18 +3028,35 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Wkleić całą listę pakowania',
   'help.guide.import-packing-list.goal':
     'Zamień listę, którą masz już gdzie indziej, w przedmioty do spakowania za jednym razem.',
-  'help.guide.import-packing-list.step.1': 'Kliknij Importuj na pasku nad listą.',
+  'help.guide.import-packing-list.step.1': 'Kliknij przycisk importu ze strzałką w dół na pasku nad listą.',
   'help.guide.import-packing-list.step.2':
-    'Jedna pozycja w wierszu: Kategoria, Nazwa, Waga w gramach (opcjonalnie), Torba (opcjonalnie), checked/unchecked (opcjonalnie). Szary przykład w polu pokazuje wszystkie cztery kształty.',
+    'Jedna pozycja w wierszu: Kategoria, Nazwa, Waga w gramach (opcjonalnie), Torba (opcjonalnie), checked/unchecked (opcjonalnie). Szary przykład w polu pokazuje wszystkie cztery kształty. Działa też lista w Markdown: nagłówek nadaje nazwę liście, a "- [ ]" i "- [x]" stają się pozycjami.',
   'help.guide.import-packing-list.step.3':
-    'Albo wczytaj wiersze z pliku przez Załaduj CSV/TXT. Przyjmuje .csv albo .txt i zastępuje to, co jest w polu.',
+    'Albo wczytaj wiersze z pliku przez Załaduj CSV/TXT/MD. Przyjmuje .csv, .txt albo .md i zastępuje to, co jest w polu.',
   'help.guide.import-packing-list.step.4': 'Kliknij Importuj. Przycisk liczy wiersze, które zrozumiał.',
   'help.guide.import-packing-list.result':
     'Każdy wiersz to jedna pozycja, na liście, którą nazywa jego pierwsze pole, i nic z tego, co już tam było, nie zostaje ruszone.',
   'help.guide.import-packing-list.tip.1':
-    'Pola rozdzielają przecinki, średniki i tabulatory, a cudzysłowy trzymają pole razem, więc „Koszula, niebieska” zostaje jedną nazwą. Wiersz z jedną wartością to sama nazwa, a wiersz bez własnej listy ląduje w Inne.',
+    'Pola rozdzielają przecinki, średniki i tabulatory, a cudzysłowy trzymają pole razem, więc „Koszula, niebieska” zostaje jedną nazwą. Wiersz z jedną wartością to sama nazwa, wiersz bez własnej listy ląduje w Inne, a "3x" przed nazwą ustawia ilość.',
   'help.guide.import-packing-list.tip.2':
     'Torba nazwana w czwartym polu zostaje utworzona, jeśli podróż jeszcze jej nie ma. To jedyne miejsce, które wczytuje wagi i torby hurtowo; szablon przynosi tylko nazwy i listy.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Wydrukować albo wyeksportować listę pakowania',
+  'help.guide.export-packing-list.goal':
+    'Zabierz listę ze sobą na papierze, jako PDF albo jako plik dla innej aplikacji lub na następną podróż.',
+  'help.guide.export-packing-list.step.1': 'Kliknij przycisk eksportu ze strzałką w górę na pasku nad listą.',
+  'help.guide.export-packing-list.step.2':
+    'Lista kontrolna w Markdown (.md) i CSV do importu (.csv) od razu zapisują listę jako plik.',
+  'help.guide.export-packing-list.step.3':
+    'Kliknij Drukuj lub zapisz jako PDF. Podgląd pokazuje listę jako stronę: u góry podróż i jej daty, potem każdą listę jako kartę z polem do zaznaczenia.',
+  'help.guide.export-packing-list.step.4':
+    'Kliknij Drukuj lub zapisz jako PDF pod podglądem. Przeglądarka otwiera swoje okno drukowania: wybierz drukarkę albo Zapisz jako PDF, żeby zachować plik.',
+  'help.guide.export-packing-list.result':
+    'Wydruk i pliki zawierają widok, który jest otwarty, Wspólne albo Moja lista, z ilościami, wagami i zaznaczeniami.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV to format, który czyta Importuj, razem z torbami, więc działa jak Twój własny szablon pakowania: zaimportuj go do następnej podróży.',
+  'help.guide.export-packing-list.tip.2':
+    'Plik Markdown otwiera się jako lista kontrolna w Obsidian, Notion albo GitHub i tak samo wraca przez Importuj.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Zdecydować, kto widzi przedmiot i kto go przynosi',
   'help.guide.share-packing-item.goal':

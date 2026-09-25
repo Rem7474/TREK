@@ -3055,7 +3055,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Zdieľané a Môj zoznam rozdelia zoznam vecí na dve časti: spoločný, ktorý vidia všetci, a váš vlastný. Všetky, Otvorené a Hotovo zúžia ten, ktorý je otvorený, a lišta nad nimi počíta, čo je zabalené.',
   'help.ctx.trip-lists.bullet.5':
-    'Použiť šablónu, Importovať a Uložiť ako šablónu naplnia alebo uchovajú zoznam bez vypisovania a červené tlačidlo vedľa nich uvádza, koľko položiek je zaškrtnutých, a odstráni ich.',
+    'Použiť šablónu a Uložiť ako šablónu naplnia alebo uchovajú zoznam bez vypisovania a dve ikony vedľa nich zoznam exportujú, ako výtlačok, PDF alebo súbor, alebo nejaký importujú. Červené tlačidlo uvádza, koľko položiek je zaškrtnutých, a odstráni ich.',
   'help.ctx.trip-lists.bullet.6':
     'Úlohy majú vlastný bočný panel: kartu priebehu, filtre Všetky, Moje úlohy, Po termíne a Hotovo, Zoradiť podľa Priorita alebo Termín splnenia a jeden riadok na zoznam. Kliknutím na úlohu ju otvoríte v paneli vpravo a Pridať novú úlohu otvorí formulár Nová úloha uprostred obrazovky.',
   // packing-categories
@@ -3119,18 +3119,35 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Vložiť celý zoznam vecí naraz',
   'help.guide.import-packing-list.goal': 'Premeňte zoznam, ktorý už máte inde, na položky balenia jedným krokom.',
-  'help.guide.import-packing-list.step.1': 'Kliknite na Importovať v lište nad zoznamom.',
+  'help.guide.import-packing-list.step.1': 'Kliknite na tlačidlo importu so šípkou nadol v lište nad zoznamom.',
   'help.guide.import-packing-list.step.2':
-    'Jedna položka na riadok: Kategória, Názov, Hmotnosť v g (voliteľné), Zavazadlo (voliteľné), checked/unchecked (voliteľné). Sivá ukážka v poli zobrazuje všetky štyri varianty.',
+    'Jedna položka na riadok: Kategória, Názov, Hmotnosť v g (voliteľné), Zavazadlo (voliteľné), checked/unchecked (voliteľné). Sivá ukážka v poli zobrazuje všetky štyri varianty. Funguje aj zoznam v Markdowne: nadpis pomenuje zoznam a z "- [ ]" a "- [x]" sa stanú položky.',
   'help.guide.import-packing-list.step.3':
-    'Alebo načítajte riadky zo súboru cez Načítať CSV/TXT. Prijme súbor .csv alebo .txt a nahradí všetko, čo je v poli.',
+    'Alebo načítajte riadky zo súboru cez Načítať CSV/TXT/MD. Prijme súbor .csv, .txt alebo .md a nahradí všetko, čo je v poli.',
   'help.guide.import-packing-list.step.4': 'Kliknite na Importovať. Tlačidlo ukazuje počet riadkov, ktoré rozpoznalo.',
   'help.guide.import-packing-list.result':
     'Každý riadok sa stane položkou v zozname, ktorý uvádza jeho prvé pole, a nič z toho, čo tam už bolo, sa nezmení.',
   'help.guide.import-packing-list.tip.1':
-    'Polia oddeľujú čiarky, bodkočiarky aj tabulátory a dvojité úvodzovky držia pole pohromade, takže "Tričko, modré" zostane jedným názvom. Riadok s jedinou hodnotou je iba názov a riadok bez vlastného zoznamu skončí v kategórii Ostatné.',
+    'Polia oddeľujú čiarky, bodkočiarky aj tabulátory a dvojité úvodzovky držia pole pohromade, takže "Tričko, modré" zostane jedným názvom. Riadok s jedinou hodnotou je iba názov, riadok bez vlastného zoznamu skončí v kategórii Ostatné a "3x" pred názvom nastaví množstvo.',
   'help.guide.import-packing-list.tip.2':
     'Zavazadlo uvedené vo štvrtom poli sa vytvorí, ak ho cesta ešte nemá. Je to jediné miesto, kde sa hmotnosti a zavazadlá načítajú hromadne; šablóna prináša iba názvy a zoznamy.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Vytlačiť alebo exportovať zoznam vecí',
+  'help.guide.export-packing-list.goal':
+    'Vezmite si zoznam so sebou na papieri, ako PDF alebo ako súbor pre inú aplikáciu či ďalšiu cestu.',
+  'help.guide.export-packing-list.step.1': 'Kliknite na tlačidlo exportu so šípkou nahor v lište nad zoznamom.',
+  'help.guide.export-packing-list.step.2':
+    'Kontrolný zoznam v Markdowne (.md) a CSV na import (.csv) uložia zoznam hneď ako súbor.',
+  'help.guide.export-packing-list.step.3':
+    'Kliknite na Vytlačiť alebo uložiť ako PDF. Náhľad zobrazí zoznam ako stranu: hore cestu a jej termín, potom každý zoznam ako kartu s políčkom na zaškrtnutie.',
+  'help.guide.export-packing-list.step.4':
+    'Pod náhľadom kliknite na Vytlačiť alebo uložiť ako PDF. Prehliadač otvorí svoje dialógové okno tlače: vyberte tlačiareň, alebo Uložiť ako PDF, ak si chcete ponechať súbor.',
+  'help.guide.export-packing-list.result':
+    'Výtlačok aj súbory obsahujú otvorené zobrazenie, Zdieľané alebo Môj zoznam, s množstvami, hmotnosťami a zaškrtnutiami.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV je formát, ktorý číta Importovať, vrátane zavazadiel, takže poslúži ako vaša vlastná šablóna balenia: importujte ho do ďalšej cesty.',
+  'help.guide.export-packing-list.tip.2':
+    'Súbor Markdown sa v Obsidian, Notion alebo GitHub otvorí ako kontrolný zoznam a cez Importovať sa rovnako vráti späť.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Určiť, kto položku vidí a kto ju prinesie',
   'help.guide.share-packing-item.goal':

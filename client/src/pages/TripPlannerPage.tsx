@@ -26,6 +26,7 @@ import BookingImportModal from '../components/Planner/BookingImportModal'
 import AirTrailImportModal from '../components/Planner/AirTrailImportModal'
 // MemoriesPanel moved to Journey addon
 import ApplyTemplateButton from '../components/Packing/ApplyTemplateButton'
+import PackingExportMenu from '../components/Packing/PackingExportMenu'
 import type { ExpensePrefill } from '../components/Budget/CostsPanel'
 import type { BookingExpenseRequest } from '../components/Planner/BookingCostsSection.types'
 import type { BudgetItem } from '../types'
@@ -174,6 +175,8 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
           {subTab === 'packing' && (() => {
             const packingAbgehakt = packingItems.filter(i => i.checked).length
             const sharedBtnClass = 'inline-flex items-center gap-1.5 px-2.5 sm:px-[14px] py-[7px] sm:py-[9px] hover:opacity-[0.88]'
+            // Export and Import carry only their icon, with the name as tooltip and label.
+            const iconBtnClass = 'inline-flex items-center justify-center px-2.5 py-[7px] sm:py-[9px] hover:opacity-[0.88] bg-accent text-accent-text'
             const sharedBtnStyle: React.CSSProperties = {
               appearance: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
               borderRadius: 10, fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500,
@@ -204,12 +207,14 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
                     <span className="hidden sm:inline">{t('packing.saveAsTemplate')}</span>
                   </button>
                 )}
+                <PackingExportMenu tripId={tripId} view={packingView} className={iconBtnClass} style={sharedBtnStyle} />
                 <button type="button" onClick={() => setImportPackingSignal(s => s + 1)}
-                  className={`${sharedBtnClass} bg-accent text-accent-text`}
+                  className={iconBtnClass}
                   style={sharedBtnStyle}
+                  aria-label={t('packing.import')}
+                  title={t('packing.import')}
                 >
                   <Download size={14} strokeWidth={2.5} />
-                  <span className="hidden sm:inline">{t('packing.import')}</span>
                 </button>
               </div>
             )

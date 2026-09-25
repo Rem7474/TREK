@@ -3028,7 +3028,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'A Megosztott és a Saját lista kettéosztja a csomagolási listát: a mindenki által látott közösre és a sajátodra. Az Összes, a Nyitott és a Kész szűkíti azt, amelyik nyitva van, a fenti sáv pedig számolja, mi van becsomagolva.',
   'help.ctx.trip-lists.bullet.5':
-    'A Sablon alkalmazása, az Importálás és a Mentés sablonként gépelés nélkül tölti fel vagy őrzi meg a listát, a mellettük lévő piros gomb pedig megmondja, hány tétel van kipipálva, és eltakarítja őket.',
+    'A Sablon alkalmazása és a Mentés sablonként gépelés nélkül tölti fel vagy őrzi meg a listát, a mellettük lévő két ikon pedig exportálja a listát, nyomtatásként, PDF-ként vagy fájlként, illetve importál egyet. A piros gomb megmondja, hány tétel van kipipálva, és eltakarítja őket.',
   'help.ctx.trip-lists.bullet.6':
     'A Teendőknek saját oldalsávja van: a haladási kártya, a Mind, a Saját feladataim, a Lejárt és a Kész szűrők, a Rendezés Prioritás vagy Határidő szerint, és listánként egy sor. Egy feladatra kattintva a jobb oldali panelen nyílik meg, az Új feladat pedig a képernyő közepén nyitja meg az Új feladat űrlapot.',
   // packing-categories
@@ -3096,19 +3096,38 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Egy egész csomagolási lista beillesztése',
   'help.guide.import-packing-list.goal':
     'Alakítsd át egy mozdulattal csomagolási tételekké azt a listát, ami máshol már megvan.',
-  'help.guide.import-packing-list.step.1': 'Kattints a lista fölötti sávban az Importálás gombra.',
+  'help.guide.import-packing-list.step.1':
+    'Kattints a lista fölötti sávban a lefelé mutató nyíllal jelölt importálás gombra.',
   'help.guide.import-packing-list.step.2':
-    'Soronként egy tétel: Kategória, Név, Súly g-ban (opcionális), Táska (opcionális), checked/unchecked (opcionális). A mezőben lévő szürke minta mind a négy alakot mutatja.',
+    'Soronként egy tétel: Kategória, Név, Súly g-ban (opcionális), Táska (opcionális), checked/unchecked (opcionális). A mezőben lévő szürke minta mind a négy alakot mutatja. Markdown-lista is használható: a címsor adja a lista nevét, a "- [ ]" és "- [x]" sorokból pedig tételek lesznek.',
   'help.guide.import-packing-list.step.3':
-    'Vagy töltsd be a sorokat fájlból a CSV/TXT betöltése gombbal. Egy .csv vagy egy .txt fájlt fogad, és lecseréli, ami a mezőben van.',
+    'Vagy töltsd be a sorokat fájlból a CSV/TXT/MD betöltése gombbal. Egy .csv, egy .txt vagy egy .md fájlt fogad, és lecseréli, ami a mezőben van.',
   'help.guide.import-packing-list.step.4':
     'Kattints az Importálás gombra. A gomb megszámolja a sorokat, amelyeket megértett.',
   'help.guide.import-packing-list.result':
     'Minden sorból egy tétel lesz, abban a listában, amit az első mezője megnevez, és semmihez nem nyúl, ami már ott volt.',
   'help.guide.import-packing-list.tip.1':
-    'A mezőket vessző, pontosvessző és tabulátor is elválasztja, az idézőjelek pedig egyben tartanak egy mezőt, így az „Ing, kék” egyetlen név marad. Az egyetlen értékből álló sor csak egy név, a saját lista nélküli sor pedig az Egyéb listába kerül.',
+    'A mezőket vessző, pontosvessző és tabulátor is elválasztja, az idézőjelek pedig egyben tartanak egy mezőt, így az „Ing, kék” egyetlen név marad. Az egyetlen értékből álló sor csak egy név, a saját lista nélküli sor az Egyéb listába kerül, a név előtti "3x" pedig a mennyiséget adja meg.',
   'help.guide.import-packing-list.tip.2':
     'A negyedik mezőben megnevezett táska létrejön, ha az utazásnak még nincs meg. Ez az egyetlen hely, ami tömegesen tölt be súlyokat és táskákat; egy sablon csak neveket és listákat hoz.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'A csomagolási lista nyomtatása vagy exportálása',
+  'help.guide.export-packing-list.goal':
+    'Vidd magaddal a listát papíron, PDF-ként vagy fájlként egy másik alkalmazásba vagy a következő utazásra.',
+  'help.guide.export-packing-list.step.1':
+    'Kattints a lista fölötti sávban a felfelé mutató nyíllal jelölt exportálás gombra.',
+  'help.guide.export-packing-list.step.2':
+    'A Markdown ellenőrzőlista (.md) és a CSV importáláshoz (.csv) azonnal fájlba menti a listát.',
+  'help.guide.export-packing-list.step.3':
+    'Kattints a Nyomtatás vagy mentés PDF-ként elemre. Az előnézet oldalként mutatja a listát: felül az utazás és a dátumai, alatta minden lista kártyaként, egy kipipálható négyzettel.',
+  'help.guide.export-packing-list.step.4':
+    'Kattints az előnézet alatt a Nyomtatás vagy mentés PDF-ként gombra. A böngésző megnyitja a nyomtatási párbeszédablakát: válassz nyomtatót, vagy a Mentés PDF-ként lehetőséget, ha fájlt szeretnél megtartani.',
+  'help.guide.export-packing-list.result':
+    'A nyomat és a fájlok a nyitott nézetet tartalmazzák, a Megosztott vagy a Saját lista nézetet, a mennyiségekkel, súlyokkal és pipákkal együtt.',
+  'help.guide.export-packing-list.tip.1':
+    'A CSV az a formátum, amit az Importálás beolvas, a táskákkal együtt, így saját csomagolási sablonként is működik: importáld a következő utazásba.',
+  'help.guide.export-packing-list.tip.2':
+    'A Markdown-fájl ellenőrzőlistaként nyílik meg az Obsidianban, a Notionban vagy a GitHubon, és az Importálással ugyanúgy visszahozható.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Döntsd el, ki látja a tételt és ki hozza',
   'help.guide.share-packing-item.goal':

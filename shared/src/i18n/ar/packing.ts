@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'عنصر واحد لكل سطر. الصيغة: الفئة, الاسم, الوزن بالغرام (اختياري), الحقيبة (اختياري), checked/unchecked (اختياري)',
   'packing.importPlaceholder':
     'نظافة, فرشاة أسنان\nملابس, قمصان, 200\nمستندات, جواز سفر, , حقيبة يد\nإلكترونيات, شاحن, 50, حقيبة سفر, checked',
-  'packing.importCsv': 'تحميل CSV/TXT',
+  'packing.importCsv': 'تحميل CSV/TXT/MD',
+  'packing.export': 'تصدير',
+  'packing.exportPrint': 'طباعة أو حفظ كملف PDF',
+  'packing.exportMarkdown': 'قائمة تحقق Markdown (.md)',
+  'packing.exportCsv': 'CSV للاستيراد (.csv)',
+  'packing.printItems': 'العناصر',
+  'packing.printPacked': 'جُهّز',
+  'packing.importHintMarkdown':
+    'يمكن أيضًا استخدام قائمة Markdown: العنوان يحدد الفئة، و"- [ ]" و"- [x]" تصبح عناصر، و"3x" قبل الاسم تحدد الكمية.',
   'packing.importAction': 'استيراد {count}',
   'packing.importSuccess': 'تم استيراد {count} عنصر',
   'packing.importError': 'فشل الاستيراد',

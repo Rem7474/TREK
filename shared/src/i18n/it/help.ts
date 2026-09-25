@@ -3014,7 +3014,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Condiviso e La mia lista dividono la lista valigia in due: il fondo comune che vedono tutti, e la tua. Tutti, Da fare e Fatto restringono quella aperta, e la barra sopra conta che cosa è in valigia.',
   'help.ctx.trip-lists.bullet.5':
-    'Applica modello, Importa e Salva come modello riempiono o conservano una lista senza digitarla, e il pulsante rosso accanto dice quanti elementi sono spuntati e li porta via.',
+    'Applica modello e Salva come modello riempiono o conservano una lista senza digitarla, e le due icone accanto esportano la lista, come stampa, come PDF o come file, e ne importano una. Il pulsante rosso dice quanti elementi sono spuntati e li porta via.',
   'help.ctx.trip-lists.bullet.6':
     'Da fare ha una barra laterale propria: la scheda di avanzamento, i filtri Tutti, Le mie attività, Scaduta e Fatto, Ordina per Priorità o Scadenza, e una riga per lista. Un clic su un’attività la apre nel pannello a destra, e Nuova attività apre il modulo Nuova attività sopra il centro dello schermo.',
   // packing-categories
@@ -3082,18 +3082,37 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Incollare dentro un’intera lista valigia',
   'help.guide.import-packing-list.goal':
     'Trasforma in un colpo solo una lista che hai già altrove in elementi della valigia.',
-  'help.guide.import-packing-list.step.1': 'Clicca Importa nella barra sopra la lista.',
+  'help.guide.import-packing-list.step.1':
+    'Clicca il pulsante di importazione con la freccia in giù nella barra sopra la lista.',
   'help.guide.import-packing-list.step.2':
-    'Un elemento per riga: Categoria, Nome, Peso in g (opzionale), Borsa (opzionale), checked/unchecked (opzionale). L’esempio grigio nel riquadro mostra tutte e quattro le forme.',
+    'Un elemento per riga: Categoria, Nome, Peso in g (opzionale), Borsa (opzionale), checked/unchecked (opzionale). L’esempio grigio nel riquadro mostra tutte e quattro le forme. Funziona anche un elenco in Markdown: un titolo dà il nome alla lista, e "- [ ]" e "- [x]" diventano elementi.',
   'help.guide.import-packing-list.step.3':
-    'Oppure carica le righe da un file con Carica CSV/TXT. Accetta un .csv o un .txt e sostituisce quello che sta nel riquadro.',
+    'Oppure carica le righe da un file con Carica CSV/TXT/MD. Accetta un .csv, un .txt o un .md e sostituisce quello che sta nel riquadro.',
   'help.guide.import-packing-list.step.4': 'Clicca Importa. Il pulsante conta le righe che ha capito.',
   'help.guide.import-packing-list.result':
     'Ogni riga diventa un elemento, nella lista che nomina il suo primo campo, e niente di quello che c’era già viene toccato.',
   'help.guide.import-packing-list.tip.1':
-    'Virgole, punti e virgola e tabulazioni separano i campi allo stesso modo, e le virgolette tengono insieme un campo, così «Camicia, blu» resta un solo nome. Una riga con un unico valore è solo un nome, e una riga senza una lista propria finisce in Altro.',
+    'Virgole, punti e virgola e tabulazioni separano i campi allo stesso modo, e le virgolette tengono insieme un campo, così «Camicia, blu» resta un solo nome. Una riga con un unico valore è solo un nome, una riga senza una lista propria finisce in Altro, e "3x" davanti a un nome imposta la quantità.',
   'help.guide.import-packing-list.tip.2':
     'Una borsa nominata nel quarto campo viene creata se il viaggio non ce l’ha ancora. Questo è l’unico posto che carica pesi e valigie in blocco; un modello porta solo nomi e liste.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Stampare o esportare la lista valigia',
+  'help.guide.export-packing-list.goal':
+    'Porta la lista con te su carta, come PDF o come file per un’altra app o per il prossimo viaggio.',
+  'help.guide.export-packing-list.step.1':
+    'Clicca il pulsante di esportazione con la freccia in su nella barra sopra la lista.',
+  'help.guide.export-packing-list.step.2':
+    'Checklist in Markdown (.md) e CSV per l’importazione (.csv) salvano subito la lista come file.',
+  'help.guide.export-packing-list.step.3':
+    'Clicca Stampa o salva come PDF. L’anteprima mostra la lista come una pagina: in alto il viaggio e le sue date, poi ogni lista come una scheda con una casella da spuntare.',
+  'help.guide.export-packing-list.step.4':
+    'Clicca Stampa o salva come PDF sotto l’anteprima. Il browser apre la sua finestra di stampa: scegli una stampante, oppure Salva come PDF per tenere un file.',
+  'help.guide.export-packing-list.result':
+    'La stampa e i file contengono la vista aperta, Condiviso o La mia lista, con quantità, pesi e spunte.',
+  'help.guide.export-packing-list.tip.1':
+    'Il CSV è il formato che legge Importa, valigie comprese, quindi funziona come un tuo modello di valigia: importalo nel prossimo viaggio.',
+  'help.guide.export-packing-list.tip.2':
+    'Il file Markdown si apre come checklist in Obsidian, Notion o GitHub, e rientra allo stesso modo tramite Importa.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Decidere chi vede un elemento e chi lo porta',
   'help.guide.share-packing-item.goal':

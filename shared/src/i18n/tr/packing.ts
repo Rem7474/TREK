@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Satır başına bir öğe. Biçim: Kategori, Ad, Ağırlık (g, isteğe bağlı), Çanta (isteğe bağlı), işaretli/işaretsiz (isteğe bağlı)',
   'packing.importPlaceholder':
     'Hijyen, Diş fırçası\\nGiyim, Tişört, 200\\nBelgeler, Pasaport, , El bagajı\\nElektronik, Şarj cihazı, 50, Bavul, işaretli',
-  'packing.importCsv': 'CSV/TXT Yükle',
+  'packing.importCsv': 'CSV/TXT/MD Yükle',
+  'packing.export': 'Dışa aktar',
+  'packing.exportPrint': 'Yazdır veya PDF olarak kaydet',
+  'packing.exportMarkdown': 'Markdown kontrol listesi (.md)',
+  'packing.exportCsv': 'İçe aktarma için CSV (.csv)',
+  'packing.printItems': 'Öğeler',
+  'packing.printPacked': 'Paketlendi',
+  'packing.importHintMarkdown':
+    'Markdown listesi de olur: başlık kategoriyi belirler, "- [ ]" ve "- [x]" öğeye dönüşür, bir adın önündeki "3x" ise miktarı belirler.',
   'packing.importAction': '{count} Öğeyi içe aktar',
   'packing.importSuccess': '{count} öğe içe aktarıldı',
   'packing.importError': 'İçe aktarma başarısız oldu',

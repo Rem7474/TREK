@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Một mục trên mỗi dòng. Định dạng: Danh mục, Tên, Trọng lượng tính bằng g (tùy chọn), Túi (tùy chọn), đã chọn/bỏ chọn (tùy chọn)',
   'packing.importPlaceholder':
     'Vệ sinh, Bàn chải đánh răng\nQuần áo, Áo sơ mi, 200\nGiấy tờ, Hộ chiếu, Hành lý xách tay\nĐiện tử, Sạc, 50, Vali, đã kiểm tra',
-  'packing.importCsv': 'Tải CSV/TXT',
+  'packing.importCsv': 'Tải CSV/TXT/MD',
+  'packing.export': 'Xuất',
+  'packing.exportPrint': 'In hoặc lưu thành PDF',
+  'packing.exportMarkdown': 'Danh sách kiểm tra Markdown (.md)',
+  'packing.exportCsv': 'CSV để nhập (.csv)',
+  'packing.printItems': 'Mục',
+  'packing.printPacked': 'Đã đóng gói',
+  'packing.importHintMarkdown':
+    'Danh sách Markdown cũng dùng được: tiêu đề đặt tên danh mục, "- [ ]" và "- [x]" trở thành mục, còn "3x" trước tên sẽ đặt số lượng.',
   'packing.importAction': 'Nhập {count}',
   'packing.importSuccess': '{count} mặt hàng đã được nhập',
   'packing.importError': 'Nhập không thành công',

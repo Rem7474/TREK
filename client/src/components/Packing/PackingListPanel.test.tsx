@@ -546,8 +546,8 @@ describe('PackingListPanel', () => {
     const textarea = screen.getByPlaceholderText(/Hygiene, Toothbrush/);
     expect(textarea).toBeInTheDocument();
 
-    // "Load CSV/TXT" button is present inside the modal
-    expect(screen.getByText('Load CSV/TXT')).toBeInTheDocument();
+    // "Load CSV/TXT/MD" button is present inside the modal
+    expect(screen.getByText('Load CSV/TXT/MD')).toBeInTheDocument();
 
     // Close by clicking backdrop (covers the onClick on the backdrop div)
     const modalTitle = screen.getByText('Import Packing List');
@@ -1496,7 +1496,21 @@ describe('PackingListPanel', () => {
     await waitFor(() => expect(createBody).toMatchObject({ name: 'New Bag' }));
   });
 
-  it('FE-COMP-PACKING-069: Load CSV/TXT button clicks the hidden file input', async () => {
+  it('FE-COMP-PACKING-082: the import dialog explains the Markdown form, takes .md files and counts a pasted checklist (#875)', async () => {
+    const user = userEvent.setup();
+    const { container } = render(<PackingListPanel tripId={1} items={[]} />);
+    await user.click(container.querySelector('svg.lucide-download')!.closest('button')!);
+    await screen.findByText('Import Packing List');
+
+    expect(screen.getByText(/A Markdown list works too/)).toBeInTheDocument();
+    expect(document.querySelector('input[type="file"]')).toHaveAttribute('accept', '.csv,.txt,.md,.markdown,text/markdown');
+    fireEvent.change(screen.getByPlaceholderText(/Hygiene, Toothbrush/), {
+      target: { value: '# Packing List\n## Clothing\n- [x] 3x Socks\n- [ ] Rain jacket (350 g)\nA note' },
+    });
+    expect(screen.getByRole('button', { name: 'Import 2' })).toBeInTheDocument();
+  });
+
+  it('FE-COMP-PACKING-069: Load CSV/TXT/MD button clicks the hidden file input', async () => {
     const user = userEvent.setup();
     const { container } = render(<PackingListPanel tripId={1} items={[]} />);
 
@@ -1510,8 +1524,8 @@ describe('PackingListPanel', () => {
     expect(fileInput).toBeTruthy();
     const clickSpy = vi.spyOn(fileInput, 'click').mockImplementation(() => {});
 
-    // Click the "Load CSV/TXT" button
-    await user.click(screen.getByText('Load CSV/TXT'));
+    // Click the "Load CSV/TXT/MD" button
+    await user.click(screen.getByText('Load CSV/TXT/MD'));
 
     expect(clickSpy).toHaveBeenCalled();
     clickSpy.mockRestore();

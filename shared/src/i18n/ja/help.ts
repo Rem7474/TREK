@@ -2890,7 +2890,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     '「みんなで」と「マイリスト」が持ち物リストを2つに分けます。全員が見るプールと、あなた自身のものです。「すべて」「未完了」「完了」が開いているほうを絞り込み、上のバーが梱包済みの数を数えます。',
   'help.ctx.trip-lists.bullet.5':
-    '「テンプレートを適用」「インポート」「テンプレートとして保存」は、打ち込まずにリストを埋めたり残したりします。その隣の赤いボタンはチェック済みのアイテムが何件あるかを出し、まとめて片づけます。',
+    '「テンプレートを適用」と「テンプレートとして保存」は、打ち込まずにリストを埋めたり残したりします。その隣の2つのアイコンは、リストを印刷物、PDF、ファイルとしてエクスポートし、リストをインポートします。赤いボタンはチェック済みのアイテムが何件あるかを出し、まとめて片づけます。',
   'help.ctx.trip-lists.bullet.6':
     '「ToDo」には専用のサイドバーがあります。進捗カード、「すべて」「自分のタスク」「期限切れ」「完了」のフィルター、「優先度」か「期限」での「並び替え」、そしてリストごとに1行です。タスクをクリックすると右のパネルで開き、「新しいタスクを追加...」は画面の中央に「新しいタスク」のフォームを開きます。',
   // packing-categories
@@ -2952,18 +2952,35 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': '持ち物リストをまるごと貼り付ける',
   'help.guide.import-packing-list.goal': 'どこかにすでにあるリストを、一度で持ち物のアイテムに変えます。',
-  'help.guide.import-packing-list.step.1': 'リストの上のバーで「インポート」をクリックします。',
+  'help.guide.import-packing-list.step.1': 'リストの上のバーで、下向き矢印のインポートボタンをクリックします。',
   'help.guide.import-packing-list.step.2':
-    '1行につき1項目です。カテゴリ, 名前, 重量(g・任意), バッグ(任意), checked/unchecked(任意)。ボックスの中の灰色の見本が4つの形をすべて見せています。',
+    '1行につき1項目です。カテゴリ, 名前, 重量(g・任意), バッグ(任意), checked/unchecked(任意)。ボックスの中の灰色の見本が4つの形をすべて見せています。Markdown のリストも使えます。見出しがリストの名前になり、「- [ ]」と「- [x]」がアイテムになります。',
   'help.guide.import-packing-list.step.3':
-    'または「CSV/TXTを読み込む」で行をファイルから読み込みます。.csvか.txtを受け取り、ボックスの中身を置き換えます。',
+    'または「CSV/TXT/MDを読み込む」で行をファイルから読み込みます。.csv、.txt、.md のいずれかを受け取り、ボックスの中身を置き換えます。',
   'help.guide.import-packing-list.step.4': '「インポート」をクリックします。ボタンは読み取れた行の数を出します。',
   'help.guide.import-packing-list.result':
     'どの行も1つの行になり、最初のフィールドが指すリストに入ります。もとからあったものには何も触れません。',
   'help.guide.import-packing-list.tip.1':
-    'カンマ、セミコロン、タブがどれもフィールドを区切り、二重引用符はフィールドをひとまとめにするので、「Shirt, blue」は1つの名前のままです。値が1つだけの行はただの名前で、自分のリストを持たない行は「その他」に入ります。',
+    'カンマ、セミコロン、タブがどれもフィールドを区切り、二重引用符はフィールドをひとまとめにするので、「Shirt, blue」は1つの名前のままです。値が1つだけの行はただの名前で、自分のリストを持たない行は「その他」に入ります。名前の前に「3x」を付けると数量になります。',
   'help.guide.import-packing-list.tip.2':
     '4番目のフィールドで名前を挙げたバッグは、旅行にまだなければ作られます。重さとバッグをまとめて読み込めるのはここだけで、テンプレートが運ぶのは名前とリストだけです。',
+  // export-packing-list
+  'help.guide.export-packing-list.title': '持ち物リストを印刷またはエクスポートする',
+  'help.guide.export-packing-list.goal':
+    'リストを紙で、PDF で、またはほかのアプリや次の旅行のためのファイルとして持ち出します。',
+  'help.guide.export-packing-list.step.1': 'リストの上のバーで、上向き矢印のエクスポートボタンをクリックします。',
+  'help.guide.export-packing-list.step.2':
+    '「Markdown チェックリスト (.md)」と「インポート用 CSV (.csv)」は、リストをすぐにファイルとして保存します。',
+  'help.guide.export-packing-list.step.3':
+    '「印刷または PDF として保存」をクリックします。プレビューはリストを1ページとして見せます。上に旅行とその日付、その下にリストごとのカードが並び、それぞれにチェック用のボックスが付きます。',
+  'help.guide.export-packing-list.step.4':
+    'プレビューの下の「印刷または PDF として保存」をクリックします。ブラウザの印刷ダイアログが開くので、プリンターを選ぶか、ファイルとして残すなら「PDF に保存」を選びます。',
+  'help.guide.export-packing-list.result':
+    '印刷物とファイルには、開いているビュー、つまり「みんなで」か「マイリスト」が、数量、重さ、チェックとともに入ります。',
+  'help.guide.export-packing-list.tip.1':
+    'CSV は「インポート」が読む形式で、バッグも含まれます。そのため自分だけの持ち物テンプレートとして使えます。次の旅行にインポートしてください。',
+  'help.guide.export-packing-list.tip.2':
+    'Markdown ファイルは Obsidian、Notion、GitHub でチェックリストとして開き、同じように「インポート」で戻せます。',
   // share-packing-item
   'help.guide.share-packing-item.title': 'アイテムを誰が見て誰が持っていくかを決める',
   'help.guide.share-packing-item.goal':

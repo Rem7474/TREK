@@ -3049,7 +3049,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Gemeinsam und Meine Liste teilen die Packliste in zwei: den Pool, den alle sehen, und deine eigene. Alle, Offen und Erledigt engen die gerade offene ein, und der Balken darüber zählt, was gepackt ist.',
   'help.ctx.trip-lists.bullet.5':
-    'Vorlage anwenden, Importieren und Als Vorlage speichern füllen oder bewahren eine Liste, ohne sie abzutippen, und der rote Knopf daneben nennt, wie viele Einträge abgehakt sind, und räumt sie weg.',
+    'Vorlage anwenden und Als Vorlage speichern füllen oder bewahren eine Liste, ohne sie abzutippen, und die zwei Symbole daneben exportieren die Liste, als Ausdruck, als PDF oder als Datei, und importieren eine. Der rote Knopf nennt, wie viele Einträge abgehakt sind, und räumt sie weg.',
   'help.ctx.trip-lists.bullet.6':
     'Aufgaben hat eine eigene Seitenleiste: die Fortschrittskarte, die Filter Alle, Meine Aufgaben, Überfällig und Erledigt, Sortieren nach Priorität oder Fällig am, und eine Zeile pro Liste. Ein Klick auf eine Aufgabe öffnet sie im Panel rechts, und Neue Aufgabe hinzufügen öffnet das Formular Neue Aufgabe über der Mitte des Bildschirms.',
   // packing-categories
@@ -3118,18 +3118,37 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Eine ganze Packliste hineinkopieren',
   'help.guide.import-packing-list.goal': 'Mach aus einer Liste, die du anderswo schon hast, in einem Zug Packeinträge.',
-  'help.guide.import-packing-list.step.1': 'Klick auf Importieren in der Leiste über der Liste.',
+  'help.guide.import-packing-list.step.1':
+    'Klick auf den Import-Knopf mit dem Pfeil nach unten in der Leiste über der Liste.',
   'help.guide.import-packing-list.step.2':
-    'Ein Eintrag pro Zeile: Kategorie, Name, Gewicht in g (optional), Tasche (optional), checked/unchecked (optional). Das graue Beispiel im Feld zeigt alle vier Formen.',
+    'Ein Eintrag pro Zeile: Kategorie, Name, Gewicht in g (optional), Tasche (optional), checked/unchecked (optional). Das graue Beispiel im Feld zeigt alle vier Formen. Auch eine Markdown-Liste geht: Eine Überschrift benennt die Liste, und "- [ ]" und "- [x]" werden zu Einträgen.',
   'help.guide.import-packing-list.step.3':
-    'Oder lad die Zeilen mit CSV/TXT laden aus einer Datei. Es nimmt eine .csv oder eine .txt und ersetzt, was im Feld steht.',
+    'Oder lad die Zeilen mit CSV/TXT/MD laden aus einer Datei. Es nimmt eine .csv, eine .txt oder eine .md und ersetzt, was im Feld steht.',
   'help.guide.import-packing-list.step.4': 'Klick auf Importieren. Der Knopf zählt die Zeilen, die er verstanden hat.',
   'help.guide.import-packing-list.result':
     'Jede Zeile wird ein Eintrag, in der Liste, die ihr erstes Feld nennt, und nichts, was schon da war, wird angerührt.',
   'help.guide.import-packing-list.tip.1':
-    'Kommas, Semikolons und Tabs trennen Felder gleichermaßen, und Anführungszeichen halten ein Feld zusammen, sodass „Hemd, blau“ ein Name bleibt. Eine Zeile mit einem einzigen Wert ist nur ein Name, und eine Zeile ohne eigene Liste landet in Sonstiges.',
+    'Kommas, Semikolons und Tabs trennen Felder gleichermaßen, und Anführungszeichen halten ein Feld zusammen, sodass „Hemd, blau“ ein Name bleibt. Eine Zeile mit einem einzigen Wert ist nur ein Name, eine Zeile ohne eigene Liste landet in Sonstiges, und "3x" vor einem Namen setzt die Menge.',
   'help.guide.import-packing-list.tip.2':
     'Ein im vierten Feld genanntes Gepäckstück wird angelegt, wenn die Reise es noch nicht hat. Nur hier kommen Gewichte und Gepäck in Masse herein; eine Vorlage bringt nur Namen und Listen.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Die Packliste drucken oder exportieren',
+  'help.guide.export-packing-list.goal':
+    'Nimm die Liste auf Papier mit, als PDF oder als Datei für eine andere App oder die nächste Reise.',
+  'help.guide.export-packing-list.step.1':
+    'Klick auf den Export-Knopf mit dem Pfeil nach oben in der Leiste über der Liste.',
+  'help.guide.export-packing-list.step.2':
+    'Markdown-Checkliste (.md) und CSV für den Import (.csv) speichern die Liste sofort als Datei.',
+  'help.guide.export-packing-list.step.3':
+    'Klick auf Drucken oder als PDF speichern. Die Vorschau zeigt die Liste als Seite: oben die Reise und ihr Zeitraum, dann jede Liste als Karte mit einem Kästchen zum Abhaken.',
+  'help.guide.export-packing-list.step.4':
+    'Klick unter der Vorschau auf Drucken oder als PDF speichern. Der Browser öffnet seinen Druckdialog: Wähl einen Drucker, oder Als PDF speichern, um eine Datei zu behalten.',
+  'help.guide.export-packing-list.result':
+    'Der Ausdruck und die Dateien enthalten die Ansicht, die gerade offen ist, Gemeinsam oder Meine Liste, mit Mengen, Gewichten und Haken.',
+  'help.guide.export-packing-list.tip.1':
+    'Die CSV ist das Format, das Importieren liest, Gepäck inklusive, und taugt damit als deine eigene Packvorlage: Importier sie in die nächste Reise.',
+  'help.guide.export-packing-list.tip.2':
+    'Die Markdown-Datei öffnet sich in Obsidian, Notion oder GitHub als Checkliste und kommt über Importieren genauso wieder herein.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Festlegen, wer einen Eintrag sieht und wer ihn mitbringt',
   'help.guide.share-packing-item.goal':

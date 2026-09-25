@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Un elemento per riga. Formato: Categoria, Nome, Peso in g (opzionale), Borsa (opzionale), checked/unchecked (opzionale)',
   'packing.importPlaceholder':
     'Igiene, Spazzolino\nAbbigliamento, Magliette, 200\nDocumenti, Passaporto, , Bagaglio a mano\nElettronica, Caricabatterie, 50, Valigia, checked',
-  'packing.importCsv': 'Carica CSV/TXT',
+  'packing.importCsv': 'Carica CSV/TXT/MD',
+  'packing.export': 'Esporta',
+  'packing.exportPrint': 'Stampa o salva come PDF',
+  'packing.exportMarkdown': 'Checklist in Markdown (.md)',
+  'packing.exportCsv': 'CSV per l’importazione (.csv)',
+  'packing.printItems': 'Articoli',
+  'packing.printPacked': 'In valigia',
+  'packing.importHintMarkdown':
+    'Funziona anche un elenco in Markdown: un titolo indica la categoria, "- [ ]" e "- [x]" diventano articoli e "3x" davanti a un nome imposta la quantità.',
   'packing.importAction': 'Importa {count}',
   'packing.importSuccess': '{count} elementi importati',
   'packing.importError': 'Importazione non riuscita',

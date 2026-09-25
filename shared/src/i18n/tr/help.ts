@@ -2965,7 +2965,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Ortak ve Listem paket listesini ikiye böler: herkesin gördüğü havuz ve sizin kendi listeniz. Tüm, Açık ve Tamamlamak hangisi açıksa onu daraltır ve üstteki çubuk neyin paketlendiğini sayar.',
   'help.ctx.trip-lists.bullet.5':
-    'Şablon uygula, İçe aktar ve Şablon olarak kaydet bir listeyi yazmadan doldurur ya da saklar, yanlarındaki kırmızı düğme ise kaç öğenin işaretli olduğunu söyler ve onları temizler.',
+    'Şablon uygula ve Şablon olarak kaydet bir listeyi yazmadan doldurur ya da saklar, yanlarındaki iki simge ise listeyi çıktı, PDF ya da dosya olarak dışa aktarır ve bir liste içe aktarır. Kırmızı düğme kaç öğenin işaretli olduğunu söyler ve onları temizler.',
   'help.ctx.trip-lists.bullet.6':
     'Yapılacaklar kendi kenar çubuğuna sahiptir: ilerleme kartı, Tümü, Görevlerim, Gecikmiş ve Tamamlandı filtreleri, Sırala Öncelik ya da Son tarih ve liste başına bir satır. Bir göreve tıklamak onu sağdaki bölmede açar, Yeni görev ekle ise ekranın ortasında Yeni görev formunu açar.',
   // packing-categories
@@ -3032,18 +3032,35 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Bütün bir paket listesini yapıştırın',
   'help.guide.import-packing-list.goal':
     'Başka bir yerde zaten var olan bir listeyi tek seferde paket öğelerine çevirin.',
-  'help.guide.import-packing-list.step.1': 'Listenin üstündeki çubukta İçe aktar düğmesine tıklayın.',
+  'help.guide.import-packing-list.step.1': 'Listenin üstündeki çubukta aşağı oklu içe aktarma düğmesine tıklayın.',
   'help.guide.import-packing-list.step.2':
-    'Satır başına bir öğe: Kategori, Ad, g cinsinden ağırlık (isteğe bağlı), Çanta (isteğe bağlı), checked/unchecked (isteğe bağlı). Kutudaki gri örnek dört biçimi de gösterir.',
+    'Satır başına bir öğe: Kategori, Ad, g cinsinden ağırlık (isteğe bağlı), Çanta (isteğe bağlı), checked/unchecked (isteğe bağlı). Kutudaki gri örnek dört biçimi de gösterir. Markdown listesi de olur: başlık listeye adını verir, "- [ ]" ve "- [x]" ise öğeye dönüşür.',
   'help.guide.import-packing-list.step.3':
-    'Ya da satırları CSV/TXT Yükle ile bir dosyadan yükleyin. Bir .csv ya da bir .txt alır ve kutuda ne varsa onun yerini alır.',
+    'Ya da satırları CSV/TXT/MD Yükle ile bir dosyadan yükleyin. Bir .csv, bir .txt ya da bir .md alır ve kutuda ne varsa onun yerini alır.',
   'help.guide.import-packing-list.step.4': 'İçe aktar düğmesine tıklayın. Düğme anladığı satırları sayar.',
   'help.guide.import-packing-list.result':
     'Her satır bir öğedir, ilk alanının adlandırdığı listede, ve zaten orada olan hiçbir şeye dokunulmaz.',
   'help.guide.import-packing-list.tip.1':
-    'Alanları virgüller, noktalı virgüller ve sekmeler ayırır, çift tırnaklar ise bir alanı bir arada tutar, böylece “Gömlek, mavi” tek bir ad olarak kalır. Tek değerli bir satır sadece bir addır ve kendi listesi olmayan bir satır Diğer içine iner.',
+    'Alanları virgüller, noktalı virgüller ve sekmeler ayırır, çift tırnaklar ise bir alanı bir arada tutar, böylece “Gömlek, mavi” tek bir ad olarak kalır. Tek değerli bir satır sadece bir addır, kendi listesi olmayan bir satır Diğer içine iner ve bir adın önündeki "3x" adedi belirler.',
   'help.guide.import-packing-list.tip.2':
     'Dördüncü alanda adı geçen bir çanta, gezide henüz yoksa oluşturulur. Ağırlıkları ve çantaları toplu yükleyen tek yer burasıdır; bir şablon yalnızca adları ve listeleri getirir.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Paket listesini yazdırın veya dışa aktarın',
+  'help.guide.export-packing-list.goal':
+    'Listeyi kâğıt üzerinde, PDF olarak ya da başka bir uygulama veya sonraki gezi için dosya olarak yanınıza alın.',
+  'help.guide.export-packing-list.step.1': 'Listenin üstündeki çubukta yukarı oklu dışa aktarma düğmesine tıklayın.',
+  'help.guide.export-packing-list.step.2':
+    'Markdown kontrol listesi (.md) ve İçe aktarma için CSV (.csv) listeyi hemen dosya olarak kaydeder.',
+  'help.guide.export-packing-list.step.3':
+    'Yazdır veya PDF olarak kaydet seçeneğine tıklayın. Önizleme listeyi bir sayfa olarak gösterir: üstte gezi ve tarihleri, ardından her liste işaretlenecek bir kutuyla birlikte bir kart olarak.',
+  'help.guide.export-packing-list.step.4':
+    'Önizlemenin altındaki Yazdır veya PDF olarak kaydet düğmesine tıklayın. Tarayıcı kendi yazdırma penceresini açar: bir yazıcı seçin ya da dosya olarak saklamak için PDF olarak kaydet seçeneğini seçin.',
+  'help.guide.export-packing-list.result':
+    'Çıktı ve dosyalar açık olan görünümü, Ortak ya da Listem, adetler, ağırlıklar ve işaretlerle birlikte içerir.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV, İçe aktar özelliğinin okuduğu biçimdir, çantalar dahil, bu yüzden size ait bir paket şablonu gibi çalışır: onu sonraki geziye içe aktarın.',
+  'help.guide.export-packing-list.tip.2':
+    'Markdown dosyası Obsidian, Notion veya GitHub içinde bir kontrol listesi olarak açılır ve İçe aktar ile aynı şekilde geri gelir.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Bir öğeyi kimin göreceğine ve kimin getireceğine karar verin',
   'help.guide.share-packing-item.goal':

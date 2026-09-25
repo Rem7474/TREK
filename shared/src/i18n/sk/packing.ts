@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Jedna položka na riadok. Formát: Kategória, Názov, Hmotnosť v g (voliteľné), Zavazadlo (voliteľné), checked/unchecked (voliteľné)',
   'packing.importPlaceholder':
     'Hygiena, Zubná kefka\nOblečenie, Tričká, 200\nDokumenty, Pas, , Príručná batožina\nElektronika, Nabíjačka, 50, Kufor, checked',
-  'packing.importCsv': 'Načítať CSV/TXT',
+  'packing.importCsv': 'Načítať CSV/TXT/MD',
+  'packing.export': 'Exportovať',
+  'packing.exportPrint': 'Vytlačiť alebo uložiť ako PDF',
+  'packing.exportMarkdown': 'Kontrolný zoznam v Markdowne (.md)',
+  'packing.exportCsv': 'CSV na import (.csv)',
+  'packing.printItems': 'Položky',
+  'packing.printPacked': 'Zabalené',
+  'packing.importHintMarkdown':
+    'Funguje aj zoznam v Markdowne: nadpis určuje kategóriu, z "- [ ]" a "- [x]" sa stanú položky a "3x" pred názvom nastaví množstvo.',
   'packing.importAction': 'Importovať {count}',
   'packing.importSuccess': '{count} položiek importovaných',
   'packing.importError': 'Import zlyhal',

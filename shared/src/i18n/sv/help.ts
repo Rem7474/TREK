@@ -2926,7 +2926,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Delat och Min lista delar packlistan i två: poolen alla ser, och din egen. Alla, Öppna och Klar smalnar av den som är öppen, och stapeln ovanför räknar vad som är packat.',
   'help.ctx.trip-lists.bullet.5':
-    'Använd mall, Importera och Spara som mall fyller eller behåller en lista utan att du skriver den, och den röda knappen bredvid dem säger hur många föremål som är markerade och sopar bort dem.',
+    'Använd mall och Spara som mall fyller eller behåller en lista utan att du skriver den, och de två ikonerna bredvid dem exporterar listan, som utskrift, som PDF eller som fil, och importerar en. Den röda knappen säger hur många föremål som är markerade och sopar bort dem.',
   'help.ctx.trip-lists.bullet.6':
     'Att göra har en egen sidopanel: framstegskortet, filtren Alla, Mina uppgifter, Förfallen och Slutförda, Sortera efter Prioritet eller Förfallodag, och en rad per lista. Ett klick på en uppgift öppnar den i rutan till höger, och Lägg till ny uppgift öppnar formuläret Ny uppgift över mitten av skärmen.',
   // packing-categories
@@ -2994,18 +2994,35 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Klistra in en hel packlista',
   'help.guide.import-packing-list.goal': 'Gör om en lista du redan har någon annanstans till packföremål i ett svep.',
-  'help.guide.import-packing-list.step.1': 'Klicka på Importera i raden ovanför listan.',
+  'help.guide.import-packing-list.step.1': 'Klicka på importknappen med pilen nedåt i raden ovanför listan.',
   'help.guide.import-packing-list.step.2':
-    'Ett föremål per rad: Kategori, Namn, Vikt i g (valfritt), Väska (valfritt), checked/unchecked (valfritt). Det grå exemplet i rutan visar alla fyra formerna.',
+    'Ett föremål per rad: Kategori, Namn, Vikt i g (valfritt), Väska (valfritt), checked/unchecked (valfritt). Det grå exemplet i rutan visar alla fyra formerna. En Markdown-lista fungerar också: en rubrik namnger listan, och "- [ ]" och "- [x]" blir föremål.',
   'help.guide.import-packing-list.step.3':
-    'Eller ladda raderna från en fil med Ladda CSV/TXT. Den tar en .csv eller en .txt och ersätter det som står i rutan.',
+    'Eller ladda raderna från en fil med Ladda CSV/TXT/MD. Den tar en .csv, en .txt eller en .md och ersätter det som står i rutan.',
   'help.guide.import-packing-list.step.4': 'Klicka på Importera. Knappen räknar raderna den förstod.',
   'help.guide.import-packing-list.result':
     'Varje rad blir ett föremål, i den lista som dess första fält namnger, och inget som redan fanns där rörs.',
   'help.guide.import-packing-list.tip.1':
-    'Kommatecken, semikolon och tabbar skiljer alla fält åt, och citattecken håller ihop ett fält, så ”Skjorta, blå” förblir ett namn. En rad med ett enda värde är bara ett namn, och en rad utan egen lista hamnar i Övrigt.',
+    'Kommatecken, semikolon och tabbar skiljer alla fält åt, och citattecken håller ihop ett fält, så ”Skjorta, blå” förblir ett namn. En rad med ett enda värde är bara ett namn, en rad utan egen lista hamnar i Övrigt, och "3x" framför ett namn anger antalet.',
   'help.guide.import-packing-list.tip.2':
     'En väska som namnges i det fjärde fältet skapas om resan inte redan har den. Det här är enda stället som laddar in vikter och väskor i bulk; en mall tar bara med namn och listor.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Skriv ut eller exportera packlistan',
+  'help.guide.export-packing-list.goal':
+    'Ta med listan på papper, som PDF eller som fil för en annan app eller nästa resa.',
+  'help.guide.export-packing-list.step.1': 'Klicka på exportknappen med pilen uppåt i raden ovanför listan.',
+  'help.guide.export-packing-list.step.2':
+    'Checklista i Markdown (.md) och CSV för import (.csv) sparar listan som en fil direkt.',
+  'help.guide.export-packing-list.step.3':
+    'Klicka på Skriv ut eller spara som PDF. Förhandsvisningen visar listan som en sida: resan och dess datum överst, sedan varje lista som ett kort med en ruta att bocka i.',
+  'help.guide.export-packing-list.step.4':
+    'Klicka på Skriv ut eller spara som PDF under förhandsvisningen. Webbläsaren öppnar sin utskriftsdialog: välj en skrivare, eller Spara som PDF för att behålla en fil.',
+  'help.guide.export-packing-list.result':
+    'Utskriften och filerna innehåller den vy som är öppen, Delat eller Min lista, med antal, vikter och bockar.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV-filen har det format som Importera läser, väskor inräknade, så den fungerar som en egen packmall: importera den till nästa resa.',
+  'help.guide.export-packing-list.tip.2':
+    'Markdown-filen öppnas som en checklista i Obsidian, Notion eller GitHub och kommer tillbaka in via Importera på samma sätt.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Bestäm vem som ser ett föremål och vem som tar med det',
   'help.guide.share-packing-item.goal':

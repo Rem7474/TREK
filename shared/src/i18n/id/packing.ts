@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Satu item per baris. Format: Kategori, Nama, Berat dalam g (opsional), Tas (opsional), checked/unchecked (opsional)',
   'packing.importPlaceholder':
     'Kebersihan, Sikat Gigi\nPakaian, Kaos, 200\nDokumen, Paspor, , Kabin\nElektronik, Charger, 50, Koper, checked',
-  'packing.importCsv': 'Muat CSV/TXT',
+  'packing.importCsv': 'Muat CSV/TXT/MD',
+  'packing.export': 'Ekspor',
+  'packing.exportPrint': 'Cetak atau simpan sebagai PDF',
+  'packing.exportMarkdown': 'Daftar periksa Markdown (.md)',
+  'packing.exportCsv': 'CSV untuk impor (.csv)',
+  'packing.printItems': 'Item',
+  'packing.printPacked': 'Sudah dikemas',
+  'packing.importHintMarkdown':
+    'Daftar Markdown juga bisa: judul menentukan kategori, "- [ ]" dan "- [x]" menjadi item, dan "3x" di depan nama menentukan jumlahnya.',
   'packing.importAction': 'Impor {count}',
   'packing.importSuccess': '{count} item berhasil diimpor',
   'packing.importError': 'Impor gagal',

@@ -17,3 +17,6 @@ export const BAG_COLORS = ['#6366f1', '#ec4899', '#f97316', '#10b981', '#06b6d4'
 // A category's first item is seeded with this sentinel because the server
 // rejects empty names. Treat it as a placeholder in the UI.
 export const PACKING_PLACEHOLDER_NAME = '...'
+
+/** What the import's file picker offers: CSV rows, plain text, or a Markdown list (#875). */
+export const PACKING_IMPORT_ACCEPT = '.csv,.txt,.md,.markdown,text/markdown'

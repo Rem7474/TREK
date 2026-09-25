@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     "หนึ่งรายการต่อบรรทัด รูปแบบ: หมวดหมู่ ชื่อ น้ำหนักเป็นกรัม (ไม่จำเป็น) กระเป๋า (ไม่จำเป็น) เลือก/ไม่เลือก (ไม่จำเป็น)",
   'packing.importPlaceholder':
     "สุขอนามัย, แปรงสีฟัน\nเสื้อผ้า เสื้อยืด 200\nเอกสาร, หนังสือเดินทาง, , กระเป๋าถือขึ้นเครื่อง\nเครื่องใช้ไฟฟ้า ที่ชาร์จ 50 กระเป๋าเดินทาง ตรวจเช็คแล้ว",
-  'packing.importCsv': "โหลด CSV/TXT",
+  'packing.importCsv': "โหลด CSV/TXT/MD",
+  'packing.export': 'ส่งออก',
+  'packing.exportPrint': 'พิมพ์หรือบันทึกเป็น PDF',
+  'packing.exportMarkdown': 'รายการตรวจสอบ Markdown (.md)',
+  'packing.exportCsv': 'CSV สำหรับนำเข้า (.csv)',
+  'packing.printItems': 'รายการ',
+  'packing.printPacked': 'จัดแล้ว',
+  'packing.importHintMarkdown':
+    'ใช้รายการ Markdown ได้เช่นกัน: หัวข้อจะเป็นหมวดหมู่ "- [ ]" และ "- [x]" จะกลายเป็นรายการ และ "3x" หน้าชื่อจะกำหนดจำนวน',
   'packing.importAction': "นำเข้า {count}",
   'packing.importSuccess': "{count} รายการที่นำเข้า",
   'packing.importError': "การนำเข้าล้มเหลว",

@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Eén item per regel. Formaat: Categorie, Naam, Gewicht in g (optioneel), Tas (optioneel), checked/unchecked (optioneel)',
   'packing.importPlaceholder':
     'Hygiëne, Tandenborstel\nKleding, T-shirts, 200\nDocumenten, Paspoort, , Handbagage\nElektronica, Oplader, 50, Koffer, checked',
-  'packing.importCsv': 'CSV/TXT laden',
+  'packing.importCsv': 'CSV/TXT/MD laden',
+  'packing.export': 'Exporteren',
+  'packing.exportPrint': 'Afdrukken of opslaan als pdf',
+  'packing.exportMarkdown': 'Markdown-checklist (.md)',
+  'packing.exportCsv': 'CSV voor import (.csv)',
+  'packing.printItems': 'Items',
+  'packing.printPacked': 'Ingepakt',
+  'packing.importHintMarkdown':
+    'Een Markdown-lijst werkt ook: een kop geeft de categorie aan, "- [ ]" en "- [x]" worden items en "3x" voor een naam stelt het aantal in.',
   'packing.importAction': '{count} importeren',
   'packing.importSuccess': '{count} items geïmporteerd',
   'packing.importError': 'Import mislukt',

@@ -17,7 +17,15 @@ const packing: TranslationStrings = {
   'packing.importHint': '1行につき1項目。形式：カテゴリ, 名前, 重量(g・任意), バッグ(任意), checked/unchecked(任意)',
   'packing.importPlaceholder':
     '衛生用品, 歯ブラシ\n衣類, Tシャツ, 200\n書類, パスポート, , 機内持ち込み\n電子機器, 充電器, 50, スーツケース, checked',
-  'packing.importCsv': 'CSV/TXTを読み込む',
+  'packing.importCsv': 'CSV/TXT/MDを読み込む',
+  'packing.export': 'エクスポート',
+  'packing.exportPrint': '印刷または PDF として保存',
+  'packing.exportMarkdown': 'Markdown チェックリスト (.md)',
+  'packing.exportCsv': 'インポート用 CSV (.csv)',
+  'packing.printItems': 'アイテム',
+  'packing.printPacked': '梱包済み',
+  'packing.importHintMarkdown':
+    'Markdown のリストも使えます。見出しがカテゴリになり、「- [ ]」と「- [x]」がアイテムになり、名前の前の「3x」で数量を指定できます。',
   'packing.importAction': '{count}件をインポート',
   'packing.importSuccess': '{count}件インポートしました',
   'packing.importError': 'インポートに失敗しました',

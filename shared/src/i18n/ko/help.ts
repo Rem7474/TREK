@@ -2791,7 +2791,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     '“공동”과 “내 목록”이 짐 목록을 둘로 나눕니다. 모두가 보는 공용 묶음과, 내 것입니다. “전체”, “미완료”, “완료”가 열려 있는 쪽을 좁히고, 위쪽 막대가 얼마나 챙겼는지 셉니다.',
   'help.ctx.trip-lists.bullet.5':
-    '“템플릿 적용”, “가져오기”, “템플릿으로 저장”은 일일이 입력하지 않고도 목록을 채우거나 남겨 둡니다. 그 옆의 빨간 버튼은 체크된 항목이 몇 개인지 말하고 그것들을 치웁니다.',
+    '“템플릿 적용”과 “템플릿으로 저장”은 일일이 입력하지 않고도 목록을 채우거나 남겨 둡니다. 그 옆의 아이콘 두 개는 목록을 인쇄물, PDF, 파일로 내보내고, 목록을 가져옵니다. 빨간 버튼은 체크된 항목이 몇 개인지 말하고 그것들을 치웁니다.',
   'help.ctx.trip-lists.bullet.6':
     '“할 일”에는 전용 사이드바가 있습니다. 진행 카드, “전체”, “내 작업”, “기한 초과”, “완료” 필터, “우선순위”나 “마감일”로 하는 “정렬 기준”, 그리고 목록마다 한 행입니다. 작업을 클릭하면 오른쪽 패널에서 열리고, “새 작업 추가”는 화면 가운데에 “새 작업” 양식을 엽니다.',
   // packing-categories
@@ -2851,18 +2851,34 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': '짐 목록을 통째로 붙여넣기',
   'help.guide.import-packing-list.goal': '다른 곳에 이미 있는 목록을 한 번에 짐 항목으로 바꿉니다.',
-  'help.guide.import-packing-list.step.1': '목록 위 막대에서 “가져오기”를 클릭합니다.',
+  'help.guide.import-packing-list.step.1': '목록 위 막대에서 아래쪽 화살표가 있는 가져오기 버튼을 클릭합니다.',
   'help.guide.import-packing-list.step.2':
-    '한 줄에 한 항목입니다. 카테고리, 이름, 무게(g, 선택), 가방(선택), checked/unchecked(선택). 상자 안의 회색 예시가 네 가지 형태를 모두 보여 줍니다.',
+    '한 줄에 한 항목입니다. 카테고리, 이름, 무게(g, 선택), 가방(선택), checked/unchecked(선택). 상자 안의 회색 예시가 네 가지 형태를 모두 보여 줍니다. Markdown 목록도 됩니다. 제목이 목록 이름이 되고, "- [ ]"와 "- [x]"는 항목이 됩니다.',
   'help.guide.import-packing-list.step.3':
-    '또는 “CSV/TXT 불러오기”로 파일에서 줄을 읽어 옵니다. .csv나 .txt를 받아서 상자 안에 있던 것을 대체합니다.',
+    '또는 “CSV/TXT/MD 불러오기”로 파일에서 줄을 읽어 옵니다. .csv, .txt, .md를 받아서 상자 안에 있던 것을 대체합니다.',
   'help.guide.import-packing-list.step.4': '“가져오기”를 클릭합니다. 버튼이 알아들은 줄 수를 셉니다.',
   'help.guide.import-packing-list.result':
     '모든 줄이 한 행이 되어 첫 필드가 가리키는 목록에 들어가고, 이미 있던 것은 아무것도 건드리지 않습니다.',
   'help.guide.import-packing-list.tip.1':
-    '쉼표, 세미콜론, 탭이 모두 필드를 나누고, 큰따옴표는 필드를 하나로 묶습니다. 그래서 “Shirt, blue”는 한 이름으로 남습니다. 값이 하나뿐인 줄은 그냥 이름이고, 자기 목록이 없는 줄은 “기타”에 들어갑니다.',
+    '쉼표, 세미콜론, 탭이 모두 필드를 나누고, 큰따옴표는 필드를 하나로 묶습니다. 그래서 “Shirt, blue”는 한 이름으로 남습니다. 값이 하나뿐인 줄은 그냥 이름이고, 자기 목록이 없는 줄은 “기타”에 들어가며, 이름 앞의 "3x"는 수량을 정합니다.',
   'help.guide.import-packing-list.tip.2':
     '네 번째 필드에 적힌 가방은 여행에 아직 없으면 만들어집니다. 무게와 가방을 한꺼번에 불러오는 곳은 여기뿐이고, 템플릿은 이름과 목록만 가져옵니다.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': '짐 목록 인쇄하거나 내보내기',
+  'help.guide.export-packing-list.goal': '목록을 종이로, PDF로, 또는 다른 앱이나 다음 여행에 쓸 파일로 가져갑니다.',
+  'help.guide.export-packing-list.step.1': '목록 위 막대에서 위쪽 화살표가 있는 내보내기 버튼을 클릭합니다.',
+  'help.guide.export-packing-list.step.2':
+    '“Markdown 체크리스트 (.md)”와 “가져오기용 CSV (.csv)”는 목록을 바로 파일로 저장합니다.',
+  'help.guide.export-packing-list.step.3':
+    '“인쇄 또는 PDF로 저장”을 클릭합니다. 미리 보기가 목록을 한 페이지로 보여 줍니다. 위에는 여행과 날짜가, 그 아래에는 목록마다 체크 상자가 달린 카드가 있습니다.',
+  'help.guide.export-packing-list.step.4':
+    '미리 보기 아래의 “인쇄 또는 PDF로 저장”을 클릭합니다. 브라우저가 인쇄 대화 상자를 엽니다. 프린터를 고르거나, 파일로 남기려면 “PDF로 저장”을 고릅니다.',
+  'help.guide.export-packing-list.result':
+    '인쇄물과 파일에는 지금 열려 있는 보기, “공동” 또는 “내 목록”이 수량, 무게, 체크 표시와 함께 담깁니다.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV는 “가져오기”가 읽는 형식이고 가방까지 담기므로, 나만의 짐 템플릿으로 쓸 수 있습니다. 다음 여행에 가져오면 됩니다.',
+  'help.guide.export-packing-list.tip.2':
+    'Markdown 파일은 Obsidian, Notion, GitHub에서 체크리스트로 열리고, “가져오기”로 똑같이 다시 들여올 수 있습니다.',
   // share-packing-item
   'help.guide.share-packing-item.title': '누가 항목을 보고 누가 가져갈지 정하기',
   'help.guide.share-packing-item.goal':

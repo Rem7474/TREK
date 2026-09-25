@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Один предмет на строку. Формат: Категория, Название, Вес в г (необязательно), Сумка (необязательно), checked/unchecked (необязательно)',
   'packing.importPlaceholder':
     'Гигиена, Зубная щётка\nОдежда, Футболки, 200\nДокументы, Паспорт, , Ручная кладь\nЭлектроника, Зарядка, 50, Чемодан, checked',
-  'packing.importCsv': 'Загрузить CSV/TXT',
+  'packing.importCsv': 'Загрузить CSV/TXT/MD',
+  'packing.export': 'Экспорт',
+  'packing.exportPrint': 'Печать или сохранение в PDF',
+  'packing.exportMarkdown': 'Чек-лист в Markdown (.md)',
+  'packing.exportCsv': 'CSV для импорта (.csv)',
+  'packing.printItems': 'Вещи',
+  'packing.printPacked': 'Собрано',
+  'packing.importHintMarkdown':
+    'Подойдёт и список в Markdown: заголовок задаёт категорию, "- [ ]" и "- [x]" становятся пунктами, а "3x" перед названием задаёт количество.',
   'packing.importAction': 'Импортировать {count}',
   'packing.importSuccess': '{count} предметов импортировано',
   'packing.importError': 'Ошибка импорта',

@@ -19,7 +19,15 @@ const packing: TranslationStrings = {
     'Soronként egy tétel. Formátum: Kategória, Név, Súly g-ban (opcionális), Táska (opcionális), checked/unchecked (opcionális)',
   'packing.importPlaceholder':
     'Tisztálkodás, Fogkefe\nRuházat, Pólók, 200\nDokumentumok, Útlevél, , Kézipoggyász\nElektronika, Töltő, 50, Bőrönd, checked',
-  'packing.importCsv': 'CSV/TXT betöltése',
+  'packing.importCsv': 'CSV/TXT/MD betöltése',
+  'packing.export': 'Exportálás',
+  'packing.exportPrint': 'Nyomtatás vagy mentés PDF-ként',
+  'packing.exportMarkdown': 'Markdown ellenőrzőlista (.md)',
+  'packing.exportCsv': 'CSV importáláshoz (.csv)',
+  'packing.printItems': 'Tételek',
+  'packing.printPacked': 'Becsomagolva',
+  'packing.importHintMarkdown':
+    'Markdown-lista is használható: a címsor adja a kategóriát, a "- [ ]" és "- [x]" sorokból tételek lesznek, a név előtti "3x" pedig a mennyiséget adja meg.',
   'packing.importAction': '{count} importálása',
   'packing.importSuccess': '{count} tétel importálva',
   'packing.importError': 'Importálás sikertelen',

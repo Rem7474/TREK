@@ -19,7 +19,15 @@ const packing: TranslationStrings = {
     'Ένα αντικείμενο ανά γραμμή. Μορφή: Κατηγορία, Όνομα, Βάρος σε g (προαιρετικό), Τσάντα (προαιρετικό), checked/unchecked (προαιρετικό)',
   'packing.importPlaceholder':
     'Υγιεινή, Οδοντόβουρτσα\nΡούχα, T-Shirts, 200\nΈγγραφα, Διαβατήριο, , Χειραποσκευή\nΗλεκτρονικά, Φορτιστής, 50, Βαλίτσα, checked',
-  'packing.importCsv': 'Φόρτωση CSV/TXT',
+  'packing.importCsv': 'Φόρτωση CSV/TXT/MD',
+  'packing.export': 'Εξαγωγή',
+  'packing.exportPrint': 'Εκτύπωση ή αποθήκευση ως PDF',
+  'packing.exportMarkdown': 'Λίστα ελέγχου Markdown (.md)',
+  'packing.exportCsv': 'CSV για εισαγωγή (.csv)',
+  'packing.printItems': 'Αντικείμενα',
+  'packing.printPacked': 'Συσκευασμένα',
+  'packing.importHintMarkdown':
+    'Λειτουργεί και μια λίστα Markdown: μια επικεφαλίδα ορίζει την κατηγορία, τα "- [ ]" και "- [x]" γίνονται αντικείμενα και το "3x" μπροστά από ένα όνομα ορίζει την ποσότητα.',
   'packing.importAction': 'Εισαγωγή {count}',
   'packing.importSuccess': '{count} αντικείμενα εισήχθησαν',
   'packing.importError': 'Η εισαγωγή απέτυχε',

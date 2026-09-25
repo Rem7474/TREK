@@ -17,7 +17,15 @@ const packing: TranslationStrings = {
   'packing.importHint': '한 줄에 하나의 항목. 형식: 카테고리, 이름, 무게(g, 선택), 가방(선택), checked/unchecked(선택)',
   'packing.importPlaceholder':
     '위생, 칫솔\n의류, 티셔츠, 200\n서류, 여권, , 기내 수하물\n전자기기, 충전기, 50, 캐리어, checked',
-  'packing.importCsv': 'CSV/TXT 불러오기',
+  'packing.importCsv': 'CSV/TXT/MD 불러오기',
+  'packing.export': '내보내기',
+  'packing.exportPrint': '인쇄 또는 PDF로 저장',
+  'packing.exportMarkdown': 'Markdown 체크리스트 (.md)',
+  'packing.exportCsv': '가져오기용 CSV (.csv)',
+  'packing.printItems': '항목',
+  'packing.printPacked': '완료',
+  'packing.importHintMarkdown':
+    'Markdown 목록도 사용할 수 있습니다. 제목은 카테고리가 되고, "- [ ]"와 "- [x]"는 항목이 되며, 이름 앞의 "3x"는 수량을 지정합니다.',
   'packing.importAction': '{count}개 가져오기',
   'packing.importSuccess': '{count}개 항목을 가져왔습니다',
   'packing.importError': '가져오기 실패',

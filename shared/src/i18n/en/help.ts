@@ -2985,7 +2985,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Shared and My list split the packing list in two: the pool everyone sees, and your own. All, Open and Done narrow whichever one is open, and the bar above counts what is packed.',
   'help.ctx.trip-lists.bullet.5':
-    'Apply template, Import and Save as template fill or keep a list without typing it out, and the red button beside them names how many items are ticked and clears them away.',
+    'Apply template and Save as template fill or keep a list without typing it out, and the two icons beside them export the list, as a printout, a PDF or a file, and import one. The red button names how many items are ticked and clears them away.',
   'help.ctx.trip-lists.bullet.6':
     'To-Do has a sidebar of its own: the progress card, the filters All, My Tasks, Overdue and Done, Sort by Priority or Due date, and one row per list. A click on a task opens it in the pane on the right, and Add new task opens the New task form over the middle of the screen.',
   // packing-categories
@@ -3051,18 +3051,35 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Paste a whole packing list in',
   'help.guide.import-packing-list.goal': 'Turn a list you already have somewhere else into packing items in one go.',
-  'help.guide.import-packing-list.step.1': 'Click Import in the bar above the list.',
+  'help.guide.import-packing-list.step.1': 'Click the import button with the down arrow in the bar above the list.',
   'help.guide.import-packing-list.step.2':
-    'One item per line: Category, Name, Weight in g (optional), Bag (optional), checked/unchecked (optional). The grey sample in the box shows all four shapes.',
+    'One item per line: Category, Name, Weight in g (optional), Bag (optional), checked/unchecked (optional). The grey sample in the box shows all four shapes. A Markdown list works too: a heading names the list, and "- [ ]" and "- [x]" become items.',
   'help.guide.import-packing-list.step.3':
-    'Or load the lines from a file with Load CSV/TXT. It takes a .csv or a .txt and replaces whatever is in the box.',
+    'Or load the lines from a file with Load CSV/TXT/MD. It takes a .csv, a .txt or a .md and replaces whatever is in the box.',
   'help.guide.import-packing-list.step.4': 'Click Import. The button counts the lines it understood.',
   'help.guide.import-packing-list.result':
     'Every line is a row, in the list its first field names, and nothing that was already there is touched.',
   'help.guide.import-packing-list.tip.1':
-    'Commas, semicolons and tabs all separate fields, and double quotes hold a field together, so "Shirt, blue" stays one name. A line with a single value is just a name, and a line with no list of its own lands in Other.',
+    'Commas, semicolons and tabs all separate fields, and double quotes hold a field together, so "Shirt, blue" stays one name. A line with a single value is just a name, a line with no list of its own lands in Other, and "3x" in front of a name sets the quantity.',
   'help.guide.import-packing-list.tip.2':
     'A bag named in the fourth field is created if the trip does not have it yet. This is the only place that loads weights and bags in bulk; a template brings names and lists only.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Print or export the packing list',
+  'help.guide.export-packing-list.goal':
+    'Take the list along on paper, as a PDF, or as a file for another app or the next trip.',
+  'help.guide.export-packing-list.step.1': 'Click the export button with the up arrow in the bar above the list.',
+  'help.guide.export-packing-list.step.2':
+    'Markdown checklist (.md) and CSV for import (.csv) save the list as a file right away.',
+  'help.guide.export-packing-list.step.3':
+    'Click Print or save as PDF. The preview shows the list as a page: the trip and its dates on top, then every list as a card with a box to tick.',
+  'help.guide.export-packing-list.step.4':
+    'Click Print or save as PDF under the preview. The browser opens its print dialog: pick a printer, or Save as PDF to keep a file.',
+  'help.guide.export-packing-list.result':
+    'The printout and the files hold the view that is open, Shared or My list, with the quantities, weights and checkmarks.',
+  'help.guide.export-packing-list.tip.1':
+    'The CSV is the format Import reads, bags included, so it works as a packing template of your own: import it into the next trip.',
+  'help.guide.export-packing-list.tip.2':
+    'The Markdown file opens as a checklist in Obsidian, Notion or GitHub, and comes back in through Import just the same.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Decide who sees an item and who brings it',
   'help.guide.share-packing-item.goal':

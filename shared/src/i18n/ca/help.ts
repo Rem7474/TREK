@@ -3019,7 +3019,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Compartit i La meva llista parteixen la llista d’equipatge en dues: el fons comú que tothom veu, i la teva. Tot, Pendents i Fet estrenyen la que està oberta, i la barra de sobre compta què hi ha preparat.',
   'help.ctx.trip-lists.bullet.5':
-    'Aplica una plantilla, Importa i Desa com a plantilla omplen o conserven una llista sense teclejar-la, i el botó vermell del costat diu quants articles estan marcats i els retira.',
+    'Aplica una plantilla i Desa com a plantilla omplen o conserven una llista sense teclejar-la, i les dues icones del costat exporten la llista, com a impressió, PDF o fitxer, i n’importen una. El botó vermell diu quants articles estan marcats i els retira.',
   'help.ctx.trip-lists.bullet.6':
     'Pendents té una barra lateral pròpia: la targeta de progrés, els filtres Tot, Les meves tasques, Vençuda i Fet, Ordena per Prioritat o Data límit, i una fila per categoria. Un clic en una tasca l’obre al panell de la dreta, i Tasca nova obre el formulari Tasca nova sobre el mig de la pantalla.',
   // packing-categories
@@ -3086,18 +3086,37 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Enganxar una llista d’equipatge sencera',
   'help.guide.import-packing-list.goal':
     'Converteix d’una sola vegada una llista que ja tens en un altre lloc en articles d’equipatge.',
-  'help.guide.import-packing-list.step.1': 'Fes clic a Importa a la barra de sobre la llista.',
+  'help.guide.import-packing-list.step.1':
+    'Fes clic al botó d’importar amb la fletxa cap avall a la barra de sobre la llista.',
   'help.guide.import-packing-list.step.2':
-    'Un article per línia: Categoria, Nom, Pes en g (opcional), Equipatge (opcional), checked/unchecked (opcional). L’exemple gris del quadre mostra les quatre formes.',
+    'Un article per línia: Categoria, Nom, Pes en g (opcional), Equipatge (opcional), checked/unchecked (opcional). L’exemple gris del quadre mostra les quatre formes. També funciona una llista en Markdown: un títol dona nom a la llista, i "- [ ]" i "- [x]" es converteixen en articles.',
   'help.guide.import-packing-list.step.3':
-    'O carrega les línies d’un fitxer amb Carrega CSV/TXT. Accepta un .csv o un .txt i substitueix el que hi hagi al quadre.',
+    'O carrega les línies d’un fitxer amb Carrega CSV/TXT/MD. Accepta un .csv, un .txt o un .md i substitueix el que hi hagi al quadre.',
   'help.guide.import-packing-list.step.4': 'Fes clic a Importa. El botó compta les línies que ha entès.',
   'help.guide.import-packing-list.result':
     'Cada línia és una fila, a la llista que nomena el seu primer camp, i res del que ja hi havia no es toca.',
   'help.guide.import-packing-list.tip.1':
-    'Les comes, els punts i comes i els tabuladors separen camps, i les cometes mantenen un camp sencer, de manera que «Camisa, blava» continua sent un sol nom. Una línia amb un sol valor és només un nom, i una línia sense llista pròpia va a parar a Altres.',
+    'Les comes, els punts i comes i els tabuladors separen camps, i les cometes mantenen un camp sencer, de manera que «Camisa, blava» continua sent un sol nom. Una línia amb un sol valor és només un nom, una línia sense llista pròpia va a parar a Altres, i "3x" davant d’un nom en fixa la quantitat.',
   'help.guide.import-packing-list.tip.2':
     'Una peça d’equipatge anomenada al quart camp es crea si el viatge encara no la té. Aquest és l’únic lloc que carrega pesos i equipatge en bloc; una plantilla només porta noms i llistes.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'Imprimir o exportar la llista d’equipatge',
+  'help.guide.export-packing-list.goal':
+    'Emporta’t la llista en paper, en PDF o com a fitxer per a una altra aplicació o per al proper viatge.',
+  'help.guide.export-packing-list.step.1':
+    'Fes clic al botó d’exportar amb la fletxa cap amunt a la barra de sobre la llista.',
+  'help.guide.export-packing-list.step.2':
+    'Llista de comprovació en Markdown (.md) i CSV per importar (.csv) desen la llista com a fitxer de seguida.',
+  'help.guide.export-packing-list.step.3':
+    'Fes clic a Imprimeix o desa com a PDF. La previsualització mostra la llista com una pàgina: el viatge i les seves dates a dalt, i després cada llista com una targeta amb una casella per marcar.',
+  'help.guide.export-packing-list.step.4':
+    'Fes clic a Imprimeix o desa com a PDF sota la previsualització. El navegador obre el seu diàleg d’impressió: tria una impressora, o Desa com a PDF per quedar-te un fitxer.',
+  'help.guide.export-packing-list.result':
+    'La impressió i els fitxers recullen la vista que està oberta, Compartit o La meva llista, amb les quantitats, els pesos i les marques.',
+  'help.guide.export-packing-list.tip.1':
+    'El CSV és el format que llegeix Importa, equipatge inclòs, així que serveix com a plantilla d’equipatge pròpia: importa’l al proper viatge.',
+  'help.guide.export-packing-list.tip.2':
+    'El fitxer Markdown s’obre com a llista de comprovació a Obsidian, Notion o GitHub, i torna a entrar igual per Importa.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Decidir qui veu un article i qui el porta',
   'help.guide.share-packing-item.goal':

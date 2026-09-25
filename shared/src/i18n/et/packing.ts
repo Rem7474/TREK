@@ -18,7 +18,15 @@ const packing: TranslationStrings = {
     'Üks ese rea kohta. Vorming: kategooria, nimi, kaal grammides (valikuline), kott (valikuline), checked/unchecked (valikuline)',
   'packing.importPlaceholder':
     'Hügieen, Hambahari\nRiided, T-särgid, 200\nDokumendid, Pass, , Käsipagas\nElektroonika, Laadija, 50, Kohver, checked',
-  'packing.importCsv': 'Laadi CSV/TXT',
+  'packing.importCsv': 'Laadi CSV/TXT/MD',
+  'packing.export': 'Ekspordi',
+  'packing.exportPrint': 'Prindi või salvesta PDF-ina',
+  'packing.exportMarkdown': 'Markdowni kontrollnimekiri (.md)',
+  'packing.exportCsv': 'CSV importimiseks (.csv)',
+  'packing.printItems': 'Esemed',
+  'packing.printPacked': 'Pakitud',
+  'packing.importHintMarkdown':
+    'Sobib ka Markdowni loend: pealkiri määrab kategooria, "- [ ]" ja "- [x]" muutuvad esemeteks ning "3x" nime ees määrab koguse.',
   'packing.importAction': 'Impordi {count}',
   'packing.importSuccess': '{count} eset imporditud',
   'packing.importError': 'Import ebaõnnestus',

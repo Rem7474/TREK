@@ -3034,7 +3034,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     'Gedeeld en Mijn lijst splitsen de inpaklijst in tweeën: de pot die iedereen ziet, en die van jou. Alle, Openstaand en Klaar versmallen degene die open is, en de balk erboven telt wat er ingepakt is.',
   'help.ctx.trip-lists.bullet.5':
-    'Sjabloon toepassen, Importeren en Opslaan als sjabloon vullen of bewaren een lijst zonder hem uit te typen, en de rode knop ernaast noemt hoeveel items aangevinkt zijn en ruimt ze op.',
+    'Sjabloon toepassen en Opslaan als sjabloon vullen of bewaren een lijst zonder hem uit te typen, en de twee pictogrammen ernaast exporteren de lijst, als afdruk, als PDF of als bestand, en importeren er een. De rode knop noemt hoeveel items aangevinkt zijn en ruimt ze op.',
   'help.ctx.trip-lists.bullet.6':
     'Taken heeft een eigen zijbalk: de voortgangskaart, de filters Alles, Mijn taken, Verlopen en Klaar, Sorteren op Prioriteit of Vervaldatum, en één rij per lijst. Een klik op een taak opent hem in het paneel rechts, en Nieuwe taak opent het formulier Nieuwe taak over het midden van het scherm.',
   // packing-categories
@@ -3101,18 +3101,35 @@ const help: TranslationStrings = {
   // import-packing-list
   'help.guide.import-packing-list.title': 'Een hele inpaklijst erin plakken',
   'help.guide.import-packing-list.goal': 'Maak in één keer inpakitems van een lijst die je ergens anders al hebt.',
-  'help.guide.import-packing-list.step.1': 'Klik op Importeren in de balk boven de lijst.',
+  'help.guide.import-packing-list.step.1': 'Klik op de importknop met de pijl omlaag in de balk boven de lijst.',
   'help.guide.import-packing-list.step.2':
-    'Eén item per regel: Categorie, Naam, Gewicht in g (optioneel), Bagage (optioneel), checked/unchecked (optioneel). Het grijze voorbeeld in het vak toont alle vier de vormen.',
+    'Eén item per regel: Categorie, Naam, Gewicht in g (optioneel), Bagage (optioneel), checked/unchecked (optioneel). Het grijze voorbeeld in het vak toont alle vier de vormen. Een Markdown-lijst werkt ook: een kop geeft de lijst een naam, en "- [ ]" en "- [x]" worden items.',
   'help.guide.import-packing-list.step.3':
-    'Of laad de regels uit een bestand met CSV/TXT laden. Het neemt een .csv of een .txt en vervangt wat er in het vak staat.',
+    'Of laad de regels uit een bestand met CSV/TXT/MD laden. Het neemt een .csv, een .txt of een .md en vervangt wat er in het vak staat.',
   'help.guide.import-packing-list.step.4': 'Klik op Importeren. De knop telt de regels die hij begrepen heeft.',
   'help.guide.import-packing-list.result':
     'Elke regel wordt een rij, in de lijst die zijn eerste veld noemt, en niets van wat er al stond wordt aangeraakt.',
   'help.guide.import-packing-list.tip.1':
-    'Komma’s, puntkomma’s en tabs scheiden allemaal velden, en aanhalingstekens houden een veld bij elkaar, zodat „Shirt, blauw“ één naam blijft. Een regel met één enkele waarde is alleen een naam, en een regel zonder eigen lijst komt in Overig terecht.',
+    'Komma’s, puntkomma’s en tabs scheiden allemaal velden, en aanhalingstekens houden een veld bij elkaar, zodat „Shirt, blauw“ één naam blijft. Een regel met één enkele waarde is alleen een naam, een regel zonder eigen lijst komt in Overig terecht, en "3x" voor een naam stelt het aantal in.',
   'help.guide.import-packing-list.tip.2':
     'Een bagagestuk dat in het vierde veld genoemd wordt, wordt aangemaakt als de reis het nog niet heeft. Dit is de enige plek die gewichten en bagage in bulk laadt; een sjabloon brengt alleen namen en lijsten.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'De inpaklijst afdrukken of exporteren',
+  'help.guide.export-packing-list.goal':
+    'Neem de lijst mee op papier, als PDF of als bestand voor een andere app of de volgende reis.',
+  'help.guide.export-packing-list.step.1': 'Klik op de exportknop met de pijl omhoog in de balk boven de lijst.',
+  'help.guide.export-packing-list.step.2':
+    'Markdown-checklist (.md) en CSV voor import (.csv) slaan de lijst meteen op als bestand.',
+  'help.guide.export-packing-list.step.3':
+    'Klik op Afdrukken of opslaan als pdf. Het voorbeeld toont de lijst als pagina: bovenaan de reis en de datums, dan elke lijst als kaart met een vakje om af te vinken.',
+  'help.guide.export-packing-list.step.4':
+    'Klik onder het voorbeeld op Afdrukken of opslaan als pdf. De browser opent zijn afdrukvenster: kies een printer, of Opslaan als pdf om een bestand te bewaren.',
+  'help.guide.export-packing-list.result':
+    'De afdruk en de bestanden bevatten de weergave die open is, Gedeeld of Mijn lijst, met de aantallen, gewichten en vinkjes.',
+  'help.guide.export-packing-list.tip.1':
+    'De CSV is het formaat dat Importeren leest, bagage inbegrepen, dus hij werkt als je eigen inpaksjabloon: importeer hem in de volgende reis.',
+  'help.guide.export-packing-list.tip.2':
+    'Het Markdown-bestand opent als checklist in Obsidian, Notion of GitHub, en komt via Importeren net zo goed weer terug.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Bepalen wie een item ziet en wie het meeneemt',
   'help.guide.share-packing-item.goal':

@@ -2950,7 +2950,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.4':
     '“Chung” và “Danh sách của tôi” chia danh sách đóng gói làm hai: kho chung mọi người đều thấy, và của riêng bạn. “Tất cả”, “Mở” và “Xong” thu hẹp bên nào đang mở, và thanh phía trên đếm những gì đã đóng gói.',
   'help.ctx.trip-lists.bullet.5':
-    '“Áp dụng mẫu”, “Nhập” và “Lưu dưới dạng mẫu” lấp đầy hoặc giữ lại một danh sách mà không phải gõ ra, và nút đỏ bên cạnh nêu có bao nhiêu mục đã được đánh dấu rồi dọn chúng đi.',
+    '“Áp dụng mẫu” và “Lưu dưới dạng mẫu” lấp đầy hoặc giữ lại một danh sách mà không phải gõ ra, còn hai biểu tượng bên cạnh xuất danh sách, dưới dạng bản in, PDF hoặc tập tin, và nhập một danh sách. Nút đỏ nêu có bao nhiêu mục đã được đánh dấu rồi dọn chúng đi.',
   'help.ctx.trip-lists.bullet.6':
     '“Việc cần làm” có thanh bên riêng: thẻ tiến độ, các bộ lọc “Tất cả”, “Nhiệm vụ của tôi”, “Quá hạn” và “Xong”, “Sắp xếp theo” “Sự ưu tiên” hoặc “Ngày đến hạn”, và một hàng cho mỗi danh sách. Nhấp vào một nhiệm vụ sẽ mở nó ở khung bên phải, và “Thêm nhiệm vụ mới” mở biểu mẫu “Nhiệm vụ mới” ngay giữa màn hình.',
   // packing-categories
@@ -3018,18 +3018,35 @@ const help: TranslationStrings = {
   'help.guide.import-packing-list.title': 'Dán nguyên một danh sách đóng gói vào',
   'help.guide.import-packing-list.goal':
     'Biến một danh sách bạn đã có ở nơi khác thành các mục đóng gói trong một lần.',
-  'help.guide.import-packing-list.step.1': 'Nhấp “Nhập” ở thanh phía trên danh sách.',
+  'help.guide.import-packing-list.step.1': 'Nhấp nút nhập có mũi tên hướng xuống ở thanh phía trên danh sách.',
   'help.guide.import-packing-list.step.2':
-    'Mỗi dòng một mục: Danh mục, Tên, Trọng lượng tính bằng g (tùy chọn), Túi (tùy chọn), checked/unchecked (tùy chọn). Mẫu màu xám trong ô cho thấy cả bốn dạng.',
+    'Mỗi dòng một mục: Danh mục, Tên, Trọng lượng tính bằng g (tùy chọn), Túi (tùy chọn), checked/unchecked (tùy chọn). Mẫu màu xám trong ô cho thấy cả bốn dạng. Danh sách Markdown cũng dùng được: tiêu đề đặt tên cho danh sách, còn "- [ ]" và "- [x]" trở thành mục.',
   'help.guide.import-packing-list.step.3':
-    'Hoặc nạp các dòng từ một tập tin bằng “Tải CSV/TXT”. Nó nhận một tập tin .csv hoặc .txt và thay thế mọi thứ đang có trong ô.',
+    'Hoặc nạp các dòng từ một tập tin bằng “Tải CSV/TXT/MD”. Nó nhận một tập tin .csv, .txt hoặc .md và thay thế mọi thứ đang có trong ô.',
   'help.guide.import-packing-list.step.4': 'Nhấp “Nhập”. Nút đó đếm số dòng nó hiểu được.',
   'help.guide.import-packing-list.result':
     'Mỗi dòng thành một hàng, nằm trong danh sách mà trường đầu tiên của nó nêu tên, và không có gì vốn đã ở đó bị đụng tới.',
   'help.guide.import-packing-list.tip.1':
-    'Dấu phẩy, dấu chấm phẩy và dấu tab đều tách các trường, còn dấu nháy kép giữ một trường lại với nhau, nên “Shirt, blue” vẫn là một cái tên. Một dòng chỉ có một giá trị thì đó là tên, và một dòng không có danh sách riêng sẽ rơi vào “Khác”.',
+    'Dấu phẩy, dấu chấm phẩy và dấu tab đều tách các trường, còn dấu nháy kép giữ một trường lại với nhau, nên “Shirt, blue” vẫn là một cái tên. Một dòng chỉ có một giá trị thì đó là tên, một dòng không có danh sách riêng sẽ rơi vào “Khác”, và "3x" trước tên sẽ đặt số lượng.',
   'help.guide.import-packing-list.tip.2':
     'Túi được nêu tên ở trường thứ tư sẽ được tạo nếu chuyến đi chưa có nó. Đây là nơi duy nhất nạp trọng lượng và túi hàng loạt; một mẫu chỉ mang theo tên và danh sách.',
+  // export-packing-list
+  'help.guide.export-packing-list.title': 'In hoặc xuất danh sách đóng gói',
+  'help.guide.export-packing-list.goal':
+    'Mang danh sách theo trên giấy, dưới dạng PDF, hoặc dưới dạng tập tin cho ứng dụng khác hay cho chuyến đi sau.',
+  'help.guide.export-packing-list.step.1': 'Nhấp nút xuất có mũi tên hướng lên ở thanh phía trên danh sách.',
+  'help.guide.export-packing-list.step.2':
+    '“Danh sách kiểm tra Markdown (.md)” và “CSV để nhập (.csv)” lưu danh sách thành tập tin ngay lập tức.',
+  'help.guide.export-packing-list.step.3':
+    'Nhấp “In hoặc lưu thành PDF”. Bản xem trước hiển thị danh sách như một trang: chuyến đi và ngày tháng ở trên cùng, rồi mỗi danh sách là một thẻ có ô để đánh dấu.',
+  'help.guide.export-packing-list.step.4':
+    'Nhấp “In hoặc lưu thành PDF” bên dưới bản xem trước. Trình duyệt mở hộp thoại in của nó: chọn một máy in, hoặc “Lưu dưới dạng PDF” để giữ một tập tin.',
+  'help.guide.export-packing-list.result':
+    'Bản in và các tập tin chứa chế độ xem đang mở, “Chung” hoặc “Danh sách của tôi”, kèm số lượng, trọng lượng và dấu tích.',
+  'help.guide.export-packing-list.tip.1':
+    'CSV là định dạng mà “Nhập” đọc được, kể cả túi, nên nó dùng được như một mẫu đóng gói của riêng bạn: hãy nhập nó vào chuyến đi sau.',
+  'help.guide.export-packing-list.tip.2':
+    'Tập tin Markdown mở ra thành danh sách kiểm tra trong Obsidian, Notion hoặc GitHub, và cũng quay lại được qua “Nhập” như vậy.',
   // share-packing-item
   'help.guide.share-packing-item.title': 'Quyết định ai thấy một mục và ai mang nó',
   'help.guide.share-packing-item.goal':

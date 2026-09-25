@@ -17,7 +17,15 @@ const packing: TranslationStrings = {
   'packing.importHint': '每行一个物品。格式：类别, 名称, 重量（克，可选）, 包（可选）, checked/unchecked（可选）',
   'packing.importPlaceholder':
     '洗漱, 牙刷\n衣物, T恤, 200\n证件, 护照, , 随身包\n电子产品, 充电器, 50, 行李箱, checked',
-  'packing.importCsv': '加载 CSV/TXT',
+  'packing.importCsv': '加载 CSV/TXT/MD',
+  'packing.export': '导出',
+  'packing.exportPrint': '打印或另存为 PDF',
+  'packing.exportMarkdown': 'Markdown 清单 (.md)',
+  'packing.exportCsv': '用于导入的 CSV (.csv)',
+  'packing.printItems': '物品',
+  'packing.printPacked': '已打包',
+  'packing.importHintMarkdown':
+    '也可以使用 Markdown 列表：标题作为分类，"- [ ]" 和 "- [x]" 会变成物品，名称前的 "3x" 用于设置数量。',
   'packing.importAction': '导入 {count}',
   'packing.importSuccess': '已导入 {count} 项',
   'packing.importError': '导入失败',
