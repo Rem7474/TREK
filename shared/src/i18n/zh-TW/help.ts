@@ -2464,23 +2464,23 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     '頂部的「行李清單」和「待辦事項」在兩者之間切換，並各自數出裡面有多少；右邊的按鈕屬於當前開啟的那一邊。',
   'help.ctx.trip-lists.bullet.2':
-    '行李清單依清單分組，證件、衣物，隨你怎麼叫，每份清單帶一個顏色圓點、一個已打包/總數的徽章，以及裝著「重新命名」「全部勾選」「取消全部勾選」和「刪除清單」的三個點。「新增清單」建立一份新的。',
+    '行李清單依清單分組，證件、衣物，隨你怎麼叫，每份清單帶一個顏色圓點、一個已打包/總數的徽章，以及裝著「重新命名」「全部勾選」「取消全部勾選」和「刪除清單」的三個點。上方工具列裡的「新增清單」建立一份新的。',
   'help.ctx.trip-lists.bullet.3':
-    '一列是一個勾選框和一個名稱，然後是「數量」、以克計的重量和行李圓圈（在「行李追蹤」開著時），再是用於「移動到清單」的顏色圓點、「共用」「重新命名」和「刪除」。左邊的抓手把它在所屬清單裡上下拖曳。',
+    '一列是一個勾選框和一個名稱，然後是誰帶它、數量和以克計的重量這幾個小徽章，以及行李圓圈（在「行李追蹤」開著時），再是垃圾桶和裝著「移動到清單」「共用」「重新命名」和「刪除」的三個點。一列沒用到的部分會保持淡色，直到你把指標移上去；左邊的抓手把它在所屬清單裡上下拖曳。',
   'help.ctx.trip-lists.bullet.4':
     '「共用」和「我的清單」把行李清單一分為二：所有人都看得到的公共區，和你自己的那份。「全部」「未完成」「已完成」收窄當前開啟的那一邊，上方的進度條數出已經打包了多少。',
   'help.ctx.trip-lists.bullet.5':
-    '「應用模板」和「儲存為範本」不用一條條敲就能填滿或留下一份清單，旁邊的兩個圖示把清單匯出為列印稿、PDF 或檔案，也能匯入一份。紅色按鈕寫出有多少物品已勾選，並把它們清走。',
+    '「應用模板」和「儲存為範本」不用一條條敲就能填滿或留下一份清單，旁邊的兩個圖示把清單匯出為列印稿、PDF 或檔案，也能匯入一份。進度條旁邊的紅色按鈕寫出有多少物品已勾選，並把它們清走。',
   'help.ctx.trip-lists.bullet.6':
     '「待辦事項」有自己的側欄：進度卡片，「全部」「我的任務」「已逾期」「已完成」幾個篩選，依「優先順序」或「到期日」的「排序方式」，以及每份清單一列。點選一個任務會在右側面板裡開啟它，「新增任務」則在螢幕中央開啟「新任務」表單。',
   // packing-categories
   'help.guide.packing-categories.title': '建立行李清單',
   'help.guide.packing-categories.goal': '把要帶的東西歸進清單，填上物品，並說明誰來負責每一份清單。',
   'help.guide.packing-categories.step.1':
-    '點選進度條下方的「新增清單」，在「清單名稱（例如：衣物）」裡輸入名稱，用勾選確認。',
+    '點選清單上方工具列裡的「新增清單」，在「清單名稱（例如：衣物）」裡輸入名稱，然後點選「新增」。',
   'help.guide.packing-categories.step.2':
     '新清單以一個空列開始。點選「新增物品」，在「物品名稱...」裡輸入物品並按 Enter；輸入框會一直開著，等下一個。',
-  'help.guide.packing-categories.step.3': '用一列右端的鉛筆給它改名，或者直接點選名稱本身。',
+  'help.guide.packing-categories.step.3': '點選一列的名稱給它改名，或者用它右端三個點裡的「重新命名」。',
   'help.guide.packing-categories.step.4':
     '清單標題裡的虛線圓圈把旅行成員指派到這份清單。選一個名字；出現的標籤再點一下就把那個人移除。',
   'help.guide.packing-categories.step.5':
@@ -2490,7 +2490,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     '一份清單就是它的物品。刪掉最後一個，那一列會變成佔位列，好讓清單保住位置和顏色；把那一列也刪掉，清單就沒了。',
   'help.guide.packing-categories.tip.2':
-    '把某人指派到一份清單會給他發一則行李通知。這不會改變誰能看到這些物品，那是列上的「共用」。',
+    '把某人指派到一份清單會給他發一則行李通知。這不會改變誰能看到這些物品，那是一列的三個點裡的「共用」。',
   'help.guide.packing-categories.tip.3': '兩份清單可以同名。TREK 在內部區分它們，所以名字保持你輸入的樣子。',
   // check-off-packing
   'help.guide.check-off-packing.title': '一邊收拾一邊打勾',
@@ -2501,9 +2501,9 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     '「全部」「未完成」「已完成」收窄格線。「未完成」只留下還缺的東西，所以已經裝齊的清單會從裡面消失。',
   'help.guide.check-off-packing.step.5':
-    '上方進度條裡的「移除 3 個已勾選」在瀏覽器確認一次之後，把所有已勾選的物品一次刪掉。',
+    '進度條旁邊的「移除 3 個已勾選」在瀏覽器確認一次之後，把所有已勾選的物品一次刪掉。',
   'help.guide.check-off-packing.result': '列出的只剩還沒完成的，上方的進度條說出打包進行到哪一步。',
-  'help.guide.check-off-packing.tip.1': '已勾選的物品不能改名。先取消勾選。',
+  'help.guide.check-off-packing.tip.1': '已勾選的物品仍然可以改名：點選它的名稱。',
   'help.guide.check-off-packing.tip.2':
     '「全部勾選」和「取消全部勾選」一次只對一份清單起作用，要從那份清單自己的三個點裡用。',
   'help.guide.check-off-packing.tip.3': '當每個物品都勾上時，計數會被「全部打包完成！」取代，進度條變綠。',
@@ -2514,7 +2514,8 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.2': '挑一個範本。每一列寫出它的名字和裡面有多少物品。',
   'help.guide.apply-packing-template.step.3':
     '物品落在你當前所在的檢視裡：「共用」把它們放進所有人都看得到的公共區，「我的清單」讓它們歸你。',
-  'help.guide.apply-packing-template.step.4': '把這趟旅行的清單留給下一趟：「儲存為範本」，一個名字，然後勾選。',
+  'help.guide.apply-packing-template.step.4':
+    '把這趟旅行的清單留給下一趟：「儲存為範本」會開啟一個對話框，輸入名字後點選「儲存」。',
   'help.guide.apply-packing-template.result': '範本的清單和物品已經在旅行裡，就挨著原來就有的東西。',
   'help.guide.apply-packing-template.tip.1': '範本只帶名稱和清單。數量、重量、行李和已經勾選的狀態都留在原地。',
   'help.guide.apply-packing-template.tip.2': '只有存在範本時才有「應用模板」。一個都沒有的話，這個按鈕根本不出現。',
@@ -2555,12 +2556,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.goal': '把一件物品在群組公共區、你自己的清單和你替他們帶的人之間挪來挪去。',
   'help.guide.share-packing-item.step.1':
     '清單上方的「共用」是所有人都看得到的公共區，「我的清單」是你自己的，兩邊各自數出裡面有多少。點選「我的清單」看你自己的。',
-  'help.guide.share-packing-item.step.2': '回到「共用」，開啟某一列的「共用」控制項，也就是鉛筆旁邊的分享圖示。',
+  'help.guide.share-packing-item.step.2': '回到「共用」，開啟一列末端的三個點，點選「共用」。',
   'help.guide.share-packing-item.step.3':
     '一共三階：「共用」，在群組公共區裡，所有人可見；「個人」，只有你看得到；還有「共用給…」，在那裡挑出這件物品涵蓋到的人。',
   'help.guide.share-packing-item.step.4': '「個人」的物品只在「我的清單」裡。切過去才找得到。',
   'help.guide.share-packing-item.step.5':
-    '再開啟一次「共用」，在「共用給…」下面勾一個名字。這件物品也會出現在那個人的清單上，列上寫著「已共用給 1 人」。',
+    '再開啟一次「共用」，在「共用給…」下面勾一個名字。這件物品也會出現在那個人的清單上，列上會多出一個小徽章，數著它共用給了幾個人。',
   'help.guide.share-packing-item.result': '物品落在你選的那一階裡，列上寫著誰來帶它。',
   'help.guide.share-packing-item.tip.1':
     '只有帶這件物品的人才能改它的共用。被你分享到的人會在自己的「我的清單」上看到它，旁邊標著你的名字，並且可以把它勾掉。',
@@ -2571,13 +2572,13 @@ const help: TranslationStrings = {
   // packing-bags
   'help.guide.packing-bags.title': '給行李秤重',
   'help.guide.packing-bags.goal': '給每件物品寫上重量，把物品分進各件行李，並讓每件行李都不超航空公司的限額。',
-  'help.guide.packing-bags.step.1': '把一件物品的重量，以克為單位，輸入圓圈前面的那個框。',
+  'help.guide.packing-bags.step.1': '點選圓圈前面的重量徽章，輸入物品以克為單位的重量。',
   'help.guide.packing-bags.step.2': '列末的圓圈就是它的行李。點它。',
   'help.guide.packing-bags.step.3': '還沒有行李：「新增行李」，一個名字，Enter。行李被建立，物品直接進去。',
   'help.guide.packing-bags.step.4':
     '只要存在一件行李，右側就出現「行李」面板：名稱、重量、一條填充條、誰來背、裡面有多少物品，然後是「未分配」和「總重量」。',
   'help.guide.packing-bags.step.5': '點選「設定限制」，按航空公司的說法用公斤輸入限額。',
-  'help.guide.packing-bags.step.6': '行李名字下面的虛線加號說明誰來背它。',
+  'help.guide.packing-bags.step.6': '行李名字旁邊的虛線加號說明誰來背它。',
   'help.guide.packing-bags.result':
     '右側的「行李」面板把每件行李的重量對著它的限額顯示出來，還有不在任何行李裡的東西，以及總計。',
   'help.guide.packing-bags.tip.1':

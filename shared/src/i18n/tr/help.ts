@@ -2959,13 +2959,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Üstteki Paket Listesi ve Yapılacaklar ikisi arasında geçiş yapar ve her birinde ne olduğunu sayar; sağdaki düğmeler hangisi açıksa ona aittir.',
   'help.ctx.trip-lists.bullet.2':
-    'Paket listesi listelere ayrılmıştır, Belgeler, Giysi, siz onlara ne ad verirseniz, her biri renkli bir nokta, paketlenen bölü toplam rozeti ve Yeniden adlandır, Tümünü İşaretle, Tüm işaretleri kaldır ve Listeyi sil barındıran üç nokta ile. Liste ekle yenisini oluşturur.',
+    'Paket listesi listelere ayrılmıştır, Belgeler, Giysi, siz onlara ne ad verirseniz, her biri renkli bir nokta, paketlenen bölü toplam rozeti ve Yeniden adlandır, Tümünü İşaretle, Tüm işaretleri kaldır ve Listeyi sil barındıran üç nokta ile. Yukarıdaki çubuktaki Liste ekle yenisini oluşturur.',
   'help.ctx.trip-lists.bullet.3':
-    'Bir satır bir onay kutusu ve bir addır, sonra adet, gram cinsinden ağırlık ve Çanta Takibi açıkken bir çanta dairesi, sonra Listeye taşı, Paylaşım, Yeniden adlandır ve Sil için renkli nokta. Soldaki tutamak satırı kendi listesi içinde yukarı ya da aşağı sürükler.',
+    'Bir satır bir onay kutusu ve bir addır, sonra küçük rozetler olarak onu kimin getireceği, adet ve gram cinsinden ağırlık ve Çanta Takibi açıkken bir çanta dairesi, sonra çöp kutusu ve Listeye taşı, Paylaşım, Yeniden adlandır ve Sil barındıran üç nokta. Bir satırın kullanmadığı şeyler üzerine gelene kadar soluk kalır ve soldaki tutamak satırı kendi listesi içinde yukarı ya da aşağı sürükler.',
   'help.ctx.trip-lists.bullet.4':
     'Ortak ve Listem paket listesini ikiye böler: herkesin gördüğü havuz ve sizin kendi listeniz. Tüm, Açık ve Tamamlamak hangisi açıksa onu daraltır ve üstteki çubuk neyin paketlendiğini sayar.',
   'help.ctx.trip-lists.bullet.5':
-    'Şablon uygula ve Şablon olarak kaydet bir listeyi yazmadan doldurur ya da saklar, yanlarındaki iki simge ise listeyi çıktı, PDF ya da dosya olarak dışa aktarır ve bir liste içe aktarır. Kırmızı düğme kaç öğenin işaretli olduğunu söyler ve onları temizler.',
+    'Şablon uygula ve Şablon olarak kaydet bir listeyi yazmadan doldurur ya da saklar, yanlarındaki iki simge ise listeyi çıktı, PDF ya da dosya olarak dışa aktarır ve bir liste içe aktarır. İlerleme çubuğunun yanındaki kırmızı düğme kaç öğenin işaretli olduğunu söyler ve onları temizler.',
   'help.ctx.trip-lists.bullet.6':
     'Yapılacaklar kendi kenar çubuğuna sahiptir: ilerleme kartı, Tümü, Görevlerim, Gecikmiş ve Tamamlandı filtreleri, Sırala Öncelik ya da Son tarih ve liste başına bir satır. Bir göreve tıklamak onu sağdaki bölmede açar, Yeni görev ekle ise ekranın ortasında Yeni görev formunu açar.',
   // packing-categories
@@ -2973,11 +2973,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Götürdüklerinizi listeler halinde gruplayın, onları öğelerle doldurun ve her listeyle kimin ilgilendiğini söyleyin.',
   'help.guide.packing-categories.step.1':
-    'İlerleme çubuğunun altındaki Liste ekle düğmesine tıklayın, adı Liste adı (ör. Giysi) alanına yazın ve onay işaretiyle onaylayın.',
+    'Listelerin üstündeki çubukta Liste ekle düğmesine tıklayın, adı Liste adı (ör. Giysi) alanına yazın ve Ekle düğmesine tıklayın.',
   'help.guide.packing-categories.step.2':
     'Yeni liste bir boş satırla başlar. Öğe ekle düğmesine tıklayın, öğeyi Öğe adı... alanına yazın ve Enter tuşuna basın; alan bir sonraki için açık kalır.',
   'help.guide.packing-categories.step.3':
-    'Bir satırı sağ ucundaki kalemle ya da adın kendisine tıklayarak yeniden adlandırın.',
+    'Bir satırı adına tıklayarak ya da sağ ucundaki üç noktadaki Yeniden adlandır ile yeniden adlandırın.',
   'help.guide.packing-categories.step.4':
     'Liste başlığındaki kesik çizgili daire geziye katılan üyeleri listeye atar. Bir ad seçin; beliren etiket tek tıkla o kişiyi yine çıkarır.',
   'help.guide.packing-categories.step.5':
@@ -2987,7 +2987,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Bir liste yalnızca kendi öğeleridir. Sonuncusunu silin, satır bir yer tutucuya döner, böylece liste yerini ve rengini korur; o satırı da silin, liste gider.',
   'help.guide.packing-categories.tip.2':
-    'Birini bir listeye atamak ona bir paketleme bildirimi gönderir. Öğeleri kimin görebildiğini değiştirmez, onu satırdaki Paylaşım yapar.',
+    'Birini bir listeye atamak ona bir paketleme bildirimi gönderir. Öğeleri kimin görebildiğini değiştirmez, onu bir satırın üç noktasındaki Paylaşım yapar.',
   'help.guide.packing-categories.tip.3':
     'İki liste aynı adı taşıyabilir. TREK onları içeride ayrı tutar, böylece adlar yazdığınız gibi kalır.',
   // check-off-packing
@@ -3003,10 +3003,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Tüm, Açık ve Tamamlamak ızgarayı daraltır. Açık yalnızca hâlâ eksik olanı bırakır, bu yüzden tamamen paketlenmiş bir liste onun dışında kalır.',
   'help.guide.check-off-packing.step.5':
-    'Üstteki çubuktaki 3 İşaretli öğeyi kaldır, tarayıcıdan bir onay sonrasında işaretli her öğeyi bir kerede siler.',
+    'İlerleme çubuğunun yanındaki 3 İşaretli öğeyi kaldır, tarayıcıdan bir onay sonrasında işaretli her öğeyi bir kerede siler.',
   'help.guide.check-off-packing.result':
     'Yalnızca hâlâ açık olan listelenir ve üstteki çubuk paketlemenin ne kadar ilerlediğini söyler.',
-  'help.guide.check-off-packing.tip.1': 'İşaretli bir öğe yeniden adlandırılamaz. Önce işaretini kaldırın.',
+  'help.guide.check-off-packing.tip.1': 'İşaretli bir öğe yine de yeniden adlandırılabilir: adına tıklayın.',
   'help.guide.check-off-packing.tip.2':
     'Tümünü İşaretle ve Tüm işaretleri kaldır her seferinde tek bir listede, o listenin kendi üç noktasından çalışır.',
   'help.guide.check-off-packing.tip.3':
@@ -3020,7 +3020,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Öğeler bulunduğunuz görünüme iner: Ortak onları herkesin gördüğü havuza koyar, Listem onları sizin yapar.',
   'help.guide.apply-packing-template.step.4':
-    'Bu gezinin listesini bir sonraki gezi için saklayın: Şablon olarak kaydet, bir ad, sonra onay işareti.',
+    'Bu gezinin listesini bir sonraki gezi için saklayın: Şablon olarak kaydet bir iletişim kutusu açar, bir ad yazın ve Kaydet düğmesine tıklayın.',
   'help.guide.apply-packing-template.result': 'Şablonun listeleri ve öğeleri gezidedir, zaten orada olanın yanında.',
   'help.guide.apply-packing-template.tip.1':
     'Bir şablon yalnızca adları ve listeleri taşır. Adetler, ağırlıklar, çantalar ve şimdiden işaretli olanlar geride kalır.',
@@ -3068,12 +3068,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Listelerin üstündeki Ortak herkesin gördüğü havuzdur, Listem sizin kendinizinkidir ve her biri içindekileri sayar. Kendinizinkine bakmak için Listem seçeneğine tıklayın.',
   'help.guide.share-packing-item.step.2':
-    'Ortak içine dönüp bir satırın Paylaşım denetimini, kalemin yanındaki paylaşım simgesini açın.',
+    'Ortak içine dönüp bir satırın sonundaki üç noktayı açın ve Paylaşım seçeneğine tıklayın.',
   'help.guide.share-packing-item.step.3':
     'Üç katman: Ortak, grup havuzunda ve herkese görünür; Kişisel, yalnızca sizin gördüğünüz; ve Şu kişilerle paylaş…, burada öğenin kapsadığı kişileri seçersiniz.',
   'help.guide.share-packing-item.step.4': 'Kişisel bir öğe yalnızca Listem içindedir. Onu bulmak için geçiş yapın.',
   'help.guide.share-packing-item.step.5':
-    'Paylaşım seçeneğini yeniden açın ve Şu kişilerle paylaş… altında bir adı işaretleyin. Öğe o kişinin listesinde de görünür ve satırda 1 kişiyle paylaşıldı yazar.',
+    'Paylaşım seçeneğini yeniden açın ve Şu kişilerle paylaş… altında bir adı işaretleyin. Öğe o kişinin listesinde de görünür ve satır, kaç kişiyle paylaşıldığını sayan küçük bir rozet alır.',
   'help.guide.share-packing-item.result': 'Öğe seçtiğiniz katmanda durur ve satır onu kimin getirdiğini söyler.',
   'help.guide.share-packing-item.tip.1':
     'Bir öğenin paylaşımını yalnızca onu getiren kişi değiştirir. Paylaştığınız kişi onu kendi Listem görünümünde, adınızla işaretli olarak görür ve işaretleyebilir.',
@@ -3085,7 +3085,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Çantaları tartın',
   'help.guide.packing-bags.goal':
     'Her öğeye bir ağırlık verin, öğeleri çantalara ayırın ve her çantayı havayolunun limitinin altında tutun.',
-  'help.guide.packing-bags.step.1': 'Bir öğenin ağırlığını, gram olarak, dairenin önündeki alana yazın.',
+  'help.guide.packing-bags.step.1':
+    'Dairenin önündeki ağırlık rozetine tıklayın ve öğenin ağırlığını gram olarak yazın.',
   'help.guide.packing-bags.step.2': 'Satırın sonundaki daire onun çantasıdır. Ona tıklayın.',
   'help.guide.packing-bags.step.3':
     'Henüz çanta yok: Çanta ekle, bir ad, Enter. Çanta oluşturulur ve öğe doğrudan içine girer.',
@@ -3093,7 +3094,7 @@ const help: TranslationStrings = {
     'Bir çanta var olur olmaz sağda Çantalar paneli belirir: ad, ağırlık, bir doluluk çubuğu, onu kimin taşıdığı ve içinde kaç öğe olduğu, sonra Atanmamış ve Toplam ağırlık.',
   'help.guide.packing-bags.step.5':
     'Limit belirle düğmesine tıklayın ve limiti havayollarının belirttiği gibi kilogram olarak yazın.',
-  'help.guide.packing-bags.step.6': 'Bir çantanın adının altındaki kesik çizgili artı onu kimin taşıdığını söyler.',
+  'help.guide.packing-bags.step.6': 'Bir çantanın adının yanındaki kesik çizgili artı onu kimin taşıdığını söyler.',
   'help.guide.packing-bags.result':
     'Sağdaki Çantalar paneli her çantanın ağırlığını limitine karşı, hiçbir çantada olmayanı ve toplamı gösterir.',
   'help.guide.packing-bags.tip.1':

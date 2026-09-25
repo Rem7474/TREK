@@ -2961,13 +2961,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Lista de bagagem e A fazer no topo alternam entre as duas e contam o que há em cada uma; os botões à direita pertencem à que estiver aberta.',
   'help.ctx.trip-lists.bullet.2':
-    'A lista de mala é agrupada em listas, Documentos, Roupas, como você quiser chamá-las, cada uma com um ponto colorido, um contador de guardados sobre o total e três pontinhos com Renomear, Marcar todos, Desmarcar todos e Excluir lista. Adicionar lista cria uma nova.',
+    'A lista de mala é agrupada em listas, Documentos, Roupas, como você quiser chamá-las, cada uma com um ponto colorido, um contador de guardados sobre o total e três pontinhos com Renomear, Marcar todos, Desmarcar todos e Excluir lista. Adicionar lista, na barra acima, cria uma nova.',
   'help.ctx.trip-lists.bullet.3':
-    'Uma linha é uma caixinha e um nome, depois a quantidade, o peso em gramas e um círculo de mala enquanto Rastreamento de malas estiver ligado, e então o ponto colorido para Mover para lista, Compartilhar, Renomear e Excluir. A alça à esquerda a arrasta para cima ou para baixo dentro da sua lista.',
+    'Uma linha é uma caixinha e um nome, depois quem leva o item, a quantidade e o peso em gramas como pequenas etiquetas e um círculo de mala enquanto Rastreamento de malas estiver ligado, e então a lixeira e três pontinhos com Mover para lista, Compartilhar, Renomear e Excluir. O que uma linha não usa fica esmaecido até você apontar para ele, e a alça à esquerda a arrasta para cima ou para baixo dentro da sua lista.',
   'help.ctx.trip-lists.bullet.4':
     'Compartilhado e Minha lista partem a lista de mala em duas: o fundo comum que todos veem, e a sua. Todos, Abertos e Prontos estreitam a que estiver aberta, e a barra acima conta o que já está na mala.',
   'help.ctx.trip-lists.bullet.5':
-    'Aplicar modelo e Salvar como modelo preenchem ou guardam uma lista sem digitá-la, e os dois ícones ao lado exportam a lista, como impressão, PDF ou arquivo, e importam uma. O botão vermelho diz quantos itens estão marcados e os retira.',
+    'Aplicar modelo e Salvar como modelo preenchem ou guardam uma lista sem digitá-la, e os dois ícones ao lado exportam a lista, como impressão, PDF ou arquivo, e importam uma. O botão vermelho ao lado da barra de progresso diz quantos itens estão marcados e os retira.',
   'help.ctx.trip-lists.bullet.6':
     'A fazer tem uma barra lateral própria: o cartão de progresso, os filtros Todos, Minhas tarefas, Atrasada e Concluído, Ordenar por Prioridade ou Data de vencimento, e uma linha por lista. Um clique numa tarefa a abre no painel da direita, e Nova tarefa abre o formulário Nova tarefa sobre o meio da tela.',
   // packing-categories
@@ -2975,11 +2975,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Agrupe em listas o que você vai levar, encha-as de itens e diga quem cuida de cada lista.',
   'help.guide.packing-categories.step.1':
-    'Clique em Adicionar lista abaixo da barra de progresso, digite o nome em Nome da lista (ex: Roupas) e confirme com o tique.',
+    'Clique em Adicionar lista na barra acima das listas, digite o nome em Nome da lista (ex: Roupas) e clique em Adicionar.',
   'help.guide.packing-categories.step.2':
     'A lista nova começa com uma linha vazia. Clique em Adicionar item, digite o item em Nome do item... e aperte Enter; o campo fica aberto para o próximo.',
   'help.guide.packing-categories.step.3':
-    'Renomeie uma linha com o lápis na ponta direita dela, ou clicando no próprio nome.',
+    'Renomeie uma linha clicando no nome dela, ou com Renomear nos três pontinhos na ponta direita dela.',
   'help.guide.packing-categories.step.4':
     'O círculo tracejado no cabeçalho da lista atribui membros da viagem à lista. Escolha um nome; a etiqueta que aparece tira essa pessoa de novo com um clique.',
   'help.guide.packing-categories.step.5':
@@ -2989,7 +2989,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Uma lista é só os seus itens. Exclua o último e a linha vira um espaço reservado para que a lista mantenha seu lugar e sua cor; exclua também essa linha e a lista some.',
   'help.guide.packing-categories.tip.2':
-    'Atribuir alguém a uma lista envia a essa pessoa uma notificação de bagagem. Não muda quem pode ver os itens, isso é Compartilhar, na linha.',
+    'Atribuir alguém a uma lista envia a essa pessoa uma notificação de bagagem. Não muda quem pode ver os itens, isso é Compartilhar, nos três pontinhos de uma linha.',
   'help.guide.packing-categories.tip.3':
     'Duas listas podem levar o mesmo nome. O TREK as mantém separadas internamente, então os nomes ficam do jeito que você digitou.',
   // check-off-packing
@@ -3004,10 +3004,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Todos, Abertos e Prontos estreitam a grade. Abertos deixa só o que ainda falta, então uma lista totalmente guardada sai dela.',
   'help.guide.check-off-packing.step.5':
-    'Remover 3 marcado(s) na barra acima exclui todos os itens marcados de uma vez, depois de uma confirmação do navegador.',
+    'Remover 3 marcado(s) ao lado da barra de progresso exclui todos os itens marcados de uma vez, depois de uma confirmação do navegador.',
   'help.guide.check-off-packing.result':
     'Fica listado só o que continua em aberto, e a barra acima diz a que ponto está a arrumação.',
-  'help.guide.check-off-packing.tip.1': 'Um item marcado não pode ser renomeado. Desmarque-o primeiro.',
+  'help.guide.check-off-packing.tip.1': 'Um item marcado ainda pode ser renomeado: clique no nome dele.',
   'help.guide.check-off-packing.tip.2':
     'Marcar todos e Desmarcar todos agem numa lista por vez, a partir dos três pontinhos daquela lista.',
   'help.guide.check-off-packing.tip.3':
@@ -3021,7 +3021,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Os itens caem na visão em que você está: Compartilhado os põe no fundo comum que todos veem, Minha lista os torna seus.',
   'help.guide.apply-packing-template.step.4':
-    'Guardar a lista desta viagem para a próxima: Salvar como modelo, um nome, depois o tique.',
+    'Guardar a lista desta viagem para a próxima: Salvar como modelo abre uma janela, digite um nome e clique em Salvar.',
   'help.guide.apply-packing-template.result':
     'As listas e os itens do modelo estão na viagem, ao lado do que já havia.',
   'help.guide.apply-packing-template.tip.1':
@@ -3070,12 +3070,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Compartilhado acima das listas é o fundo comum que todos veem, Minha lista é a sua, e cada uma conta o que há nela. Clique em Minha lista para ver a sua.',
   'help.guide.share-packing-item.step.2':
-    'De volta em Compartilhado, abra o Compartilhar de uma linha, o ícone de compartilhamento ao lado do lápis.',
+    'De volta em Compartilhado, abra os três pontinhos no fim de uma linha e clique em Compartilhar.',
   'help.guide.share-packing-item.step.3':
     'Três níveis: Compartilhado, no fundo comum do grupo e visível para todos; Pessoal, que só você vê; e Compartilhar com…, onde você escolhe as pessoas que o item cobre.',
   'help.guide.share-packing-item.step.4': 'Um item Pessoal fica só em Minha lista. Troque de visão para encontrá-lo.',
   'help.guide.share-packing-item.step.5':
-    'Abra Compartilhar de novo e marque um nome em Compartilhar com…. O item aparece também na lista daquela pessoa, e a linha diz compartilhado com 1.',
+    'Abra Compartilhar de novo e marque um nome em Compartilhar com…. O item aparece também na lista daquela pessoa, e a linha ganha uma pequena etiqueta contando com quantas pessoas ele é compartilhado.',
   'help.guide.share-packing-item.result': 'O item fica no nível que você escolheu, e a linha diz quem o leva.',
   'help.guide.share-packing-item.tip.1':
     'Só quem leva um item muda o compartilhamento dele. Quem recebeu o item de você o vê na própria Minha lista, marcado com o seu nome, e pode marcá-lo.',
@@ -3087,7 +3087,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Pesar as malas',
   'help.guide.packing-bags.goal':
     'Ponha um peso em cada item, separe os itens nas malas e mantenha cada mala abaixo do limite da companhia aérea.',
-  'help.guide.packing-bags.step.1': 'Digite o peso de um item, em gramas, no campo antes do círculo.',
+  'help.guide.packing-bags.step.1': 'Clique na etiqueta de peso antes do círculo e digite o peso do item em gramas.',
   'help.guide.packing-bags.step.2': 'O círculo no fim da linha é a mala dela. Clique nele.',
   'help.guide.packing-bags.step.3':
     'Nenhuma mala ainda: Adicionar mala, um nome, Enter. A mala é criada e o item entra direto nela.',
@@ -3095,7 +3095,7 @@ const help: TranslationStrings = {
     'O painel Malas aparece à direita assim que existe uma mala: nome, peso, uma barra de preenchimento, quem a carrega e quantos itens há nela, depois Sem mala e Peso total.',
   'help.guide.packing-bags.step.5':
     'Clique em Definir limite e digite o limite em quilos, do jeito que as companhias aéreas informam.',
-  'help.guide.packing-bags.step.6': 'O sinal de mais tracejado sob o nome de uma mala diz quem a carrega.',
+  'help.guide.packing-bags.step.6': 'O sinal de mais tracejado ao lado do nome de uma mala diz quem a carrega.',
   'help.guide.packing-bags.result':
     'O painel Malas à direita mostra o peso de cada mala contra o seu limite, o que não está em mala nenhuma, e o total.',
   'help.guide.packing-bags.tip.1':

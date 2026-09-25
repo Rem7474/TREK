@@ -2944,13 +2944,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     '“Danh sách đóng gói” và “Việc cần làm” ở trên cùng chuyển qua lại giữa hai bên và đếm những gì có ở mỗi bên; các nút bên phải thuộc về bên nào đang mở.',
   'help.ctx.trip-lists.bullet.2':
-    'Danh sách đóng gói được gom thành các danh sách, Tài liệu, Quần áo, hay bất cứ tên nào bạn đặt, mỗi danh sách có một chấm màu, một huy hiệu đã đóng gói trên tổng số và ba chấm chứa “Đổi tên”, “Kiểm tra tất cả”, “Bỏ chọn tất cả” và “Xóa danh sách”. “Thêm danh sách” tạo một danh sách mới.',
+    'Danh sách đóng gói được gom thành các danh sách, Tài liệu, Quần áo, hay bất cứ tên nào bạn đặt, mỗi danh sách có một chấm màu, một huy hiệu đã đóng gói trên tổng số và ba chấm chứa “Đổi tên”, “Kiểm tra tất cả”, “Bỏ chọn tất cả” và “Xóa danh sách”. “Thêm danh sách” trên thanh phía trên tạo một danh sách mới.',
   'help.ctx.trip-lists.bullet.3':
-    'Một hàng gồm ô đánh dấu và tên, rồi “SL”, trọng lượng tính bằng gam và vòng tròn túi khi “Theo dõi túi” đang bật, rồi chấm màu cho “Chuyển sang danh sách”, “Chia sẻ”, “Đổi tên” và “Xóa bỏ”. Tay nắm bên trái kéo hàng lên hoặc xuống trong danh sách của nó.',
+    'Một hàng gồm ô đánh dấu và tên, rồi ai mang nó, số lượng và trọng lượng tính bằng gam dưới dạng các huy hiệu nhỏ cùng vòng tròn túi khi “Theo dõi túi” đang bật, rồi thùng rác và ba chấm chứa “Chuyển sang danh sách”, “Chia sẻ”, “Đổi tên” và “Xóa bỏ”. Những gì một hàng không dùng sẽ mờ đi cho đến khi bạn trỏ vào, và tay nắm bên trái kéo hàng lên hoặc xuống trong danh sách của nó.',
   'help.ctx.trip-lists.bullet.4':
     '“Chung” và “Danh sách của tôi” chia danh sách đóng gói làm hai: kho chung mọi người đều thấy, và của riêng bạn. “Tất cả”, “Mở” và “Xong” thu hẹp bên nào đang mở, và thanh phía trên đếm những gì đã đóng gói.',
   'help.ctx.trip-lists.bullet.5':
-    '“Áp dụng mẫu” và “Lưu dưới dạng mẫu” lấp đầy hoặc giữ lại một danh sách mà không phải gõ ra, còn hai biểu tượng bên cạnh xuất danh sách, dưới dạng bản in, PDF hoặc tập tin, và nhập một danh sách. Nút đỏ nêu có bao nhiêu mục đã được đánh dấu rồi dọn chúng đi.',
+    '“Áp dụng mẫu” và “Lưu dưới dạng mẫu” lấp đầy hoặc giữ lại một danh sách mà không phải gõ ra, còn hai biểu tượng bên cạnh xuất danh sách, dưới dạng bản in, PDF hoặc tập tin, và nhập một danh sách. Nút đỏ bên cạnh thanh tiến độ nêu có bao nhiêu mục đã được đánh dấu rồi dọn chúng đi.',
   'help.ctx.trip-lists.bullet.6':
     '“Việc cần làm” có thanh bên riêng: thẻ tiến độ, các bộ lọc “Tất cả”, “Nhiệm vụ của tôi”, “Quá hạn” và “Xong”, “Sắp xếp theo” “Sự ưu tiên” hoặc “Ngày đến hạn”, và một hàng cho mỗi danh sách. Nhấp vào một nhiệm vụ sẽ mở nó ở khung bên phải, và “Thêm nhiệm vụ mới” mở biểu mẫu “Nhiệm vụ mới” ngay giữa màn hình.',
   // packing-categories
@@ -2958,11 +2958,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Gom những thứ bạn mang theo thành các danh sách, đổ mục vào đó và nói ai lo mỗi danh sách.',
   'help.guide.packing-categories.step.1':
-    'Nhấp “Thêm danh sách” dưới thanh tiến độ, gõ tên vào “Tên danh sách (vd. Quần áo)” và xác nhận bằng dấu tích.',
+    'Nhấp “Thêm danh sách” trên thanh phía trên các danh sách, gõ tên vào “Tên danh sách (vd. Quần áo)” và nhấp “Thêm”.',
   'help.guide.packing-categories.step.2':
     'Danh sách mới bắt đầu với một hàng trống. Nhấp “Thêm mục”, gõ tên mục vào “Tên mặt hàng...” rồi nhấn Enter; ô nhập vẫn mở cho mục kế tiếp.',
   'help.guide.packing-categories.step.3':
-    'Đổi tên một hàng bằng cây bút chì ở đầu bên phải của nó, hoặc bằng cách nhấp vào chính cái tên.',
+    'Đổi tên một hàng bằng cách nhấp vào tên của nó, hoặc bằng “Đổi tên” trong ba chấm ở đầu bên phải của nó.',
   'help.guide.packing-categories.step.4':
     'Vòng tròn nét đứt trên đầu danh sách gán thành viên chuyến đi vào danh sách. Chọn một tên; chiếc thẻ hiện ra sẽ gỡ người đó ra lại khi bạn nhấp vào.',
   'help.guide.packing-categories.step.5':
@@ -2972,7 +2972,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Một danh sách chỉ là các mục của nó. Xóa mục cuối cùng thì hàng đó biến thành chỗ giữ chỗ để danh sách giữ được vị trí và màu của mình; xóa luôn hàng đó thì danh sách biến mất.',
   'help.guide.packing-categories.tip.2':
-    'Gán ai đó vào một danh sách sẽ gửi cho họ một thông báo đóng gói. Việc đó không đổi ai được thấy các mục, đó là “Chia sẻ” trên hàng.',
+    'Gán ai đó vào một danh sách sẽ gửi cho họ một thông báo đóng gói. Việc đó không đổi ai được thấy các mục, đó là “Chia sẻ” trong ba chấm của một hàng.',
   'help.guide.packing-categories.tip.3':
     'Hai danh sách có thể mang cùng một tên. TREK phân biệt chúng bên trong, nên các tên vẫn y như bạn đã gõ.',
   // check-off-packing
@@ -2987,10 +2987,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     '“Tất cả”, “Mở” và “Xong” thu hẹp lưới. “Mở” chỉ để lại những gì còn thiếu, nên một danh sách đã đóng gói xong sẽ rơi ra khỏi đó.',
   'help.guide.check-off-packing.step.5':
-    '“Xóa 3 đã chọn” ở thanh phía trên xóa mọi mục đã đánh dấu cùng lúc, sau một lần xác nhận từ trình duyệt.',
+    '“Xóa 3 đã chọn” bên cạnh thanh tiến độ xóa mọi mục đã đánh dấu cùng lúc, sau một lần xác nhận từ trình duyệt.',
   'help.guide.check-off-packing.result':
     'Chỉ những gì còn dang dở được liệt kê, và thanh phía trên cho biết việc đóng gói đã đi được tới đâu.',
-  'help.guide.check-off-packing.tip.1': 'Một mục đã đánh dấu thì không đổi tên được. Bỏ đánh dấu trước đã.',
+  'help.guide.check-off-packing.tip.1': 'Một mục đã đánh dấu vẫn đổi tên được: nhấp vào tên của nó.',
   'help.guide.check-off-packing.tip.2':
     '“Kiểm tra tất cả” và “Bỏ chọn tất cả” chỉ tác động lên một danh sách mỗi lần, từ ba chấm của chính danh sách đó.',
   'help.guide.check-off-packing.tip.3':
@@ -3005,7 +3005,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Các mục rơi vào chế độ xem bạn đang ở: “Chung” đặt chúng vào kho chung mọi người đều thấy, “Danh sách của tôi” biến chúng thành của bạn.',
   'help.guide.apply-packing-template.step.4':
-    'Giữ danh sách của chuyến này cho chuyến sau: “Lưu dưới dạng mẫu”, một cái tên, rồi dấu tích.',
+    'Giữ danh sách của chuyến này cho chuyến sau: “Lưu dưới dạng mẫu” mở một hộp thoại, gõ một cái tên rồi nhấp “Lưu”.',
   'help.guide.apply-packing-template.result':
     'Các danh sách và mục của mẫu đã ở trong chuyến đi, bên cạnh những gì vốn có.',
   'help.guide.apply-packing-template.tip.1':
@@ -3053,13 +3053,12 @@ const help: TranslationStrings = {
     'Chuyển một mục qua lại giữa kho chung của nhóm, danh sách riêng của bạn và những người bạn mang giùm.',
   'help.guide.share-packing-item.step.1':
     '“Chung” phía trên các danh sách là kho mọi người đều thấy, “Danh sách của tôi” là của riêng bạn, và mỗi bên đều đếm những gì có trong đó. Nhấp “Danh sách của tôi” để xem phần của bạn.',
-  'help.guide.share-packing-item.step.2':
-    'Quay lại “Chung”, mở điều khiển “Chia sẻ” của một hàng, tức biểu tượng chia sẻ bên cạnh cây bút chì.',
+  'help.guide.share-packing-item.step.2': 'Quay lại “Chung”, mở ba chấm ở cuối một hàng và nhấp “Chia sẻ”.',
   'help.guide.share-packing-item.step.3':
     'Ba mức: “Chung”, nằm trong kho của nhóm và mọi người đều thấy; “Cá nhân”, chỉ mình bạn thấy; và “Chia sẻ với…”, nơi bạn chọn những người mà mục đó lo cho.',
   'help.guide.share-packing-item.step.4': 'Một mục “Cá nhân” chỉ nằm ở “Danh sách của tôi”. Chuyển qua đó để tìm nó.',
   'help.guide.share-packing-item.step.5':
-    'Mở “Chia sẻ” lần nữa và đánh dấu một tên dưới “Chia sẻ với…”. Mục đó cũng hiện trên danh sách của người ấy, và hàng ghi “chia sẻ với 1”.',
+    'Mở “Chia sẻ” lần nữa và đánh dấu một tên dưới “Chia sẻ với…”. Mục đó cũng hiện trên danh sách của người ấy, và hàng có thêm một huy hiệu nhỏ đếm số người được chia sẻ.',
   'help.guide.share-packing-item.result': 'Mục nằm ở mức bạn đã chọn, và hàng cho biết ai đang mang nó.',
   'help.guide.share-packing-item.tip.1':
     'Chỉ người mang một mục mới đổi được cách chia sẻ của nó. Người bạn chia sẻ cùng sẽ thấy nó trên “Danh sách của tôi” của chính họ, có gắn tên bạn, và có thể đánh dấu nó.',
@@ -3071,7 +3070,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Cân các túi',
   'help.guide.packing-bags.goal':
     'Đặt trọng lượng cho từng mục, xếp các mục vào túi và giữ mỗi túi dưới giới hạn của hãng bay.',
-  'help.guide.packing-bags.step.1': 'Gõ trọng lượng của một mục, tính bằng gam, vào ô trước vòng tròn.',
+  'help.guide.packing-bags.step.1':
+    'Nhấp huy hiệu trọng lượng trước vòng tròn và gõ trọng lượng của mục tính bằng gam.',
   'help.guide.packing-bags.step.2': 'Vòng tròn ở cuối hàng là túi của mục đó. Nhấp vào nó.',
   'help.guide.packing-bags.step.3':
     'Chưa có túi nào: “Thêm túi”, một cái tên, Enter. Túi được tạo và mục đi thẳng vào đó.',
@@ -3079,7 +3079,7 @@ const help: TranslationStrings = {
     'Bảng “Túi xách” hiện ra bên phải ngay khi có một túi: tên, trọng lượng, một thanh mức đầy, ai mang nó và có bao nhiêu mặt hàng trong đó, rồi “Chưa được chỉ định” và “Tổng trọng lượng”.',
   'help.guide.packing-bags.step.5':
     'Nhấp “Đặt giới hạn” và gõ giới hạn tính bằng kilôgam, đúng cách các hãng bay nêu ra.',
-  'help.guide.packing-bags.step.6': 'Dấu cộng nét đứt dưới tên một túi cho biết ai đang mang nó.',
+  'help.guide.packing-bags.step.6': 'Dấu cộng nét đứt bên cạnh tên một túi cho biết ai đang mang nó.',
   'help.guide.packing-bags.result':
     'Bảng “Túi xách” bên phải cho thấy trọng lượng từng túi so với giới hạn của nó, những gì không nằm trong túi nào, và tổng cộng.',
   'help.guide.packing-bags.tip.1':

@@ -2956,13 +2956,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Lista pakowania i Do zrobienia u góry przełączają między jednym a drugim i liczą, co jest w każdym; przyciski po prawej należą do tego, który jest otwarty.',
   'help.ctx.trip-lists.bullet.2':
-    'Lista pakowania jest podzielona na listy, Dokumenty, Odzież, jak je nazwiesz, każda z kolorową kropką, odznaką spakowane z całości i trzema kropkami, pod którymi siedzą Zmień nazwę, Zaznacz wszystko, Odznacz wszystko i Usuń listę. Dodaj listę tworzy nową.',
+    'Lista pakowania jest podzielona na listy, Dokumenty, Odzież, jak je nazwiesz, każda z kolorową kropką, odznaką spakowane z całości i trzema kropkami, pod którymi siedzą Zmień nazwę, Zaznacz wszystko, Odznacz wszystko i Usuń listę. Dodaj listę na pasku powyżej tworzy nową.',
   'help.ctx.trip-lists.bullet.3':
-    'Wiersz to pole wyboru i nazwa, potem ilość, waga w gramach i kółko torby, dopóki Kontrola bagażu jest włączona, a potem kolorowa kropka dla Przenieś do listy, Udostępnianie, Zmień nazwę i Usuń. Uchwyt po lewej przeciąga go w górę lub w dół wewnątrz jego listy.',
+    'Wiersz to pole wyboru i nazwa, potem jako małe plakietki, kto przynosi przedmiot, ilość i waga w gramach, i kółko torby, dopóki Kontrola bagażu jest włączona, a potem kosz i trzy kropki, pod którymi siedzą Przenieś do listy, Udostępnianie, Zmień nazwę i Usuń. To, czego wiersz nie używa, pozostaje przygaszone, dopóki nie najedziesz na to kursorem, a uchwyt po lewej przeciąga go w górę lub w dół wewnątrz jego listy.',
   'help.ctx.trip-lists.bullet.4':
     'Wspólne i Moja lista dzielą listę pakowania na dwie części: pulę, którą widzą wszyscy, i Twoją własną. Wszystkie, Do spakowania i Spakowane zawężają tę, która jest otwarta, a pasek u góry liczy, co jest spakowane.',
   'help.ctx.trip-lists.bullet.5':
-    'Zastosuj szablon i Zapisz jako szablon wypełniają albo zachowują listę bez pisania jej od nowa, a dwie ikony obok nich eksportują listę, jako wydruk, PDF albo plik, i importują listę. Czerwony przycisk mówi, ile przedmiotów jest zaznaczonych, i sprząta je.',
+    'Zastosuj szablon i Zapisz jako szablon wypełniają albo zachowują listę bez pisania jej od nowa, a dwie ikony obok nich eksportują listę, jako wydruk, PDF albo plik, i importują listę. Czerwony przycisk przy pasku postępu mówi, ile przedmiotów jest zaznaczonych, i sprząta je.',
   'help.ctx.trip-lists.bullet.6':
     'Do zrobienia ma własny panel boczny: kartę postępu, filtry Wszystkie, Moje zadania, Przeterminowane i Gotowe, Sortuj wg Priorytet albo Termin, oraz jeden wiersz na listę. Kliknięcie zadania otwiera je w panelu po prawej, a Nowe zadanie otwiera na środku ekranu formularz Nowe zadanie.',
   // packing-categories
@@ -2970,10 +2970,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Pogrupuj to, co bierzesz, w listy, wypełnij je przedmiotami i powiedz, kto zajmuje się którą listą.',
   'help.guide.packing-categories.step.1':
-    'Kliknij Dodaj listę pod paskiem postępu, wpisz nazwę w Nazwa listy (np. Odzież) i potwierdź ptaszkiem.',
+    'Kliknij Dodaj listę na pasku nad listami, wpisz nazwę w Nazwa listy (np. Odzież) i kliknij Dodaj.',
   'help.guide.packing-categories.step.2':
     'Nowa lista zaczyna od jednego pustego wiersza. Kliknij Dodaj przedmiot, wpisz przedmiot w Nazwa przedmiotu... i naciśnij Enter; pole zostaje otwarte na następny.',
-  'help.guide.packing-categories.step.3': 'Wiersz zmienisz ołówkiem na jego prawym końcu albo klikając samą nazwę.',
+  'help.guide.packing-categories.step.3':
+    'Nazwę wiersza zmienisz, klikając ją, albo przez Zmień nazwę w trzech kropkach na jego prawym końcu.',
   'help.guide.packing-categories.step.4':
     'Przerywane kółko w nagłówku listy przypisuje do listy członków podróży. Wybierz imię; plakietka, która się pojawia, usuwa tę osobę z powrotem jednym kliknięciem.',
   'help.guide.packing-categories.step.5':
@@ -2983,7 +2984,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Lista to tylko jej przedmioty. Usuń ostatni, a wiersz zmieni się w symbol zastępczy, żeby lista zachowała swoje miejsce i swój kolor; usuń i ten wiersz, a listy nie ma.',
   'help.guide.packing-categories.tip.2':
-    'Przypisanie kogoś do listy wysyła mu powiadomienie o pakowaniu. Nie zmienia to, kto widzi przedmioty, od tego jest Udostępnianie, na wierszu.',
+    'Przypisanie kogoś do listy wysyła mu powiadomienie o pakowaniu. Nie zmienia to, kto widzi przedmioty, od tego jest Udostępnianie, w trzech kropkach wiersza.',
   'help.guide.packing-categories.tip.3':
     'Dwie listy mogą nosić tę samą nazwę. TREK rozróżnia je wewnętrznie, więc nazwy zostają takie, jak je wpisałeś.',
   // check-off-packing
@@ -2998,10 +2999,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Wszystkie, Do spakowania i Spakowane zawężają siatkę. Do spakowania zostawia tylko to, czego jeszcze brakuje, więc lista spakowana w całości z niej wypada.',
   'help.guide.check-off-packing.step.5':
-    'Usuń 3 spakowanych na pasku u góry kasuje wszystkie zaznaczone przedmioty naraz, po jednym potwierdzeniu od przeglądarki.',
+    'Usuń 3 spakowanych obok paska postępu kasuje wszystkie zaznaczone przedmioty naraz, po jednym potwierdzeniu od przeglądarki.',
   'help.guide.check-off-packing.result':
     'Wypisane jest tylko to, co jeszcze otwarte, a pasek u góry mówi, jak daleko zaszło pakowanie.',
-  'help.guide.check-off-packing.tip.1': 'Zaznaczonego przedmiotu nie da się przemianować. Najpierw go odznacz.',
+  'help.guide.check-off-packing.tip.1': 'Zaznaczony przedmiot wciąż można przemianować: kliknij jego nazwę.',
   'help.guide.check-off-packing.tip.2':
     'Zaznacz wszystko i Odznacz wszystko działają na jednej liście naraz, z jej własnych trzech kropek.',
   'help.guide.check-off-packing.tip.3':
@@ -3016,7 +3017,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Przedmioty lądują w widoku, w którym jesteś: Wspólne wkłada je do puli, którą widzą wszyscy, Moja lista robi je Twoimi.',
   'help.guide.apply-packing-template.step.4':
-    'Zachowaj listę tej podróży na następną podróż: Zapisz jako szablon, nazwa, potem ptaszek.',
+    'Zachowaj listę tej podróży na następną podróż: Zapisz jako szablon otwiera okno, wpisz nazwę i kliknij Zapisz.',
   'help.guide.apply-packing-template.result': 'Listy i przedmioty szablonu są w podróży, obok tego, co już tam było.',
   'help.guide.apply-packing-template.tip.1':
     'Szablon niesie tylko nazwy i listy. Ilości, wagi, torby i to, co już zaznaczone, zostają z tyłu.',
@@ -3064,12 +3065,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Wspólne nad listami to pula, którą widzą wszyscy, Moja lista to Twoja własna, a każde liczy, co w nim jest. Kliknij Moja lista, żeby zajrzeć do swojej.',
   'help.guide.share-packing-item.step.2':
-    'Z powrotem we Wspólne otwórz przy wierszu sterowanie Udostępnianie, ikonę udostępniania obok ołówka.',
+    'Z powrotem we Wspólne otwórz trzy kropki na końcu wiersza i kliknij Udostępnianie.',
   'help.guide.share-packing-item.step.3':
     'Trzy poziomy: Wspólne, w puli grupy i widoczne dla wszystkich; Osobiste, które widzisz tylko Ty; oraz Udostępnij osobom…, gdzie wybierasz osoby, których przedmiot dotyczy.',
   'help.guide.share-packing-item.step.4': 'Osobisty przedmiot jest tylko na Moja lista. Przełącz się, żeby go znaleźć.',
   'help.guide.share-packing-item.step.5':
-    'Otwórz Udostępnianie ponownie i zaznacz imię pod Udostępnij osobom…. Przedmiot pokazuje się też na liście tej osoby, a wiersz mówi udostępniono 1 osobom.',
+    'Otwórz Udostępnianie ponownie i zaznacz imię pod Udostępnij osobom…. Przedmiot pokazuje się też na liście tej osoby, a wiersz dostaje małą plakietkę z liczbą osób, którym go udostępniono.',
   'help.guide.share-packing-item.result':
     'Przedmiot siedzi na poziomie, który wybrałeś, a wiersz mówi, kto go przynosi.',
   'help.guide.share-packing-item.tip.1':
@@ -3082,7 +3083,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Zważyć torby',
   'help.guide.packing-bags.goal':
     'Nadaj każdemu przedmiotowi wagę, rozłóż przedmioty do toreb i utrzymaj każdą torbę poniżej limitu linii lotniczej.',
-  'help.guide.packing-bags.step.1': 'Wpisz wagę przedmiotu, w gramach, w pole przed kółkiem.',
+  'help.guide.packing-bags.step.1': 'Kliknij plakietkę wagi przed kółkiem i wpisz wagę przedmiotu w gramach.',
   'help.guide.packing-bags.step.2': 'Kółko na końcu wiersza to jego torba. Kliknij je.',
   'help.guide.packing-bags.step.3':
     'Nie ma jeszcze torby: Dodaj torbę, nazwa, Enter. Torba zostaje utworzona, a przedmiot idzie prosto do niej.',
@@ -3090,7 +3091,7 @@ const help: TranslationStrings = {
     'Panel Torby pojawia się po prawej, gdy tylko istnieje jedna torba: nazwa, waga, pasek wypełnienia, kto ją niesie i ile przedmiotów w niej jest, potem Nieprzypisane i Waga całkowita.',
   'help.guide.packing-bags.step.5':
     'Kliknij Ustaw limit i wpisz limit w kilogramach, tak jak podają go linie lotnicze.',
-  'help.guide.packing-bags.step.6': 'Przerywany plus pod nazwą torby mówi, kto ją niesie.',
+  'help.guide.packing-bags.step.6': 'Przerywany plus obok nazwy torby mówi, kto ją niesie.',
   'help.guide.packing-bags.result':
     'Panel Torby po prawej pokazuje wagę każdej torby wobec jej limitu, to, co nie jest w żadnej torbie, i sumę.',
   'help.guide.packing-bags.tip.1':

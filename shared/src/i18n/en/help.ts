@@ -2979,13 +2979,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Packing List and To-Do at the top switch between the two and count what is on each; the buttons on the right belong to whichever one is open.',
   'help.ctx.trip-lists.bullet.2':
-    'The packing list is grouped into lists, Documents, Clothing, whatever you call them, each with a colour dot, a packed-of-total badge and three dots holding Rename, Check All, Uncheck All and Delete List. Add list makes a new one.',
+    'The packing list is grouped into lists, Documents, Clothing, whatever you call them, each with a colour dot, a packed-of-total badge and three dots holding Rename, Check All, Uncheck All and Delete List. Add list in the bar above makes a new one.',
   'help.ctx.trip-lists.bullet.3':
-    'A row is a tick box and a name, then the quantity, the weight in grams and a bag circle while Bag Tracking is on, then the colour dot for Move to List, Sharing, Rename and Delete. The grip on the left drags it up or down inside its list.',
+    'A row is a tick box and a name, then who brings it, the quantity and the weight in grams as small badges and a bag circle while Bag Tracking is on, then the bin and three dots holding Move to List, Sharing, Rename and Delete. What a row does not use stays dimmed until you point at it, and the grip on the left drags it up or down inside its list.',
   'help.ctx.trip-lists.bullet.4':
     'Shared and My list split the packing list in two: the pool everyone sees, and your own. All, Open and Done narrow whichever one is open, and the bar above counts what is packed.',
   'help.ctx.trip-lists.bullet.5':
-    'Apply template and Save as template fill or keep a list without typing it out, and the two icons beside them export the list, as a printout, a PDF or a file, and import one. The red button names how many items are ticked and clears them away.',
+    'Apply template and Save as template fill or keep a list without typing it out, and the two icons beside them export the list, as a printout, a PDF or a file, and import one. The red button beside the progress bar names how many items are ticked and clears them away.',
   'help.ctx.trip-lists.bullet.6':
     'To-Do has a sidebar of its own: the progress card, the filters All, My Tasks, Overdue and Done, Sort by Priority or Due date, and one row per list. A click on a task opens it in the pane on the right, and Add new task opens the New task form over the middle of the screen.',
   // packing-categories
@@ -2993,11 +2993,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Group what you are taking into lists, fill them with items and say who looks after each list.',
   'help.guide.packing-categories.step.1':
-    'Click Add list under the progress bar, type the name into List name (e.g. Clothing) and confirm with the tick.',
+    'Click Add list in the bar above the lists, type the name into List name (e.g. Clothing) and click Add.',
   'help.guide.packing-categories.step.2':
     'The new list starts with one empty row. Click Add item, type the item into Item name… and press Enter; the field stays open for the next one.',
   'help.guide.packing-categories.step.3':
-    'Rename a row with the pencil at its right end, or by clicking the name itself.',
+    'Rename a row by clicking its name, or with Rename in the three dots at its right end.',
   'help.guide.packing-categories.step.4':
     'The dashed circle in the list header assigns trip members to the list. Pick a name; the chip that appears removes that person again on a click.',
   'help.guide.packing-categories.step.5':
@@ -3007,7 +3007,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'A list is only its items. Delete the last one and the row turns into a placeholder so the list keeps its place and its colour; delete that row too and the list is gone.',
   'help.guide.packing-categories.tip.2':
-    'Assigning someone to a list sends them a packing notification. It does not change who can see the items, that is Sharing, on the row.',
+    'Assigning someone to a list sends them a packing notification. It does not change who can see the items, that is Sharing, in a row’s three dots.',
   'help.guide.packing-categories.tip.3':
     'Two lists may carry the same name. TREK keeps them apart internally, so the names stay the way you typed them.',
   // check-off-packing
@@ -3022,10 +3022,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'All, Open and Done narrow the grid. Open leaves only what is still missing, so a list that is fully packed drops out of it.',
   'help.guide.check-off-packing.step.5':
-    'Remove 3 checked in the bar above deletes every ticked item at once, after one confirmation from the browser.',
+    'Remove 3 checked beside the progress bar deletes every ticked item at once, after one confirmation from the browser.',
   'help.guide.check-off-packing.result':
     'Only what is still open is listed, and the bar above says how far along the packing is.',
-  'help.guide.check-off-packing.tip.1': 'A checked item cannot be renamed. Untick it first.',
+  'help.guide.check-off-packing.tip.1': 'A ticked item can still be renamed: click its name.',
   'help.guide.check-off-packing.tip.2':
     'Check All and Uncheck All work on one list at a time, from that list’s own three dots.',
   'help.guide.check-off-packing.tip.3':
@@ -3039,7 +3039,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'The items land in the view you are in: Shared puts them in the pool everyone sees, My list makes them yours.',
   'help.guide.apply-packing-template.step.4':
-    'Keep this trip’s list for the next trip: Save as template, a name, then the tick.',
+    'Keep this trip’s list for the next trip: Save as template opens a dialog, type a name and click Save.',
   'help.guide.apply-packing-template.result':
     'The template’s lists and items are in the trip, next to what was already there.',
   'help.guide.apply-packing-template.tip.1':
@@ -3086,13 +3086,12 @@ const help: TranslationStrings = {
     'Move an item between the group pool, your own list and the people you are bringing it for.',
   'help.guide.share-packing-item.step.1':
     'Shared above the lists is the pool everyone sees, My list is your own, and each counts what is in it. Click My list to look at yours.',
-  'help.guide.share-packing-item.step.2':
-    'Back in Shared, open a row’s Sharing control, the share icon next to the pencil.',
+  'help.guide.share-packing-item.step.2': 'Back in Shared, open the three dots at the end of a row and click Sharing.',
   'help.guide.share-packing-item.step.3':
     'Three tiers: Shared, in the group pool and visible to everyone; Personal, which only you can see; and Shared with…, where you pick the people the item covers.',
   'help.guide.share-packing-item.step.4': 'A Personal item is only on My list. Switch over to find it.',
   'help.guide.share-packing-item.step.5':
-    'Open Sharing again and tick a name under Shared with…. The item shows on that person’s list too, and the row says shared with 1.',
+    'Open Sharing again and tick a name under Shared with…. The item shows on that person’s list too, and the row gets a small badge counting the people it is shared with.',
   'help.guide.share-packing-item.result': 'The item sits in the tier you chose, and the row says who is bringing it.',
   'help.guide.share-packing-item.tip.1':
     'Only the person bringing an item changes its sharing. Someone you shared it with sees it on their own My list, marked with your name, and can tick it off.',
@@ -3104,14 +3103,14 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Weigh the bags',
   'help.guide.packing-bags.goal':
     'Put a weight on every item, sort the items into bags and keep each bag under its airline limit.',
-  'help.guide.packing-bags.step.1': 'Type an item’s weight, in grams, into the field before the circle.',
+  'help.guide.packing-bags.step.1': 'Click the weight badge before the circle and type the item’s weight in grams.',
   'help.guide.packing-bags.step.2': 'The circle at the end of the row is its bag. Click it.',
   'help.guide.packing-bags.step.3':
     'No bag yet: Add bag, a name, Enter. The bag is created and the item goes straight into it.',
   'help.guide.packing-bags.step.4':
     'The Bags panel appears on the right as soon as one bag exists: name, weight, a fill bar, who carries it and how many items are in it, then Unassigned and Total weight.',
   'help.guide.packing-bags.step.5': 'Click Set limit and type the limit in kilograms, the way airlines state it.',
-  'help.guide.packing-bags.step.6': 'The dashed plus under a bag’s name says who is carrying it.',
+  'help.guide.packing-bags.step.6': 'The dashed plus beside a bag’s name says who is carrying it.',
   'help.guide.packing-bags.result':
     'The Bags panel on the right shows each bag’s weight against its limit, what is in no bag, and the total.',
   'help.guide.packing-bags.tip.1':

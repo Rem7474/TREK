@@ -3084,13 +3084,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Liste de bagages et À faire en haut basculent entre les deux et comptent ce que chacune contient ; les boutons à droite appartiennent à celle qui est ouverte.',
   'help.ctx.trip-lists.bullet.2':
-    'La liste de bagages est groupée en listes, Documents, Vêtements, comme vous voulez les appeler, chacune avec une pastille de couleur, un compteur emballé sur total et trois points contenant Renommer, Tout cocher, Tout décocher et Supprimer la liste. Ajouter une liste en crée une nouvelle.',
+    'La liste de bagages est groupée en listes, Documents, Vêtements, comme vous voulez les appeler, chacune avec une pastille de couleur, un compteur emballé sur total et trois points contenant Renommer, Tout cocher, Tout décocher et Supprimer la liste. Ajouter une liste, dans la barre au-dessus, en crée une nouvelle.',
   'help.ctx.trip-lists.bullet.3':
-    'Une ligne, c’est une case à cocher et un nom, puis la quantité, le poids en grammes et une pastille de bagage tant que Suivi des bagages est activé, puis la pastille de couleur pour Déplacer vers une liste, Partage, Renommer et Supprimer. La poignée à gauche la fait monter ou descendre dans sa liste.',
+    'Une ligne, c’est une case à cocher et un nom, puis, en petits badges, qui apporte l’article, la quantité et le poids en grammes, et une pastille de bagage tant que Suivi des bagages est activé, puis la corbeille et trois points contenant Déplacer vers une liste, Partage, Renommer et Supprimer. Ce qu’une ligne n’utilise pas reste estompé jusqu’à ce que vous le survoliez, et la poignée à gauche la fait monter ou descendre dans sa liste.',
   'help.ctx.trip-lists.bullet.4':
     'Partagé et Ma liste coupent la liste de bagages en deux : le fonds commun que tout le monde voit, et la vôtre. Tous, À faire et Fait restreignent celle qui est ouverte, et la barre au-dessus compte ce qui est emballé.',
   'help.ctx.trip-lists.bullet.5':
-    'Appliquer un modèle et Enregistrer comme modèle remplissent ou conservent une liste sans la retaper, et les deux icônes à côté exportent la liste, en impression, en PDF ou en fichier, et en importent une. Le bouton rouge indique combien d’articles sont cochés et les efface.',
+    'Appliquer un modèle et Enregistrer comme modèle remplissent ou conservent une liste sans la retaper, et les deux icônes à côté exportent la liste, en impression, en PDF ou en fichier, et en importent une. Le bouton rouge près de la barre de progression indique combien d’articles sont cochés et les efface.',
   'help.ctx.trip-lists.bullet.6':
     'À faire a sa propre barre latérale : la carte de progression, les filtres Tout, Mes tâches, En retard et Terminé, Trier par Priorité ou Date d’échéance, et une ligne par liste. Un clic sur une tâche l’ouvre dans le panneau de droite, et Nouvelle tâche ouvre le formulaire Nouvelle tâche au milieu de l’écran.',
   // packing-categories
@@ -3098,11 +3098,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Groupez ce que vous emportez en listes, remplissez-les d’articles et dites qui s’occupe de chaque liste.',
   'help.guide.packing-categories.step.1':
-    'Cliquez sur Ajouter une liste sous la barre de progression, tapez le nom dans Nom de la liste (ex. Vêtements) et confirmez avec la coche.',
+    'Cliquez sur Ajouter une liste dans la barre au-dessus des listes, tapez le nom dans Nom de la liste (ex. Vêtements) et cliquez sur Ajouter.',
   'help.guide.packing-categories.step.2':
     'La nouvelle liste commence par une ligne vide. Cliquez sur Ajouter un article, tapez l’article dans Nom de l’article… et appuyez sur Entrée ; le champ reste ouvert pour le suivant.',
   'help.guide.packing-categories.step.3':
-    'Renommez une ligne avec le crayon à son extrémité droite, ou en cliquant sur le nom lui-même.',
+    'Renommez une ligne en cliquant sur son nom, ou avec Renommer dans les trois points à son extrémité droite.',
   'help.guide.packing-categories.step.4':
     'Le cercle en pointillés dans l’en-tête de la liste attribue des membres du voyage à la liste. Choisissez un nom ; la pastille qui apparaît retire de nouveau cette personne d’un clic.',
   'help.guide.packing-categories.step.5':
@@ -3112,7 +3112,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Une liste n’est que ses articles. Supprimez le dernier et la ligne devient un espace réservé pour que la liste garde sa place et sa couleur ; supprimez aussi cette ligne et la liste disparaît.',
   'help.guide.packing-categories.tip.2':
-    'Attribuer quelqu’un à une liste lui envoie une notification de bagages. Cela ne change pas qui peut voir les articles, c’est Partage, sur la ligne.',
+    'Attribuer quelqu’un à une liste lui envoie une notification de bagages. Cela ne change pas qui peut voir les articles, c’est Partage, dans les trois points d’une ligne.',
   'help.guide.packing-categories.tip.3':
     'Deux listes peuvent porter le même nom. TREK les distingue en interne, les noms restent donc tels que vous les avez tapés.',
   // check-off-packing
@@ -3128,10 +3128,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Tous, À faire et Fait restreignent la grille. À faire ne laisse que ce qui manque encore, une liste entièrement emballée en sort donc.',
   'help.guide.check-off-packing.step.5':
-    'Supprimer 3 cochés dans la barre au-dessus supprime tous les articles cochés d’un coup, après une confirmation du navigateur.',
+    'Supprimer 3 cochés à côté de la barre de progression supprime tous les articles cochés d’un coup, après une confirmation du navigateur.',
   'help.guide.check-off-packing.result':
     'Seul ce qui reste ouvert est listé, et la barre au-dessus dit où en est l’emballage.',
-  'help.guide.check-off-packing.tip.1': 'Un article coché ne peut pas être renommé. Décochez-le d’abord.',
+  'help.guide.check-off-packing.tip.1': 'Un article coché peut quand même être renommé : cliquez sur son nom.',
   'help.guide.check-off-packing.tip.2':
     'Tout cocher et Tout décocher agissent sur une liste à la fois, depuis les trois points de cette liste.',
   'help.guide.check-off-packing.tip.3':
@@ -3146,7 +3146,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Les articles arrivent dans la vue où vous êtes : Partagé les met dans le fonds commun que tout le monde voit, Ma liste les rend vôtres.',
   'help.guide.apply-packing-template.step.4':
-    'Garder la liste de ce voyage pour le prochain : Enregistrer comme modèle, un nom, puis la coche.',
+    'Garder la liste de ce voyage pour le prochain : Enregistrer comme modèle ouvre une boîte de dialogue, tapez un nom et cliquez sur Enregistrer.',
   'help.guide.apply-packing-template.result':
     'Les listes et les articles du modèle sont dans le voyage, à côté de ce qui s’y trouvait déjà.',
   'help.guide.apply-packing-template.tip.1':
@@ -3197,12 +3197,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Partagé au-dessus des listes est le fonds commun que tout le monde voit, Ma liste est la vôtre, et chacune compte ce qu’elle contient. Cliquez sur Ma liste pour regarder la vôtre.',
   'help.guide.share-packing-item.step.2':
-    'De retour dans Partagé, ouvrez le Partage d’une ligne, l’icône de partage à côté du crayon.',
+    'De retour dans Partagé, ouvrez les trois points au bout d’une ligne et cliquez sur Partage.',
   'help.guide.share-packing-item.step.3':
     'Trois niveaux : Partagé, dans le fonds commun du groupe et visible par tous ; Personnel, que vous seul voyez ; et Partager avec…, où vous choisissez les personnes que l’article couvre.',
   'help.guide.share-packing-item.step.4': 'Un article Personnel n’est que sur Ma liste. Basculez pour le retrouver.',
   'help.guide.share-packing-item.step.5':
-    'Ouvrez de nouveau Partage et cochez un nom sous Partager avec…. L’article apparaît aussi sur la liste de cette personne, et la ligne dit partagé avec 1.',
+    'Ouvrez de nouveau Partage et cochez un nom sous Partager avec…. L’article apparaît aussi sur la liste de cette personne, et la ligne reçoit un petit badge qui compte les personnes avec qui il est partagé.',
   'help.guide.share-packing-item.result':
     'L’article se place dans le niveau que vous avez choisi, et la ligne dit qui l’apporte.',
   'help.guide.share-packing-item.tip.1':
@@ -3215,7 +3215,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Peser les bagages',
   'help.guide.packing-bags.goal':
     'Mettez un poids sur chaque article, répartissez les articles dans les bagages et gardez chaque bagage sous sa limite de compagnie aérienne.',
-  'help.guide.packing-bags.step.1': 'Tapez le poids d’un article, en grammes, dans le champ avant le cercle.',
+  'help.guide.packing-bags.step.1':
+    'Cliquez sur le badge de poids avant le cercle et tapez le poids de l’article en grammes.',
   'help.guide.packing-bags.step.2': 'Le cercle au bout de la ligne est son bagage. Cliquez dessus.',
   'help.guide.packing-bags.step.3':
     'Pas encore de bagage : Ajouter un bagage, un nom, Entrée. Le bagage est créé et l’article y va directement.',
@@ -3223,7 +3224,7 @@ const help: TranslationStrings = {
     'Le panneau Bagages apparaît à droite dès qu’un bagage existe : nom, poids, une barre de remplissage, qui le porte et combien d’articles il contient, puis Non assigné et Poids total.',
   'help.guide.packing-bags.step.5':
     'Cliquez sur Définir une limite et tapez la limite en kilogrammes, comme les compagnies aériennes l’indiquent.',
-  'help.guide.packing-bags.step.6': 'Le signe plus en pointillés sous le nom d’un bagage dit qui le porte.',
+  'help.guide.packing-bags.step.6': 'Le signe plus en pointillés à côté du nom d’un bagage dit qui le porte.',
   'help.guide.packing-bags.result':
     'Le panneau Bagages à droite montre le poids de chaque bagage face à sa limite, ce qui n’est dans aucun bagage, et le total.',
   'help.guide.packing-bags.tip.1':

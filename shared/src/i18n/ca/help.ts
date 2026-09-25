@@ -3013,13 +3013,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Llista d’equipatge i Pendents, a dalt, canvien entre les dues i compten què hi ha a cadascuna; els botons de la dreta pertanyen a la que està oberta.',
   'help.ctx.trip-lists.bullet.2':
-    'La llista d’equipatge està agrupada en llistes, Documents, Roba, com les vulguis anomenar, cadascuna amb un punt de color, un comptador de preparats sobre el total i tres punts amb Canvia el nom, Marca-ho tot, Desmarca-ho tot i Elimina la categoria. Afegeix una categoria en crea una de nova.',
+    'La llista d’equipatge està agrupada en llistes, Documents, Roba, com les vulguis anomenar, cadascuna amb un punt de color, un comptador de preparats sobre el total i tres punts amb Canvia el nom, Marca-ho tot, Desmarca-ho tot i Elimina la categoria. Afegeix una categoria, a la barra de sobre, en crea una de nova.',
   'help.ctx.trip-lists.bullet.3':
-    'Una fila és una casella i un nom, després la quantitat, el pes en grams i un cercle d’equipatge mentre Seguiment d’equipatge està actiu, i després el punt de color per a Canvia la categoria, Compartir, Canviar nom i Eliminar. La nansa de l’esquerra la puja o la baixa dins de la seva llista.',
+    'Una fila és una casella i un nom, després, com a petites insígnies, qui porta l’article, la quantitat i el pes en grams, i un cercle d’equipatge mentre Seguiment d’equipatge està actiu, i després la paperera i tres punts amb Canvia la categoria, Compartir, Canviar nom i Eliminar. El que una fila no fa servir queda atenuat fins que hi passes el ratolí per sobre, i la nansa de l’esquerra la puja o la baixa dins de la seva llista.',
   'help.ctx.trip-lists.bullet.4':
     'Compartit i La meva llista parteixen la llista d’equipatge en dues: el fons comú que tothom veu, i la teva. Tot, Pendents i Fet estrenyen la que està oberta, i la barra de sobre compta què hi ha preparat.',
   'help.ctx.trip-lists.bullet.5':
-    'Aplica una plantilla i Desa com a plantilla omplen o conserven una llista sense teclejar-la, i les dues icones del costat exporten la llista, com a impressió, PDF o fitxer, i n’importen una. El botó vermell diu quants articles estan marcats i els retira.',
+    'Aplica una plantilla i Desa com a plantilla omplen o conserven una llista sense teclejar-la, i les dues icones del costat exporten la llista, com a impressió, PDF o fitxer, i n’importen una. El botó vermell al costat de la barra de progrés diu quants articles estan marcats i els retira.',
   'help.ctx.trip-lists.bullet.6':
     'Pendents té una barra lateral pròpia: la targeta de progrés, els filtres Tot, Les meves tasques, Vençuda i Fet, Ordena per Prioritat o Data límit, i una fila per categoria. Un clic en una tasca l’obre al panell de la dreta, i Tasca nova obre el formulari Tasca nova sobre el mig de la pantalla.',
   // packing-categories
@@ -3027,11 +3027,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Agrupa en llistes el que t’emportes, omple-les d’articles i digues qui s’ocupa de cada llista.',
   'help.guide.packing-categories.step.1':
-    'Fes clic a Afegeix una categoria sota la barra de progrés, escriu el nom a Nom de la categoria (p. ex. Roba) i confirma amb la marca.',
+    'Fes clic a Afegeix una categoria a la barra que hi ha sobre les llistes, escriu el nom a Nom de la categoria (p. ex. Roba) i fes clic a Afegir.',
   'help.guide.packing-categories.step.2':
     'La llista nova comença amb una fila buida. Fes clic a Afegeix un article, escriu l’article a Nom de l’article... i prem Retorn; el camp es queda obert per al següent.',
   'help.guide.packing-categories.step.3':
-    'Canvia el nom d’una fila amb el llapis del seu extrem dret, o fent clic al nom mateix.',
+    'Canvia el nom d’una fila fent clic al seu nom, o amb Canviar nom als tres punts del seu extrem dret.',
   'help.guide.packing-categories.step.4':
     'El cercle discontinu de la capçalera de la llista assigna membres del viatge a la llista. Tria un nom; l’etiqueta que apareix en treu aquella persona amb un clic.',
   'help.guide.packing-categories.step.5':
@@ -3041,7 +3041,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Una llista només són els seus articles. Elimina l’últim i la fila es converteix en un marcador de posició perquè la llista conservi el seu lloc i el seu color; elimina també aquella fila i la llista desapareix.',
   'help.guide.packing-categories.tip.2':
-    'Assignar algú a una llista li envia una notificació d’equipatge. No canvia qui pot veure els articles, això és Compartir, a la fila.',
+    'Assignar algú a una llista li envia una notificació d’equipatge. No canvia qui pot veure els articles, això és Compartir, als tres punts d’una fila.',
   'help.guide.packing-categories.tip.3':
     'Dues llistes poden dur el mateix nom. TREK les distingeix internament, de manera que els noms queden tal com els has escrit.',
   // check-off-packing
@@ -3056,10 +3056,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Tot, Pendents i Fet estrenyen la graella. Pendents deixa només el que encara falta, de manera que una llista del tot preparada en surt.',
   'help.guide.check-off-packing.step.5':
-    'Elimina 3 marcats, a la barra de sobre, esborra tots els articles marcats de cop, després d’una confirmació del navegador.',
+    'Elimina 3 marcats, al costat de la barra de progrés, esborra tots els articles marcats de cop, després d’una confirmació del navegador.',
   'help.guide.check-off-packing.result':
     'Només surt el que encara és obert, i la barra de sobre diu per on va la preparació.',
-  'help.guide.check-off-packing.tip.1': 'Un article marcat no es pot reanomenar. Desmarca’l primer.',
+  'help.guide.check-off-packing.tip.1': 'Un article marcat encara es pot reanomenar: fes clic al seu nom.',
   'help.guide.check-off-packing.tip.2':
     'Marca-ho tot i Desmarca-ho tot actuen sobre una llista cada vegada, des dels tres punts d’aquella llista.',
   'help.guide.check-off-packing.tip.3':
@@ -3073,7 +3073,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Els articles cauen a la vista on ets: Compartit els posa al fons comú que tothom veu, La meva llista els fa teus.',
   'help.guide.apply-packing-template.step.4':
-    'Conservar la llista d’aquest viatge per al següent: Desa com a plantilla, un nom, i després la marca.',
+    'Conservar la llista d’aquest viatge per al següent: Desa com a plantilla obre un diàleg, escriu un nom i fes clic a Desar.',
   'help.guide.apply-packing-template.result':
     'Les llistes i els articles de la plantilla són al viatge, al costat del que ja hi havia.',
   'help.guide.apply-packing-template.tip.1':
@@ -3124,13 +3124,13 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Compartit, sobre les llistes, és el fons comú que tothom veu, La meva llista és la teva, i cadascuna compta el que conté. Fes clic a La meva llista per mirar la teva.',
   'help.guide.share-packing-item.step.2':
-    'De tornada a Compartit, obre el Compartir d’una fila, la icona de compartir al costat del llapis.',
+    'De tornada a Compartit, obre els tres punts del final d’una fila i fes clic a Compartir.',
   'help.guide.share-packing-item.step.3':
     'Tres nivells: Compartit, al fons comú del grup i visible per a tothom; Personal, que només tu pots veure; i Compartit amb…, on tries les persones que l’article cobreix.',
   'help.guide.share-packing-item.step.4':
     'Un article Personal només és a La meva llista. Canvia de vista per trobar-lo.',
   'help.guide.share-packing-item.step.5':
-    'Obre Compartir un altre cop i marca un nom sota Compartit amb…. L’article surt també a la llista d’aquella persona, i la fila diu compartit amb 1.',
+    'Obre Compartir un altre cop i marca un nom sota Compartit amb…. L’article surt també a la llista d’aquella persona, i la fila rep una petita insígnia que compta les persones amb qui es comparteix.',
   'help.guide.share-packing-item.result': 'L’article es col·loca al nivell que has triat, i la fila diu qui el porta.',
   'help.guide.share-packing-item.tip.1':
     'Només qui porta un article en canvia la manera de compartir-lo. Aquell amb qui l’has compartit el veu a la seva pròpia La meva llista, marcat amb el teu nom, i el pot marcar.',
@@ -3142,7 +3142,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Pesar l’equipatge',
   'help.guide.packing-bags.goal':
     'Posa un pes a cada article, reparteix els articles a les peces d’equipatge i mantén cadascuna per sota del límit de la companyia aèria.',
-  'help.guide.packing-bags.step.1': 'Escriu el pes d’un article, en grams, al camp anterior al cercle.',
+  'help.guide.packing-bags.step.1':
+    'Fes clic a la insígnia de pes anterior al cercle i escriu el pes de l’article en grams.',
   'help.guide.packing-bags.step.2': 'El cercle del final de la fila és la seva peça d’equipatge. Fes-hi clic.',
   'help.guide.packing-bags.step.3':
     'Encara sense equipatge: Afegeix equipatge, un nom, Retorn. La peça es crea i l’article hi entra directament.',
@@ -3150,7 +3151,7 @@ const help: TranslationStrings = {
     'El panell Equipatge apareix a la dreta tan bon punt existeix una peça: nom, pes, una barra d’ompliment, qui la porta i quants articles hi ha a dins, i després Sense assignar i Pes total.',
   'help.guide.packing-bags.step.5':
     'Fes clic a Defineix un límit i escriu el límit en quilograms, tal com l’indiquen les companyies aèries.',
-  'help.guide.packing-bags.step.6': 'El signe més discontinu sota el nom d’una peça diu qui la porta.',
+  'help.guide.packing-bags.step.6': 'El signe més discontinu al costat del nom d’una peça diu qui la porta.',
   'help.guide.packing-bags.result':
     'El panell Equipatge de la dreta mostra el pes de cada peça contra el seu límit, el que no és a cap peça, i el total.',
   'help.guide.packing-bags.tip.1':

@@ -3022,13 +3022,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'A Csomagolási lista és a Teendők felül a kettő között vált, és megszámolja, mi van mindegyikben; a jobb oldali gombok ahhoz tartoznak, amelyik nyitva van.',
   'help.ctx.trip-lists.bullet.2':
-    'A csomagolási lista listákba van csoportosítva, Dokumentumok, Ruházat, ahogy éppen elnevezed őket, mindegyik egy színes ponttal, egy becsomagolva az összesből jelvénnyel és három ponttal, ami alatt az Átnevezés, az Összes kipipálása, az Összes jelölés törlése és a Lista törlése ül. A Lista hozzáadása újat készít.',
+    'A csomagolási lista listákba van csoportosítva, Dokumentumok, Ruházat, ahogy éppen elnevezed őket, mindegyik egy színes ponttal, egy becsomagolva az összesből jelvénnyel és három ponttal, ami alatt az Átnevezés, az Összes kipipálása, az Összes jelölés törlése és a Lista törlése ül. A fenti sávban lévő Lista hozzáadása újat készít.',
   'help.ctx.trip-lists.bullet.3':
-    'Egy sor egy jelölőnégyzet és egy név, aztán a mennyiség, a súly grammban és egy táskakör, amíg a Poggyászkövetés be van kapcsolva, aztán a színes pont az Áthelyezés listába, a Megosztás, az Átnevezés és a Törlés mellett. A bal oldali fogantyú fel vagy le húzza a saját listáján belül.',
+    'Egy sor egy jelölőnégyzet és egy név, aztán kis jelvényekként az, hogy ki hozza, a mennyiség és a súly grammban, meg egy táskakör, amíg a Poggyászkövetés be van kapcsolva, aztán a kuka és három pont, ami alatt az Áthelyezés listába, a Megosztás, az Átnevezés és a Törlés ül. Amit egy sor nem használ, halvány marad, amíg rá nem mutatsz, a bal oldali fogantyú pedig fel vagy le húzza a saját listáján belül.',
   'help.ctx.trip-lists.bullet.4':
     'A Megosztott és a Saját lista kettéosztja a csomagolási listát: a mindenki által látott közösre és a sajátodra. Az Összes, a Nyitott és a Kész szűkíti azt, amelyik nyitva van, a fenti sáv pedig számolja, mi van becsomagolva.',
   'help.ctx.trip-lists.bullet.5':
-    'A Sablon alkalmazása és a Mentés sablonként gépelés nélkül tölti fel vagy őrzi meg a listát, a mellettük lévő két ikon pedig exportálja a listát, nyomtatásként, PDF-ként vagy fájlként, illetve importál egyet. A piros gomb megmondja, hány tétel van kipipálva, és eltakarítja őket.',
+    'A Sablon alkalmazása és a Mentés sablonként gépelés nélkül tölti fel vagy őrzi meg a listát, a mellettük lévő két ikon pedig exportálja a listát, nyomtatásként, PDF-ként vagy fájlként, illetve importál egyet. A haladási sáv melletti piros gomb megmondja, hány tétel van kipipálva, és eltakarítja őket.',
   'help.ctx.trip-lists.bullet.6':
     'A Teendőknek saját oldalsávja van: a haladási kártya, a Mind, a Saját feladataim, a Lejárt és a Kész szűrők, a Rendezés Prioritás vagy Határidő szerint, és listánként egy sor. Egy feladatra kattintva a jobb oldali panelen nyílik meg, az Új feladat pedig a képernyő közepén nyitja meg az Új feladat űrlapot.',
   // packing-categories
@@ -3036,11 +3036,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Csoportosítsd listákba, amit viszel, töltsd fel őket tételekkel, és mondd meg, ki gondoskodik melyik listáról.',
   'help.guide.packing-categories.step.1':
-    'Kattints a haladási sáv alatt a Lista hozzáadása gombra, írd be a nevet a Lista neve (pl. Ruházat) mezőbe, és erősítsd meg a pipával.',
+    'Kattints a listák feletti sávban a Lista hozzáadása gombra, írd be a nevet a Lista neve (pl. Ruházat) mezőbe, és kattints a Hozzáadás gombra.',
   'help.guide.packing-categories.step.2':
     'Az új lista egy üres sorral indul. Kattints a Tétel hozzáadása gombra, írd be a tételt a Tétel neve... mezőbe, és nyomj Entert; a mező nyitva marad a következőnek.',
   'help.guide.packing-categories.step.3':
-    'Egy sort a jobb szélén lévő ceruzával nevezel át, vagy magára a névre kattintva.',
+    'Egy sort a nevére kattintva nevezel át, vagy a jobb szélén lévő három pont alatti Átnevezés paranccsal.',
   'help.guide.packing-categories.step.4':
     'A lista fejlécében lévő szaggatott kör utazási tagokat rendel a listához. Válassz egy nevet; a megjelenő címke egy kattintásra újra leveszi azt a személyt.',
   'help.guide.packing-categories.step.5':
@@ -3050,7 +3050,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Egy lista csak a tételeiből áll. Töröld az utolsót, és a sor helykitöltővé válik, hogy a lista megtartsa a helyét és a színét; töröld azt a sort is, és a lista eltűnik.',
   'help.guide.packing-categories.tip.2':
-    'Ha valakit hozzárendelsz egy listához, csomagolási értesítést kap. Nem változtat azon, ki látja a tételeket, azt a soron lévő Megosztás intézi.',
+    'Ha valakit hozzárendelsz egy listához, csomagolási értesítést kap. Nem változtat azon, ki látja a tételeket, azt a sor három pontja alatti Megosztás intézi.',
   'help.guide.packing-categories.tip.3':
     'Két lista viselheti ugyanazt a nevet. A TREK belül elkülöníti őket, így a nevek úgy maradnak, ahogy beírtad.',
   // check-off-packing
@@ -3065,10 +3065,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Az Összes, a Nyitott és a Kész szűkíti a rácsot. A Nyitott csak azt hagyja meg, ami még hiányzik, így egy teljesen becsomagolt lista kiesik belőle.',
   'help.guide.check-off-packing.step.5':
-    'A fenti sávban a 3 kipipált eltávolítása egyetlen böngészős megerősítés után minden kipipált tételt egyszerre töröl.',
+    'A haladási sáv melletti 3 kipipált eltávolítása egyetlen böngészős megerősítés után minden kipipált tételt egyszerre töröl.',
   'help.guide.check-off-packing.result':
     'Csak az szerepel, ami még nyitott, a fenti sáv pedig megmondja, hol tart a csomagolás.',
-  'help.guide.check-off-packing.tip.1': 'Kipipált tételt nem lehet átnevezni. Előbb vedd le róla a pipát.',
+  'help.guide.check-off-packing.tip.1': 'Kipipált tétel is átnevezhető: kattints a nevére.',
   'help.guide.check-off-packing.tip.2':
     'Az Összes kipipálása és az Összes jelölés törlése egyszerre egy listán dolgozik, az adott lista saját három pontjából.',
   'help.guide.check-off-packing.tip.3':
@@ -3083,7 +3083,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'A tételek abban a nézetben landolnak, amelyikben vagy: a Megosztott a mindenki által látott közösbe teszi őket, a Saját lista a tieddé teszi őket.',
   'help.guide.apply-packing-template.step.4':
-    'Őrizd meg ennek az utazásnak a listáját a következő utazásra: Mentés sablonként, egy név, aztán a pipa.',
+    'Őrizd meg ennek az utazásnak a listáját a következő utazásra: a Mentés sablonként megnyit egy párbeszédablakot, írj be egy nevet, és kattints a Mentés gombra.',
   'help.guide.apply-packing-template.result':
     'A sablon listái és tételei az utazásban vannak, amellett, ami már ott volt.',
   'help.guide.apply-packing-template.tip.1':
@@ -3135,13 +3135,13 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'A listák fölötti Megosztott a mindenki által látott közös, a Saját lista a tiéd, és mindkettő megszámolja, mi van benne. Kattints a Saját lista fülre, hogy a sajátodat nézd.',
   'help.guide.share-packing-item.step.2':
-    'Vissza a Megosztott nézetben nyisd meg egy sor Megosztás vezérlőjét, a ceruza melletti megosztás ikont.',
+    'Vissza a Megosztott nézetben nyisd meg egy sor végén a három pontot, és kattints a Megosztás elemre.',
   'help.guide.share-packing-item.step.3':
     'Három szint: Megosztott, a csoportban és mindenki láthatja; Személyes, amit csak te látsz; és Megosztás vele…, ahol kiválasztod, kikre vonatkozik a tétel.',
   'help.guide.share-packing-item.step.4':
     'Egy Személyes tétel csak a Saját lista nézetben van. Válts át, hogy megtaláld.',
   'help.guide.share-packing-item.step.5':
-    'Nyisd meg újra a Megosztás vezérlőt, és pipálj ki egy nevet a Megosztás vele… alatt. A tétel annak a személynek a listáján is megjelenik, a soron pedig megosztva 1 fővel áll.',
+    'Nyisd meg újra a Megosztás elemet, és pipálj ki egy nevet a Megosztás vele… alatt. A tétel annak a személynek a listáján is megjelenik, a sor pedig kap egy kis jelvényt, ami megszámolja, hány emberrel van megosztva.',
   'help.guide.share-packing-item.result': 'A tétel az általad választott szinten ül, a sor pedig megmondja, ki hozza.',
   'help.guide.share-packing-item.tip.1':
     'Egy tétel megosztását csak az változtatja, aki hozza. Akivel megosztottad, a saját Saját lista nézetében látja, a te neveddel megjelölve, és ki tudja pipálni.',
@@ -3153,7 +3153,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'A táskák megmérése',
   'help.guide.packing-bags.goal':
     'Adj minden tételnek súlyt, oszd szét a tételeket táskákba, és tartsd minden táskát a légitársaság korlátja alatt.',
-  'help.guide.packing-bags.step.1': 'Írd be a tétel súlyát, grammban, a kör előtti mezőbe.',
+  'help.guide.packing-bags.step.1': 'Kattints a kör előtti súlyjelvényre, és írd be a tétel súlyát grammban.',
   'help.guide.packing-bags.step.2': 'A sor végén lévő kör a táskája. Kattints rá.',
   'help.guide.packing-bags.step.3':
     'Még nincs táska: Táska hozzáadása, egy név, Enter. A táska létrejön, és a tétel egyenesen bele kerül.',
@@ -3161,7 +3161,7 @@ const help: TranslationStrings = {
     'A Táskák panel jobb oldalt jelenik meg, amint egy táska létezik: név, súly, egy telítettségsáv, ki viszi és hány tétel van benne, aztán a Nincs hozzárendelve és az Összsúly.',
   'help.guide.packing-bags.step.5':
     'Kattints a Korlát beállítása gombra, és írd be a korlátot kilogrammban, ahogy a légitársaságok megadják.',
-  'help.guide.packing-bags.step.6': 'A táska neve alatti szaggatott plusz megmondja, ki viszi.',
+  'help.guide.packing-bags.step.6': 'A táska neve melletti szaggatott plusz megmondja, ki viszi.',
   'help.guide.packing-bags.result':
     'A jobb oldali Táskák panel minden táska súlyát a korlátjához mérve mutatja, azt, ami egyik táskában sincs, és az összeget.',
   'help.guide.packing-bags.tip.1':

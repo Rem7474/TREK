@@ -3043,13 +3043,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Packliste und Aufgaben oben wechseln zwischen beiden und zählen, was in jeder steckt; die Knöpfe rechts gehören zu der, die gerade offen ist.',
   'help.ctx.trip-lists.bullet.2':
-    'Die Packliste ist in Listen gruppiert, Dokumente, Kleidung, wie du sie auch nennst, jede mit einem Farbpunkt, einem Gepackt-von-Gesamt-Zähler und drei Punkten mit Umbenennen, Alle abhaken, Alle Haken entfernen und Liste löschen. Liste hinzufügen legt eine neue an.',
+    'Die Packliste ist in Listen gruppiert, Dokumente, Kleidung, wie du sie auch nennst, jede mit einem Farbpunkt, einem Gepackt-von-Gesamt-Zähler und drei Punkten mit Umbenennen, Alle abhaken, Alle Haken entfernen und Liste löschen. Liste hinzufügen in der Leiste darüber legt eine neue an.',
   'help.ctx.trip-lists.bullet.3':
-    'Eine Zeile ist ein Kästchen und ein Name, dann die Menge, das Gewicht in Gramm und ein Gepäck-Kreis, solange Gepäck-Tracking an ist, dann der Farbpunkt für In Liste verschieben, Teilen, Umbenennen und Löschen. Der Griff links zieht sie innerhalb ihrer Liste nach oben oder unten.',
+    'Eine Zeile ist ein Kästchen und ein Name, dann als kleine Abzeichen, wer den Eintrag mitbringt, die Menge und das Gewicht in Gramm, dazu ein Gepäck-Kreis, solange Gepäck-Tracking an ist, dann der Papierkorb und drei Punkte mit In Liste verschieben, Teilen, Umbenennen und Löschen. Was eine Zeile nicht nutzt, bleibt gedimmt, bis du darauf zeigst, und der Griff links zieht sie innerhalb ihrer Liste nach oben oder unten.',
   'help.ctx.trip-lists.bullet.4':
     'Gemeinsam und Meine Liste teilen die Packliste in zwei: den Pool, den alle sehen, und deine eigene. Alle, Offen und Erledigt engen die gerade offene ein, und der Balken darüber zählt, was gepackt ist.',
   'help.ctx.trip-lists.bullet.5':
-    'Vorlage anwenden und Als Vorlage speichern füllen oder bewahren eine Liste, ohne sie abzutippen, und die zwei Symbole daneben exportieren die Liste, als Ausdruck, als PDF oder als Datei, und importieren eine. Der rote Knopf nennt, wie viele Einträge abgehakt sind, und räumt sie weg.',
+    'Vorlage anwenden und Als Vorlage speichern füllen oder bewahren eine Liste, ohne sie abzutippen, und die zwei Symbole daneben exportieren die Liste, als Ausdruck, als PDF oder als Datei, und importieren eine. Der rote Knopf neben dem Fortschrittsbalken nennt, wie viele Einträge abgehakt sind, und räumt sie weg.',
   'help.ctx.trip-lists.bullet.6':
     'Aufgaben hat eine eigene Seitenleiste: die Fortschrittskarte, die Filter Alle, Meine Aufgaben, Überfällig und Erledigt, Sortieren nach Priorität oder Fällig am, und eine Zeile pro Liste. Ein Klick auf eine Aufgabe öffnet sie im Panel rechts, und Neue Aufgabe hinzufügen öffnet das Formular Neue Aufgabe über der Mitte des Bildschirms.',
   // packing-categories
@@ -3057,11 +3057,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Gruppier, was du mitnimmst, in Listen, füll sie mit Einträgen und sag, wer sich um welche Liste kümmert.',
   'help.guide.packing-categories.step.1':
-    'Klick unter dem Fortschrittsbalken auf Liste hinzufügen, tipp den Namen in Listenname (z. B. Kleidung) und bestätige mit dem Haken.',
+    'Klick in der Leiste über den Listen auf Liste hinzufügen, tipp den Namen in Listenname (z. B. Kleidung) und klick auf Hinzufügen.',
   'help.guide.packing-categories.step.2':
     'Die neue Liste beginnt mit einer leeren Zeile. Klick auf Eintrag hinzufügen, tipp den Eintrag in Artikelname... und drück Enter; das Feld bleibt für den nächsten offen.',
   'help.guide.packing-categories.step.3':
-    'Eine Zeile benennst du mit dem Stift an ihrem rechten Ende um, oder mit einem Klick auf den Namen selbst.',
+    'Eine Zeile benennst du mit einem Klick auf ihren Namen um, oder mit Umbenennen in den drei Punkten an ihrem rechten Ende.',
   'help.guide.packing-categories.step.4':
     'Der gestrichelte Kreis in der Listenkopfzeile weist der Liste Reisemitglieder zu. Wähl einen Namen; der Chip, der erscheint, entfernt die Person mit einem Klick wieder.',
   'help.guide.packing-categories.step.5':
@@ -3071,7 +3071,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Eine Liste ist nur ihre Einträge. Lösch den letzten, und die Zeile wird zu einem Platzhalter, damit die Liste ihren Platz und ihre Farbe behält; lösch auch diese Zeile, und die Liste ist weg.',
   'help.guide.packing-categories.tip.2':
-    'Jemanden einer Liste zuzuweisen schickt ihm eine Pack-Benachrichtigung. Es ändert nicht, wer die Einträge sehen kann, das ist Teilen, auf der Zeile.',
+    'Jemanden einer Liste zuzuweisen schickt ihm eine Pack-Benachrichtigung. Es ändert nicht, wer die Einträge sehen kann, das ist Teilen, in den drei Punkten einer Zeile.',
   'help.guide.packing-categories.tip.3':
     'Zwei Listen dürfen denselben Namen tragen. TREK hält sie intern auseinander, die Namen bleiben also so, wie du sie getippt hast.',
   // check-off-packing
@@ -3087,11 +3087,11 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Alle, Offen und Erledigt engen das Raster ein. Offen lässt nur, was noch fehlt, eine vollständig gepackte Liste fällt also heraus.',
   'help.guide.check-off-packing.step.5':
-    '3 abgehakte entfernen im Balken darüber löscht alle abgehakten Einträge auf einmal, nach einer Bestätigung durch den Browser.',
+    '3 abgehakte entfernen neben dem Fortschrittsbalken löscht alle abgehakten Einträge auf einmal, nach einer Bestätigung durch den Browser.',
   'help.guide.check-off-packing.result':
     'Nur was noch offen ist, steht da, und der Balken darüber sagt, wie weit das Packen ist.',
   'help.guide.check-off-packing.tip.1':
-    'Ein abgehakter Eintrag lässt sich nicht umbenennen. Nimm zuerst den Haken weg.',
+    'Ein abgehakter Eintrag lässt sich trotzdem umbenennen: Klick auf seinen Namen.',
   'help.guide.check-off-packing.tip.2':
     'Alle abhaken und Alle Haken entfernen wirken auf je eine Liste, aus den drei Punkten dieser Liste.',
   'help.guide.check-off-packing.tip.3':
@@ -3106,7 +3106,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Die Einträge landen in der Ansicht, in der du bist: Gemeinsam legt sie in den Pool, den alle sehen, Meine Liste macht sie zu deinen.',
   'help.guide.apply-packing-template.step.4':
-    'Die Liste dieser Reise für die nächste aufbewahren: Als Vorlage speichern, ein Name, dann der Haken.',
+    'Die Liste dieser Reise für die nächste aufbewahren: Als Vorlage speichern öffnet einen Dialog, tipp einen Namen und klick auf Speichern.',
   'help.guide.apply-packing-template.result':
     'Die Listen und Einträge der Vorlage sind in der Reise, neben dem, was schon da war.',
   'help.guide.apply-packing-template.tip.1':
@@ -3156,13 +3156,13 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Gemeinsam über den Listen ist der Pool, den alle sehen, Meine Liste ist deine eigene, und jede zählt, was in ihr steckt. Klick auf Meine Liste, um deine anzusehen.',
   'help.guide.share-packing-item.step.2':
-    'Zurück in Gemeinsam, öffne Teilen an einer Zeile, das Teilen-Symbol neben dem Stift.',
+    'Zurück in Gemeinsam, öffne die drei Punkte am Ende einer Zeile und klick auf Teilen.',
   'help.guide.share-packing-item.step.3':
     'Drei Stufen: Gemeinsam, im Gruppen-Pool und für alle sichtbar; Persönlich, das nur du siehst; und Mit Personen teilen…, wo du die Leute wählst, für die der Eintrag gilt.',
   'help.guide.share-packing-item.step.4':
     'Ein persönlicher Eintrag steht nur auf Meine Liste. Wechsle hinüber, um ihn zu finden.',
   'help.guide.share-packing-item.step.5':
-    'Öffne Teilen noch einmal und hak unter Mit Personen teilen… einen Namen an. Der Eintrag erscheint auch auf der Liste dieser Person, und die Zeile sagt geteilt mit 1.',
+    'Öffne Teilen noch einmal und hak unter Mit Personen teilen… einen Namen an. Der Eintrag erscheint auch auf der Liste dieser Person, und die Zeile bekommt ein kleines Abzeichen, das zählt, mit wie vielen Leuten er geteilt ist.',
   'help.guide.share-packing-item.result':
     'Der Eintrag sitzt in der Stufe, die du gewählt hast, und die Zeile sagt, wer ihn mitbringt.',
   'help.guide.share-packing-item.tip.1':
@@ -3175,7 +3175,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Das Gepäck wiegen',
   'help.guide.packing-bags.goal':
     'Gib jedem Eintrag ein Gewicht, sortier die Einträge in Gepäckstücke und halt jedes unter seinem Airline-Limit.',
-  'help.guide.packing-bags.step.1': 'Tipp das Gewicht eines Eintrags, in Gramm, in das Feld vor dem Kreis.',
+  'help.guide.packing-bags.step.1':
+    'Klick auf das Gewichts-Abzeichen vor dem Kreis und tipp das Gewicht des Eintrags in Gramm.',
   'help.guide.packing-bags.step.2': 'Der Kreis am Ende der Zeile ist ihr Gepäckstück. Klick ihn an.',
   'help.guide.packing-bags.step.3':
     'Noch kein Gepäckstück: Gepäck hinzufügen, ein Name, Enter. Das Gepäckstück wird angelegt und der Eintrag wandert direkt hinein.',
@@ -3183,7 +3184,7 @@ const help: TranslationStrings = {
     'Das Panel Gepäck erscheint rechts, sobald ein Gepäckstück existiert: Name, Gewicht, ein Füllbalken, wer es trägt und wie viele Einträge darin sind, dann Nicht zugeordnet und Gesamtgewicht.',
   'help.guide.packing-bags.step.5':
     'Klick auf Limit setzen und tipp das Limit in Kilogramm, so wie Airlines es angeben.',
-  'help.guide.packing-bags.step.6': 'Das gestrichelte Plus unter dem Namen eines Gepäckstücks sagt, wer es trägt.',
+  'help.guide.packing-bags.step.6': 'Das gestrichelte Plus neben dem Namen eines Gepäckstücks sagt, wer es trägt.',
   'help.guide.packing-bags.result':
     'Das Panel Gepäck rechts zeigt das Gewicht jedes Gepäckstücks gegen sein Limit, was in keinem steckt, und die Summe.',
   'help.guide.packing-bags.tip.1':

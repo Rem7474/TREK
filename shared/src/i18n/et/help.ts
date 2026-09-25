@@ -3037,13 +3037,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Üleval olevad Pakkimisnimekiri ja Ülesanded lülitavad nende kahe vahel ja näitavad kummagi kirjete arvu; paremal olevad nupud kuuluvad parajasti avatud nimekirjale.',
   'help.ctx.trip-lists.bullet.2':
-    'Pakkimisnimekiri on jagatud nimekirjadeks, näiteks Dokumendid, Riided või kuidas iganes sa neid nimetad, igaühel värvitäpp, pakitud ja kogu arvu märk ning kolm punkti, mille all on Nimeta ümber, Märgi kõik, Eemalda kõik märgistused ja Kustuta nimekiri. Lisa nimekiri loob uue.',
+    'Pakkimisnimekiri on jagatud nimekirjadeks, näiteks Dokumendid, Riided või kuidas iganes sa neid nimetad, igaühel värvitäpp, pakitud ja kogu arvu märk ning kolm punkti, mille all on Nimeta ümber, Märgi kõik, Eemalda kõik märgistused ja Kustuta nimekiri. Ülal ribal olev Lisa nimekiri loob uue.',
   'help.ctx.trip-lists.bullet.3':
-    'Rida koosneb märkeruudust ja nimest, seejärel kogusest, kaalust grammides ja koti ringist, kui Kottide haldus on sisse lülitatud, ning värvitäpist valikutega Teisalda nimekirja, Jagamine, Nimeta ümber ja Kustuta. Vasakul olevast pidemest saab rea nimekirja sees üles või alla lohistada.',
+    'Rida koosneb märkeruudust ja nimest, seejärel väikestest märkidest, mis näitavad, kes eseme kaasa võtab, kogust ja kaalu grammides, koti ringist, kui Kottide haldus on sisse lülitatud, ning lõpuks prügikastist ja kolmest punktist valikutega Teisalda nimekirja, Jagamine, Nimeta ümber ja Kustuta. Mida rida ei kasuta, jääb tuhmiks, kuni sellele osutad, ja vasakul olevast pidemest saab rea nimekirja sees üles või alla lohistada.',
   'help.ctx.trip-lists.bullet.4':
     'Jagatud ja Minu nimekiri jagavad pakkimisnimekirja kaheks: ühine osa, mida kõik näevad, ja sinu oma. Kõik, Avatud ja Valmis kitsendavad parajasti avatud nimekirja ning ülal olev riba loendab pakitut.',
   'help.ctx.trip-lists.bullet.5':
-    'Rakenda mall ja Salvesta mallina täidavad või salvestavad nimekirja ilma seda käsitsi sisestamata ning nende kõrval olevad kaks ikooni ekspordivad nimekirja väljatrükina, PDF-ina või failina ja impordivad nimekirja. Punane nupp näitab, mitu eset on märgitud, ja eemaldab need.',
+    'Rakenda mall ja Salvesta mallina täidavad või salvestavad nimekirja ilma seda käsitsi sisestamata ning nende kõrval olevad kaks ikooni ekspordivad nimekirja väljatrükina, PDF-ina või failina ja impordivad nimekirja. Edenemisriba kõrval olev punane nupp näitab, mitu eset on märgitud, ja eemaldab need.',
   'help.ctx.trip-lists.bullet.6':
     'Ülesannetel on oma külgriba: edenemise kaart, filtrid Kõik, Minu ülesanded, Üle tähtaja ja Valmis, Sordi valikutega Tähtsus või Tähtaeg ning üks rida iga nimekirja kohta. Klõps ülesandel avab selle paremal paanil ja Lisa uus ülesanne avab ekraani keskel vormi Uus ülesanne.',
   // packing-categories
@@ -3051,11 +3051,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Jaga kaasa võetavad asjad nimekirjadesse, täida need esemetega ja määra, kes iga nimekirja eest hoolitseb.',
   'help.guide.packing-categories.step.1':
-    'Klõpsa edenemisriba all nuppu Lisa nimekiri, sisesta nimi väljale Nimekirja nimi (nt Riided) ja kinnita linnukesega.',
+    'Klõpsa nimekirjade kohal oleval ribal nuppu Lisa nimekiri, sisesta nimi väljale Nimekirja nimi (nt Riided) ja klõpsa nuppu Lisa.',
   'help.guide.packing-categories.step.2':
     'Uues nimekirjas on alguses üks tühi rida. Klõpsa Lisa kirje, sisesta ese väljale Eseme nimi… ja vajuta Enter; väli jääb järgmise jaoks avatuks.',
   'help.guide.packing-categories.step.3':
-    'Nimeta rida ümber selle paremas otsas oleva pliiatsiga või klõpsates nimel endal.',
+    'Nimeta rida ümber, klõpsates selle nimel, või valikuga Nimeta ümber rea paremas otsas olevate kolme punkti all.',
   'help.guide.packing-categories.step.4':
     'Nimekirja päises olev katkendjoonega ring määrab nimekirjale reisi liikmeid. Vali nimi; ilmuv kiip eemaldab klõpsamisel selle inimese uuesti.',
   'help.guide.packing-categories.step.5':
@@ -3065,7 +3065,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Nimekiri koosneb ainult oma esemetest. Kustuta viimane ja rida muutub kohatäiteks, nii et nimekiri säilitab oma koha ja värvi; kustuta ka see rida ja nimekiri kaob.',
   'help.guide.packing-categories.tip.2':
-    'Kellegi nimekirjale määramine saadab talle pakkimisteavituse. See ei muuda, kes esemeid näeb; selleks on real valik Jagamine.',
+    'Kellegi nimekirjale määramine saadab talle pakkimisteavituse. See ei muuda, kes esemeid näeb; selleks on rea kolme punkti all valik Jagamine.',
   'help.guide.packing-categories.tip.3':
     'Kahel nimekirjal võib olla sama nimi. TREK hoiab neid sisemiselt lahus, nii et nimed jäävad selliseks, nagu sa need sisestasid.',
   // check-off-packing
@@ -3080,10 +3080,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Kõik, Avatud ja Valmis kitsendavad ruudustikku. Avatud jätab alles ainult selle, mis veel puudub, nii et täielikult pakitud nimekiri kaob sealt.',
   'help.guide.check-off-packing.step.5':
-    'Ülal ribal olev Eemalda 3 märgitut kustutab kõik märgitud esemed korraga pärast üht brauseri kinnitust.',
+    'Edenemisriba kõrval olev Eemalda 3 märgitud eset kustutab kõik märgitud esemed korraga pärast üht brauseri kinnitust.',
   'help.guide.check-off-packing.result':
     'Loendis on ainult see, mis on veel avatud, ja ülal olev riba näitab, kui kaugel pakkimisega oled.',
-  'help.guide.check-off-packing.tip.1': 'Märgitud eset ei saa ümber nimetada. Eemalda kõigepealt märge.',
+  'help.guide.check-off-packing.tip.1': 'Märgitud eset saab siiski ümber nimetada: klõpsa selle nimel.',
   'help.guide.check-off-packing.tip.2':
     'Märgi kõik ja Eemalda kõik märgistused töötavad korraga ühe nimekirjaga, selle nimekirja enda kolme punkti alt.',
   'help.guide.check-off-packing.tip.3':
@@ -3097,7 +3097,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Esemed lisatakse vaatesse, kus sa parasjagu oled: Jagatud paneb need ühisesse kogusse, mida kõik näevad, Minu nimekiri teeb need sinu omaks.',
   'help.guide.apply-packing-template.step.4':
-    'Säilita selle reisi nimekiri järgmiseks reisiks: Salvesta mallina, sisesta nimi ja klõpsa linnukesel.',
+    'Säilita selle reisi nimekiri järgmiseks reisiks: Salvesta mallina avab dialoogi, sisesta nimi ja klõpsa nuppu Salvesta.',
   'help.guide.apply-packing-template.result': 'Malli nimekirjad ja esemed on nüüd reisil, olemasolevate kõrval.',
   'help.guide.apply-packing-template.tip.1':
     'Mall kannab üle ainult nimed ja nimekirjad. Kogused, kaalud, kotid ja juba tehtud linnukesed jäävad maha.',
@@ -3143,12 +3143,13 @@ const help: TranslationStrings = {
     'Tõsta ese grupi ühise kogu, oma nimekirja ja nende inimeste vahel, kellele sa selle kaasa võtad.',
   'help.guide.share-packing-item.step.1':
     'Nimekirjade kohal olev Jagatud on ühine kogu, mida kõik näevad, Minu nimekiri on sinu oma ja mõlemad näitavad oma esemete arvu. Oma nimekirja vaatamiseks klõpsa Minu nimekiri.',
-  'help.guide.share-packing-item.step.2': 'Tagasi vaates Jagatud ava rea Jagamine, pliiatsi kõrval olev jagamisikoon.',
+  'help.guide.share-packing-item.step.2':
+    'Tagasi vaates Ühine ava rea lõpus olevad kolm punkti ja klõpsa valikul Jagamine.',
   'help.guide.share-packing-item.step.3':
     'Kolm taset: Jagatud, grupi ühises kogus ja kõigile nähtav; Isiklik, mida näed ainult sina; ning Jagatud kasutajatega…, kus valid inimesed, kellele ese mõeldud on.',
   'help.guide.share-packing-item.step.4': 'Isiklik ese on ainult vaates Minu nimekiri. Selle leidmiseks lülitu sinna.',
   'help.guide.share-packing-item.step.5':
-    'Ava uuesti Jagamine ja märgi nimi jaotises Jagatud kasutajatega…. Ese ilmub ka selle inimese nimekirja ja real on kirjas jagatud 1 inimesega.',
+    'Ava uuesti Jagamine ja märgi nimi jaotises Jagatud kasutajatega…. Ese ilmub ka selle inimese nimekirja ja reale tekib väike märk, mis loeb, kui mitme inimesega seda jagatakse.',
   'help.guide.share-packing-item.result': 'Ese on valitud tasemel ja real on näha, kes selle kaasa võtab.',
   'help.guide.share-packing-item.tip.1':
     'Eseme jagamist saab muuta ainult see, kes selle kaasa võtab. Inimene, kellega sa seda jagasid, näeb seda oma vaates Minu nimekiri sinu nimega märgituna ja saab selle ära märkida.',
@@ -3160,7 +3161,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Kaalu kotid',
   'help.guide.packing-bags.goal':
     'Määra igale esemele kaal, jaota esemed kottidesse ja hoia iga kott lennufirma piirangu piires.',
-  'help.guide.packing-bags.step.1': 'Sisesta eseme kaal grammides ringi ees olevasse välja.',
+  'help.guide.packing-bags.step.1': 'Klõpsa ringi ees oleval kaalumärgil ja sisesta eseme kaal grammides.',
   'help.guide.packing-bags.step.2': 'Rea lõpus olev ring on eseme kott. Klõpsa sellel.',
   'help.guide.packing-bags.step.3':
     'Kui kotti veel pole: Lisa kott, nimi, Enter. Kott luuakse ja ese läheb otse sinna.',
@@ -3168,7 +3169,7 @@ const help: TranslationStrings = {
     'Paneel Kotid ilmub paremale kohe, kui esimene kott on olemas: nimi, kaal, täituvusriba, kes seda kannab ja mitu eset selles on, seejärel Määramata ja Kogukaal.',
   'help.guide.packing-bags.step.5':
     'Klõpsa Määra piirang ja sisesta piirang kilogrammides, nagu lennufirmad seda märgivad.',
-  'help.guide.packing-bags.step.6': 'Koti nime all olev katkendjoonega pluss määrab, kes seda kannab.',
+  'help.guide.packing-bags.step.6': 'Koti nime kõrval olev katkendjoonega pluss määrab, kes seda kannab.',
   'help.guide.packing-bags.result':
     'Paremal olev paneel Kotid näitab iga koti kaalu võrreldes selle piiranguga, seda, mis pole üheski kotis, ja kogukaalu.',
   'help.guide.packing-bags.tip.1':

@@ -3028,13 +3028,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Inpaklijst en Taken bovenaan wisselen tussen de twee en tellen wat er in elk zit; de knoppen rechts horen bij degene die open is.',
   'help.ctx.trip-lists.bullet.2':
-    'De inpaklijst is gegroepeerd in lijsten, Documenten, Kleding, hoe je ze ook noemt, elk met een kleurstip, een teller van ingepakt op totaal en drie puntjes met Hernoemen, Alles aanvinken, Alles uitvinken en Lijst verwijderen. Lijst toevoegen maakt er een nieuwe.',
+    'De inpaklijst is gegroepeerd in lijsten, Documenten, Kleding, hoe je ze ook noemt, elk met een kleurstip, een teller van ingepakt op totaal en drie puntjes met Hernoemen, Alles aanvinken, Alles uitvinken en Lijst verwijderen. Lijst toevoegen in de balk erboven maakt er een nieuwe.',
   'help.ctx.trip-lists.bullet.3':
-    'Een rij is een vinkvakje en een naam, dan het aantal, het gewicht in grammen en een bagagerondje zolang Bagagetracking aan staat, dan de kleurstip voor Naar lijst verplaatsen, Delen, Hernoemen en Verwijderen. De greep links sleept hem omhoog of omlaag binnen zijn lijst.',
+    'Een rij is een vinkvakje en een naam, dan als kleine badges wie het item meeneemt, het aantal en het gewicht in grammen, en een bagagerondje zolang Bagagetracking aan staat, dan de prullenbak en drie puntjes met Naar lijst verplaatsen, Delen, Hernoemen en Verwijderen. Wat een rij niet gebruikt, blijft gedimd tot je erop wijst, en de greep links sleept hem omhoog of omlaag binnen zijn lijst.',
   'help.ctx.trip-lists.bullet.4':
     'Gedeeld en Mijn lijst splitsen de inpaklijst in tweeën: de pot die iedereen ziet, en die van jou. Alle, Openstaand en Klaar versmallen degene die open is, en de balk erboven telt wat er ingepakt is.',
   'help.ctx.trip-lists.bullet.5':
-    'Sjabloon toepassen en Opslaan als sjabloon vullen of bewaren een lijst zonder hem uit te typen, en de twee pictogrammen ernaast exporteren de lijst, als afdruk, als PDF of als bestand, en importeren er een. De rode knop noemt hoeveel items aangevinkt zijn en ruimt ze op.',
+    'Sjabloon toepassen en Opslaan als sjabloon vullen of bewaren een lijst zonder hem uit te typen, en de twee pictogrammen ernaast exporteren de lijst, als afdruk, als PDF of als bestand, en importeren er een. De rode knop naast de voortgangsbalk noemt hoeveel items aangevinkt zijn en ruimt ze op.',
   'help.ctx.trip-lists.bullet.6':
     'Taken heeft een eigen zijbalk: de voortgangskaart, de filters Alles, Mijn taken, Verlopen en Klaar, Sorteren op Prioriteit of Vervaldatum, en één rij per lijst. Een klik op een taak opent hem in het paneel rechts, en Nieuwe taak opent het formulier Nieuwe taak over het midden van het scherm.',
   // packing-categories
@@ -3042,11 +3042,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Groepeer wat je meeneemt in lijsten, vul ze met items en zeg wie zich om welke lijst bekommert.',
   'help.guide.packing-categories.step.1':
-    'Klik onder de voortgangsbalk op Lijst toevoegen, typ de naam in Lijstnaam (bijv. Kleding) en bevestig met het vinkje.',
+    'Klik in de balk boven de lijsten op Lijst toevoegen, typ de naam in Lijstnaam (bijv. Kleding) en klik op Toevoegen.',
   'help.guide.packing-categories.step.2':
     'De nieuwe lijst begint met één lege rij. Klik op Item toevoegen, typ het item in Itemnaam... en druk op Enter; het veld blijft open voor het volgende.',
   'help.guide.packing-categories.step.3':
-    'Hernoem een rij met het potlood aan het rechteruiteinde, of door op de naam zelf te klikken.',
+    'Hernoem een rij door op de naam te klikken, of met Hernoemen in de drie puntjes aan het rechteruiteinde.',
   'help.guide.packing-categories.step.4':
     'Het gestippelde rondje in de kop van de lijst wijst reisleden aan de lijst toe. Kies een naam; het label dat verschijnt haalt die persoon er met een klik weer af.',
   'help.guide.packing-categories.step.5':
@@ -3056,7 +3056,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Een lijst is niets anders dan zijn items. Verwijder de laatste en de rij wordt een plaatshouder zodat de lijst zijn plek en zijn kleur houdt; verwijder ook die rij en de lijst is weg.',
   'help.guide.packing-categories.tip.2':
-    'Iemand aan een lijst toewijzen stuurt die persoon een bagagemelding. Het verandert niet wie de items kan zien, dat is Delen, op de rij.',
+    'Iemand aan een lijst toewijzen stuurt die persoon een bagagemelding. Het verandert niet wie de items kan zien, dat is Delen, in de drie puntjes van een rij.',
   'help.guide.packing-categories.tip.3':
     'Twee lijsten mogen dezelfde naam dragen. TREK houdt ze intern uit elkaar, de namen blijven dus zoals je ze getypt hebt.',
   // check-off-packing
@@ -3071,10 +3071,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Alle, Openstaand en Klaar versmallen het raster. Openstaand laat alleen wat nog ontbreekt, een volledig ingepakte lijst valt er dus uit.',
   'help.guide.check-off-packing.step.5':
-    '3 aangevinkte verwijderen in de balk erboven wist alle aangevinkte items in één keer, na één bevestiging van de browser.',
+    '3 aangevinkte verwijderen naast de voortgangsbalk wist alle aangevinkte items in één keer, na één bevestiging van de browser.',
   'help.guide.check-off-packing.result':
     'Alleen wat nog open staat wordt getoond, en de balk erboven zegt hoe ver het inpakken is.',
-  'help.guide.check-off-packing.tip.1': 'Een aangevinkt item kan niet hernoemd worden. Vink het eerst uit.',
+  'help.guide.check-off-packing.tip.1': 'Een aangevinkt item kun je toch hernoemen: klik op de naam.',
   'help.guide.check-off-packing.tip.2':
     'Alles aanvinken en Alles uitvinken werken op één lijst tegelijk, vanuit de drie puntjes van die lijst.',
   'help.guide.check-off-packing.tip.3':
@@ -3089,7 +3089,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'De items landen in de weergave waarin je zit: Gedeeld zet ze in de pot die iedereen ziet, Mijn lijst maakt ze van jou.',
   'help.guide.apply-packing-template.step.4':
-    'De lijst van deze reis bewaren voor de volgende: Opslaan als sjabloon, een naam, dan het vinkje.',
+    'De lijst van deze reis bewaren voor de volgende: Opslaan als sjabloon opent een venster, typ een naam en klik op Opslaan.',
   'help.guide.apply-packing-template.result':
     'De lijsten en items van het sjabloon staan in de reis, naast wat er al was.',
   'help.guide.apply-packing-template.tip.1':
@@ -3137,13 +3137,13 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Gedeeld boven de lijsten is de pot die iedereen ziet, Mijn lijst is die van jou, en elk telt wat erin zit. Klik op Mijn lijst om die van jou te bekijken.',
   'help.guide.share-packing-item.step.2':
-    'Terug in Gedeeld open je het Delen van een rij, het deel-icoon naast het potlood.',
+    'Terug in Gedeeld open je de drie puntjes aan het eind van een rij en klik je op Delen.',
   'help.guide.share-packing-item.step.3':
     'Drie niveaus: Gedeeld, in de pot van de groep en voor iedereen zichtbaar; Persoonlijk, dat alleen jij ziet; en Delen met…, waar je de mensen kiest voor wie het item geldt.',
   'help.guide.share-packing-item.step.4':
     'Een Persoonlijk item staat alleen op Mijn lijst. Schakel over om het te vinden.',
   'help.guide.share-packing-item.step.5':
-    'Open Delen opnieuw en vink een naam aan onder Delen met…. Het item staat dan ook op de lijst van die persoon, en de rij zegt gedeeld met 1.',
+    'Open Delen opnieuw en vink een naam aan onder Delen met…. Het item staat dan ook op de lijst van die persoon, en de rij krijgt een kleine badge die telt met hoeveel mensen het gedeeld is.',
   'help.guide.share-packing-item.result': 'Het item zit in het niveau dat je koos, en de rij zegt wie het meeneemt.',
   'help.guide.share-packing-item.tip.1':
     'Alleen wie een item meeneemt verandert het delen ervan. Degene met wie je het gedeeld hebt ziet het op zijn eigen Mijn lijst, gemarkeerd met jouw naam, en kan het afvinken.',
@@ -3155,7 +3155,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'De bagage wegen',
   'help.guide.packing-bags.goal':
     'Zet een gewicht op elk item, verdeel de items over de bagage en houd elk stuk onder de limiet van de luchtvaartmaatschappij.',
-  'help.guide.packing-bags.step.1': 'Typ het gewicht van een item, in grammen, in het veld vóór het rondje.',
+  'help.guide.packing-bags.step.1':
+    'Klik op de gewichtsbadge vóór het rondje en typ het gewicht van het item in grammen.',
   'help.guide.packing-bags.step.2': 'Het rondje aan het eind van de rij is zijn bagagestuk. Klik erop.',
   'help.guide.packing-bags.step.3':
     'Nog geen bagage: Bagage toevoegen, een naam, Enter. Het bagagestuk wordt aangemaakt en het item gaat er meteen in.',
@@ -3163,7 +3164,7 @@ const help: TranslationStrings = {
     'Het paneel Bagage verschijnt rechts zodra er één bagagestuk bestaat: naam, gewicht, een vulbalk, wie het draagt en hoeveel items erin zitten, dan Niet toegewezen en Totaalgewicht.',
   'help.guide.packing-bags.step.5':
     'Klik op Limiet instellen en typ de limiet in kilogrammen, zoals luchtvaartmaatschappijen hem opgeven.',
-  'help.guide.packing-bags.step.6': 'De gestippelde plus onder de naam van een bagagestuk zegt wie het draagt.',
+  'help.guide.packing-bags.step.6': 'De gestippelde plus naast de naam van een bagagestuk zegt wie het draagt.',
   'help.guide.packing-bags.result':
     'Het paneel Bagage rechts toont het gewicht van elk bagagestuk tegen zijn limiet, wat in geen enkel stuk zit, en het totaal.',
   'help.guide.packing-bags.tip.1':

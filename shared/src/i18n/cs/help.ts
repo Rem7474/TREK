@@ -2891,13 +2891,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Balicí seznam a Úkoly nahoře přepínají mezi oběma a počítají, co v kterém je; tlačítka vpravo patří tomu, který je otevřený.',
   'help.ctx.trip-lists.bullet.2':
-    'Seznam věcí je rozdělený do seznamů, Dokumenty, Oblečení, jak si je pojmenujete, každý s barevnou tečkou, odznakem zabaleno z celku a třemi tečkami, pod kterými jsou Přejmenovat, Označit vše, Odznačit vše a Smazat seznam. Přidat seznam vytvoří nový.',
+    'Seznam věcí je rozdělený do seznamů, Dokumenty, Oblečení, jak si je pojmenujete, každý s barevnou tečkou, odznakem zabaleno z celku a třemi tečkami, pod kterými jsou Přejmenovat, Označit vše, Odznačit vše a Smazat seznam. Přidat seznam v liště nahoře vytvoří nový.',
   'help.ctx.trip-lists.bullet.3':
-    'Řádek je zaškrtávací políčko a název, pak počet, hmotnost v gramech a kolečko zavazadla, dokud je zapnuté Sledování zavazadel, a pak barevná tečka pro Přesunout do seznamu, Sdílení, Přejmenovat a Smazat. Úchyt vlevo ho táhne nahoru nebo dolů uvnitř jeho seznamu.',
+    'Řádek je zaškrtávací políčko a název, pak jako malé odznaky, kdo položku přináší, počet a hmotnost v gramech, a kolečko zavazadla, dokud je zapnuté Sledování zavazadel, a pak koš a tři tečky, pod kterými jsou Přesunout do seznamu, Sdílení, Přejmenovat a Smazat. Co řádek nepoužívá, zůstává ztlumené, dokud na to nenajedete myší, a úchyt vlevo ho táhne nahoru nebo dolů uvnitř jeho seznamu.',
   'help.ctx.trip-lists.bullet.4':
     'Sdílené a Můj seznam dělí seznam věcí na dvě části: fond, který vidí všichni, a ten váš. Vše, K zabalení a Hotovo zužují ten, který je otevřený, a pruh nahoře počítá, co je zabaleno.',
   'help.ctx.trip-lists.bullet.5':
-    'Použít šablonu a Uložit jako šablonu naplní nebo zachovají seznam bez psaní a dvě ikony vedle nich seznam exportují, jako výtisk, PDF nebo soubor, nebo nějaký importují. Červené tlačítko říká, kolik položek je zaškrtnutých, a odklidí je.',
+    'Použít šablonu a Uložit jako šablonu naplní nebo zachovají seznam bez psaní a dvě ikony vedle nich seznam exportují, jako výtisk, PDF nebo soubor, nebo nějaký importují. Červené tlačítko u pruhu postupu říká, kolik položek je zaškrtnutých, a odklidí je.',
   'help.ctx.trip-lists.bullet.6':
     'Úkoly mají vlastní postranní panel: kartu postupu, filtry Vše, Moje úkoly, Po termínu a Hotové, Řadit podle Priorita nebo Termín splnění a jeden řádek na seznam. Kliknutí na úkol ho otevře v panelu vpravo a Přidat nový úkol otevře uprostřed obrazovky formulář Nový úkol.',
   // packing-categories
@@ -2905,11 +2905,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Rozdělte to, co si berete, do seznamů, naplňte je položkami a řekněte, kdo se o který seznam stará.',
   'help.guide.packing-categories.step.1':
-    'Klikněte pod pruhem postupu na Přidat seznam, napište název do Název seznamu (např. Oblečení) a potvrďte fajfkou.',
+    'Klikněte v liště nad seznamy na Přidat seznam, napište název do Název seznamu (např. Oblečení) a klikněte na Přidat.',
   'help.guide.packing-categories.step.2':
     'Nový seznam začíná jedním prázdným řádkem. Klikněte na Přidat položku, napište položku do Název položky... a stiskněte Enter; pole zůstane otevřené pro další.',
   'help.guide.packing-categories.step.3':
-    'Řádek přejmenujete tužkou na jeho pravém konci nebo kliknutím na samotný název.',
+    'Řádek přejmenujete kliknutím na jeho název nebo přes Přejmenovat ve třech tečkách na jeho pravém konci.',
   'help.guide.packing-categories.step.4':
     'Čárkované kolečko v záhlaví seznamu přiřazuje k seznamu členy cesty. Vyberte jméno; štítek, který se objeví, tu osobu kliknutím zase odebere.',
   'help.guide.packing-categories.step.5':
@@ -2919,7 +2919,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Seznam jsou jen jeho položky. Smažte poslední a řádek se změní na zástupce, aby si seznam udržel své místo a svou barvu; smažte i ten řádek a seznam je pryč.',
   'help.guide.packing-categories.tip.2':
-    'Přiřazení někoho k seznamu mu pošle oznámení o balení. Nemění to, kdo položky vidí, to je Sdílení, na řádku.',
+    'Přiřazení někoho k seznamu mu pošle oznámení o balení. Nemění to, kdo položky vidí, to je Sdílení, ve třech tečkách řádku.',
   'help.guide.packing-categories.tip.3':
     'Dva seznamy mohou nést stejný název. TREK je uvnitř rozlišuje, takže názvy zůstanou tak, jak jste je napsali.',
   // check-off-packing
@@ -2932,10 +2932,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Vše, K zabalení a Hotovo zužují mřížku. K zabalení nechá jen to, co ještě chybí, takže seznam, který je celý zabalený, z ní vypadne.',
   'help.guide.check-off-packing.step.5':
-    'Odstranit 3 hotových v pruhu nahoře smaže všechny zaškrtnuté položky naráz, po jednom potvrzení od prohlížeče.',
+    'Odstranit 3 hotových vedle pruhu postupu smaže všechny zaškrtnuté položky naráz, po jednom potvrzení od prohlížeče.',
   'help.guide.check-off-packing.result':
     'Vypsané je jen to, co je ještě otevřené, a pruh nahoře říká, jak daleko balení je.',
-  'help.guide.check-off-packing.tip.1': 'Zaškrtnutou položku nelze přejmenovat. Nejdřív ji odškrtněte.',
+  'help.guide.check-off-packing.tip.1': 'Zaškrtnutou položku lze i tak přejmenovat: klikněte na její název.',
   'help.guide.check-off-packing.tip.2':
     'Označit vše a Odznačit vše pracují vždy jen s jedním seznamem, z jeho vlastních tří teček.',
   'help.guide.check-off-packing.tip.3':
@@ -2949,7 +2949,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Položky přistanou v pohledu, ve kterém jste: Sdílené je dá do fondu, který vidí všichni, Můj seznam je udělá vašimi.',
   'help.guide.apply-packing-template.step.4':
-    'Uchovejte seznam této cesty pro další cestu: Uložit jako šablonu, název, pak fajfka.',
+    'Uchovejte seznam této cesty pro další cestu: Uložit jako šablonu otevře dialog, napište název a klikněte na Uložit.',
   'help.guide.apply-packing-template.result': 'Seznamy a položky šablony jsou v cestě, vedle toho, co tam už bylo.',
   'help.guide.apply-packing-template.tip.1':
     'Šablona nese jen názvy a seznamy. Počty, hmotnosti, zavazadla a to, co je už zaškrtnuté, zůstanou za ní.',
@@ -2995,13 +2995,12 @@ const help: TranslationStrings = {
     'Přesouvejte položku mezi skupinovým fondem, vaším vlastním seznamem a lidmi, pro které ji berete.',
   'help.guide.share-packing-item.step.1':
     'Sdílené nad seznamy je fond, který vidí všichni, Můj seznam je ten váš a každý počítá, co v něm je. Klikněte na Můj seznam, abyste se podívali na ten svůj.',
-  'help.guide.share-packing-item.step.2':
-    'Zpět ve Sdílené otevřete u řádku ovládání Sdílení, ikonu sdílení vedle tužky.',
+  'help.guide.share-packing-item.step.2': 'Zpět ve Sdílené otevřete tři tečky na konci řádku a klikněte na Sdílení.',
   'help.guide.share-packing-item.step.3':
     'Tři úrovně: Sdílené, ve společném fondu a viditelné pro všechny; Osobní, které vidíte jen vy; a Sdílet s…, kde vyberete lidi, na které se položka vztahuje.',
   'help.guide.share-packing-item.step.4': 'Osobní položka je jen na Můj seznam. Přepněte, abyste ji našli.',
   'help.guide.share-packing-item.step.5':
-    'Otevřete znovu Sdílení a zaškrtněte jméno pod Sdílet s…. Položka se ukáže i na seznamu té osoby a řádek říká sdíleno s 1.',
+    'Otevřete znovu Sdílení a zaškrtněte jméno pod Sdílet s…. Položka se ukáže i na seznamu té osoby a řádek dostane malý odznak s počtem lidí, se kterými je sdílená.',
   'help.guide.share-packing-item.result': 'Položka sedí v úrovni, kterou jste vybrali, a řádek říká, kdo ji přináší.',
   'help.guide.share-packing-item.tip.1':
     'Sdílení mění jen ten, kdo položku přináší. Ten, s kým jste ji sdíleli, ji vidí na svém Můj seznam, označenou vaším jménem, a může ji odškrtnout.',
@@ -3013,7 +3012,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Zvážit zavazadla',
   'help.guide.packing-bags.goal':
     'Dejte každé položce hmotnost, roztřiďte položky do zavazadel a udržte každé zavazadlo pod limitem aerolinky.',
-  'help.guide.packing-bags.step.1': 'Napište hmotnost položky, v gramech, do pole před kolečkem.',
+  'help.guide.packing-bags.step.1': 'Klikněte na odznak hmotnosti před kolečkem a napište hmotnost položky v gramech.',
   'help.guide.packing-bags.step.2': 'Kolečko na konci řádku je její zavazadlo. Klikněte na ně.',
   'help.guide.packing-bags.step.3':
     'Zatím žádné zavazadlo: Přidat zavazadlo, název, Enter. Zavazadlo se vytvoří a položka jde rovnou do něj.',
@@ -3021,7 +3020,7 @@ const help: TranslationStrings = {
     'Panel Zavazadla se objeví vpravo, jakmile existuje jedno zavazadlo: název, hmotnost, pruh naplnění, kdo ho nese a kolik položek v něm je, pak Nepřiřazeno a Celková váha.',
   'help.guide.packing-bags.step.5':
     'Klikněte na Nastavit limit a napište limit v kilogramech, tak, jak ho uvádějí aerolinky.',
-  'help.guide.packing-bags.step.6': 'Čárkované plus pod názvem zavazadla říká, kdo ho nese.',
+  'help.guide.packing-bags.step.6': 'Čárkované plus vedle názvu zavazadla říká, kdo ho nese.',
   'help.guide.packing-bags.result':
     'Panel Zavazadla vpravo ukazuje hmotnost každého zavazadla proti jeho limitu, co není v žádném zavazadle, a součet.',
   'help.guide.packing-bags.tip.1':

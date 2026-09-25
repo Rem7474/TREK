@@ -1046,13 +1046,14 @@ describe('TripPlannerPage — lists tab', () => {
     expect(props('todoPanel').addItemSignal).toBe(1)
   })
 
-  it('FE-PAGE-TPW-041: the clear-checked action only appears once something is checked', async () => {
+  it('FE-PAGE-TPW-041: Add list in the bar opens the list name field in the panel', async () => {
     renderPage({ activeTab: 'listen', packingItems: [buildPackingItem({ checked: 1 })] })
     await screen.findByTestId('packing-list-panel')
 
-    const clear = screen.getByRole('button', { name: /Remove 1 checked/i })
-    fireEvent.click(clear)
-    expect(props('packingPanel').clearCheckedSignal).toBe(1)
+    // Removing checked items moved into the panel's progress card.
+    expect(screen.queryByRole('button', { name: /Remove 1 checked/i })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: /Add list/i }))
+    expect(props('packingPanel').addCategorySignal).toBe(1)
   })
 
   it('FE-PAGE-TPW-042: an admin can save the current list as a template', async () => {

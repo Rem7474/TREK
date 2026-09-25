@@ -12,6 +12,8 @@ Track trip expenses by category, split costs between members, and visualize spen
 
 Open the **Costs** tab inside the trip planner. The tab is only visible when the Costs addon is enabled.
 
+The tab opens with the same bar as Transports, Bookings, Lists and Files: its name, then the trip's dates with the number of days and the travelers the costs are shared between, and on the right **Settle up** and **Add expense**.
+
 > **Admin:** Costs is an addon. Enable it in [Admin-Addons](Admin-Addons).
 
 ![Create Budget](assets/BudgetCreateBudget.gif)
@@ -100,7 +102,7 @@ Costs works out the minimum number of transfers needed to settle all debts (usin
 
 The final budget comes to each member's share of the paid expenses (exact in the trip's own currency; in another display currency, rounding can leave a single figure a cent off while the column still adds up), so recording a payment moves an amount from *pending* to *net reimbursements* without changing it. An expense nobody has paid yet stays out of it, as it stays out of the balances.
 
-**Settle up** in the panel header records every open flow at once. **Add payment** on the card records a single transfer by hand, for a repayment that did not follow a suggested flow. Recorded payments then appear in the expense ledger as their own rows, with edit and undo beside them.
+**Settle up** in the bar at the top of the tab records every open flow at once. **Add payment** on the card records a single transfer by hand, for a repayment that did not follow a suggested flow. Recorded payments then appear in the expense ledger as their own rows, with edit and undo beside them.
 
 Balances are always netted in the **trip currency** and converted to your display currency once, at the end — so they stay stable even when the trip mixes currencies.
 

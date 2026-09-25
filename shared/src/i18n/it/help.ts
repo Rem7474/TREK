@@ -3008,13 +3008,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Lista di imballaggio e Da fare in alto passano dall’una all’altra e contano che cosa c’è in ciascuna; i pulsanti a destra appartengono a quella aperta.',
   'help.ctx.trip-lists.bullet.2':
-    'La lista valigia è raggruppata in liste, Documenti, Abbigliamento, comunque tu le chiami, ognuna con un punto colorato, un contatore di quanto è in valigia sul totale e tre puntini con Rinomina, Seleziona tutti, Deseleziona tutti ed Elimina lista. Aggiungi lista ne crea una nuova.',
+    'La lista valigia è raggruppata in liste, Documenti, Abbigliamento, comunque tu le chiami, ognuna con un punto colorato, un contatore di quanto è in valigia sul totale e tre puntini con Rinomina, Seleziona tutti, Deseleziona tutti ed Elimina lista. Aggiungi lista, nella barra sopra, ne crea una nuova.',
   'help.ctx.trip-lists.bullet.3':
-    'Una riga è una casella e un nome, poi la quantità, il peso in grammi e un cerchio della valigia finché Tracciamento valigia è attivo, poi il punto colorato per Sposta nella lista, Condivisione, Rinomina ed Elimina. La maniglia a sinistra la trascina su o giù dentro la sua lista.',
+    'Una riga è una casella e un nome, poi, come piccoli contrassegni, chi porta l’elemento, la quantità e il peso in grammi, e un cerchio della valigia finché Tracciamento valigia è attivo, poi il cestino e tre puntini con Sposta nella lista, Condivisione, Rinomina ed Elimina. Ciò che una riga non usa resta attenuato finché non ci passi sopra, e la maniglia a sinistra la trascina su o giù dentro la sua lista.',
   'help.ctx.trip-lists.bullet.4':
     'Condiviso e La mia lista dividono la lista valigia in due: il fondo comune che vedono tutti, e la tua. Tutti, Da fare e Fatto restringono quella aperta, e la barra sopra conta che cosa è in valigia.',
   'help.ctx.trip-lists.bullet.5':
-    'Applica modello e Salva come modello riempiono o conservano una lista senza digitarla, e le due icone accanto esportano la lista, come stampa, come PDF o come file, e ne importano una. Il pulsante rosso dice quanti elementi sono spuntati e li porta via.',
+    'Applica modello e Salva come modello riempiono o conservano una lista senza digitarla, e le due icone accanto esportano la lista, come stampa, come PDF o come file, e ne importano una. Il pulsante rosso vicino alla barra di avanzamento dice quanti elementi sono spuntati e li porta via.',
   'help.ctx.trip-lists.bullet.6':
     'Da fare ha una barra laterale propria: la scheda di avanzamento, i filtri Tutti, Le mie attività, Scaduta e Fatto, Ordina per Priorità o Scadenza, e una riga per lista. Un clic su un’attività la apre nel pannello a destra, e Nuova attività apre il modulo Nuova attività sopra il centro dello schermo.',
   // packing-categories
@@ -3022,11 +3022,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Raggruppa in liste quello che porti, riempile di elementi e indica chi si occupa di ogni lista.',
   'help.guide.packing-categories.step.1':
-    'Clicca Aggiungi lista sotto la barra di avanzamento, digita il nome in Nome della lista (es. Abbigliamento) e conferma con la spunta.',
+    'Clicca Aggiungi lista nella barra sopra le liste, digita il nome in Nome della lista (es. Abbigliamento) e clicca Aggiungi.',
   'help.guide.packing-categories.step.2':
     'La nuova lista parte con una riga vuota. Clicca Aggiungi elemento, digita l’elemento in Nome elemento... e premi Invio; il campo resta aperto per il successivo.',
   'help.guide.packing-categories.step.3':
-    'Rinomina una riga con la matita alla sua estremità destra, oppure cliccando il nome stesso.',
+    'Rinomina una riga cliccandone il nome, oppure con Rinomina nei tre puntini alla sua estremità destra.',
   'help.guide.packing-categories.step.4':
     'Il cerchio tratteggiato nell’intestazione della lista assegna membri del viaggio alla lista. Scegli un nome; il chip che compare rimuove di nuovo quella persona con un clic.',
   'help.guide.packing-categories.step.5':
@@ -3036,7 +3036,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Una lista non è altro che i suoi elementi. Elimina l’ultimo e la riga diventa un segnaposto, così la lista tiene il suo posto e il suo colore; elimina anche quella riga e la lista sparisce.',
   'help.guide.packing-categories.tip.2':
-    'Assegnare qualcuno a una lista gli manda una notifica sulla valigia. Non cambia chi può vedere gli elementi, quella è Condivisione, sulla riga.',
+    'Assegnare qualcuno a una lista gli manda una notifica sulla valigia. Non cambia chi può vedere gli elementi, quella è Condivisione, nei tre puntini di una riga.',
   'help.guide.packing-categories.tip.3':
     'Due liste possono portare lo stesso nome. TREK le tiene distinte internamente, quindi i nomi restano come li hai digitati.',
   // check-off-packing
@@ -3052,10 +3052,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Tutti, Da fare e Fatto restringono la griglia. Da fare lascia solo quello che manca ancora, quindi una lista del tutto in valigia ne esce.',
   'help.guide.check-off-packing.step.5':
-    'Rimuovi 3 spuntati nella barra sopra elimina tutti gli elementi spuntati in una volta, dopo una conferma del browser.',
+    'Rimuovi 3 spuntati accanto alla barra di avanzamento elimina tutti gli elementi spuntati in una volta, dopo una conferma del browser.',
   'help.guide.check-off-packing.result':
     'Resta elencato solo quello che è ancora aperto, e la barra sopra dice a che punto è la valigia.',
-  'help.guide.check-off-packing.tip.1': 'Un elemento spuntato non si può rinominare. Togligli prima la spunta.',
+  'help.guide.check-off-packing.tip.1': 'Un elemento spuntato si può comunque rinominare: clicca il suo nome.',
   'help.guide.check-off-packing.tip.2':
     'Seleziona tutti e Deseleziona tutti agiscono su una lista alla volta, dai tre puntini di quella lista.',
   'help.guide.check-off-packing.tip.3':
@@ -3069,7 +3069,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Gli elementi finiscono nella vista in cui sei: Condiviso li mette nel fondo comune che vedono tutti, La mia lista li rende tuoi.',
   'help.guide.apply-packing-template.step.4':
-    'Conservare la lista di questo viaggio per il prossimo: Salva come modello, un nome, poi la spunta.',
+    'Conservare la lista di questo viaggio per il prossimo: Salva come modello apre una finestra, digita un nome e clicca Salva.',
   'help.guide.apply-packing-template.result':
     'Le liste e gli elementi del modello sono nel viaggio, accanto a quello che c’era già.',
   'help.guide.apply-packing-template.tip.1':
@@ -3120,12 +3120,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Condiviso sopra le liste è il fondo comune che vedono tutti, La mia lista è la tua, e ognuna conta quello che contiene. Clicca La mia lista per guardare la tua.',
   'help.guide.share-packing-item.step.2':
-    'Di nuovo in Condiviso, apri la Condivisione di una riga, l’icona di condivisione accanto alla matita.',
+    'Di nuovo in Condiviso, apri i tre puntini alla fine di una riga e clicca Condivisione.',
   'help.guide.share-packing-item.step.3':
     'Tre livelli: Condiviso, nel fondo comune del gruppo e visibile a tutti; Personale, che vedi solo tu; e Condividi con…, dove scegli le persone che l’elemento copre.',
   'help.guide.share-packing-item.step.4': 'Un elemento Personale sta solo su La mia lista. Passa di là per trovarlo.',
   'help.guide.share-packing-item.step.5':
-    'Apri di nuovo Condivisione e spunta un nome sotto Condividi con…. L’elemento compare anche sulla lista di quella persona, e la riga dice condiviso con 1.',
+    'Apri di nuovo Condivisione e spunta un nome sotto Condividi con…. L’elemento compare anche sulla lista di quella persona, e la riga riceve un piccolo contrassegno che conta le persone con cui è condiviso.',
   'help.guide.share-packing-item.result': 'L’elemento sta nel livello che hai scelto, e la riga dice chi lo porta.',
   'help.guide.share-packing-item.tip.1':
     'Solo chi porta un elemento ne cambia la condivisione. Chi l’ha ricevuto da te lo vede sulla sua La mia lista, segnato con il tuo nome, e può spuntarlo.',
@@ -3137,7 +3137,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Pesare le valigie',
   'help.guide.packing-bags.goal':
     'Metti un peso su ogni elemento, smista gli elementi nelle valigie e tieni ogni valigia sotto il limite della compagnia aerea.',
-  'help.guide.packing-bags.step.1': 'Digita il peso di un elemento, in grammi, nel campo prima del cerchio.',
+  'help.guide.packing-bags.step.1':
+    'Clicca il contrassegno del peso prima del cerchio e digita il peso dell’elemento in grammi.',
   'help.guide.packing-bags.step.2': 'Il cerchio in fondo alla riga è la sua valigia. Cliccalo.',
   'help.guide.packing-bags.step.3':
     'Nessuna valigia ancora: Aggiungi valigia, un nome, Invio. La valigia viene creata e l’elemento ci finisce dentro subito.',
@@ -3145,7 +3146,7 @@ const help: TranslationStrings = {
     'Il pannello Valigie compare a destra appena esiste una valigia: nome, peso, una barra di riempimento, chi la porta e quanti elementi contiene, poi Non assegnato e Peso totale.',
   'help.guide.packing-bags.step.5':
     'Clicca Imposta limite e digita il limite in chilogrammi, come lo indicano le compagnie aeree.',
-  'help.guide.packing-bags.step.6': 'Il segno più tratteggiato sotto il nome di una valigia dice chi la porta.',
+  'help.guide.packing-bags.step.6': 'Il segno più tratteggiato accanto al nome di una valigia dice chi la porta.',
   'help.guide.packing-bags.result':
     'Il pannello Valigie a destra mostra il peso di ogni valigia rispetto al suo limite, quello che non sta in nessuna, e il totale.',
   'help.guide.packing-bags.tip.1':

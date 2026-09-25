@@ -3123,13 +3123,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Yuxarıdakı Baqaj siyahısı və Tapşırıqlar ikisi arasında keçid edir və hər birindəkiləri sayır; sağdakı düymələr hansı açıqdırsa, ona aiddir.',
   'help.ctx.trip-lists.bullet.2':
-    'Baqaj siyahısı siyahılara qruplaşdırılıb: Sənədlər, Geyim, necə adlandırsanız; hər birində rəngli nöqtə, yığılmış/ümumi sayı nişanı və Adını dəyiş, Hamısını işarələ, Bütün işarələri sil və Siyahını sil olan üç nöqtə var. Siyahı əlavə et yenisini yaradır.',
+    'Baqaj siyahısı siyahılara qruplaşdırılıb: Sənədlər, Geyim, necə adlandırsanız; hər birində rəngli nöqtə, yığılmış/ümumi sayı nişanı və Adını dəyiş, Hamısını işarələ, Bütün işarələri sil və Siyahını sil olan üç nöqtə var. Yuxarıdakı zolaqda olan Siyahı əlavə et yenisini yaradır.',
   'help.ctx.trip-lists.bullet.3':
-    'Sətir işarə qutusu və addır, sonra miqdar, qramla çəki və Çantaların izlənməsi aktiv olduqda çanta dairəsi, sonra Siyahıya köçür, Paylaşım, Adını dəyiş və Sil üçün rəngli nöqtə. Soldakı tutacaq onu siyahısı daxilində yuxarı və ya aşağı sürükləyir.',
+    'Sətir işarə qutusu və addır, sonra kiçik nişanlar kimi onu kimin gətirdiyi, miqdar və qramla çəki, Çantaların izlənməsi aktiv olduqda isə çanta dairəsi, sonra zibil qutusu və Siyahıya köçür, Paylaşım, Adını dəyiş və Sil olan üç nöqtə. Sətrin istifadə etmədiyi hissələr üzərinə gələnə qədər solğun qalır, soldakı tutacaq isə onu siyahısı daxilində yuxarı və ya aşağı sürükləyir.',
   'help.ctx.trip-lists.bullet.4':
     'Paylaşılan və Mənim siyahım baqaj siyahısını ikiyə bölür: hər kəsin gördüyü ümumi siyahı və sizin şəxsi siyahınız. Hamısı, Açıq və Hazır hansı açıqdırsa onu daraldır, yuxarıdakı zolaq isə yığılanları sayır.',
   'help.ctx.trip-lists.bullet.5':
-    'Şablonu tətbiq et və Şablon kimi yadda saxla siyahını əl ilə yazmadan doldurur və ya saxlayır, yanlarındakı iki ikon isə siyahını çap, PDF və ya fayl kimi ixrac edir və bir siyahı idxal edir. Qırmızı düymə neçə elementin işarələndiyini göstərir və onları silir.',
+    'Şablonu tətbiq et və Şablon kimi yadda saxla siyahını əl ilə yazmadan doldurur və ya saxlayır, yanlarındakı iki ikon isə siyahını çap, PDF və ya fayl kimi ixrac edir və bir siyahı idxal edir. İrəliləyiş zolağının yanındakı qırmızı düymə neçə elementin işarələndiyini göstərir və onları silir.',
   'help.ctx.trip-lists.bullet.6':
     'Tapşırıqların öz yan paneli var: irəliləyiş kartı, Hamısı, Mənim tapşırıqlarım, Vaxtı keçmiş və Hazır filtrləri, Prioritet və ya Son tarix üzrə Sırala və hər siyahı üçün bir sətir. Tapşırığa klikləmək onu sağdakı paneldə açır, Yeni tapşırıq əlavə et isə ekranın ortasında Yeni tapşırıq formasını açır.',
   // packing-categories
@@ -3137,10 +3137,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Götürdüklərinizi siyahılara qruplaşdırın, onları elementlərlə doldurun və hər siyahıya kimin cavabdeh olduğunu göstərin.',
   'help.guide.packing-categories.step.1':
-    'İrəliləyiş zolağının altında Siyahı əlavə et düyməsinə klikləyin, adı Siyahının adı (məs. Geyim) sahəsinə yazın və işarə ilə təsdiqləyin.',
+    'Siyahıların üstündəki zolaqda Siyahı əlavə et düyməsinə klikləyin, adı Siyahının adı (məs. Geyim) sahəsinə yazın və Əlavə et düyməsinə klikləyin.',
   'help.guide.packing-categories.step.2':
     'Yeni siyahı bir boş sətirlə başlayır. Element əlavə et düyməsinə klikləyin, elementi Elementin adı… sahəsinə yazın və Enter basın; sahə növbəti element üçün açıq qalır.',
-  'help.guide.packing-categories.step.3': 'Sətrin adını sağ ucundakı karandaşla və ya adın özünə klikləyərək dəyişin.',
+  'help.guide.packing-categories.step.3':
+    'Sətrin adını adın özünə klikləyərək və ya sağ ucundakı üç nöqtədə Adını dəyiş ilə dəyişin.',
   'help.guide.packing-categories.step.4':
     'Siyahı başlığındakı qırıq xətli dairə səyahət üzvlərini siyahıya təyin edir. Ad seçin; görünən nişana klikləmək həmin şəxsi yenidən çıxarır.',
   'help.guide.packing-categories.step.5':
@@ -3150,7 +3151,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Siyahı yalnız elementlərindən ibarətdir. Sonuncunu silin, sətir yer tutucuya çevrilir ki, siyahı yerini və rəngini saxlasın; həmin sətri də silsəniz, siyahı yox olur.',
   'help.guide.packing-categories.tip.2':
-    'Kimisə siyahıya təyin etmək ona baqaj bildirişi göndərir. Bu, elementləri kimin görə biləcəyini dəyişmir, bunu sətirdəki Paylaşım edir.',
+    'Kimisə siyahıya təyin etmək ona baqaj bildirişi göndərir. Bu, elementləri kimin görə biləcəyini dəyişmir, bunu sətrin üç nöqtəsindəki Paylaşım edir.',
   'help.guide.packing-categories.tip.3':
     'İki siyahı eyni adı daşıya bilər. TREK onları daxildə ayrı saxlayır, beləliklə adlar yazdığınız kimi qalır.',
   // check-off-packing
@@ -3165,10 +3166,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Hamısı, Açıq və Hazır cədvəli daraldır. Açıq yalnız hələ çatışmayanları saxlayır, buna görə tam yığılmış siyahı oradan çıxır.',
   'help.guide.check-off-packing.step.5':
-    'Yuxarıdakı zolaqda 3 işarələnmişi sil düyməsi brauzerdən bir təsdiqdən sonra bütün işarələnmiş elementləri birdən silir.',
+    'İrəliləyiş zolağının yanındakı İşarələnmiş 3 elementi sil düyməsi brauzerdən bir təsdiqdən sonra bütün işarələnmiş elementləri birdən silir.',
   'help.guide.check-off-packing.result':
     'Yalnız hələ açıq olanlar göstərilir, yuxarıdakı zolaq isə yığmanın nə qədər irəlilədiyini bildirir.',
-  'help.guide.check-off-packing.tip.1': 'İşarələnmiş elementin adını dəyişmək olmaz. Əvvəlcə işarəni götürün.',
+  'help.guide.check-off-packing.tip.1': 'İşarələnmiş elementin adını yenə də dəyişmək olar: adına klikləyin.',
   'help.guide.check-off-packing.tip.2':
     'Hamısını işarələ və Bütün işarələri sil hər dəfə bir siyahıda, həmin siyahının öz üç nöqtəsindən işləyir.',
   'help.guide.check-off-packing.tip.3':
@@ -3183,7 +3184,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Elementlər olduğunuz görünüşə düşür: Paylaşılan onları hamının gördüyü ümumi siyahıya qoyur, Mənim siyahım isə onları sizin edir.',
   'help.guide.apply-packing-template.step.4':
-    'Bu səyahətin siyahısını növbəti səyahət üçün saxlayın: Şablon kimi yadda saxla, ad, sonra təsdiq işarəsi.',
+    'Bu səyahətin siyahısını növbəti səyahət üçün saxlayın: Şablon kimi yadda saxla dialoq pəncərəsini açır, ad yazın və Yadda saxla düyməsinə klikləyin.',
   'help.guide.apply-packing-template.result':
     'Şablonun siyahıları və elementləri artıq səyahətdədir, əvvəlcədən olanların yanında.',
   'help.guide.apply-packing-template.tip.1':
@@ -3232,12 +3233,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Siyahıların üstündəki Paylaşılan hamının gördüyü ümumi siyahıdır, Mənim siyahım isə sizindir; hər biri içindəki elementlərin sayını göstərir. Öz siyahınıza baxmaq üçün Mənim siyahım üzərinə klikləyin.',
   'help.guide.share-packing-item.step.2':
-    'Paylaşılan görünüşünə qayıdıb sətrin Paylaşım idarəsini, yəni qələmin yanındakı paylaşma ikonunu açın.',
+    'Paylaşılan görünüşünə qayıdıb sətrin sonundakı üç nöqtəni açın və Paylaşım üzərinə klikləyin.',
   'help.guide.share-packing-item.step.3':
     'Üç səviyyə var: Paylaşılan, qrupun ümumi siyahısında olan və hamıya görünən; Şəxsi, yalnız sizin görə bildiyiniz; və Paylaşılıb:, burada elementin aid olduğu insanları seçirsiniz.',
   'help.guide.share-packing-item.step.4': 'Şəxsi element yalnız Mənim siyahımda olur. Onu tapmaq üçün ora keçin.',
   'help.guide.share-packing-item.step.5':
-    'Paylaşımı yenidən açın və Paylaşılıb: altında bir adı işarələyin. Element həmin şəxsin siyahısında da görünür, sətirdə isə 1 nəfərlə paylaşılıb yazılır.',
+    'Paylaşım pəncərəsini yenidən açın və Paylaşılıb: altında bir adı işarələyin. Element həmin şəxsin siyahısında da görünür, sətir isə neçə nəfərlə paylaşıldığını sayan kiçik nişan alır.',
   'help.guide.share-packing-item.result':
     'Element seçdiyiniz səviyyədə yerləşir, sətir isə onu kimin gətirdiyini göstərir.',
   'help.guide.share-packing-item.tip.1':
@@ -3250,7 +3251,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Çantaları çəkin',
   'help.guide.packing-bags.goal':
     'Hər elementə çəki yazın, elementləri çantalara bölün və hər çantanı aviaşirkətin limitindən aşağı saxlayın.',
-  'help.guide.packing-bags.step.1': 'Elementin çəkisini qramla dairədən əvvəlki sahəyə yazın.',
+  'help.guide.packing-bags.step.1': 'Dairədən əvvəlki çəki nişanına klikləyin və elementin çəkisini qramla yazın.',
   'help.guide.packing-bags.step.2': 'Sətrin sonundakı dairə onun çantasıdır. Ona klikləyin.',
   'help.guide.packing-bags.step.3':
     'Hələ çanta yoxdursa: Çanta əlavə et, ad, Enter. Çanta yaradılır və element dərhal ona düşür.',
@@ -3258,7 +3259,7 @@ const help: TranslationStrings = {
     'Ən azı bir çanta olan kimi sağda Çantalar paneli görünür: ad, çəki, doluluq zolağı, onu kimin daşıdığı və içində neçə element olduğu, sonra isə Təyin edilməyib və Ümumi çəki.',
   'help.guide.packing-bags.step.5':
     'Limit təyin et düyməsinə klikləyin və limiti aviaşirkətlərin göstərdiyi kimi kiloqramla yazın.',
-  'help.guide.packing-bags.step.6': 'Çantanın adının altındakı qırıq xətli artı işarəsi onu kimin daşıdığını göstərir.',
+  'help.guide.packing-bags.step.6': 'Çantanın adının yanındakı qırıq xətli artı işarəsi onu kimin daşıdığını göstərir.',
   'help.guide.packing-bags.result':
     'Sağdakı Çantalar paneli hər çantanın çəkisini limiti ilə müqayisədə, heç bir çantada olmayanları və ümumi çəkini göstərir.',
   'help.guide.packing-bags.tip.1':

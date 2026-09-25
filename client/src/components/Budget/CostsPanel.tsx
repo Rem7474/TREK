@@ -27,6 +27,7 @@ import type { TripMember } from './BudgetPanelMemberChips'
 import GuestBadge from '../shared/GuestBadge'
 import { NumericInput } from '../shared/NumericInput'
 import EmptyState from '../shared/EmptyState'
+import CostsToolbar from './CostsToolbar'
 
 interface CostsPanelProps {
   tripId: number
@@ -355,44 +356,12 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   ) : null
 
   return (
-    <div className="costs-root" style={{ minHeight: '100%', background: 'var(--c-bg)', padding: isMobile ? '6px 14px 28px' : '40px 24px 48px' }}>
+    <div className="costs-root" style={{ minHeight: '100%', background: 'var(--c-bg)', padding: isMobile ? '6px 14px 28px' : '24px 28px 48px' }}>
      {isMobile ? MobileBody() : (
      <div style={{ maxWidth: '100%', margin: '0 auto' }}>
-      {/* ── Header bar ── */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, marginBottom: 28, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {dateMeta && (
-            <span className="bg-surface-card border border-edge text-content-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 999, fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500, whiteSpace: 'nowrap' }}>
-              {dateMeta.range} · <b className="text-content">{t('costs.daysCount', { count: dateMeta.days })}</b>
-            </span>
-          )}
-          <span className="bg-surface-card border border-edge text-content-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px 8px 10px', borderRadius: 999, fontSize: 'calc(13px * var(--fs-scale-body, 1))', fontWeight: 500 }}>
-            <span style={{ display: 'inline-flex' }}>
-              {people.slice(0, 4).map((p, i) => {
-                const common = { width: 22, height: 22, borderRadius: '50%', border: '2px solid var(--bg-card)', marginLeft: i ? -8 : 0, flexShrink: 0 } as const
-                return p.avatar_url
-                  ? <img key={p.id} src={p.avatar_url} alt="" style={{ ...common, objectFit: 'cover', display: 'block' }} />
-                  : <span key={p.id} style={{ ...common, background: colorFor(p.id), color: '#fff', display: 'grid', placeItems: 'center', fontSize: 'calc(9px * var(--fs-scale-caption, 1))', fontWeight: 700 }}>{(p.id === me ? t('costs.youShort') : p.username.charAt(0)).toUpperCase()}</span>
-              })}
-            </span>
-            <b className="text-content">{t('costs.travelers', { count: people.length })}</b>
-          </span>
-        </div>
-        {canEdit && (
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button type="button" onClick={settleAll} disabled={!(settlement?.flows || []).length}
-              className="bg-surface-card border border-edge text-content disabled:opacity-40"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 16px', borderRadius: 12, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
-              <Check size={16} /> {t('costs.settleUp')}
-            </button>
-            <button type="button" onClick={() => { setEditing(null); setModalOpen(true) }}
-              className="bg-[var(--text-primary)] text-[var(--bg-primary)]"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 18px', borderRadius: 12, fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, border: 0, cursor: 'pointer', fontFamily: 'inherit' }}>
-              <Plus size={16} /> {t('costs.addExpense')}
-            </button>
-          </div>
-        )}
-      </div>
+      <CostsToolbar dateMeta={dateMeta} people={people} me={me} colorFor={colorFor}
+        canEdit={canEdit} canSettle={(settlement?.flows || []).length > 0}
+        onSettleAll={settleAll} onAddExpense={() => { setEditing(null); setModalOpen(true) }} />
 
       {/* ── Summary cards ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 36 }} className="costs-summary">

@@ -3025,13 +3025,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Lista de equipaje y Por hacer, arriba, cambian entre las dos y cuentan lo que hay en cada una; los botones de la derecha pertenecen a la que esté abierta.',
   'help.ctx.trip-lists.bullet.2':
-    'La lista de equipaje está agrupada en listas, Documentos, Ropa, como las quieras llamar, cada una con un punto de color, un contador de preparados sobre el total y tres puntos con Renombrar, Marcar todo, Desmarcar todo y Eliminar lista. Añadir lista crea una nueva.',
+    'La lista de equipaje está agrupada en listas, Documentos, Ropa, como las quieras llamar, cada una con un punto de color, un contador de preparados sobre el total y tres puntos con Renombrar, Marcar todo, Desmarcar todo y Eliminar lista. Añadir lista, en la barra de arriba, crea una nueva.',
   'help.ctx.trip-lists.bullet.3':
-    'Una fila es una casilla y un nombre, luego la cantidad, el peso en gramos y un círculo de equipaje mientras Seguimiento de equipaje esté activo, y después el punto de color para Mover a lista, Compartir, Renombrar y Eliminar. El asa de la izquierda la sube o la baja dentro de su lista.',
+    'Una fila es una casilla y un nombre, luego, como pequeñas insignias, quién lleva el artículo, la cantidad y el peso en gramos, y un círculo de equipaje mientras Seguimiento de equipaje esté activo, y después la papelera y tres puntos con Mover a lista, Compartir, Renombrar y Eliminar. Lo que una fila no usa queda atenuado hasta que pasas el ratón por encima, y el asa de la izquierda la sube o la baja dentro de su lista.',
   'help.ctx.trip-lists.bullet.4':
     'Compartido y Mi lista parten la lista de equipaje en dos: el fondo común que ve todo el mundo, y la tuya. Todo, Pendientes y Hecho estrechan la que esté abierta, y la barra de arriba cuenta lo que está preparado.',
   'help.ctx.trip-lists.bullet.5':
-    'Aplicar plantilla y Guardar como plantilla llenan o conservan una lista sin teclearla, y los dos iconos de al lado exportan la lista, como impresión, PDF o archivo, e importan una. El botón rojo dice cuántos artículos están marcados y los quita.',
+    'Aplicar plantilla y Guardar como plantilla llenan o conservan una lista sin teclearla, y los dos iconos de al lado exportan la lista, como impresión, PDF o archivo, e importan una. El botón rojo junto a la barra de progreso dice cuántos artículos están marcados y los quita.',
   'help.ctx.trip-lists.bullet.6':
     'Por hacer tiene su propia barra lateral: la tarjeta de progreso, los filtros Todo, Mis tareas, Vencida y Hecho, Ordenar por Prioridad o Fecha límite, y una fila por lista. Un clic en una tarea la abre en el panel de la derecha, y Nueva tarea abre el formulario Nueva tarea sobre el centro de la pantalla.',
   // packing-categories
@@ -3039,11 +3039,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Agrupa en listas lo que te llevas, llénalas de artículos y di quién se ocupa de cada lista.',
   'help.guide.packing-categories.step.1':
-    'Haz clic en Añadir lista bajo la barra de progreso, escribe el nombre en Nombre de la lista (p. ej. Ropa) y confirma con la marca.',
+    'Haz clic en Añadir lista en la barra que hay sobre las listas, escribe el nombre en Nombre de la lista (p. ej. Ropa) y haz clic en Añadir.',
   'help.guide.packing-categories.step.2':
     'La lista nueva empieza con una fila vacía. Haz clic en Añadir artículo, escribe el artículo en Nombre del artículo... y pulsa Intro; el campo sigue abierto para el siguiente.',
   'help.guide.packing-categories.step.3':
-    'Renombra una fila con el lápiz de su extremo derecho, o haciendo clic en el nombre mismo.',
+    'Renombra una fila haciendo clic en su nombre, o con Renombrar en los tres puntos de su extremo derecho.',
   'help.guide.packing-categories.step.4':
     'El círculo discontinuo de la cabecera de la lista asigna miembros del viaje a la lista. Elige un nombre; la etiqueta que aparece quita de nuevo a esa persona con un clic.',
   'help.guide.packing-categories.step.5':
@@ -3053,7 +3053,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Una lista no es más que sus artículos. Elimina el último y la fila se convierte en un marcador de posición para que la lista conserve su sitio y su color; elimina también esa fila y la lista desaparece.',
   'help.guide.packing-categories.tip.2':
-    'Asignar a alguien a una lista le envía una notificación de equipaje. No cambia quién puede ver los artículos, eso es Compartir, en la fila.',
+    'Asignar a alguien a una lista le envía una notificación de equipaje. No cambia quién puede ver los artículos, eso es Compartir, en los tres puntos de una fila.',
   'help.guide.packing-categories.tip.3':
     'Dos listas pueden llevar el mismo nombre. TREK las distingue internamente, así que los nombres quedan tal como los escribiste.',
   // check-off-packing
@@ -3069,10 +3069,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Todo, Pendientes y Hecho estrechan la cuadrícula. Pendientes deja solo lo que aún falta, así que una lista del todo preparada se cae de ahí.',
   'help.guide.check-off-packing.step.5':
-    'Eliminar 3 marcados, en la barra de arriba, borra de golpe todos los artículos marcados, tras una confirmación del navegador.',
+    'Eliminar 3 marcados, junto a la barra de progreso, borra de golpe todos los artículos marcados, tras una confirmación del navegador.',
   'help.guide.check-off-packing.result':
     'Solo aparece lo que sigue pendiente, y la barra de arriba dice por dónde va el equipaje.',
-  'help.guide.check-off-packing.tip.1': 'Un artículo marcado no se puede renombrar. Desmárcalo primero.',
+  'help.guide.check-off-packing.tip.1': 'Un artículo marcado se puede seguir renombrando: haz clic en su nombre.',
   'help.guide.check-off-packing.tip.2':
     'Marcar todo y Desmarcar todo actúan sobre una lista cada vez, desde los tres puntos de esa lista.',
   'help.guide.check-off-packing.tip.3':
@@ -3087,7 +3087,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Los artículos caen en la vista en la que estás: Compartido los pone en el fondo común que ve todo el mundo, Mi lista los hace tuyos.',
   'help.guide.apply-packing-template.step.4':
-    'Guardar la lista de este viaje para el próximo: Guardar como plantilla, un nombre, y luego la marca.',
+    'Guardar la lista de este viaje para el próximo: Guardar como plantilla abre un diálogo, escribe un nombre y haz clic en Guardar.',
   'help.guide.apply-packing-template.result':
     'Las listas y los artículos de la plantilla están en el viaje, junto a lo que ya había.',
   'help.guide.apply-packing-template.tip.1':
@@ -3138,13 +3138,13 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     'Compartido, encima de las listas, es el fondo común que ve todo el mundo, Mi lista es la tuya, y cada una cuenta lo que contiene. Haz clic en Mi lista para ver la tuya.',
   'help.guide.share-packing-item.step.2':
-    'De vuelta en Compartido, abre el Compartir de una fila, el icono de compartir junto al lápiz.',
+    'De vuelta en Compartido, abre los tres puntos al final de una fila y haz clic en Compartir.',
   'help.guide.share-packing-item.step.3':
     'Tres niveles: Compartido, en el fondo común del grupo y visible para todos; Personal, que solo ves tú; y Compartir con…, donde eliges a las personas que cubre el artículo.',
   'help.guide.share-packing-item.step.4':
     'Un artículo Personal solo está en Mi lista. Cambia de vista para encontrarlo.',
   'help.guide.share-packing-item.step.5':
-    'Abre Compartir otra vez y marca un nombre bajo Compartir con…. El artículo aparece también en la lista de esa persona, y la fila dice compartido con 1.',
+    'Abre Compartir otra vez y marca un nombre bajo Compartir con…. El artículo aparece también en la lista de esa persona, y la fila recibe una pequeña insignia que cuenta las personas con las que se comparte.',
   'help.guide.share-packing-item.result': 'El artículo queda en el nivel que elegiste, y la fila dice quién lo lleva.',
   'help.guide.share-packing-item.tip.1':
     'Solo quien lleva un artículo cambia su forma de compartirlo. Aquel con quien lo compartiste lo ve en su propia Mi lista, marcado con tu nombre, y puede marcarlo.',
@@ -3156,7 +3156,8 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Pesar el equipaje',
   'help.guide.packing-bags.goal':
     'Pon un peso a cada artículo, reparte los artículos en bultos y mantén cada uno por debajo del límite de la aerolínea.',
-  'help.guide.packing-bags.step.1': 'Escribe el peso de un artículo, en gramos, en el campo anterior al círculo.',
+  'help.guide.packing-bags.step.1':
+    'Haz clic en la insignia de peso anterior al círculo y escribe el peso del artículo en gramos.',
   'help.guide.packing-bags.step.2': 'El círculo del final de la fila es su bulto. Haz clic en él.',
   'help.guide.packing-bags.step.3':
     'Todavía sin bulto: Añadir equipaje, un nombre, Intro. El bulto se crea y el artículo entra directamente en él.',
@@ -3164,7 +3165,7 @@ const help: TranslationStrings = {
     'El panel Equipaje aparece a la derecha en cuanto existe un bulto: nombre, peso, una barra de llenado, quién lo lleva y cuántos artículos tiene, y luego Sin asignar y Peso total.',
   'help.guide.packing-bags.step.5':
     'Haz clic en Definir límite y escribe el límite en kilogramos, tal como lo indican las aerolíneas.',
-  'help.guide.packing-bags.step.6': 'El signo más discontinuo bajo el nombre de un bulto dice quién lo lleva.',
+  'help.guide.packing-bags.step.6': 'El signo más discontinuo junto al nombre de un bulto dice quién lo lleva.',
   'help.guide.packing-bags.result':
     'El panel Equipaje de la derecha muestra el peso de cada bulto frente a su límite, lo que no está en ninguno, y el total.',
   'help.guide.packing-bags.tip.1':

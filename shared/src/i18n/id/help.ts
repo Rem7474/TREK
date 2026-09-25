@@ -3027,13 +3027,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     '“Daftar Perlengkapan” dan “Tugas” di atas berganti antara keduanya dan menghitung isi masing-masing; tombol di sebelah kanan milik mana pun yang sedang terbuka.',
   'help.ctx.trip-lists.bullet.2':
-    'Daftar bawaan dikelompokkan ke dalam daftar, Dokumen, Pakaian, terserah Anda menamainya, masing-masing dengan titik warna, lencana sudah dikemas dari total, dan tiga titik berisi “Ganti Nama”, “Centang Semua”, “Hapus Centang Semua” dan “Hapus daftar”. “Tambah daftar” membuat yang baru.',
+    'Daftar bawaan dikelompokkan ke dalam daftar, Dokumen, Pakaian, terserah Anda menamainya, masing-masing dengan titik warna, lencana sudah dikemas dari total, dan tiga titik berisi “Ganti Nama”, “Centang Semua”, “Hapus Centang Semua” dan “Hapus daftar”. “Tambah daftar” di bilah atas membuat yang baru.',
   'help.ctx.trip-lists.bullet.3':
-    'Sebuah baris adalah kotak centang dan nama, lalu “Jml”, berat dalam gram dan lingkaran tas selama “Pelacak Tas” menyala, lalu titik warna untuk “Pindahkan ke daftar”, “Berbagi”, “Ganti nama” dan “Hapus”. Pegangan di sebelah kiri menyeretnya naik atau turun di dalam daftarnya.',
+    'Sebuah baris adalah kotak centang dan nama, lalu siapa yang membawanya, jumlah dan berat dalam gram sebagai lencana kecil serta lingkaran tas selama “Pelacak Tas” menyala, lalu tempat sampah dan tiga titik berisi “Pindahkan ke daftar”, “Berbagi”, “Ganti nama” dan “Hapus”. Yang tidak dipakai sebuah baris tetap redup sampai Anda menunjuknya, dan pegangan di sebelah kiri menyeretnya naik atau turun di dalam daftarnya.',
   'help.ctx.trip-lists.bullet.4':
     '“Bersama” dan “Daftar saya” membelah daftar bawaan menjadi dua: kumpulan yang dilihat semua orang, dan milik Anda sendiri. “Semua”, “Belum” dan “Selesai” mempersempit mana pun yang terbuka, dan bilah di atas menghitung apa yang sudah dikemas.',
   'help.ctx.trip-lists.bullet.5':
-    '“Terapkan template” dan “Simpan sebagai template” mengisi atau menyimpan sebuah daftar tanpa mengetiknya, dan dua ikon di sebelahnya mengekspor daftar, sebagai cetakan, PDF, atau file, dan mengimpor daftar. Tombol merah menyebut berapa item yang tercentang lalu menyingkirkannya.',
+    '“Terapkan template” dan “Simpan sebagai template” mengisi atau menyimpan sebuah daftar tanpa mengetiknya, dan dua ikon di sebelahnya mengekspor daftar, sebagai cetakan, PDF, atau file, dan mengimpor daftar. Tombol merah di sebelah bilah kemajuan menyebut berapa item yang tercentang lalu menyingkirkannya.',
   'help.ctx.trip-lists.bullet.6':
     '“Tugas” punya bilah sisi sendiri: kartu kemajuan, filter “Semua”, “Tugasku”, “Terlambat” dan “Selesai”, “Urutkan” menurut “Prioritas” atau “Tenggat waktu”, dan satu baris per daftar. Klik pada sebuah tugas membukanya di panel sebelah kanan, dan “Tugas baru” membuka formulir “Tugas baru” di atas bagian tengah layar.',
   // packing-categories
@@ -3041,11 +3041,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Kelompokkan apa yang Anda bawa ke dalam daftar, isi dengan item, dan tentukan siapa yang mengurus tiap daftar.',
   'help.guide.packing-categories.step.1':
-    'Klik “Tambah daftar” di bawah bilah kemajuan, ketik namanya ke “Nama daftar (mis. Pakaian)” dan konfirmasi dengan tanda centang.',
+    'Klik “Tambah daftar” di bilah di atas daftar, ketik namanya ke “Nama daftar (mis. Pakaian)” dan klik “Tambah”.',
   'help.guide.packing-categories.step.2':
     'Daftar baru dimulai dengan satu baris kosong. Klik “Tambah item”, ketik item ke “Nama item...” lalu tekan Enter; kolomnya tetap terbuka untuk item berikutnya.',
   'help.guide.packing-categories.step.3':
-    'Ganti nama sebuah baris dengan pensil di ujung kanannya, atau dengan mengklik namanya sendiri.',
+    'Ganti nama sebuah baris dengan mengklik namanya, atau dengan “Ganti nama” di tiga titik di ujung kanannya.',
   'help.guide.packing-categories.step.4':
     'Lingkaran putus-putus di kepala daftar menetapkan anggota perjalanan ke daftar itu. Pilih sebuah nama; chip yang muncul menghapus orang itu lagi dengan satu klik.',
   'help.guide.packing-categories.step.5':
@@ -3055,7 +3055,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'Sebuah daftar hanyalah item-itemnya. Hapus yang terakhir dan baris itu berubah menjadi penampung sehingga daftar mempertahankan tempat dan warnanya; hapus baris itu juga dan daftarnya lenyap.',
   'help.guide.packing-categories.tip.2':
-    'Menetapkan seseorang ke sebuah daftar mengirimkan notifikasi daftar bawaan kepadanya. Itu tidak mengubah siapa yang bisa melihat item, itu urusan “Berbagi” di baris.',
+    'Menetapkan seseorang ke sebuah daftar mengirimkan notifikasi daftar bawaan kepadanya. Itu tidak mengubah siapa yang bisa melihat item, itu urusan “Berbagi” di tiga titik sebuah baris.',
   'help.guide.packing-categories.tip.3':
     'Dua daftar boleh memakai nama yang sama. TREK memisahkan keduanya secara internal, jadi namanya tetap seperti yang Anda ketik.',
   // check-off-packing
@@ -3071,10 +3071,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     '“Semua”, “Belum” dan “Selesai” mempersempit kisi. “Belum” hanya menyisakan yang masih kurang, jadi daftar yang sudah terkemas penuh keluar dari situ.',
   'help.guide.check-off-packing.step.5':
-    '“Hapus 3 yang dicentang” di bilah atas menghapus setiap item tercentang sekaligus, setelah satu konfirmasi dari peramban.',
+    '“Hapus 3 yang dicentang” di sebelah bilah kemajuan menghapus setiap item tercentang sekaligus, setelah satu konfirmasi dari peramban.',
   'help.guide.check-off-packing.result':
     'Hanya yang masih terbuka yang terdaftar, dan bilah di atas mengatakan sejauh mana pengemasan sudah berjalan.',
-  'help.guide.check-off-packing.tip.1': 'Item yang tercentang tidak bisa diganti namanya. Lepaskan centangnya dulu.',
+  'help.guide.check-off-packing.tip.1': 'Item yang tercentang tetap bisa diganti namanya: klik namanya.',
   'help.guide.check-off-packing.tip.2':
     '“Centang Semua” dan “Hapus Centang Semua” bekerja pada satu daftar saja, dari tiga titik milik daftar itu sendiri.',
   'help.guide.check-off-packing.tip.3':
@@ -3089,7 +3089,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Item mendarat di tampilan tempat Anda berada: “Bersama” menaruhnya di kumpulan yang dilihat semua orang, “Daftar saya” menjadikannya milik Anda.',
   'help.guide.apply-packing-template.step.4':
-    'Simpan daftar perjalanan ini untuk perjalanan berikutnya: “Simpan sebagai template”, sebuah nama, lalu tanda centang.',
+    'Simpan daftar perjalanan ini untuk perjalanan berikutnya: “Simpan sebagai template” membuka dialog, ketik sebuah nama dan klik “Simpan”.',
   'help.guide.apply-packing-template.result':
     'Daftar dan item dari template ada di perjalanan, di samping apa yang sudah ada sebelumnya.',
   'help.guide.apply-packing-template.tip.1':
@@ -3138,13 +3138,13 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.step.1':
     '“Bersama” di atas daftar adalah kumpulan yang dilihat semua orang, “Daftar saya” adalah milik Anda, dan masing-masing menghitung isinya. Klik “Daftar saya” untuk melihat milik Anda.',
   'help.guide.share-packing-item.step.2':
-    'Kembali di “Bersama”, buka kontrol “Berbagi” sebuah baris, ikon berbagi di sebelah pensil.',
+    'Kembali di “Bersama”, buka tiga titik di ujung sebuah baris dan klik “Berbagi”.',
   'help.guide.share-packing-item.step.3':
     'Tiga tingkat: “Bersama”, di kumpulan grup dan terlihat oleh semua orang; “Pribadi”, yang hanya Anda yang melihatnya; dan “Bagikan dengan…”, tempat Anda memilih orang-orang yang tercakup item itu.',
   'help.guide.share-packing-item.step.4':
     'Item “Pribadi” hanya ada di “Daftar saya”. Pindah ke sana untuk menemukannya.',
   'help.guide.share-packing-item.step.5':
-    'Buka “Berbagi” lagi dan centang sebuah nama di bawah “Bagikan dengan…”. Item itu tampil di daftar orang tersebut juga, dan barisnya berbunyi “dibagikan dengan 1”.',
+    'Buka “Berbagi” lagi dan centang sebuah nama di bawah “Bagikan dengan…”. Item itu tampil di daftar orang tersebut juga, dan barisnya mendapat lencana kecil yang menghitung dengan berapa orang item itu dibagikan.',
   'help.guide.share-packing-item.result':
     'Item itu berada di tingkat yang Anda pilih, dan barisnya mengatakan siapa yang membawanya.',
   'help.guide.share-packing-item.tip.1':
@@ -3157,7 +3157,7 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Menimbang tas',
   'help.guide.packing-bags.goal':
     'Beri berat pada setiap item, pilah item ke dalam tas, dan jaga tiap tas tetap di bawah batas maskapai.',
-  'help.guide.packing-bags.step.1': 'Ketik berat sebuah item, dalam gram, ke kolom sebelum lingkaran.',
+  'help.guide.packing-bags.step.1': 'Klik lencana berat sebelum lingkaran dan ketik berat item dalam gram.',
   'help.guide.packing-bags.step.2': 'Lingkaran di ujung baris adalah tasnya. Klik lingkaran itu.',
   'help.guide.packing-bags.step.3':
     'Belum ada tas: “Tambah tas”, sebuah nama, Enter. Tas itu dibuat dan itemnya langsung masuk ke dalamnya.',
@@ -3165,7 +3165,8 @@ const help: TranslationStrings = {
     'Panel “Tas” muncul di sebelah kanan begitu satu tas ada: nama, berat, bilah isian, siapa yang membawanya dan berapa item di dalamnya, lalu “Belum ditugaskan” dan “Total berat”.',
   'help.guide.packing-bags.step.5':
     'Klik “Atur batas” dan ketik batasnya dalam kilogram, sebagaimana maskapai menyebutkannya.',
-  'help.guide.packing-bags.step.6': 'Tanda plus putus-putus di bawah nama sebuah tas mengatakan siapa yang membawanya.',
+  'help.guide.packing-bags.step.6':
+    'Tanda plus putus-putus di sebelah nama sebuah tas mengatakan siapa yang membawanya.',
   'help.guide.packing-bags.result':
     'Panel “Tas” di sebelah kanan memperlihatkan berat tiap tas terhadap batasnya, apa yang tidak berada di tas mana pun, dan totalnya.',
   'help.guide.packing-bags.tip.1':

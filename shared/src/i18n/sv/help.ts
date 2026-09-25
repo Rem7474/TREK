@@ -2920,13 +2920,13 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     'Packlista och Att göra högst upp växlar mellan de två och räknar vad som ligger i var och en; knapparna till höger hör till den som är öppen.',
   'help.ctx.trip-lists.bullet.2':
-    'Packlistan är grupperad i listor, Dokument, Kläder, vad du nu kallar dem, var och en med en färgprick, en packat-av-totalt-bricka och tre punkter som håller Döp om, Markera alla, Avmarkera alla och Ta bort lista. Lägg till lista gör en ny.',
+    'Packlistan är grupperad i listor, Dokument, Kläder, vad du nu kallar dem, var och en med en färgprick, en packat-av-totalt-bricka och tre punkter som håller Döp om, Markera alla, Avmarkera alla och Ta bort lista. Lägg till lista i verktygsfältet ovanför gör en ny.',
   'help.ctx.trip-lists.bullet.3':
-    'En rad är en kryssruta och ett namn, sedan antalet, vikten i gram och en väskcirkel medan Spårning av väskor är på, sedan färgpricken för Flytta till lista, Delning, Döp om och Ta bort. Greppet till vänster drar den uppåt eller nedåt inuti sin lista.',
+    'En rad är en kryssruta och ett namn, sedan vem som tar med den, antalet och vikten i gram som små brickor och en väskcirkel medan Spårning av väskor är på, sedan papperskorgen och tre punkter som håller Flytta till lista, Delning, Döp om och Ta bort. Det en rad inte använder förblir nedtonat tills du pekar på det, och greppet till vänster drar den uppåt eller nedåt inuti sin lista.',
   'help.ctx.trip-lists.bullet.4':
     'Delat och Min lista delar packlistan i två: poolen alla ser, och din egen. Alla, Öppna och Klar smalnar av den som är öppen, och stapeln ovanför räknar vad som är packat.',
   'help.ctx.trip-lists.bullet.5':
-    'Använd mall och Spara som mall fyller eller behåller en lista utan att du skriver den, och de två ikonerna bredvid dem exporterar listan, som utskrift, som PDF eller som fil, och importerar en. Den röda knappen säger hur många föremål som är markerade och sopar bort dem.',
+    'Använd mall och Spara som mall fyller eller behåller en lista utan att du skriver den, och de två ikonerna bredvid dem exporterar listan, som utskrift, som PDF eller som fil, och importerar en. Den röda knappen bredvid förloppsstapeln säger hur många föremål som är markerade och sopar bort dem.',
   'help.ctx.trip-lists.bullet.6':
     'Att göra har en egen sidopanel: framstegskortet, filtren Alla, Mina uppgifter, Förfallen och Slutförda, Sortera efter Prioritet eller Förfallodag, och en rad per lista. Ett klick på en uppgift öppnar den i rutan till höger, och Lägg till ny uppgift öppnar formuläret Ny uppgift över mitten av skärmen.',
   // packing-categories
@@ -2934,11 +2934,11 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.goal':
     'Gruppera det du tar med i listor, fyll dem med föremål och säg vem som sköter varje lista.',
   'help.guide.packing-categories.step.1':
-    'Klicka på Lägg till lista under förloppsstapeln, skriv namnet i Listnamn (t.ex. Kläder) och bekräfta med bocken.',
+    'Klicka på Lägg till lista i verktygsfältet ovanför listorna, skriv namnet i Listnamn (t.ex. Kläder) och klicka på Lägg till.',
   'help.guide.packing-categories.step.2':
     'Den nya listan börjar med en tom rad. Klicka på Lägg till föremål, skriv föremålet i Föremålsnamn... och tryck Enter; fältet står kvar öppet för nästa.',
   'help.guide.packing-categories.step.3':
-    'Döp om en rad med pennan i dess högra ände, eller genom att klicka på själva namnet.',
+    'Döp om en rad genom att klicka på dess namn, eller med Döp om i de tre punkterna i dess högra ände.',
   'help.guide.packing-categories.step.4':
     'Den streckade cirkeln i listans rubrik tilldelar resedeltagare till listan. Välj ett namn; brickan som dyker upp tar bort den personen igen med ett klick.',
   'help.guide.packing-categories.step.5':
@@ -2948,7 +2948,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     'En lista är bara sina föremål. Ta bort det sista så blir raden en platshållare, så att listan behåller sin plats och sin färg; ta bort den raden också och listan är borta.',
   'help.guide.packing-categories.tip.2':
-    'Att tilldela någon till en lista skickar en packningsnotis till personen. Det ändrar inte vem som ser föremålen, det gör Delning, på raden.',
+    'Att tilldela någon till en lista skickar en packningsnotis till personen. Det ändrar inte vem som ser föremålen, det gör Delning, i en rads tre punkter.',
   'help.guide.packing-categories.tip.3':
     'Två listor får bära samma namn. TREK håller isär dem internt, så namnen står kvar som du skrev dem.',
   // check-off-packing
@@ -2964,10 +2964,10 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     'Alla, Öppna och Klar smalnar av rutnätet. Öppna lämnar bara det som fortfarande fattas, så en lista som är fullpackad faller ur.',
   'help.guide.check-off-packing.step.5':
-    'Ta bort 3 markerade i raden ovanför raderar varje markerat föremål på en gång, efter en bekräftelse från webbläsaren.',
+    'Ta bort 3 markerade bredvid förloppsstapeln raderar varje markerat föremål på en gång, efter en bekräftelse från webbläsaren.',
   'help.guide.check-off-packing.result':
     'Bara det som fortfarande är öppet listas, och stapeln ovanför säger hur långt packningen har kommit.',
-  'help.guide.check-off-packing.tip.1': 'Ett markerat föremål går inte att döpa om. Avmarkera det först.',
+  'help.guide.check-off-packing.tip.1': 'Ett markerat föremål går fortfarande att döpa om: klicka på dess namn.',
   'help.guide.check-off-packing.tip.2':
     'Markera alla och Avmarkera alla arbetar på en lista i taget, från den listans egna tre punkter.',
   'help.guide.check-off-packing.tip.3':
@@ -2982,7 +2982,7 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.3':
     'Föremålen hamnar i den vy du står i: Delat lägger dem i poolen alla ser, Min lista gör dem till dina.',
   'help.guide.apply-packing-template.step.4':
-    'Behåll den här resans lista till nästa resa: Spara som mall, ett namn, sedan bocken.',
+    'Behåll den här resans lista till nästa resa: Spara som mall öppnar en dialog, skriv ett namn och klicka på Spara.',
   'help.guide.apply-packing-template.result':
     'Mallens listor och föremål finns i resan, bredvid det som redan fanns där.',
   'help.guide.apply-packing-template.tip.1':
@@ -3029,13 +3029,14 @@ const help: TranslationStrings = {
     'Flytta ett föremål mellan grupp-poolen, din egen lista och de personer du tar med det åt.',
   'help.guide.share-packing-item.step.1':
     'Delat ovanför listorna är poolen alla ser, Min lista är din egen, och var och en räknar vad som ligger i den. Klicka på Min lista för att titta på din.',
-  'help.guide.share-packing-item.step.2': 'Tillbaka i Delat, öppna en rads Delning, delningsikonen bredvid pennan.',
+  'help.guide.share-packing-item.step.2':
+    'Tillbaka i Delat, öppna de tre punkterna i slutet av en rad och klicka på Delning.',
   'help.guide.share-packing-item.step.3':
     'Tre nivåer: Delat, i grupp-poolen och synligt för alla; Personlig, som bara du ser; och Dela med…, där du väljer de personer föremålet gäller.',
   'help.guide.share-packing-item.step.4':
     'Ett Personlig-föremål ligger bara på Min lista. Växla över för att hitta det.',
   'help.guide.share-packing-item.step.5':
-    'Öppna Delning igen och bocka i ett namn under Dela med…. Föremålet syns på den personens lista också, och raden säger delat med 1.',
+    'Öppna Delning igen och bocka i ett namn under Dela med…. Föremålet syns på den personens lista också, och raden får en liten bricka som räknar hur många personer det delas med.',
   'help.guide.share-packing-item.result': 'Föremålet ligger på den nivå du valde, och raden säger vem som tar med det.',
   'help.guide.share-packing-item.tip.1':
     'Bara den som tar med ett föremål ändrar dess delning. Den du delade det med ser det på sin egen Min lista, märkt med ditt namn, och kan bocka av det.',
@@ -3047,14 +3048,14 @@ const help: TranslationStrings = {
   'help.guide.packing-bags.title': 'Väg väskorna',
   'help.guide.packing-bags.goal':
     'Sätt en vikt på varje föremål, sortera föremålen i väskor och håll varje väska under sin flygbolagsgräns.',
-  'help.guide.packing-bags.step.1': 'Skriv ett föremåls vikt, i gram, i fältet före cirkeln.',
+  'help.guide.packing-bags.step.1': 'Klicka på viktbrickan före cirkeln och skriv föremålets vikt i gram.',
   'help.guide.packing-bags.step.2': 'Cirkeln i slutet av raden är dess väska. Klicka på den.',
   'help.guide.packing-bags.step.3':
     'Ingen väska ännu: Lägg till väska, ett namn, Enter. Väskan skapas och föremålet går rakt in i den.',
   'help.guide.packing-bags.step.4':
     'Panelen Väskor dyker upp till höger så snart en väska finns: namn, vikt, en fyllnadsstapel, vem som bär den och hur många föremål som ligger i den, sedan Ej tilldelad och Totalvikt.',
   'help.guide.packing-bags.step.5': 'Klicka på Ange gräns och skriv gränsen i kilogram, så som flygbolagen anger den.',
-  'help.guide.packing-bags.step.6': 'Det streckade plusset under en väskas namn säger vem som bär den.',
+  'help.guide.packing-bags.step.6': 'Det streckade plusset bredvid en väskas namn säger vem som bär den.',
   'help.guide.packing-bags.result':
     'Panelen Väskor till höger visar varje väskas vikt mot dess gräns, vad som inte ligger i någon väska, och totalen.',
   'help.guide.packing-bags.tip.1':

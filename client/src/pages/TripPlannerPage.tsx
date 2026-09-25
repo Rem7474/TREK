@@ -50,7 +50,7 @@ import { useRouteCalculation } from '../hooks/useRouteCalculation'
 import { usePlaceSelection } from '../hooks/usePlaceSelection'
 import { usePlannerHistory } from '../hooks/usePlannerHistory'
 import type { Accommodation, TripMember, Day, Place, Reservation, PackingItem, TodoItem } from '../types'
-import { ListTodo, Download, Plus, Trash2, FolderPlus } from 'lucide-react'
+import { ListTodo, ListPlus, Download, Plus, FolderPlus } from 'lucide-react'
 import { useTripPlanner } from './tripPlanner/useTripPlanner'
 import { usePoiExplore } from '../components/Map/usePoiExplore'
 import { useMergedMapPois } from '../components/Map/useMergedMapPois'
@@ -121,12 +121,14 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
   })
   const setSubTabPersist = (tab: 'packing' | 'todo') => { setSubTab(tab); sessionStorage.setItem(`trip-lists-subtab-${tripId}`, tab) }
   const [importPackingSignal, setImportPackingSignal] = useState(0)
-  const [clearCheckedSignal, setClearCheckedSignal] = useState(0)
+  const [addCategorySignal, setAddCategorySignal] = useState(0)
   const [saveTemplateSignal, setSaveTemplateSignal] = useState(0)
   const [addTodoSignal, setAddTodoSignal] = useState(0)
   const [packingView, setPackingView] = useState<'common' | 'personal'>('common')
   const { t } = useTranslation()
   const isAdmin = useAuthStore(s => s.user?.role === 'admin')
+  const trip = useTripStore(s => s.trip)
+  const canEditPacking = useCanDo()('packing_edit', trip)
 
   const tabs = [
     { id: 'packing' as const, label: t('todo.subtab.packing'), icon: PackageCheck, count: packingItems.length },
@@ -173,7 +175,6 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
           </div>
 
           {subTab === 'packing' && (() => {
-            const packingAbgehakt = packingItems.filter(i => i.checked).length
             const sharedBtnClass = 'inline-flex items-center gap-1.5 px-2.5 sm:px-[14px] py-[7px] sm:py-[9px] hover:opacity-[0.88]'
             // Export and Import carry only their icon, with the name as tooltip and label.
             const iconBtnClass = 'inline-flex items-center justify-center px-2.5 py-[7px] sm:py-[9px] hover:opacity-[0.88] bg-accent text-accent-text'
@@ -183,13 +184,13 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
             }
             return (
               <div style={{ display: 'flex', gap: 6, flexShrink: 0, marginLeft: 'auto', flexWrap: 'wrap' }}>
-                {packingAbgehakt > 0 && (
-                  <button type="button" onClick={() => setClearCheckedSignal(s => s + 1)}
-                    className={`hidden sm:inline-flex items-center gap-1.5 px-[14px] py-[9px] hover:opacity-[0.88] bg-[rgba(239,68,68,0.14)] text-[#ef4444]`}
+                {canEditPacking && (
+                  <button type="button" onClick={() => setAddCategorySignal(s => s + 1)}
+                    className={`${sharedBtnClass} bg-accent text-accent-text`}
                     style={sharedBtnStyle}
                   >
-                    <Trash2 size={14} strokeWidth={2.5} />
-                    <span>{t('packing.clearChecked', { count: packingAbgehakt })}</span>
+                    <ListPlus size={14} strokeWidth={2.5} />
+                    <span className="hidden sm:inline">{t('packing.addCategory')}</span>
                   </button>
                 )}
                 <ApplyTemplateButton
@@ -239,7 +240,7 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
       <div style={{ padding: '16px 28px 0' }} className="max-md:!px-4">
         {subTab === 'packing' && (
           <LazyPanel id="packing">
-            <PackingListPanel tripId={tripId} items={packingItems} openImportSignal={importPackingSignal} clearCheckedSignal={clearCheckedSignal} saveTemplateSignal={saveTemplateSignal} inlineHeader={false} view={packingView} onViewChange={setPackingView} />
+            <PackingListPanel tripId={tripId} items={packingItems} openImportSignal={importPackingSignal} addCategorySignal={addCategorySignal} saveTemplateSignal={saveTemplateSignal} inlineHeader={false} view={packingView} onViewChange={setPackingView} />
           </LazyPanel>
         )}
         {subTab === 'todo' && (

@@ -55,8 +55,7 @@ const cat = (page: Page, name: string): Locator =>
   page.getByText(name, { exact: true }).first().locator('xpath=ancestor::div[2]')
 /**
  * The header row of a card. The ⋯ has to be taken from here: every item row
- * carries a phone-only twin of it that `display:none` hides but CSS still
- * matches, so the card as a whole holds four of them.
+ * carries a ⋯ of its own, so the card as a whole holds several of them.
  */
 const catHeader = (page: Page, name: string): Locator => cat(page, name).locator('> div').first()
 const catMenu = (page: Page, name: string): Locator =>
@@ -67,6 +66,13 @@ const item = (page: Page, name: string): Locator =>
   page.locator('.packing-item-row').filter({ hasText: name }).first()
 /** The only item of the list the first guide builds; its name changes mid-guide. */
 const onlyRow = (page: Page): Locator => cat(page, NEW_LIST).locator('.packing-item-row').first()
+/** An item's own ⋯, which holds Move to List, Sharing, Rename and Delete. */
+const rowMenu = (page: Page, name: string): Locator => item(page, name).locator('.packing-row-overflow button')
+/** The open item menu; Sharing is a whole line in it. */
+const rowMenuSharing = (page: Page): Locator =>
+  page.locator('.trek-menu-enter').getByRole('button', { name: /^Sharing/ })
+/** The name dialog that Add list and Save as template open. */
+const nameDialog = (page: Page, confirm: string): Locator => page.getByRole('button', { name: confirm, exact: true })
 /** The sharing dropdown is portalled to <body>, so the hint's parent is the card itself. */
 const shareMenu = (page: Page): Locator =>
   page.getByText('In the group pool, visible to everyone').locator('xpath=ancestor::div[1]')
@@ -190,7 +196,7 @@ const SCRIPTS: Record<string, GuideScript> = {
           await p.getByRole('button', { name: 'Add list' }).click()
           const field = p.getByPlaceholder('List name (e.g. Clothing)')
           await typeInto(p, field, NEW_LIST)
-          await field.locator('xpath=..').locator('button:has(svg.lucide-check)').click()
+          await nameDialog(p, 'Add').click()
           await expect(cat(p, NEW_LIST)).toBeVisible({ timeout: 20_000 })
           await settle(p)
         },
@@ -211,9 +217,10 @@ const SCRIPTS: Record<string, GuideScript> = {
       },
       {
         prepare: async p => { await onlyRow(p).hover() },
-        target: p => onlyRow(p).getByRole('button', { name: 'Rename' }),
+        // A click on the name renames it; the row has no pencil of its own.
+        target: p => onlyRow(p).getByRole('button', { name: FIRST_ITEM }),
         act: async p => {
-          await onlyRow(p).getByRole('button', { name: 'Rename' }).click()
+          await onlyRow(p).getByRole('button', { name: FIRST_ITEM }).click()
           // While editing, the name is the row's first input; the quantity and
           // the weight come after it.
           const field = onlyRow(p).locator('input').first()
@@ -265,13 +272,12 @@ const SCRIPTS: Record<string, GuideScript> = {
         target: p => item(p, 'Passport').getByRole('button').first(),
         act: async p => {
           await item(p, 'Passport').getByRole('button').first().click()
-          // Both box SVGs stay in the DOM and cross-fade, so the assertion is on
-          // the name instead: a checked row renders it as a span, not a button.
-          await expect(item(p, 'Passport').getByRole('button', { name: 'Passport' })).toHaveCount(0, { timeout: 20_000 })
+          await expect(item(p, 'Passport').locator('.packing-check')).toHaveAttribute('aria-pressed', 'true', { timeout: 20_000 })
           await settle(p)
         },
       },
-      only(p => p.getByText('/9', { exact: true }).locator('xpath=ancestor::div[2]')),
+      // The whole progress card: the count, the bar, and the clean-up beside it.
+      only(p => p.getByText('/9', { exact: true }).locator('xpath=ancestor::div[4]')),
       {
         prepare: async p => {
           await catMenu(p, 'Documents').click()
@@ -335,7 +341,7 @@ const SCRIPTS: Record<string, GuideScript> = {
           await p.getByRole('button', { name: 'Save as template' }).click()
           const field = p.getByPlaceholder('Template name')
           await typeInto(p, field, SAVED_TEMPLATE)
-          await field.locator('xpath=..').locator('button:has(svg.lucide-check)').click()
+          await nameDialog(p, 'Save').click()
           await expect(p.getByText('Packing list saved as template')).toBeVisible({ timeout: 20_000 })
           await settle(p)
         },
@@ -432,10 +438,15 @@ const SCRIPTS: Record<string, GuideScript> = {
         },
       },
       {
-        prepare: async p => { await item(p, SHARED_ITEM).hover() },
-        target: p => item(p, SHARED_ITEM).getByRole('button', { name: 'Sharing' }),
+        prepare: async p => {
+          await item(p, SHARED_ITEM).hover()
+          await rowMenu(p, SHARED_ITEM).click()
+          await expect(rowMenuSharing(p)).toBeVisible()
+          await beat(p, 300)
+        },
+        target: rowMenuSharing,
         act: async p => {
-          await item(p, SHARED_ITEM).getByRole('button', { name: 'Sharing' }).click()
+          await rowMenuSharing(p).click()
           await expect(shareMenu(p)).toBeVisible()
           await settle(p)
         },
@@ -459,16 +470,20 @@ const SCRIPTS: Record<string, GuideScript> = {
       {
         prepare: async p => {
           await item(p, SHARED_ITEM).hover()
-          await item(p, SHARED_ITEM).getByRole('button', { name: 'Sharing' }).click()
+          await rowMenu(p, SHARED_ITEM).click()
+          await rowMenuSharing(p).click()
           await expect(shareMenu(p)).toBeVisible()
           await beat(p, 300)
         },
         target: p => shareMenu(p).getByRole('button', { name: MEMBER }),
         act: async p => {
           await shareMenu(p).getByRole('button', { name: MEMBER }).click()
-          // Ticking a name leaves the menu open on purpose; its catcher closes it.
+          // Ticking a name leaves the menu open on purpose; its catcher closes it,
+          // and the item menu under it has one of its own.
           await shareOverlay(p).click({ position: { x: 5, y: 5 } })
-          await expect(item(p, SHARED_ITEM).getByText('shared with 1')).toBeVisible({ timeout: 20_000 })
+          await p.mouse.click(20, VIEWPORT.height - 40)
+          await expect(p.locator('.trek-menu-enter')).toHaveCount(0)
+          await expect(item(p, SHARED_ITEM).getByLabel('shared with 1')).toBeVisible({ timeout: 20_000 })
           await settle(p)
         },
       },
@@ -531,12 +546,14 @@ const SCRIPTS: Record<string, GuideScript> = {
         },
       },
       {
-        // The card's member picker; the column's other plus is Add bag, below it.
-        target: p => bagSidebar(p).locator('button:has(svg.lucide-plus)').first(),
+        // The card's member picker is the dashed plus beside the bag's name; the
+        // column's other plus, + Bags in its head, adds a bag.
+        target: p => bagSidebar(p).locator('button[style*="dashed"]').first(),
         act: async p => {
-          await bagSidebar(p).locator('button:has(svg.lucide-plus)').first().click()
+          await bagSidebar(p).locator('button[style*="dashed"]').first().click()
           await bagSidebar(p).getByRole('button', { name: MEMBER }).click()
-          await bagSidebar(p).getByRole('button', { name: 'Close' }).click()
+          // The picker closes on a click anywhere beside it.
+          await p.mouse.click(20, VIEWPORT.height - 40)
           await expect(bagSidebar(p).getByRole('button', { name: MEMBER })).toBeVisible({ timeout: 20_000 })
           await settle(p)
         },

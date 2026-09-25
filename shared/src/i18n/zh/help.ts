@@ -2418,23 +2418,23 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.1':
     '顶部的“行李清单”和“待办事项”在两者之间切换，并各自数出里面有多少；右边的按钮属于当前打开的那一边。',
   'help.ctx.trip-lists.bullet.2':
-    '行李清单按清单分组，证件、衣物，随你怎么叫，每份清单带一个颜色圆点、一个已打包/总数的徽章，以及装着“重命名”“全部勾选”“取消全部勾选”和“删除清单”的三个点。“添加清单”新建一份。',
+    '行李清单按清单分组，证件、衣物，随你怎么叫，每份清单带一个颜色圆点、一个已打包/总数的徽章，以及装着“重命名”“全部勾选”“取消全部勾选”和“删除清单”的三个点。上方工具栏里的“添加清单”新建一份。',
   'help.ctx.trip-lists.bullet.3':
-    '一行是一个勾选框和一个名称，然后是“数量”、以克计的重量和行李圆圈（在“行李追踪”开着时），再是用于“移动到清单”的颜色圆点、“共享”“重命名”和“删除”。左边的抓手把它在所属清单里上下拖动。',
+    '一行是一个勾选框和一个名称，然后是谁带它、数量和以克计的重量这几个小徽章，以及行李圆圈（在“行李追踪”开着时），再是垃圾桶和装着“移动到清单”“共享”“重命名”和“删除”的三个点。一行没用到的部分会保持淡色，直到你把指针移上去；左边的抓手把它在所属清单里上下拖动。',
   'help.ctx.trip-lists.bullet.4':
     '“共享”和“我的清单”把行李清单一分为二：所有人都看得到的公共池，和你自己的那份。“全部”“未完成”“已完成”收窄当前打开的那一边，上方的进度条数出已经打包了多少。',
   'help.ctx.trip-lists.bullet.5':
-    '“应用模板”和“保存为模板”不用一条条敲就能填满或留下一份清单，旁边的两个图标把清单导出为打印件、PDF 或文件，也能导入一份。红色按钮写出有多少物品已勾选，并把它们清走。',
+    '“应用模板”和“保存为模板”不用一条条敲就能填满或留下一份清单，旁边的两个图标把清单导出为打印件、PDF 或文件，也能导入一份。进度条旁边的红色按钮写出有多少物品已勾选，并把它们清走。',
   'help.ctx.trip-lists.bullet.6':
     '“待办事项”有自己的侧栏：进度卡片，“全部”“我的任务”“已逾期”“已完成”几个筛选，按“优先级”或“截止日期”的“排序方式”，以及每份清单一行。点击一个任务会在右侧面板里打开它，“新建任务”则在屏幕中央打开“新任务”表单。',
   // packing-categories
   'help.guide.packing-categories.title': '搭建行李清单',
   'help.guide.packing-categories.goal': '把要带的东西归进清单，填上物品，并说明谁来负责每一份清单。',
   'help.guide.packing-categories.step.1':
-    '点击进度条下方的“添加清单”，在“清单名称（例如：衣物）”里输入名称，用对勾确认。',
+    '点击清单上方工具栏里的“添加清单”，在“清单名称（例如：衣物）”里输入名称，然后点击“添加”。',
   'help.guide.packing-categories.step.2':
     '新清单以一个空行开始。点击“添加物品”，在“物品名称...”里输入物品并按 Enter；输入框会一直开着，等下一个。',
-  'help.guide.packing-categories.step.3': '用一行右端的铅笔给它改名，或者直接点击名称本身。',
+  'help.guide.packing-categories.step.3': '点击一行的名称给它改名，或者用它右端三个点里的“重命名”。',
   'help.guide.packing-categories.step.4':
     '清单标题里的虚线圆圈把旅行成员分配到这份清单。选一个名字；出现的标签再点一下就把那个人移除。',
   'help.guide.packing-categories.step.5':
@@ -2444,7 +2444,7 @@ const help: TranslationStrings = {
   'help.guide.packing-categories.tip.1':
     '一份清单就是它的物品。删掉最后一个，那一行会变成占位行，好让清单保住位置和颜色；把那一行也删掉，清单就没了。',
   'help.guide.packing-categories.tip.2':
-    '把某人分配到一份清单会给他发一条行李通知。这不会改变谁能看到这些物品，那是行上的“共享”。',
+    '把某人分配到一份清单会给他发一条行李通知。这不会改变谁能看到这些物品，那是一行的三个点里的“共享”。',
   'help.guide.packing-categories.tip.3': '两份清单可以同名。TREK 在内部区分它们，所以名字保持你输入的样子。',
   // check-off-packing
   'help.guide.check-off-packing.title': '一边收拾一边打勾',
@@ -2455,9 +2455,9 @@ const help: TranslationStrings = {
   'help.guide.check-off-packing.step.4':
     '“全部”“未完成”“已完成”收窄网格。“未完成”只留下还缺的东西，所以已经装齐的清单会从里面消失。',
   'help.guide.check-off-packing.step.5':
-    '上方进度条里的“移除 3 个已勾选”在浏览器确认一次之后，把所有已勾选的物品一次删掉。',
+    '进度条旁边的“移除 3 个已勾选”在浏览器确认一次之后，把所有已勾选的物品一次删掉。',
   'help.guide.check-off-packing.result': '列出的只剩还没完成的，上方的进度条说出打包进行到哪一步。',
-  'help.guide.check-off-packing.tip.1': '已勾选的物品不能改名。先取消勾选。',
+  'help.guide.check-off-packing.tip.1': '已勾选的物品仍然可以改名：点击它的名称。',
   'help.guide.check-off-packing.tip.2':
     '“全部勾选”和“取消全部勾选”一次只对一份清单起作用，要从那份清单自己的三个点里用。',
   'help.guide.check-off-packing.tip.3': '当每个物品都勾上时，计数会被“全部打包完成！”取代，进度条变绿。',
@@ -2468,7 +2468,8 @@ const help: TranslationStrings = {
   'help.guide.apply-packing-template.step.2': '挑一个模板。每一行写出它的名字和里面有多少物品。',
   'help.guide.apply-packing-template.step.3':
     '物品落在你当前所在的视图里：“共享”把它们放进所有人都看得到的公共池，“我的清单”让它们归你。',
-  'help.guide.apply-packing-template.step.4': '把这次旅行的清单留给下次旅行：“保存为模板”，一个名字，然后对勾。',
+  'help.guide.apply-packing-template.step.4':
+    '把这次旅行的清单留给下次旅行：“保存为模板”会打开一个对话框，输入名字后点击“保存”。',
   'help.guide.apply-packing-template.result': '模板的清单和物品已经在旅行里，就挨着原来就有的东西。',
   'help.guide.apply-packing-template.tip.1': '模板只带名称和清单。数量、重量、行李和已经勾选的状态都留在原地。',
   'help.guide.apply-packing-template.tip.2': '只有存在模板时才有“应用模板”。一个都没有的话，这个按钮根本不出现。',
@@ -2509,12 +2510,12 @@ const help: TranslationStrings = {
   'help.guide.share-packing-item.goal': '把一件物品在小组公共池、你自己的清单和你替他们带的人之间挪来挪去。',
   'help.guide.share-packing-item.step.1':
     '清单上方的“共享”是所有人都看得到的公共池，“我的清单”是你自己的，两边各自数出里面有多少。点击“我的清单”看你自己的。',
-  'help.guide.share-packing-item.step.2': '回到“共享”，打开某一行的“共享”控件，也就是铅笔旁边的共享图标。',
+  'help.guide.share-packing-item.step.2': '回到“共享”，打开一行末尾的三个点，点击“共享”。',
   'help.guide.share-packing-item.step.3':
     '一共三档：“共享”，在小组公共池里，所有人可见；“个人”，只有你看得到；还有“共享给…”，在那里挑出这件物品覆盖到的人。',
   'help.guide.share-packing-item.step.4': '“个人”的物品只在“我的清单”里。切过去才找得到。',
   'help.guide.share-packing-item.step.5':
-    '再打开一次“共享”，在“共享给…”下面勾一个名字。这件物品也会出现在那个人的清单上，行上写着“已共享给 1 人”。',
+    '再打开一次“共享”，在“共享给…”下面勾一个名字。这件物品也会出现在那个人的清单上，行上会多出一个小徽章，数着它共享给了几个人。',
   'help.guide.share-packing-item.result': '物品落在你选的那一档里，行上写着谁来带它。',
   'help.guide.share-packing-item.tip.1':
     '只有带这件物品的人才能改它的共享。被你分享到的人会在自己的“我的清单”上看到它，旁边标着你的名字，并且可以把它勾掉。',
@@ -2525,13 +2526,13 @@ const help: TranslationStrings = {
   // packing-bags
   'help.guide.packing-bags.title': '给行李称重',
   'help.guide.packing-bags.goal': '给每件物品写上重量，把物品分进各件行李，并让每件行李都不超航空公司的限额。',
-  'help.guide.packing-bags.step.1': '把一件物品的重量，以克为单位，输入圆圈前面的那个框。',
+  'help.guide.packing-bags.step.1': '点击圆圈前面的重量徽章，输入物品以克为单位的重量。',
   'help.guide.packing-bags.step.2': '行末的圆圈就是它的行李。点它。',
   'help.guide.packing-bags.step.3': '还没有行李：“添加行李”，一个名字，Enter。行李被创建，物品直接进去。',
   'help.guide.packing-bags.step.4':
     '只要存在一件行李，右侧就出现“行李”面板：名称、重量、一条填充条、谁来背、里面有多少物品，然后是“未分配”和“总重量”。',
   'help.guide.packing-bags.step.5': '点击“设置限制”，按航空公司的说法用千克输入限额。',
-  'help.guide.packing-bags.step.6': '行李名字下面的虚线加号说明谁来背它。',
+  'help.guide.packing-bags.step.6': '行李名字旁边的虚线加号说明谁来背它。',
   'help.guide.packing-bags.result':
     '右侧的“行李”面板把每件行李的重量对着它的限额显示出来，还有不在任何行李里的东西，以及总计。',
   'help.guide.packing-bags.tip.1':
