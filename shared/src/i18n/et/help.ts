@@ -2857,7 +2857,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Klõpsa vahekaardi paremas ülanurgas nuppu Käsitsi broneering. Avaneb Uus broneering.',
   'help.guide.create-booking.step.2':
-    'Vali Broneeringu tüüp. Majutus, Restoran, Üritus, Ekskursioon, Parkimine ja Muu on kuus tüüpi, mida see vahekaart loob, ja vorm muutub vastavalt valikule: ainult Majutus asendab kuupäevad päevade vahemikuga.',
+    'Vali Broneeringu tüüp vormi ülaosas olevast loendist, välja Reisijad kõrval. Majutus, Restoran, Üritus, Ekskursioon, Parkimine ja Muu on kuus tüüpi, mida see vahekaart loob, ja vorm muutub vastavalt valikule: ainult Majutus asendab kuupäevad päevade vahemikuga.',
   'help.guide.create-booking.step.3':
     'Sisesta Pealkiri. See on ainus kohustuslik väli ja Lisa jääb passiivseks, kuni selles midagi on.',
   'help.guide.create-booking.step.4':
@@ -2914,9 +2914,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.goal':
     'Märgi reisijad, keda broneering hõlmab, ja vaata seejärel ainult nende broneeringuid.',
   'help.guide.booking-travelers.step.1':
-    'Ava broneering pliiatsiga ja mine alla jaotiseni Reisijad. Seal on kõik reisi liikmed, nende hulgas nimega külalised.',
+    'Ava broneering pliiatsiga. Reisijad asub vormi ülaosas, välja Broneeringu tüüp kõrval, ja näitab teksti Määra reisijad, kuni broneeringul pole kedagi.',
   'help.guide.booking-travelers.step.2':
-    'Klõpsa inimestel, kellele see broneering on. Valitud inimene saab linnukese; klõpsa uuesti, et see eemaldada.',
+    'Klõpsa sellel ja vali inimesed, kellele see broneering on; nimega külalised on samuti loendis. Valitud inimene saab linnukese ja tema avatar kuvatakse väljal. Klõpsa nimel uuesti, et see eemaldada.',
   'help.guide.booking-travelers.step.3': 'Klõpsa Uuenda.',
   'help.guide.booking-travelers.step.4':
     'Klõpsa üleval tööriistaribal tüübikiipide kõrval reisija avataril, et näha ainult tema broneeringuid.',
@@ -2946,7 +2946,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Muuda broneeringu hind kuluks',
   'help.guide.booking-cost.goal': 'Vii broneeringu hind jaotisse Kulud ja jaga see maksjate vahel.',
   'help.guide.booking-cost.step.1':
-    'Ava broneering ja mine vormi lõppu. Jaotises Kulud on Loo kulu koos märkusega Salvestab broneeringu ja avab seejärel kulude muutmise vaate.',
+    'Ava broneering ja mine vormi lõppu. Jaotises Kulud on Loo kulu ja Seo olemasolev kulu koos märkusega Salvestab broneeringu ja avab seejärel kulude muutmise vaate.',
   'help.guide.booking-cost.step.2':
     'Klõpsa Loo kulu. Broneering salvestatakse, selle vorm sulgub ja avaneb kulude muutmise vaade.',
   'help.guide.booking-cost.step.3':
@@ -2955,10 +2955,11 @@ const help: TranslationStrings = {
     'Kategooria tuleneb broneeringu tüübist. Määra Kes maksis? ja kuidas summa jagatakse.',
   'help.guide.booking-cost.step.5': 'Klõpsa Lisa kulu.',
   'help.guide.booking-cost.result':
-    'Broneeringu vormis on nüüd Seotud kulu koos summaga ja sama kulu on vahekaardil Kulud, seotud selle broneeringuga.',
+    'Broneeringu vormis on kulu nüüd jaotises Seotud kulud koos summaga ja sama kulu on vahekaardil Kulud, seotud selle broneeringuga.',
   'help.guide.booking-cost.tip.1':
     'Kategooria järgib tüüpi: Restoranist saab Söök ja jook, Majutusest Majutus, Parkimisest Parkimine ning Üritus ja Ekskursioon lähevad mõlemad kategooriasse Muu.',
-  'help.guide.booking-cost.tip.2': 'Seotud kulu juures olev prügikast eemaldab kulu, mitte broneeringu.',
+  'help.guide.booking-cost.tip.2':
+    'Broneeringul võib olla mitu kulu. Seo olemasolev kulu pakub vahekaardilt Kulud neid kulusid, mis pole veel millegagi seotud. Seotud kulu juures vabastab Eemalda seos, jäta kulu alles selle ja jätab selle vahekaardile Kulud, prügikast aga eemaldab selle.',
   'help.guide.booking-cost.tip.3':
     'Kulud on vormis ainult siis, kui lisamoodul Kulud on sisse lülitatud; administraator lülitab selle jaotises Lisamoodulid.',
   // filter-bookings
@@ -3382,15 +3383,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Ava broneering vahekaardil Transport või Broneeringud ja klõpsa selle pliiatsit.',
   'help.guide.expense-from-booking.step.2':
-    'Keri vormi allosas olevasse plokki Kulud. Kui midagi pole veel seotud, pakub see valikut Loo kulu ja ütleb, et broneering salvestatakse esmalt.',
+    'Keri vormi allosas olevasse plokki Kulud. See pakub valikut Loo kulu, mis salvestab broneeringu esmalt, ja valikut Seo olemasolev kulu sellise kulu jaoks, mis on juba vahekaardil Kulud.',
   'help.guide.expense-from-booking.step.3':
     'Klõpsa Loo kulu. Broneering salvestatakse, vorm suletakse ja avaneb kulude redaktor, kus nimeks on broneeringu pealkiri ja selle tüübile vastav kategooria on juba valitud.',
   'help.guide.expense-from-booking.step.4':
-    'Täida summa ja selle valuuta, maksja ja jaotus nagu iga kulu puhul ning salvesta. Kui broneeringu uuesti avad, on kulu näha jaotises Seotud kulu, koos pliiatsiga muutmiseks ja prügikastiga eemaldamiseks.',
+    'Täida summa ja selle valuuta, maksja ja jaotus nagu iga kulu puhul ning salvesta. Kui broneeringu uuesti avad, on kulu näha jaotises Seotud kulud, koos pliiatsiga muutmiseks, valikuga Eemalda seos, jäta kulu alles lahtisidumiseks ja prügikastiga eemaldamiseks.',
   'help.guide.expense-from-booking.result':
     'Broneeringul on nüüd oma hind ja kulu on tavaline rida vahekaardil Kulud, maksja, jaotuse ja valuutaga nagu iga teine.',
   'help.guide.expense-from-booking.tip.1':
-    'Broneeringu kustutamine kustutab ka sellega seotud kulu. Broneeringu plokis Kulud olev Eemalda kulu teeb vastupidi: kulu kaob, broneering jääb alles.',
+    'Broneeringu kustutamine kustutab ka sellega seotud kulud. Broneeringu plokis Kulud olev Eemalda kulu teeb vastupidi: kulu kaob, broneering jääb alles. Eemalda seos, jäta kulu alles hoiab alles mõlemad.',
   'help.guide.expense-from-booking.tip.2': 'Koha vormis on sama plokk ja Loo kulu salvestab esmalt koha.',
 
   // ── Screen: trip-files ────────────────────────────────────────────────────────────────

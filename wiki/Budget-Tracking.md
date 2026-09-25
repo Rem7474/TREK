@@ -60,9 +60,15 @@ Click **Add expense**, or the pencil beside a row, to open the expense editor:
 
 ### Expenses linked to a booking or a place
 
-An expense can hang off a **booking** (reservation or transport) or off a **place** — both offer a **Create expense** button in their form, which saves the record first and then opens the expense editor for it. A linked expense is an ordinary expense: it takes a payer, a split, a date and a currency like any other, and it shows up in the settlement.
+An expense can hang off a **booking** (reservation or transport) or off a **place**. Both forms carry a Costs block: **Create expense** saves the record first and then opens the expense editor for it, and on a saved record **Link existing expense** ties an expense that is already in Costs and belongs nowhere yet. A record can carry several expenses, the flight and the seat upgrade bought for it later. A linked expense is an ordinary expense: it takes a payer, a split, a date and a currency like any other, and it shows up in the settlement.
 
-Deleting the booking or the place deletes its linked expense with it. Removing the expense from the record's Costs block deletes only the expense and leaves the record standing.
+Every linked expense is listed in the record's Costs block with three actions. The pencil edits it, **Unlink, keep the expense** lets go of it and leaves it in Costs, and the bin deletes only the expense. The record stands either way. Deleting the booking or the place deletes all of its linked expenses with it.
+
+A booking's price follows its expenses: it shows their sum when they share one currency, otherwise the first one, and it is cleared once nothing is linked any more.
+
+On the phone the booking, transport and place sheets carry the same block. Tap a linked expense to edit it, and **Link** opens the unlinked expenses right under the buttons, with a search once there are more than a handful.
+
+> **AI / MCP:** `update_budget_item` takes `reservation_id` and `place_id`; `null` unlinks. An id from another trip is refused. See [MCP-Tools-and-Resources](MCP-Tools-and-Resources).
 
 ### Receipts and invoices
 

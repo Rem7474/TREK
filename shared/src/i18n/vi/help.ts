@@ -3147,7 +3147,7 @@ const help: TranslationStrings = {
     'Đưa một nhà hàng, một sự kiện, một chuyến du lịch, một chỗ đỗ xe hay bất cứ thứ gì khác vào chuyến đi bằng tay.',
   'help.guide.create-booking.step.1': 'Nhấp “Thêm đặt chỗ” ở trên cùng bên phải của thẻ. “Đặt chỗ mới” mở ra.',
   'help.guide.create-booking.step.2':
-    'Chọn “Loại đặt chỗ”. “Chỗ ở”, “Nhà hàng”, “Sự kiện”, “Chuyến du lịch”, “Bãi đỗ xe” và “Khác” là sáu loại thẻ này tạo ra, và biểu mẫu thay đổi theo lựa chọn: chỉ “Chỗ ở” mới đổi ngày của nó lấy một khoảng các ngày.',
+    'Chọn “Loại đặt chỗ” từ danh sách ở đầu biểu mẫu, cạnh “Người đi”. “Chỗ ở”, “Nhà hàng”, “Sự kiện”, “Chuyến du lịch”, “Bãi đỗ xe” và “Khác” là sáu loại thẻ này tạo ra, và biểu mẫu thay đổi theo lựa chọn: chỉ “Chỗ ở” mới đổi ngày của nó lấy một khoảng các ngày.',
   'help.guide.create-booking.step.3':
     'Gõ “Tiêu đề”. Đó là ô duy nhất biểu mẫu nhất định đòi, và “Thêm” vẫn nằm im cho tới khi nó có nội dung.',
   'help.guide.create-booking.step.4':
@@ -3203,9 +3203,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Nói một đặt chỗ là dành cho ai',
   'help.guide.booking-travelers.goal': 'Đánh dấu những người đi mà một đặt chỗ bao gồm, rồi chỉ xem phần của họ.',
   'help.guide.booking-travelers.step.1':
-    'Mở đặt chỗ bằng cây bút chì và đi xuống “Người đi”. Mọi thành viên của chuyến đi đều đứng đó, kể cả những “Khách” đã có tên.',
+    'Mở đặt chỗ bằng cây bút chì. “Người đi” nằm ở đầu biểu mẫu, cạnh “Loại đặt chỗ”, và hiện “Chỉ định người đi” khi chưa có ai trong đặt chỗ.',
   'help.guide.booking-travelers.step.2':
-    'Nhấp vào những người mà đặt chỗ này dành cho. Người được chọn sẽ có một dấu tích; nhấp lại để bỏ ra.',
+    'Nhấp vào đó và chọn những người mà đặt chỗ này dành cho; những “Khách” đã có tên cũng có trong danh sách. Người được chọn sẽ có một dấu tích và ảnh đại diện của họ trong ô. Nhấp lại vào tên để bỏ ra.',
   'help.guide.booking-travelers.step.3': 'Nhấp “Cập nhật”.',
   'help.guide.booking-travelers.step.4':
     'Ở thanh công cụ phía trên, cạnh các chip loại, nhấp ảnh đại diện của một người đi để chỉ xem các đặt chỗ của họ.',
@@ -3236,7 +3236,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Biến giá của một đặt chỗ thành chi phí',
   'help.guide.booking-cost.goal': 'Đưa số tiền một đặt chỗ tốn vào “Chi phí”, chia cho những người trả tiền cho nó.',
   'help.guide.booking-cost.step.1':
-    'Mở đặt chỗ và đi xuống chân biểu mẫu. Dưới “Chi phí” là “Tạo chi phí”, kèm ghi chú “Lưu đặt chỗ, sau đó mở trình chỉnh sửa Chi phí.”',
+    'Mở đặt chỗ và đi xuống chân biểu mẫu. Dưới “Chi phí” là “Tạo chi phí” và “Liên kết chi phí hiện có”, kèm ghi chú “Lưu đặt chỗ, sau đó mở trình chỉnh sửa Chi phí.”',
   'help.guide.booking-cost.step.2':
     'Nhấp “Tạo chi phí”. Đặt chỗ được lưu, biểu mẫu của nó đóng lại và trình chỉnh sửa chi phí mở ra.',
   'help.guide.booking-cost.step.3':
@@ -3245,10 +3245,11 @@ const help: TranslationStrings = {
     '“Loại” là loại mà kiểu đặt chỗ gợi ra. Đặt “Ai đã trả tiền?” và cách số tiền được “Chia tiền”.',
   'help.guide.booking-cost.step.5': 'Nhấp “Thêm chi phí”.',
   'help.guide.booking-cost.result':
-    'Biểu mẫu của đặt chỗ giờ ghi “Chi phí liên kết” kèm số tiền, và chính khoản chi ấy đứng trong thẻ “Chi phí”, buộc vào đặt chỗ này.',
+    'Biểu mẫu của đặt chỗ giờ liệt kê khoản chi dưới “Các chi phí liên kết” kèm số tiền của nó, và chính khoản chi ấy đứng trong thẻ “Chi phí”, buộc vào đặt chỗ này.',
   'help.guide.booking-cost.tip.1':
     'Loại đi theo kiểu: “Nhà hàng” thành “Thức ăn và đồ uống”, “Chỗ ở” thành “Chỗ ở”, “Bãi đỗ xe” thành “Bãi đỗ xe”, còn “Sự kiện” và “Chuyến du lịch” đều rơi vào “Khác”.',
-  'help.guide.booking-cost.tip.2': 'Thùng rác trên “Chi phí liên kết” gỡ khoản chi, không gỡ đặt chỗ.',
+  'help.guide.booking-cost.tip.2':
+    'Một đặt chỗ có thể mang nhiều khoản chi. “Liên kết chi phí hiện có” đưa ra các khoản trong “Chi phí” chưa thuộc về đâu. Trên một khoản đã liên kết, “Hủy liên kết, giữ chi phí” thả nó ra và để nó lại trong “Chi phí”, còn thùng rác thì gỡ nó.',
   'help.guide.booking-cost.tip.3':
     '“Chi phí” chỉ có trong biểu mẫu khi tiện ích “Chi phí” đang bật, thứ mà quản trị viên bật tắt dưới “Tiện ích bổ sung”.',
   // filter-bookings
@@ -3489,15 +3490,15 @@ const help: TranslationStrings = {
     'Gắn chi phí thật của một chuyến bay, một khách sạn hay một địa điểm vào chính bản ghi của nó.',
   'help.guide.expense-from-booking.step.1': 'Mở đặt chỗ ở tab Di chuyển hoặc Đặt chỗ và nhấp vào cây bút chì của nó.',
   'help.guide.expense-from-booking.step.2':
-    'Cuộn tới khối “Chi phí” ở cuối biểu mẫu. Khi chưa có gì được liên kết, nó đưa ra “Tạo chi phí” và nói rằng đặt chỗ sẽ được lưu trước.',
+    'Cuộn tới khối “Chi phí” ở cuối biểu mẫu. Nó đưa ra “Tạo chi phí”, vốn lưu đặt chỗ trước, và “Liên kết chi phí hiện có” cho một khoản đã có trong “Chi phí”.',
   'help.guide.expense-from-booking.step.3':
     'Nhấp “Tạo chi phí”. Đặt chỗ được lưu, biểu mẫu đóng lại, và trình chỉnh sửa Chi phí mở ra với tiêu đề của đặt chỗ làm tên và loại của nó đã được khớp sẵn với một danh mục.',
   'help.guide.expense-from-booking.step.4':
-    'Điền số tiền và đơn vị tiền tệ của nó, ai đã trả và cách chia như với mọi khoản chi, rồi lưu. Mở lại đặt chỗ giờ sẽ thấy nó dưới “Chi phí liên kết”, với một cây bút chì để sửa và một thùng rác để bỏ nó ra.',
+    'Điền số tiền và đơn vị tiền tệ của nó, ai đã trả và cách chia như với mọi khoản chi, rồi lưu. Mở lại đặt chỗ giờ sẽ thấy nó dưới “Các chi phí liên kết”, với một cây bút chì để sửa, “Hủy liên kết, giữ chi phí” để thả nó ra và một thùng rác để bỏ nó đi.',
   'help.guide.expense-from-booking.result':
     'Đặt chỗ mang theo chi phí của nó, và khoản chi là một dòng bình thường trên tab Chi phí, có người trả, cách chia và loại tiền như mọi khoản khác.',
   'help.guide.expense-from-booking.tip.1':
-    'Xóa đặt chỗ sẽ xóa luôn khoản chi liên kết với nó. “Xóa chi phí” trong khối “Chi phí” của đặt chỗ làm điều ngược lại: khoản chi biến mất, đặt chỗ ở lại.',
+    'Xóa đặt chỗ sẽ xóa luôn các khoản chi liên kết với nó. “Xóa chi phí” trong khối “Chi phí” của đặt chỗ làm điều ngược lại: khoản chi biến mất, đặt chỗ ở lại. “Hủy liên kết, giữ chi phí” giữ lại cả hai.',
   'help.guide.expense-from-booking.tip.2':
     'Một địa điểm cũng có khối như vậy trong biểu mẫu của nó, với “Tạo chi phí” lưu địa điểm trước.',
 

@@ -3235,7 +3235,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Klik rechtsboven op het tabblad op Handmatige boeking. Nieuwe reservering gaat open.',
   'help.guide.create-booking.step.2':
-    'Kies het Boekingstype. Accommodatie, Restaurant, Evenement, Rondleiding, Parkeren en Overig zijn de zes die dit tabblad maakt, en het formulier verandert met de keuze: alleen Accommodatie ruilt haar data in voor een reeks dagen.',
+    'Kies het Boekingstype uit de lijst bovenaan het formulier, naast Reizigers. Accommodatie, Restaurant, Evenement, Rondleiding, Parkeren en Overig zijn de zes die dit tabblad maakt, en het formulier verandert met de keuze: alleen Accommodatie ruilt haar data in voor een reeks dagen.',
   'help.guide.create-booking.step.3':
     'Typ de Titel. Het is het enige veld waar het formulier op staat, en Toevoegen blijft dood tot er iets in staat.',
   'help.guide.create-booking.step.4':
@@ -3292,9 +3292,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Zeggen voor wie een boeking is',
   'help.guide.booking-travelers.goal': 'Markeer de reizigers die een boeking dekt, en zie daarna alleen die van hen.',
   'help.guide.booking-travelers.step.1':
-    'Open de boeking met het potlood en ga omlaag naar Reizigers. Daar staat elk lid van de reis, genoemde gasten erbij.',
+    'Open de boeking met het potlood. Reizigers staat bovenaan het formulier, naast Boekingstype, en toont Reizigers toewijzen zolang er niemand op de boeking staat.',
   'help.guide.booking-travelers.step.2':
-    'Klik de mensen aan voor wie deze boeking is. Een gekozen persoon krijgt een vinkje; klik nog eens om het eraf te halen.',
+    'Klik erop en kies de mensen voor wie deze boeking is; genoemde gasten staan ook in de lijst. Een gekozen persoon krijgt een vinkje en zijn avatar in het veld. Klik nog eens op de naam om hem eraf te halen.',
   'help.guide.booking-travelers.step.3': 'Klik op Bijwerken.',
   'help.guide.booking-travelers.step.4':
     'Boven in de werkbalk, naast de chips voor de soort, klik je op de avatar van een reiziger om alleen zijn boekingen te zien.',
@@ -3326,7 +3326,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'De prijs van een boeking in kosten omzetten',
   'help.guide.booking-cost.goal': 'Breng wat een boeking kost in Onkosten, verdeeld over de mensen die ervoor betalen.',
   'help.guide.booking-cost.step.1':
-    'Open de boeking en ga naar de voet van het formulier. Onder Kosten staat Kostenpost aanmaken, met de notitie Boeking opslaan en daarna de Onkosteneditor openen.',
+    'Open de boeking en ga naar de voet van het formulier. Onder Kosten staan Kostenpost aanmaken en Bestaande kostenpost koppelen, met de notitie Boeking opslaan en daarna de Onkosteneditor openen.',
   'help.guide.booking-cost.step.2':
     'Klik op Kostenpost aanmaken. De boeking wordt opgeslagen, het formulier gaat dicht en de Kosten-editor gaat open.',
   'help.guide.booking-cost.step.3':
@@ -3335,10 +3335,11 @@ const help: TranslationStrings = {
     'Categorie is die welke het boekingstype impliceert. Zet Wie heeft betaald? en hoe het bedrag verdeeld wordt.',
   'help.guide.booking-cost.step.5': 'Klik op Uitgave toevoegen.',
   'help.guide.booking-cost.result':
-    'Het formulier van de boeking leest nu Gekoppelde kostenpost met het bedrag, en dezelfde uitgave staat in het tabblad Onkosten, vast aan deze boeking.',
+    'Het formulier van de boeking toont de uitgave nu onder Gekoppelde kostenposten met het bedrag, en dezelfde uitgave staat in het tabblad Onkosten, vast aan deze boeking.',
   'help.guide.booking-cost.tip.1':
     'De categorie volgt het type: Restaurant wordt Eten & drinken, Accommodatie wordt Accommodatie, Parkeren wordt Parkeren, en Evenement en Rondleiding landen allebei in Overig.',
-  'help.guide.booking-cost.tip.2': 'De prullenbak bij Gekoppelde kostenpost haalt de uitgave weg, niet de boeking.',
+  'help.guide.booking-cost.tip.2':
+    'Een boeking kan meerdere kostenposten dragen. Bestaande kostenpost koppelen biedt de posten in Onkosten aan die nog nergens bij horen. Bij een gekoppelde maakt Ontkoppelen, kostenpost behouden hem los en laat hem in Onkosten staan, terwijl de prullenbak hem weghaalt.',
   'help.guide.booking-cost.tip.3':
     'Kosten staat alleen in het formulier zolang de add-on Onkosten aan staat, die de beheerder onder Add-ons omzet.',
   // filter-bookings
@@ -3583,15 +3584,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Open de boeking op het tabblad Transport of Boekingen en klik op zijn potlood.',
   'help.guide.expense-from-booking.step.2':
-    'Scroll naar het blok Kosten onderaan het formulier. Zolang er niets gekoppeld is, biedt het Kostenpost aanmaken aan en zegt het dat het eerst de boeking opslaat.',
+    'Scroll naar het blok Kosten onderaan het formulier. Het biedt Kostenpost aanmaken aan, dat eerst de boeking opslaat, en Bestaande kostenpost koppelen voor een post die al in Onkosten staat.',
   'help.guide.expense-from-booking.step.3':
     'Klik op Kostenpost aanmaken. De boeking wordt opgeslagen, het formulier gaat dicht, en de Onkosteneditor gaat open met de titel van de boeking als naam en zijn type al gekoppeld aan een categorie.',
   'help.guide.expense-from-booking.step.4':
-    'Vul het bedrag en de valuta ervan, wie heeft betaald en de verdeling in zoals bij elke uitgave, en sla op. Als je de boeking opnieuw opent, staat hij onder Gekoppelde kostenpost, met een potlood om hem te bewerken en een prullenbak om hem te verwijderen.',
+    'Vul het bedrag en de valuta ervan, wie heeft betaald en de verdeling in zoals bij elke uitgave, en sla op. Als je de boeking opnieuw opent, staat hij onder Gekoppelde kostenposten, met een potlood om hem te bewerken, Ontkoppelen, kostenpost behouden om hem los te maken en een prullenbak om hem te verwijderen.',
   'help.guide.expense-from-booking.result':
     'De boeking draagt zijn kosten, en de uitgave is een gewone rij op het tabblad Onkosten, met een betaler, een verdeling en een valuta zoals elke andere.',
   'help.guide.expense-from-booking.tip.1':
-    'De boeking verwijderen verwijdert ook zijn gekoppelde kostenpost. Kostenpost verwijderen in het blok Kosten van de boeking doet het omgekeerde: de kostenpost gaat weg, de boeking blijft.',
+    'De boeking verwijderen verwijdert ook zijn gekoppelde kostenposten. Kostenpost verwijderen in het blok Kosten van de boeking doet het omgekeerde: de kostenpost gaat weg, de boeking blijft. Ontkoppelen, kostenpost behouden houdt ze allebei.',
   'help.guide.expense-from-booking.tip.2':
     'Een plek heeft hetzelfde blok in zijn formulier, waar Kostenpost aanmaken eerst de plek opslaat.',
 

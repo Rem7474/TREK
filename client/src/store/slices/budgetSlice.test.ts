@@ -1,4 +1,4 @@
-// FE-STORE-BUDGET-001 to FE-STORE-BUDGET-016
+// FE-STORE-BUDGET-001 to FE-STORE-BUDGET-023
 import { http, HttpResponse } from 'msw';
 import { server } from '../../../tests/helpers/msw/server';
 import { resetAllStores, seedStore } from '../../../tests/helpers/store';
@@ -282,5 +282,83 @@ describe('budgetSlice', () => {
     await expect(useTripStore.getState().reorderBudgetCategories(1, ['Transport'])).resolves.toBeUndefined();
 
     expect(addToast).toHaveBeenCalledTimes(2);
+  });
+
+  // ── Which writes refresh the bookings (#2084) ───────────────────────────────
+  // A booking mirrors the total of its linked expenses, so the reservations are
+  // reloaded after any write to an expense on a booking and whenever a link
+  // moves, and only then.
+
+  function spyReload() {
+    const loadReservations = vi.fn().mockResolvedValue(undefined);
+    seedStore(useTripStore, { loadReservations });
+    return loadReservations;
+  }
+
+  it('FE-STORE-BUDGET-018: linking an expense to a booking reloads the reservations without a new total', async () => {
+    const existing = buildBudgetItem({ id: 50, trip_id: 1 });
+    seedStore(useTripStore, { budgetItems: [existing] });
+    const loadReservations = spyReload();
+    server.use(
+      http.put('/api/trips/1/budget/50', () => HttpResponse.json({ item: { ...existing, reservation_id: 9 } }))
+    );
+    await useTripStore.getState().updateBudgetItem(1, 50, { reservation_id: 9 });
+    expect(loadReservations).toHaveBeenCalledWith(1);
+    expect(useTripStore.getState().budgetItems[0].reservation_id).toBe(9);
+  });
+
+  it('FE-STORE-BUDGET-019: unlinking reloads the reservations although the saved item has no booking any more', async () => {
+    const existing = buildBudgetItem({ id: 51, trip_id: 1, reservation_id: 9 });
+    seedStore(useTripStore, { budgetItems: [existing] });
+    const loadReservations = spyReload();
+    server.use(
+      http.put('/api/trips/1/budget/51', () => HttpResponse.json({ item: { ...existing, reservation_id: null } }))
+    );
+    await useTripStore.getState().updateBudgetItem(1, 51, { reservation_id: null });
+    expect(loadReservations).toHaveBeenCalledWith(1);
+  });
+
+  it('FE-STORE-BUDGET-020: a new total on an expense without a booking, or a place link, leaves the reservations alone', async () => {
+    const existing = buildBudgetItem({ id: 52, trip_id: 1 });
+    seedStore(useTripStore, { budgetItems: [existing] });
+    const loadReservations = spyReload();
+    server.use(
+      http.put('/api/trips/1/budget/52', async ({ request }) => {
+        const body = await request.json() as Record<string, unknown>;
+        return HttpResponse.json({ item: { ...existing, ...body } });
+      })
+    );
+    await useTripStore.getState().updateBudgetItem(1, 52, { total_price: 80 });
+    await useTripStore.getState().updateBudgetItem(1, 52, { place_id: 4 });
+    expect(loadReservations).not.toHaveBeenCalled();
+    expect(useTripStore.getState().budgetItems[0].place_id).toBe(4);
+  });
+
+  it('FE-STORE-BUDGET-021: any edit of an expense on a booking reloads the reservations, not only a new total', async () => {
+    const existing = buildBudgetItem({ id: 53, trip_id: 1, reservation_id: 9 });
+    seedStore(useTripStore, { budgetItems: [existing] });
+    const loadReservations = spyReload();
+    server.use(
+      http.put('/api/trips/1/budget/53', () => HttpResponse.json({ item: { ...existing, currency: 'USD' } }))
+    );
+    await useTripStore.getState().updateBudgetItem(1, 53, { currency: 'USD' });
+    expect(loadReservations).toHaveBeenCalledWith(1);
+  });
+
+  it('FE-STORE-BUDGET-022: an expense created on a booking reloads the reservations', async () => {
+    const loadReservations = spyReload();
+    const created = buildBudgetItem({ id: 54, trip_id: 1, reservation_id: 9 });
+    server.use(http.post('/api/trips/1/budget', () => HttpResponse.json({ item: created })));
+    await useTripStore.getState().addBudgetItem(1, { name: 'Upgrade', reservation_id: 9 });
+    expect(loadReservations).toHaveBeenCalledWith(1);
+    expect(useTripStore.getState().budgetItems).toContainEqual(created);
+  });
+
+  it('FE-STORE-BUDGET-023: an expense created without a booking leaves the reservations alone', async () => {
+    const loadReservations = spyReload();
+    const created = buildBudgetItem({ id: 55, trip_id: 1, place_id: 4 });
+    server.use(http.post('/api/trips/1/budget', () => HttpResponse.json({ item: created })));
+    await useTripStore.getState().addBudgetItem(1, { name: 'Museum', place_id: 4 });
+    expect(loadReservations).not.toHaveBeenCalled();
   });
 });

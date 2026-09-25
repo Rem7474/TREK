@@ -58,6 +58,16 @@ const travellers = (page: Page) => page.locator('[aria-label="Travelers"]')
 /** The card's delete question is its own portal, with no backdrop class to find it by. */
 const deleteAsk = (page: Page) => portalDialog(page, page.getByText('Delete booking?', { exact: true }))
 
+/** The Booking Type field at the head of the form is a CustomSelect; this opens it. */
+async function openTypeMenu(page: Page): Promise<void> {
+  await block(page, /^Booking Type$/).getByRole('button').first().click()
+  await expect(selectMenu(page)).toBeVisible()
+  await beat(page, 300)
+}
+
+/** The Travelers field opens its members as a list under it, inside the form. */
+const travelerList = (page: Page) => block(page, /^Travelers$/).getByRole('listbox')
+
 /** Open the CustomSelect that belongs to a label and take one option out of it. */
 async function chooseIn(page: Page, field: RegExp, option: RegExp, search?: string): Promise<void> {
   await block(page, field).getByRole('button').first().click()
@@ -149,12 +159,14 @@ const SCRIPTS: Record<string, GuideScript> = {
         },
       },
       {
-        target: p => block(p, /^Booking Type$/),
+        prepare: async p => {
+          await openTypeMenu(p)
+        },
+        target: selectMenu,
         act: async p => {
-          const pill = modal(p).getByRole('button', { name: 'Event', exact: true })
-          await pill.click()
-          // The pills carry no aria-pressed; the picked one is the inverted chip.
-          await expect(pill).toHaveClass(/bg-\[var\(--text-primary\)\]/)
+          await selectMenu(p).getByRole('button', { name: /^Event$/ }).first().click()
+          await expect(selectMenu(p)).toHaveCount(0)
+          await expect(block(p, /^Booking Type$/).getByRole('button', { name: /Event/ })).toBeVisible()
           await settle(p)
         },
       },
@@ -208,11 +220,12 @@ const SCRIPTS: Record<string, GuideScript> = {
         prepare: async p => {
           await p.getByRole('button', { name: 'Manual Booking' }).click()
           await expect(modal(p).getByRole('heading', { name: 'New Reservation' })).toBeVisible()
-          await settle(p)
+          await openTypeMenu(p)
         },
-        target: p => modal(p).getByRole('button', { name: 'Accommodation', exact: true }),
+        target: selectMenu,
         act: async p => {
-          await modal(p).getByRole('button', { name: 'Accommodation', exact: true }).click()
+          await selectMenu(p).getByRole('button', { name: /^Accommodation$/ }).first().click()
+          await expect(selectMenu(p)).toHaveCount(0)
           await expect(label(p, /^Check-in until$/)).toBeVisible()
           await settle(p)
         },
@@ -312,11 +325,19 @@ const SCRIPTS: Record<string, GuideScript> = {
         act: settle,
       },
       {
-        target: p => block(p, /^Travelers$/).getByRole('button', { name: /jonas/ }),
+        prepare: async p => {
+          await block(p, /^Travelers$/).getByRole('button', { expanded: false }).click()
+          await expect(travelerList(p)).toBeVisible()
+          await beat(p, 300)
+        },
+        target: travelerList,
         act: async p => {
-          const pill = block(p, /^Travelers$/).getByRole('button', { name: /jonas/ })
-          await pill.click()
-          await expect(pill).toHaveAttribute('aria-pressed', 'true')
+          const row = travelerList(p).getByRole('button', { name: /jonas/ })
+          await row.click()
+          await expect(row).toHaveAttribute('aria-pressed', 'true')
+          // A click beside the field folds the list away; Escape would close the whole form.
+          await label(p, /^Travelers$/).click()
+          await expect(travelerList(p)).toHaveCount(0)
           await settle(p)
         },
       },
@@ -438,9 +459,11 @@ const SCRIPTS: Record<string, GuideScript> = {
           await save.click()
           await expect(modal(p)).toHaveCount(0)
           await settle(p)
-          // The block only reads Linked expense once the booking is opened again.
+          // The block only reads Linked expenses once the booking is opened again.
           await bookingCard(p, 'Kyoto Cycling Tour').getByRole('button', { name: 'Edit' }).click()
-          await expect(label(p, /^Linked expense$/)).toBeVisible({ timeout: 20_000 })
+          await expect(label(p, /^Linked expenses$/)).toBeVisible({ timeout: 20_000 })
+          // The block sits at the foot of a long form: bring it into the picture.
+          await label(p, /^Linked expenses$/).evaluate(el => el.scrollIntoView({ block: 'center' }))
           await settle(p)
         },
       },

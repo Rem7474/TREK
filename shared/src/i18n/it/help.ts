@@ -1867,7 +1867,7 @@ const help: TranslationStrings = {
   'help.guide.create-place.result':
     'Il luogo è nella lista e sulla mappa, sotto Non pianificati finché non viene messo su un giorno.',
   'help.guide.create-place.tip.1':
-    'File e Costs in fondo al modulo allegano un documento al luogo, o aprono l’editor Costs per la sua spesa subito dopo il salvataggio.',
+    'File e Costi in fondo al modulo allegano un documento al luogo, o aprono l’editor dei Costi per la sua spesa subito dopo il salvataggio.',
   'help.guide.create-place.tip.2':
     'L’indice di TREK e OpenStreetMap rispondono alla ricerca su ogni TREK, e Dettagli del luogo si riempie da Wikipedia, Wikivoyage e Wikimedia. Google viene interrogato solo dove entrambi restano vuoti, e solo lui porta le valutazioni.',
   'help.guide.create-place.tip.3':
@@ -3217,7 +3217,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Clicca Prenotazione manuale in alto a destra nella scheda. Si apre Nuova prenotazione.',
   'help.guide.create-booking.step.2':
-    'Scegli il Tipo di prenotazione. Alloggio, Ristorante, Evento, Tour, Parcheggio e Altro sono i sei che questa scheda crea, e il modulo cambia con la scelta: solo Alloggio scambia le sue date con un intervallo di giorni.',
+    'Scegli il Tipo di prenotazione dall’elenco in cima al modulo, accanto a Viaggiatori. Alloggio, Ristorante, Evento, Tour, Parcheggio e Altro sono i sei che questa scheda crea, e il modulo cambia con la scelta: solo Alloggio scambia le sue date con un intervallo di giorni.',
   'help.guide.create-booking.step.3':
     'Digita il Titolo. È l’unico campo su cui il modulo insiste, e Aggiungi resta morto finché non c’è qualcosa.',
   'help.guide.create-booking.step.4':
@@ -3273,9 +3273,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Dire per chi è una prenotazione',
   'help.guide.booking-travelers.goal': 'Segna i viaggiatori che una prenotazione copre, e poi vedi solo le loro.',
   'help.guide.booking-travelers.step.1':
-    'Apri la prenotazione con la matita e scendi fino a Viaggiatori. Lì sta ogni membro del viaggio, ospiti con nome compresi.',
+    'Apri la prenotazione con la matita. Viaggiatori sta in cima al modulo, accanto a Tipo di prenotazione, e dice Assegna viaggiatori finché nessuno è sulla prenotazione.',
   'help.guide.booking-travelers.step.2':
-    'Clicca le persone per cui è questa prenotazione. Una scelta riceve una spunta; cliccala di nuovo per toglierla.',
+    'Cliccalo e scegli le persone per cui è questa prenotazione; anche gli ospiti con nome sono nell’elenco. Una scelta riceve una spunta e il suo avatar nel campo. Clicca di nuovo il nome per toglierla.',
   'help.guide.booking-travelers.step.3': 'Clicca Aggiorna.',
   'help.guide.booking-travelers.step.4':
     'In alto nella barra degli strumenti, accanto ai chip di genere, clicca l’avatar di un viaggiatore per vedere solo le sue prenotazioni.',
@@ -3306,21 +3306,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Trasformare il prezzo di una prenotazione in un costo',
   'help.guide.booking-cost.goal': 'Porta ciò che una prenotazione costa nei Costi, diviso fra le persone che pagano.',
   'help.guide.booking-cost.step.1':
-    'Apri la prenotazione e vai in fondo al modulo. Sotto Costs sta Create expense, con la nota Saves the booking, then opens the Costs editor.',
+    'Apri la prenotazione e vai in fondo al modulo. Sotto Costi stanno Crea spesa e Collega spesa esistente, con la nota Salva la prenotazione e poi apre l’editor dei costi.',
   'help.guide.booking-cost.step.2':
-    'Clicca Create expense. La prenotazione viene salvata, il suo modulo si chiude e l’editor Costs si apre.',
+    'Clicca Crea spesa. La prenotazione viene salvata, il suo modulo si chiude e l’editor dei Costi si apre.',
   'help.guide.booking-cost.step.3':
     'Per cosa era? è già il titolo della prenotazione. Inserisci l’Importo totale e controlla la Valuta e il Giorno.',
   'help.guide.booking-cost.step.4':
     'Categoria è quella che il tipo di prenotazione implica. Imposta Chi ha pagato? e come l’importo viene diviso.',
   'help.guide.booking-cost.step.5': 'Clicca Aggiungi spesa.',
   'help.guide.booking-cost.result':
-    'Il modulo della prenotazione ora dice Linked expense con l’importo, e la stessa spesa sta nella scheda Costi, legata a questa prenotazione.',
+    'Il modulo della prenotazione ora elenca la spesa sotto Spese collegate con il suo importo, e la stessa spesa sta nella scheda Costi, legata a questa prenotazione.',
   'help.guide.booking-cost.tip.1':
     'La categoria segue il tipo: Ristorante diventa Cibo e bevande, Alloggio diventa Alloggio, Parcheggio diventa Parcheggio, ed Evento e Tour finiscono entrambi in Altro.',
-  'help.guide.booking-cost.tip.2': 'Il cestino su Linked expense rimuove la spesa, non la prenotazione.',
+  'help.guide.booking-cost.tip.2':
+    'Una prenotazione può portare più spese. Collega spesa esistente offre quelle in Costi che non appartengono ancora a nulla. Su una collegata, Scollega, mantieni la spesa la stacca e la lascia in Costi, mentre il cestino la rimuove.',
   'help.guide.booking-cost.tip.3':
-    'Costs sta nel modulo solo finché l’addon Costi è attivo, che l’amministratore accende sotto Moduli.',
+    'Costi sta nel modulo solo finché l’addon Costi è attivo, che l’amministratore accende sotto Moduli.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Trovare una prenotazione',
   'help.guide.filter-bookings.goal': 'Restringi una scheda lunga al genere, alla persona o allo stato che cerchi.',
@@ -3374,7 +3375,7 @@ const help: TranslationStrings = {
   'help.guide.edit-booking.tip.1':
     'Un Codice prenotazione che non riesci a leggere è Nascondi codici di prenotazione nelle Impostazioni, sotto Visualizzazione. Passaci sopra, o cliccalo, ed è leggibile.',
   'help.guide.edit-booking.tip.2':
-    'Cambia il tipo e la categoria di una spesa collegata lo segue, a meno che tu non avessi scelto una categoria a mano nell’editor Costs.',
+    'Cambia il tipo e la categoria di una spesa collegata lo segue, a meno che tu non avessi scelto una categoria a mano nell’editor dei Costi.',
   'help.guide.edit-booking.tip.3':
     'Un alloggio si modifica anche qui: i suoi giorni Da e A stanno nello stesso modulo.',
   // delete-booking
@@ -3392,7 +3393,7 @@ const help: TranslationStrings = {
     'I documenti che erano allegati restano nella scheda File del viaggio; se ne va solo il loro collegamento con la prenotazione.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Ogni prenotazione trovata si apre in Nuova prenotazione, una dopo l’altra, già compilata. Per un hotel è il nome in Titolo e, quando il viaggio ha il luogo, sotto Alloggio, la sua Posizione / Indirizzo, Da e A sulle sue notti, Check-in e Check-out, il Codice prenotazione, la conferma sotto File e, con Costi attivo, il prezzo come Linked expense. Controllala e clicca Aggiungi.',
+    'Ogni prenotazione trovata si apre in Nuova prenotazione, una dopo l’altra, già compilata. Per un hotel è il nome in Titolo e, quando il viaggio ha il luogo, sotto Alloggio, la sua Posizione / Indirizzo, Da e A sulle sue notti, Check-in e Check-out, il Codice prenotazione, la conferma sotto File e, con Costi attivo, il prezzo come Spesa collegata. Controllala e clicca Aggiungi.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Costi',
@@ -3564,17 +3565,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Apri la prenotazione nella scheda Trasporti o Prenotazioni e clicca la sua matita.',
   'help.guide.expense-from-booking.step.2':
-    'Scorri fino al blocco Costs in fondo al modulo. Finché non c’è nulla di collegato, offre Create expense e dice che salva prima la prenotazione.',
+    'Scorri fino al blocco Costi in fondo al modulo. Offre Crea spesa, che salva prima la prenotazione, e Collega spesa esistente per una che è già nella scheda Costi.',
   'help.guide.expense-from-booking.step.3':
-    'Clicca Create expense. La prenotazione viene salvata, il modulo si chiude, e l’editor dei Costi si apre con il titolo della prenotazione come nome e il suo tipo già abbinato a una categoria.',
+    'Clicca Crea spesa. La prenotazione viene salvata, il modulo si chiude, e l’editor dei Costi si apre con il titolo della prenotazione come nome e il suo tipo già abbinato a una categoria.',
   'help.guide.expense-from-booking.step.4':
-    'Compila l’importo e la sua valuta, chi ha pagato e la divisione come per qualsiasi spesa, e salva. Riaprendo la prenotazione la si vede sotto Linked expense, con una matita per modificarla e un cestino per rimuoverla.',
+    'Compila l’importo e la sua valuta, chi ha pagato e la divisione come per qualsiasi spesa, e salva. Riaprendo la prenotazione la si vede sotto Spese collegate, con una matita per modificarla, Scollega, mantieni la spesa per staccarla e un cestino per rimuoverla.',
   'help.guide.expense-from-booking.result':
     'La prenotazione porta il suo costo, e la spesa è una riga ordinaria nella scheda Costi, con un pagante, una divisione e una valuta come ogni altra.',
   'help.guide.expense-from-booking.tip.1':
-    'Eliminare la prenotazione elimina con sé la spesa collegata. Remove expense nel blocco Costs della prenotazione fa il contrario: la spesa va via, la prenotazione resta.',
+    'Eliminare la prenotazione elimina con sé le spese collegate. Rimuovi spesa nel blocco Costi della prenotazione fa il contrario: la spesa va via, la prenotazione resta. Scollega, mantieni la spesa le tiene entrambe.',
   'help.guide.expense-from-booking.tip.2':
-    'Un luogo ha lo stesso blocco nel suo modulo, dove Create expense salva prima il luogo.',
+    'Un luogo ha lo stesso blocco nel suo modulo, dove Crea spesa salva prima il luogo.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Trasporti',
@@ -3631,7 +3632,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'La riga arriva dove la mette il suo orario di inizio, dopo l’ultima tappa che comincia prima. La sua maniglia la trascina in qualsiasi altro punto del giorno, o su un altro giorno.',
   'help.guide.add-transport.tip.2':
-    'Allega file sotto File prende il biglietto, e Create expense sotto Costs salva la prenotazione e apre l’editor dei Costi per la tariffa.',
+    'Allega file sotto File prende il biglietto, e Crea spesa sotto Costi salva la prenotazione e apre l’editor dei Costi per la tariffa.',
   'help.guide.add-transport.tip.3':
     'Viaggiatori segna chi è su questo tragitto. Appena un trasporto ha viaggiatori, la barra della scheda fa crescere i loro avatar e filtra l’elenco per loro.',
   // plan-transit

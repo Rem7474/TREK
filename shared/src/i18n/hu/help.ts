@@ -1888,7 +1888,7 @@ const help: TranslationStrings = {
   'help.guide.create-place.result':
     'A hely benne van a listában és a térképen, a Nem tervezett alatt, amíg egy napra nem kerül.',
   'help.guide.create-place.tip.1':
-    'Az űrlap alján a Fájlok és a Costs dokumentumot csatol a helyhez, vagy mentés után rögtön megnyitja a Costs szerkesztőt a kiadásához.',
+    'Az űrlap alján a Fájlok és a Költségek dokumentumot csatol a helyhez, vagy mentés után rögtön megnyitja a Költségek szerkesztőt a kiadásához.',
   'help.guide.create-place.tip.2':
     'A keresést minden TREK-en a TREK indexe és az OpenStreetMap válaszolja meg, a Hely részletei pedig a Wikipedia, a Wikivoyage és a Wikimedia forrásaiból tölti fel magát. A Google csak ott kerül sorra, ahol mindkettő üresen marad, és értékelést csak az hoz.',
   'help.guide.create-place.tip.3':
@@ -3231,7 +3231,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Kattints a fül jobb felső sarkában a Kézi foglalás gombra. Megnyílik az Új foglalás.',
   'help.guide.create-booking.step.2':
-    'Válaszd ki a Foglalás típusa értéket. A Szálloda, az Étterem, az Esemény, a Túra, a Parkolás és az Egyéb az a hat, amit ez a fül készít, és az űrlap a választással együtt változik: csak a Szálloda cseréli a dátumait egy napokból álló tartományra.',
+    'Válaszd ki a Foglalás típusa értéket az űrlap tetején lévő listából, az Utasok mellett. A Szálloda, az Étterem, az Esemény, a Túra, a Parkolás és az Egyéb az a hat, amit ez a fül készít, és az űrlap a választással együtt változik: csak a Szálloda cseréli a dátumait egy napokból álló tartományra.',
   'help.guide.create-booking.step.3':
     'Írd be a Cím mezőt. Ez az egyetlen mező, amihez az űrlap ragaszkodik, és a Hozzáadás halott marad, amíg nincs benne valami.',
   'help.guide.create-booking.step.4':
@@ -3289,9 +3289,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.goal':
     'Jelöld meg az utasokat, akikre a foglalás vonatkozik, és utána csak az övéiket nézd.',
   'help.guide.booking-travelers.step.1':
-    'Nyisd meg a foglalást a ceruzával, és menj le az Utasok mezőig. Ott áll az utazás minden tagja, köztük a megnevezett vendégek is.',
+    'Nyisd meg a foglalást a ceruzával. Az Utasok az űrlap tetején áll, a Foglalás típusa mellett, és amíg senki sincs a foglaláson, az Utasok hozzárendelése felirat látszik rajta.',
   'help.guide.booking-travelers.step.2':
-    'Kattints azokra, akiknek ez a foglalás szól. A kiválasztott pipát kap; kattints rá újra, és leveszed.',
+    'Kattints rá, és válaszd ki azokat, akiknek ez a foglalás szól; a megnevezett vendégek is ott vannak a listában. A kiválasztott pipát kap, és az avatarja megjelenik a mezőben. Kattints újra a névre, és leveszed.',
   'help.guide.booking-travelers.step.3': 'Kattints a Frissítés gombra.',
   'help.guide.booking-travelers.step.4':
     'Fent az eszköztárban, a típuscímkék mellett kattints egy utas avatarjára, és csak az ő foglalásait látod.',
@@ -3325,21 +3325,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Vidd be azt, amibe egy foglalás kerül, a Költségek közé, elosztva a fizető emberek között.',
   'help.guide.booking-cost.step.1':
-    'Nyisd meg a foglalást, és menj az űrlap aljára. A Costs alatt áll a Create expense, azzal a megjegyzéssel, hogy elmenti a foglalást, majd megnyitja a költségszerkesztőt.',
+    'Nyisd meg a foglalást, és menj az űrlap aljára. A Költségek alatt áll a Költség létrehozása és a Meglévő költség csatolása, a következő megjegyzéssel: Menti a foglalást, majd megnyitja a költségszerkesztőt.',
   'help.guide.booking-cost.step.2':
-    'Kattints a Create expense gombra. A foglalás elmentődik, az űrlapja bezárul, és megnyílik a költségszerkesztő.',
+    'Kattints a Költség létrehozása gombra. A foglalás elmentődik, az űrlapja bezárul, és megnyílik a költségszerkesztő.',
   'help.guide.booking-cost.step.3':
     'A Mire volt? már a foglalás címe. Vidd be a Teljes összeg mezőt, és ellenőrizd a Pénznem meg a Nap értékét.',
   'help.guide.booking-cost.step.4':
     'A Kategória az, amit a foglalás típusa sugall. Állítsd be a Ki fizetett? mezőt és azt, hogyan oszlik meg az összeg.',
   'help.guide.booking-cost.step.5': 'Kattints a Költség hozzáadása gombra.',
   'help.guide.booking-cost.result':
-    'A foglalás űrlapján most már a Linked expense áll az összeggel, és ugyanaz a költség ott áll a Költségek fülön, ehhez a foglaláshoz kötve.',
+    'A foglalás űrlapján a költség most a Kapcsolt költségek alatt áll az összegével, és ugyanaz a költség ott áll a Költségek fülön, ehhez a foglaláshoz kötve.',
   'help.guide.booking-cost.tip.1':
     'A kategória a típust követi: az Étteremből Étel és ital lesz, a Szállodából Szállás, a Parkolásból Parkolás, az Esemény és a Túra pedig mindkettő az Egyéb kategóriába esik.',
-  'help.guide.booking-cost.tip.2': 'A Linked expense melletti kuka a költséget törli, nem a foglalást.',
+  'help.guide.booking-cost.tip.2':
+    'Egy foglaláshoz több költség is tartozhat. A Meglévő költség csatolása azokat kínálja a Költségekből, amelyek még sehova sem tartoznak. Egy kapcsolt költségnél a Leválasztás, a költség megmarad leválasztja, és a Költségekben hagyja, a kuka viszont törli.',
   'help.guide.booking-cost.tip.3':
-    'A Costs csak addig van az űrlapon, amíg a Költségek bővítmény be van kapcsolva, amit az adminisztrátor a Bővítmények alatt kapcsolgat.',
+    'A Költségek blokk csak addig van az űrlapon, amíg a Költségek bővítmény be van kapcsolva, amit az adminisztrátor a Bővítmények alatt kapcsolgat.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Foglalás megtalálása',
   'help.guide.filter-bookings.goal':
@@ -3412,7 +3413,7 @@ const help: TranslationStrings = {
     'A csatolt dokumentumok az utazás Fájlok fülén maradnak; csak a foglaláshoz fűződő kapcsolatuk szűnik meg.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Minden megtalált foglalás az Új foglalás űrlapon nyílik meg, egymás után, már kitöltve. Egy szállodánál ez a név a Címben és, ha az utazásban megvan a hely, a Szálloda alatt, a Helyszín / Cím, az Ettől és az Eddig az éjszakáira, a Bejelentkezés és a Kijelentkezés, a Foglalási kód, a visszaigazolás a Fájlok alatt, és bekapcsolt Költségek mellett az ár Linked expense gyanánt. Ellenőrizd, és kattints a Hozzáadás gombra.',
+    'Minden megtalált foglalás az Új foglalás űrlapon nyílik meg, egymás után, már kitöltve. Egy szállodánál ez a név a Címben és, ha az utazásban megvan a hely, a Szálloda alatt, a Helyszín / Cím, az Ettől és az Eddig az éjszakáira, a Bejelentkezés és a Kijelentkezés, a Foglalási kód, a visszaigazolás a Fájlok alatt, és bekapcsolt Költségek mellett az ár Kapcsolt költség gyanánt. Ellenőrizd, és kattints a Hozzáadás gombra.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Költségek',
@@ -3584,17 +3585,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Nyisd meg a foglalást a Közlekedés vagy a Foglalások fülön, és kattints a ceruzájára.',
   'help.guide.expense-from-booking.step.2':
-    'Görgess az űrlap alján lévő Costs blokkhoz. Amíg semmi nincs hozzákapcsolva, a Create expense lehetőséget kínálja, és azt mondja, hogy előbb menti a foglalást.',
+    'Görgess az űrlap alján lévő Költségek blokkhoz. A Költség létrehozása lehetőséget kínálja, amely előbb menti a foglalást, és a Meglévő költség csatolása lehetőséget egy olyan költséghez, amely már a Költségek fülön van.',
   'help.guide.expense-from-booking.step.3':
-    'Kattints a Create expense gombra. A foglalás mentődik, az űrlap bezárul, és megnyílik a Költségek szerkesztő a foglalás címével névként, a típusa pedig már egy kategóriához igazítva.',
+    'Kattints a Költség létrehozása gombra. A foglalás mentődik, az űrlap bezárul, és megnyílik a Költségek szerkesztő a foglalás címével névként, a típusa pedig már egy kategóriához igazítva.',
   'help.guide.expense-from-booking.step.4':
-    'Töltsd ki az összeget és a pénznemét, azt, ki fizetett, és a felosztást, mint bármelyik kiadásnál, majd ments. A foglalást újra megnyitva a kiadás a Linked expense alatt látszik, ceruzával a szerkesztéshez és kukával az eltávolításhoz.',
+    'Töltsd ki az összeget és a pénznemét, azt, ki fizetett, és a felosztást, mint bármelyik kiadásnál, majd ments. A foglalást újra megnyitva a kiadás a Kapcsolt költségek alatt látszik, ceruzával a szerkesztéshez, a Leválasztás, a költség megmarad gombbal a leválasztáshoz és kukával az eltávolításhoz.',
   'help.guide.expense-from-booking.result':
     'A foglalás viszi a költségét, a kiadás pedig egy hétköznapi sor a Költségek fülön, fizetővel, felosztással és pénznemmel, mint bármelyik másik.',
   'help.guide.expense-from-booking.tip.1':
-    'A foglalás törlése a hozzákapcsolt kiadást is törli vele. A foglalás Costs blokkjában a Remove expense az ellenkezőjét teszi: a kiadás eltűnik, a foglalás marad.',
+    'A foglalás törlése a hozzákapcsolt kiadásokat is törli vele. A foglalás Költségek blokkjában a Költség eltávolítása az ellenkezőjét teszi: a kiadás eltűnik, a foglalás marad. A Leválasztás, a költség megmarad mindkettőt megtartja.',
   'help.guide.expense-from-booking.tip.2':
-    'Egy helynek ugyanez a blokk van az űrlapján, ahol a Create expense előbb a helyet menti.',
+    'Egy helynek ugyanez a blokk van az űrlapján, ahol a Költség létrehozása előbb a helyet menti.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Közlekedés',
@@ -3651,7 +3652,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'A sor oda kerül, ahová a kezdési ideje teszi, az utolsó olyan megálló után, amely korábban kezdődik. A fogantyúja bárhová máshová húzza a napon belül, vagy egy másik napra.',
   'help.guide.add-transport.tip.2':
-    'A Fájlok alatti Fájl csatolása veszi a jegyet, a Costs alatti Create expense pedig elmenti a foglalást, és megnyitja a Költségek szerkesztőt a viteldíjhoz.',
+    'A Fájlok alatti Fájl csatolása veszi a jegyet, a Költségek alatti Költség létrehozása pedig elmenti a foglalást, és megnyitja a Költségek szerkesztőt a viteldíjhoz.',
   'help.guide.add-transport.tip.3':
     'Az Utasok jelöli, ki van rajta ezen az úton. Amint egy közlekedésnek utasai vannak, a fül eszköztára kinöveszti az avatarjaikat, és szűri szerintük a listát.',
   // plan-transit

@@ -1845,7 +1845,7 @@ const help: TranslationStrings = {
     'Ekle düğmesine tıklayın. Aynı adlı bir yer gezide zaten varsa form bunu söyler ve düğme Yine de ekle olur.',
   'help.guide.create-place.result': 'Yer listede ve haritadadır, bir güne konana kadar Planlanmamış altında.',
   'help.guide.create-place.tip.1':
-    'Formun altındaki Dosyalar ve Costs, yere bir belge ekler ya da kaydettikten hemen sonra gideri için Costs düzenleyicisini açar.',
+    'Formun altındaki Dosyalar ve Maliyetler, yere bir belge ekler ya da kaydettikten hemen sonra gideri için Maliyetler düzenleyicisini açar.',
   'help.guide.create-place.tip.2':
     'Her TREK’te aramayı TREK dizini ve OpenStreetMap yanıtlar, Yer ayrıntıları ise kendini Wikipedia, Wikivoyage ve Wikimedia üzerinden doldurur. Google yalnızca ikisi de boş döndüğünde sorulur ve puanı yalnızca o getirir.',
   'help.guide.create-place.tip.3':
@@ -3164,7 +3164,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Sekmenin sağ üstündeki Manuel Rezervasyon düğmesine tıklayın. Yeni Rezervasyon açılır.',
   'help.guide.create-booking.step.2':
-    'Rezervasyon Türü seçin. Konaklama, Restoran, Etkinlik, Tur, Otopark ve Diğer bu sekmenin yaptığı altı türdür ve form seçimle birlikte değişir: yalnızca Konaklama tarihlerini bir gün aralığıyla değiştirir.',
+    'Formun üstündeki listeden, Yolcular alanının yanında Rezervasyon Türü seçin. Konaklama, Restoran, Etkinlik, Tur, Otopark ve Diğer bu sekmenin yaptığı altı türdür ve form seçimle birlikte değişir: yalnızca Konaklama tarihlerini bir gün aralığıyla değiştirir.',
   'help.guide.create-booking.step.3':
     'Başlık yazın. Formun ısrar ettiği tek alan budur ve içinde bir şey olana kadar Ekle ölü kalır.',
   'help.guide.create-booking.step.4':
@@ -3221,9 +3221,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.goal':
     'Bir rezervasyonun kapsadığı yolcuları işaretleyin ve sonra yalnızca onlarınkini görün.',
   'help.guide.booking-travelers.step.1':
-    'Rezervasyonu kalemle açın ve Yolcular alanına kadar inin. Gezinin her üyesi orada durur, adı verilmiş misafirler de aralarında.',
+    'Rezervasyonu kalemle açın. Yolcular formun üstünde, Rezervasyon Türü alanının yanında durur ve rezervasyonda kimse yokken Yolcu ata yazar.',
   'help.guide.booking-travelers.step.2':
-    'Bu rezervasyonun kimler için olduğuna tıklayın. Seçilen bir onay işareti alır; kaldırmak için yeniden tıklayın.',
+    'Ona tıklayın ve bu rezervasyonun kimler için olduğunu seçin; adı verilmiş misafirler de listededir. Seçilen bir onay işareti alır ve avatarı alanda görünür. Kaldırmak için ada yeniden tıklayın.',
   'help.guide.booking-travelers.step.3': 'Güncelle düğmesine tıklayın.',
   'help.guide.booking-travelers.step.4':
     'Yukarıda araç çubuğunda, tür rozetlerinin yanında, yalnızca o kişinin rezervasyonlarını görmek için bir yolcunun avatarına tıklayın.',
@@ -3254,21 +3254,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Bir rezervasyonun tuttuğu parayı, onu ödeyen kişiler arasında bölünmüş olarak Maliyetler bölümüne taşıyın.',
   'help.guide.booking-cost.step.1':
-    'Rezervasyonu açın ve formun en altına inin. Costs altında Create expense durur, rezervasyonu kaydedip sonra maliyet düzenleyicisini açtığını söyleyen notla birlikte.',
+    'Rezervasyonu açın ve formun en altına inin. Maliyetler altında Harcama oluştur ve Mevcut harcamayı bağla durur, Rezervasyonu kaydeder, sonra masraf düzenleyicisini açar notuyla birlikte.',
   'help.guide.booking-cost.step.2':
-    'Create expense düğmesine tıklayın. Rezervasyon kaydedilir, formu kapanır ve maliyet düzenleyicisi açılır.',
+    'Harcama oluştur düğmesine tıklayın. Rezervasyon kaydedilir, formu kapanır ve maliyet düzenleyicisi açılır.',
   'help.guide.booking-cost.step.3':
     'Ne içindi? alanı zaten rezervasyonun başlığıdır. Toplam tutar girin ve Para birimi ile Gün alanlarını denetleyin.',
   'help.guide.booking-cost.step.4':
     'Kategori, rezervasyon türünün işaret ettiği kategoridir. Kim ödedi? alanını ve tutarın nasıl bölündüğünü ayarlayın.',
   'help.guide.booking-cost.step.5': 'Harcama ekle düğmesine tıklayın.',
   'help.guide.booking-cost.result':
-    'Rezervasyonun formunda artık tutarıyla birlikte Linked expense yazar ve aynı harcama bu rezervasyona bağlı olarak Maliyetler sekmesinde durur.',
+    'Rezervasyonun formu artık harcamayı tutarıyla birlikte Bağlı harcamalar altında listeler ve aynı harcama bu rezervasyona bağlı olarak Maliyetler sekmesinde durur.',
   'help.guide.booking-cost.tip.1':
     'Kategori türü izler: Restoran Yiyecek & içecek olur, Konaklama Konaklama olur, Otopark Otopark olur, Etkinlik ile Tur ise ikisi de Diğer içine düşer.',
-  'help.guide.booking-cost.tip.2': 'Linked expense üzerindeki çöp kutusu harcamayı kaldırır, rezervasyonu değil.',
+  'help.guide.booking-cost.tip.2':
+    'Bir rezervasyon birden çok harcama taşıyabilir. Mevcut harcamayı bağla, Maliyetler içinde henüz hiçbir yere ait olmayanları sunar. Bağlı bir harcamada Bağlantıyı kaldır, harcamayı tut onu serbest bırakır ve Maliyetler içinde tutar, çöp kutusu ise onu kaldırır.',
   'help.guide.booking-cost.tip.3':
-    'Costs formda yalnızca Maliyetler eklentisi açıkken bulunur, onu da yönetici Eklentiler altından açıp kapatır.',
+    'Maliyetler formda yalnızca Maliyetler eklentisi açıkken bulunur, onu da yönetici Eklentiler altından açıp kapatır.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Bir rezervasyon bulun',
   'help.guide.filter-bookings.goal': 'Uzun bir sekmeyi aradığınız türe, kişiye ya da duruma daraltın.',
@@ -3339,7 +3340,7 @@ const help: TranslationStrings = {
     'Eklenmiş olan belgeler gezinin Dosyalar sekmesinde kalır; yalnızca rezervasyona olan bağları gider.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Bulunan her rezervasyon Yeni Rezervasyon içinde, art arda ve çoktan doldurulmuş olarak açılır. Bir otel için bu, Başlık içindeki ad ve gezide yer varsa Konaklama altında yer, Konum / Adres bilgisi, geceleri üzerinde İtibaren ve İle, Giriş ve Çıkış yapmak, Rezervasyon Kodu, Dosyalar altında onay ve Maliyetler açıkken Linked expense olarak fiyattır. Denetleyin ve Ekle düğmesine tıklayın.',
+    'Bulunan her rezervasyon Yeni Rezervasyon içinde, art arda ve çoktan doldurulmuş olarak açılır. Bir otel için bu, Başlık içindeki ad ve gezide yer varsa Konaklama altında yer, Konum / Adres bilgisi, geceleri üzerinde İtibaren ve İle, Giriş ve Çıkış yapmak, Rezervasyon Kodu, Dosyalar altında onay ve Maliyetler açıkken Bağlı harcama olarak fiyattır. Denetleyin ve Ekle düğmesine tıklayın.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Maliyetler',
@@ -3511,17 +3512,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Rezervasyonu Ulaşım ya da Rezervasyonlar sekmesinde açın ve kalemine tıklayın.',
   'help.guide.expense-from-booking.step.2':
-    'Formun altındaki Costs bloğuna inin. Henüz hiçbir şey bağlı değilken Create expense sunar ve önce rezervasyonu kaydettiğini söyler.',
+    'Formun altındaki Maliyetler bloğuna inin. Önce rezervasyonu kaydeden Harcama oluştur ile zaten Maliyetler içinde olan bir harcama için Mevcut harcamayı bağla sunar.',
   'help.guide.expense-from-booking.step.3':
-    'Create expense düğmesine tıklayın. Rezervasyon kaydedilir, form kapanır ve Maliyetler düzenleyicisi rezervasyonun başlığını ad olarak, türünü de bir kategoriyle eşleştirilmiş halde açar.',
+    'Harcama oluştur düğmesine tıklayın. Rezervasyon kaydedilir, form kapanır ve Maliyetler düzenleyicisi rezervasyonun başlığını ad olarak, türünü de bir kategoriyle eşleştirilmiş halde açar.',
   'help.guide.expense-from-booking.step.4':
-    'Tutarı ve para birimini, kimin ödediğini ve bölüşümü her harcamada olduğu gibi doldurup kaydedin. Rezervasyonu yeniden açtığınızda harcama Linked expense altında görünür, düzenlemek için bir kalem ve kaldırmak için bir çöp kutusuyla.',
+    'Tutarı ve para birimini, kimin ödediğini ve bölüşümü her harcamada olduğu gibi doldurup kaydedin. Rezervasyonu yeniden açtığınızda harcama Bağlı harcamalar altında görünür; düzenlemek için bir kalem, serbest bırakmak için Bağlantıyı kaldır, harcamayı tut ve kaldırmak için bir çöp kutusuyla.',
   'help.guide.expense-from-booking.result':
     'Rezervasyon maliyetini taşır ve harcama, Maliyetler sekmesinde ödeyeni, bölüşümü ve para birimiyle diğerleri gibi sıradan bir satırdır.',
   'help.guide.expense-from-booking.tip.1':
-    'Rezervasyonu silmek bağlı harcamasını da onunla birlikte siler. Rezervasyonun Costs bloğundaki Remove expense bunun tersini yapar: harcama gider, rezervasyon kalır.',
+    'Rezervasyonu silmek bağlı harcamalarını da onunla birlikte siler. Rezervasyonun Maliyetler bloğundaki Harcamayı kaldır bunun tersini yapar: harcama gider, rezervasyon kalır. Bağlantıyı kaldır, harcamayı tut ikisini de tutar.',
   'help.guide.expense-from-booking.tip.2':
-    'Bir yerin formunda da aynı blok vardır, Create expense orada önce yeri kaydeder.',
+    'Bir yerin formunda da aynı blok vardır, Harcama oluştur orada önce yeri kaydeder.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Ulaşım',
@@ -3577,7 +3578,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'Satır, başlangıç saatinin koyduğu yere, daha erken başlayan son duraktan sonra iner. Tutamağı onu gün içinde başka herhangi bir yere ya da başka bir güne sürükler.',
   'help.guide.add-transport.tip.2':
-    'Dosyalar altındaki Dosya ekle bileti alır, Costs altındaki Create expense ise rezervasyonu kaydeder ve bilet ücreti için Maliyetler düzenleyicisini açar.',
+    'Dosyalar altındaki Dosya ekle bileti alır, Maliyetler altındaki Harcama oluştur ise rezervasyonu kaydeder ve bilet ücreti için Maliyetler düzenleyicisini açar.',
   'help.guide.add-transport.tip.3':
     'Yolcular bu yolculukta kimin olduğunu işaretler. Bir ulaşımın yolcuları olur olmaz sekmenin araç çubuğunda avatarları belirir ve listeyi onlara göre süzer.',
   // plan-transit

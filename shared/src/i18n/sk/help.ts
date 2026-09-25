@@ -2867,7 +2867,7 @@ const help: TranslationStrings = {
     'Zadajte do cesty ručne reštauráciu, udalosť, prehliadku, parkovacie miesto alebo čokoľvek iné.',
   'help.guide.create-booking.step.1': 'Kliknite na Ručná rezervácia vpravo hore na záložke. Otvorí sa Nová rezervácia.',
   'help.guide.create-booking.step.2':
-    'Vyberte Typ rezervácie. Ubytovanie, Reštaurácia, Udalosť, Prehliadka, Parkovanie a Ostatné je šesť typov, ktoré táto záložka vytvára, a formulár sa mení podľa voľby: len Ubytovanie vymení dátumy za rozsah dní.',
+    'Vyberte Typ rezervácie zo zoznamu v hornej časti formulára, vedľa poľa Cestujúci. Ubytovanie, Reštaurácia, Udalosť, Prehliadka, Parkovanie a Ostatné je šesť typov, ktoré táto záložka vytvára, a formulár sa mení podľa voľby: len Ubytovanie vymení dátumy za rozsah dní.',
   'help.guide.create-booking.step.3':
     'Zadajte Názov. Je to jediné pole, na ktorom formulár trvá, a Pridať zostane neaktívne, kým v ňom niečo nie je.',
   'help.guide.create-booking.step.4':
@@ -2924,9 +2924,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.goal':
     'Označte cestujúcich, na ktorých sa rezervácia vzťahuje, a potom zobrazte len ich rezervácie.',
   'help.guide.booking-travelers.step.1':
-    'Otvorte rezerváciu ceruzkou a prejdite nadol na Cestujúci. Nachádza sa tam každý člen cesty vrátane pomenovaných hostí.',
+    'Otvorte rezerváciu ceruzkou. Pole Cestujúci je v hornej časti formulára, vedľa poľa Typ rezervácie, a kým na rezervácii nikto nie je, ukazuje Priradiť cestujúcich.',
   'help.guide.booking-travelers.step.2':
-    'Kliknite na ľudí, pre ktorých je rezervácia. Vybraný dostane fajku; ďalším kliknutím ju odstránite.',
+    'Kliknite naň a vyberte ľudí, pre ktorých je rezervácia; pomenovaní hostia sú v zozname tiež. Vybraný dostane fajku a svoj avatar v poli. Ďalším kliknutím na meno ho odstránite.',
   'help.guide.booking-travelers.step.3': 'Kliknite na Aktualizovať.',
   'help.guide.booking-travelers.step.4':
     'Hore na paneli nástrojov vedľa štítkov typov kliknite na avatar cestujúceho, aby ste videli len jeho rezervácie.',
@@ -2957,7 +2957,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Premeňte cenu rezervácie na náklad',
   'help.guide.booking-cost.goal': 'Dostaňte cenu rezervácie do Nákladov, rozdelenú medzi ľudí, ktorí za ňu platia.',
   'help.guide.booking-cost.step.1':
-    'Otvorte rezerváciu a prejdite do spodnej časti formulára. V časti Náklady je Vytvoriť výdavok s poznámkou Uloží rezerváciu a potom otvorí editor nákladov.',
+    'Otvorte rezerváciu a prejdite do spodnej časti formulára. V časti Náklady sú Vytvoriť výdavok a Prepojiť existujúci výdavok s poznámkou Uloží rezerváciu a potom otvorí editor nákladov.',
   'help.guide.booking-cost.step.2':
     'Kliknite na Vytvoriť výdavok. Rezervácia sa uloží, jej formulár sa zatvorí a otvorí sa editor nákladov.',
   'help.guide.booking-cost.step.3':
@@ -2966,10 +2966,11 @@ const help: TranslationStrings = {
     'Kategória je tá, ktorú naznačuje typ rezervácie. Nastavte Kto zaplatil? a spôsob rozdelenia sumy.',
   'help.guide.booking-cost.step.5': 'Kliknite na Pridať výdavok.',
   'help.guide.booking-cost.result':
-    'Formulár rezervácie teraz ukazuje Prepojený výdavok so sumou a ten istý výdavok je na záložke Náklady, prepojený s touto rezerváciou.',
+    'Formulár rezervácie teraz uvádza výdavok v časti Prepojené výdavky s jeho sumou a ten istý výdavok je na záložke Náklady, prepojený s touto rezerváciou.',
   'help.guide.booking-cost.tip.1':
     'Kategória sa riadi typom: z Reštaurácie je Jedlo a pitie, z Ubytovania Ubytovanie, z Parkovania Parkovanie a Udalosť aj Prehliadka skončia v Ostatné.',
-  'help.guide.booking-cost.tip.2': 'Kôš pri Prepojený výdavok odstráni výdavok, nie rezerváciu.',
+  'help.guide.booking-cost.tip.2':
+    'Rezervácia môže niesť viac výdavkov. Prepojiť existujúci výdavok ponúka tie z Nákladov, ktoré zatiaľ nikam nepatria. Pri prepojenom ho Odpojiť, výdavok ponechať uvoľní a nechá v Nákladoch, kým kôš ho odstráni.',
   'help.guide.booking-cost.tip.3':
     'Náklady sú vo formulári len vtedy, keď je zapnutý doplnok Náklady, ktorý administrátor zapína v časti Doplnky.',
   // filter-bookings
@@ -3395,15 +3396,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Otvorte rezerváciu na karte Doprava alebo Rezervácie a kliknite na jej ceruzku.',
   'help.guide.expense-from-booking.step.2':
-    'Prejdite na blok Náklady v spodnej časti formulára. Kým nie je nič prepojené, ponúka Vytvoriť výdavok a uvádza, že najprv uloží rezerváciu.',
+    'Prejdite na blok Náklady v spodnej časti formulára. Ponúka Vytvoriť výdavok, ktorý najprv uloží rezerváciu, a Prepojiť existujúci výdavok pre výdavok, ktorý už v Nákladoch je.',
   'help.guide.expense-from-booking.step.3':
     'Kliknite na Vytvoriť výdavok. Rezervácia sa uloží, formulár sa zatvorí a otvorí sa editor nákladov s názvom rezervácie ako názvom výdavku a s kategóriou priradenou podľa jej typu.',
   'help.guide.expense-from-booking.step.4':
-    'Vyplňte sumu a jej menu, kto zaplatil a rozdelenie ako pri každom výdavku a uložte. Po opätovnom otvorení rezervácie je výdavok v časti Prepojený výdavok, s ceruzkou na úpravu a košom na odstránenie.',
+    'Vyplňte sumu a jej menu, kto zaplatil a rozdelenie ako pri každom výdavku a uložte. Po opätovnom otvorení rezervácie je výdavok v časti Prepojené výdavky, s ceruzkou na úpravu, Odpojiť, výdavok ponechať na uvoľnenie a košom na odstránenie.',
   'help.guide.expense-from-booking.result':
     'Rezervácia nesie svoju cenu a výdavok je bežný riadok na karte Náklady s platiteľom, rozdelením a menou ako ktorýkoľvek iný.',
   'help.guide.expense-from-booking.tip.1':
-    'Vymazaním rezervácie sa vymaže aj jej prepojený výdavok. Odstrániť výdavok v bloku Náklady rezervácie robí opak: výdavok zmizne, rezervácia zostane.',
+    'Vymazaním rezervácie sa vymažú aj jej prepojené výdavky. Odstrániť výdavok v bloku Náklady rezervácie robí opak: výdavok zmizne, rezervácia zostane. Odpojiť, výdavok ponechať zachová oboje.',
   'help.guide.expense-from-booking.tip.2':
     'Miesto má vo svojom formulári rovnaký blok a Vytvoriť výdavok v ňom najprv uloží miesto.',
 

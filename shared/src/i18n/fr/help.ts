@@ -1933,7 +1933,7 @@ const help: TranslationStrings = {
   'help.guide.create-place.result':
     'Le lieu est dans la liste et sur la carte, sous Non planifiés tant qu’il n’est pas posé sur un jour.',
   'help.guide.create-place.tip.1':
-    'Fichiers et Costs en bas du formulaire attachent un document au lieu, ou ouvrent l’éditeur Costs pour sa dépense juste après l’enregistrement.',
+    'Fichiers et Coûts en bas du formulaire attachent un document au lieu, ou ouvrent l’éditeur de Coûts pour sa dépense juste après l’enregistrement.',
   'help.guide.create-place.tip.2':
     'L’index TREK et OpenStreetMap répondent à la recherche sur chaque TREK, et Détails du lieu se remplit depuis Wikipédia, Wikivoyage et Wikimedia. Google n’est interrogé que là où les deux restent vides, et lui seul apporte les notes.',
   'help.guide.create-place.tip.3':
@@ -3296,7 +3296,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Cliquez sur Réservation manuelle en haut à droite de l’onglet. Nouvelle réservation s’ouvre.',
   'help.guide.create-booking.step.2':
-    'Choisissez le Type de réservation. Hébergement, Restaurant, Événement, Visite, Parking et Autre sont les six que cet onglet crée, et le formulaire change avec le choix : seul Hébergement échange ses dates contre une plage de jours.',
+    'Choisissez le Type de réservation dans la liste en haut du formulaire, à côté de Voyageurs. Hébergement, Restaurant, Événement, Visite, Parking et Autre sont les six que cet onglet crée, et le formulaire change avec le choix : seul Hébergement échange ses dates contre une plage de jours.',
   'help.guide.create-booking.step.3':
     'Tapez le Titre. C’est le seul champ sur lequel le formulaire insiste, et Ajouter reste mort tant qu’il est vide.',
   'help.guide.create-booking.step.4':
@@ -3353,9 +3353,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Dire pour qui est une réservation',
   'help.guide.booking-travelers.goal': 'Marquez les voyageurs que couvre une réservation, puis ne voyez que les leurs.',
   'help.guide.booking-travelers.step.1':
-    'Ouvrez la réservation avec le crayon et descendez jusqu’à Voyageurs. Chaque membre du voyage s’y trouve, les invités nommés compris.',
+    'Ouvrez la réservation avec le crayon. Voyageurs se trouve en haut du formulaire, à côté de Type de réservation, et affiche Assigner des voyageurs tant que personne n’est sur la réservation.',
   'help.guide.booking-travelers.step.2':
-    'Cliquez les personnes pour qui est cette réservation. Une personne choisie reçoit une coche ; cliquez-la de nouveau pour l’enlever.',
+    'Cliquez dessus et choisissez les personnes pour qui est cette réservation ; les invités nommés sont aussi dans la liste. Une personne choisie reçoit une coche et son avatar dans le champ. Cliquez de nouveau sur le nom pour l’enlever.',
   'help.guide.booking-travelers.step.3': 'Cliquez sur Mettre à jour.',
   'help.guide.booking-travelers.step.4':
     'En haut, dans la barre d’outils, à côté des pastilles de sorte, cliquez l’avatar d’un voyageur pour ne voir que ses réservations.',
@@ -3387,21 +3387,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Faites entrer ce que coûte une réservation dans les Coûts, partagé entre les personnes qui paient.',
   'help.guide.booking-cost.step.1':
-    'Ouvrez la réservation et descendez au bas du formulaire. Sous Costs se trouve Create expense, avec la note Saves the booking, then opens the Costs editor.',
+    'Ouvrez la réservation et descendez au bas du formulaire. Sous Coûts se trouvent Créer une dépense et Lier une dépense existante, avec la note Enregistre la réservation, puis ouvre l’éditeur de dépenses.',
   'help.guide.booking-cost.step.2':
-    'Cliquez sur Create expense. La réservation est enregistrée, son formulaire se ferme et l’éditeur Costs s’ouvre.',
+    'Cliquez sur Créer une dépense. La réservation est enregistrée, son formulaire se ferme et l’éditeur de Coûts s’ouvre.',
   'help.guide.booking-cost.step.3':
     'C’était pour quoi ? est déjà le titre de la réservation. Entrez le Montant total et vérifiez la Devise et le Jour.',
   'help.guide.booking-cost.step.4':
     'Catégorie est celle qu’implique le type de réservation. Réglez Qui a payé ? et la façon dont le montant est partagé.',
   'help.guide.booking-cost.step.5': 'Cliquez sur Ajouter une dépense.',
   'help.guide.booking-cost.result':
-    'Le formulaire de la réservation affiche maintenant Linked expense avec le montant, et la même dépense se trouve dans l’onglet Coûts, rattachée à cette réservation.',
+    'Le formulaire de la réservation affiche maintenant la dépense sous Dépenses liées avec son montant, et la même dépense se trouve dans l’onglet Coûts, rattachée à cette réservation.',
   'help.guide.booking-cost.tip.1':
     'La catégorie suit le type : Restaurant devient Nourriture et boissons, Hébergement devient Hébergement, Parking devient Parking, et Événement et Visite atterrissent tous deux dans Autre.',
-  'help.guide.booking-cost.tip.2': 'La corbeille sur Linked expense retire la dépense, pas la réservation.',
+  'help.guide.booking-cost.tip.2':
+    'Une réservation peut porter plusieurs dépenses. Lier une dépense existante propose celles de Coûts qui ne sont encore rattachées à rien. Sur une dépense liée, Délier, garder la dépense la détache et la laisse dans Coûts, tandis que la corbeille la retire.',
   'help.guide.booking-cost.tip.3':
-    'Costs n’est dans le formulaire que tant que l’extension Coûts est activée, ce que l’administrateur règle sous Extensions.',
+    'Coûts n’est dans le formulaire que tant que l’extension Coûts est activée, ce que l’administrateur règle sous Extensions.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Retrouver une réservation',
   'help.guide.filter-bookings.goal': 'Réduisez un onglet long à la sorte, à la personne ou à l’état que vous cherchez.',
@@ -3455,7 +3456,7 @@ const help: TranslationStrings = {
   'help.guide.edit-booking.tip.1':
     'Un Code de réservation que vous n’arrivez pas à lire, c’est Masquer les codes de réservation dans les Paramètres, sous Affichage. Survolez-le, ou cliquez-le, et il devient lisible.',
   'help.guide.edit-booking.tip.2':
-    'Changez le type et la catégorie d’une dépense liée suit, sauf si vous aviez choisi une catégorie à la main dans l’éditeur Costs.',
+    'Changez le type et la catégorie d’une dépense liée suit, sauf si vous aviez choisi une catégorie à la main dans l’éditeur de Coûts.',
   'help.guide.edit-booking.tip.3':
     'Un hébergement se modifie ici aussi : ses jours Du et Au sont dans le même formulaire.',
   // delete-booking
@@ -3473,7 +3474,7 @@ const help: TranslationStrings = {
     'Les documents qui étaient joints restent dans l’onglet Fichiers du voyage ; seul leur lien avec la réservation s’en va.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Chaque réservation trouvée s’ouvre dans Nouvelle réservation, l’une après l’autre, déjà remplie. Pour un hôtel, c’est le nom dans Titre et, quand le voyage a le lieu, sous Hébergement, son Lieu / Adresse, Du et Au sur ses nuits, Arrivée et Départ, le Code de réservation, la confirmation sous Fichiers et, avec Coûts activé, le prix en Linked expense. Contrôlez-la et cliquez sur Ajouter.',
+    'Chaque réservation trouvée s’ouvre dans Nouvelle réservation, l’une après l’autre, déjà remplie. Pour un hôtel, c’est le nom dans Titre et, quand le voyage a le lieu, sous Hébergement, son Lieu / Adresse, Du et Au sur ses nuits, Arrivée et Départ, le Code de réservation, la confirmation sous Fichiers et, avec Coûts activé, le prix en Dépense liée. Contrôlez-la et cliquez sur Ajouter.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Coûts',
@@ -3645,17 +3646,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Ouvrez la réservation dans l’onglet Transports ou Réservations et cliquez sur son crayon.',
   'help.guide.expense-from-booking.step.2':
-    'Faites défiler jusqu’au bloc Costs en bas du formulaire. Tant que rien n’est lié, il propose Create expense et indique qu’il enregistre d’abord la réservation.',
+    'Faites défiler jusqu’au bloc Coûts en bas du formulaire. Il propose Créer une dépense, qui enregistre d’abord la réservation, et Lier une dépense existante pour une dépense déjà dans l’onglet Coûts.',
   'help.guide.expense-from-booking.step.3':
-    'Cliquez sur Create expense. La réservation est enregistrée, le formulaire se ferme, et l’éditeur de Coûts s’ouvre avec le titre de la réservation comme nom et son type déjà associé à une catégorie.',
+    'Cliquez sur Créer une dépense. La réservation est enregistrée, le formulaire se ferme, et l’éditeur de Coûts s’ouvre avec le titre de la réservation comme nom et son type déjà associé à une catégorie.',
   'help.guide.expense-from-booking.step.4':
-    'Remplissez le montant et sa devise, qui a payé et le partage comme pour n’importe quelle dépense, puis enregistrez. En rouvrant la réservation, elle apparaît sous Linked expense, avec un crayon pour la modifier et une corbeille pour la retirer.',
+    'Remplissez le montant et sa devise, qui a payé et le partage comme pour n’importe quelle dépense, puis enregistrez. En rouvrant la réservation, elle apparaît sous Dépenses liées, avec un crayon pour la modifier, Délier, garder la dépense pour la détacher et une corbeille pour la retirer.',
   'help.guide.expense-from-booking.result':
     'La réservation porte son coût, et la dépense est une ligne ordinaire de l’onglet Coûts, avec un payeur, un partage et une devise comme n’importe quelle autre.',
   'help.guide.expense-from-booking.tip.1':
-    'Supprimer la réservation supprime aussi sa dépense liée. Remove expense dans le bloc Costs de la réservation fait l’inverse : la dépense part, la réservation reste.',
+    'Supprimer la réservation supprime aussi ses dépenses liées. Retirer la dépense dans le bloc Coûts de la réservation fait l’inverse : la dépense part, la réservation reste. Délier, garder la dépense garde les deux.',
   'help.guide.expense-from-booking.tip.2':
-    'Un lieu a le même bloc dans son formulaire, où Create expense enregistre d’abord le lieu.',
+    'Un lieu a le même bloc dans son formulaire, où Créer une dépense enregistre d’abord le lieu.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Transports',
@@ -3712,7 +3713,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'La ligne se pose là où son heure de début la met, après la dernière étape qui commence plus tôt. Sa poignée la glisse n’importe où ailleurs dans le jour, ou sur un autre jour.',
   'help.guide.add-transport.tip.2':
-    'Joindre un fichier sous Fichiers prend le billet, et Create expense sous Costs enregistre la réservation et ouvre l’éditeur de Coûts pour le prix.',
+    'Joindre un fichier sous Fichiers prend le billet, et Créer une dépense sous Coûts enregistre la réservation et ouvre l’éditeur de Coûts pour le prix.',
   'help.guide.add-transport.tip.3':
     'Voyageurs marque qui est de ce trajet. Dès qu’un transport a des voyageurs, la barre d’outils de l’onglet fait pousser leurs avatars et filtre la liste par eux.',
   // plan-transit

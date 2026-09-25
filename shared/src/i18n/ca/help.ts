@@ -3222,7 +3222,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Fes clic a Reserva manual, a dalt a la dreta de la pestanya. S’obre Reserva nova.',
   'help.guide.create-booking.step.2':
-    'Tria el Tipus de reserva. Allotjament, Restaurant, Esdeveniment, Excursió, Aparcament i Altres són els sis que fa aquesta pestanya, i el formulari canvia amb la tria: només Allotjament bescanvia les dates per un interval de dies.',
+    'Tria el Tipus de reserva a la llista de dalt del formulari, al costat de Viatgers. Allotjament, Restaurant, Esdeveniment, Excursió, Aparcament i Altres són els sis que fa aquesta pestanya, i el formulari canvia amb la tria: només Allotjament bescanvia les dates per un interval de dies.',
   'help.guide.create-booking.step.3':
     'Escriu el Títol. És l’únic camp en què el formulari insisteix, i Afegir es queda mort fins que hi hagi alguna cosa.',
   'help.guide.create-booking.step.4':
@@ -3278,9 +3278,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Dir per a qui és una reserva',
   'help.guide.booking-travelers.goal': 'Marca els viatgers que cobreix una reserva i després mira només les seves.',
   'help.guide.booking-travelers.step.1':
-    'Obre la reserva amb el llapis i baixa fins a Viatgers. Allà hi ha cada membre del viatge, els convidats amb nom inclosos.',
+    'Obre la reserva amb el llapis. Viatgers és a dalt del formulari, al costat de Tipus de reserva, i diu Assigna viatgers mentre no hi ha ningú a la reserva.',
   'help.guide.booking-travelers.step.2':
-    'Fes clic a les persones per a qui és aquesta reserva. La que tries rep una marca; torna-hi a fer clic per treure-la.',
+    'Fes-hi clic i tria les persones per a qui és aquesta reserva; els convidats amb nom també són a la llista. La que tries rep una marca i el seu avatar al camp. Torna a fer clic al nom per treure-la.',
   'help.guide.booking-travelers.step.3': 'Fes clic a Actualitzar.',
   'help.guide.booking-travelers.step.4':
     'A dalt, a la barra d’eines, al costat dels xips de tipus, fes clic a l’avatar d’un viatger per veure només les seves reserves.',
@@ -3311,7 +3311,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Porta el que costa una reserva a les Despeses, repartit entre les persones que ho paguen.',
   'help.guide.booking-cost.step.1':
-    'Obre la reserva i vés al peu del formulari. Sota Despeses hi ha Crear despesa, amb la nota Desa la reserva i obre l’editor de Despeses.',
+    'Obre la reserva i vés al peu del formulari. Sota Despeses hi ha Crear despesa i Vincular despesa existent, amb la nota Desa la reserva i obre l’editor de Despeses.',
   'help.guide.booking-cost.step.2':
     'Fes clic a Crear despesa. La reserva es desa, el seu formulari es tanca i l’editor de Despeses s’obre.',
   'help.guide.booking-cost.step.3':
@@ -3320,10 +3320,11 @@ const help: TranslationStrings = {
     'Categoria és la que implica el tipus de reserva. Posa Qui ha pagat? i com es reparteix l’import.',
   'help.guide.booking-cost.step.5': 'Fes clic a Afegir despesa.',
   'help.guide.booking-cost.result':
-    'El formulari de la reserva ara diu Despesa vinculada amb l’import, i la mateixa despesa és a la pestanya Despeses, lligada a aquesta reserva.',
+    'El formulari de la reserva ara mostra la despesa sota Despeses vinculades amb el seu import, i la mateixa despesa és a la pestanya Despeses, lligada a aquesta reserva.',
   'help.guide.booking-cost.tip.1':
     'La categoria segueix el tipus: Restaurant passa a Menjar i beguda, Allotjament passa a Allotjament, Aparcament passa a Aparcament, i Esdeveniment i Excursió cauen tots dos a Altres.',
-  'help.guide.booking-cost.tip.2': 'La paperera de Despesa vinculada treu la despesa, no la reserva.',
+  'help.guide.booking-cost.tip.2':
+    'Una reserva pot portar diverses despeses. Vincular despesa existent ofereix les de Despeses que encara no pertanyen a res. En una de vinculada, Desvincular, conservar la despesa la deixa anar i la manté a Despeses, mentre que la paperera la treu.',
   'help.guide.booking-cost.tip.3':
     'Despeses només és al formulari mentre l’addon Pressupost està activat, que l’administrador engega a Complements.',
   // filter-bookings
@@ -3570,15 +3571,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Obre la reserva a la pestanya Transports o Reserves i fes clic al seu llapis.',
   'help.guide.expense-from-booking.step.2':
-    'Baixa fins al bloc Despeses al final del formulari. Mentre no hi hagi res vinculat, ofereix Crear despesa i diu que primer desa la reserva.',
+    'Baixa fins al bloc Despeses al final del formulari. Ofereix Crear despesa, que primer desa la reserva, i Vincular despesa existent per a una que ja és a Despeses.',
   'help.guide.expense-from-booking.step.3':
     'Fes clic a Crear despesa. La reserva es desa, el formulari es tanca, i l’editor de Despeses s’obre amb el títol de la reserva com a nom i el seu tipus ja associat a una categoria.',
   'help.guide.expense-from-booking.step.4':
-    'Omple l’import i la seva moneda, qui ha pagat i el repartiment com en qualsevol despesa, i desa. En tornar a obrir la reserva apareix sota Despesa vinculada, amb un llapis per editar-la i una paperera per treure-la.',
+    'Omple l’import i la seva moneda, qui ha pagat i el repartiment com en qualsevol despesa, i desa. En tornar a obrir la reserva apareix sota Despeses vinculades, amb un llapis per editar-la, Desvincular, conservar la despesa per deixar-la anar i una paperera per treure-la.',
   'help.guide.expense-from-booking.result':
     'La reserva porta el seu cost, i la despesa és una fila corrent de la pestanya Despeses, amb un pagador, un repartiment i una divisa com qualsevol altra.',
   'help.guide.expense-from-booking.tip.1':
-    'Eliminar la reserva elimina també la seva despesa vinculada. Eliminar despesa, al bloc Despeses de la reserva, fa el contrari: la despesa se’n va, la reserva es queda.',
+    'Eliminar la reserva elimina també les seves despeses vinculades. Eliminar despesa, al bloc Despeses de la reserva, fa el contrari: la despesa se’n va, la reserva es queda. Desvincular, conservar la despesa les manté totes dues.',
   'help.guide.expense-from-booking.tip.2':
     'Un lloc té el mateix bloc al seu formulari, on Crear despesa desa primer el lloc.',
 

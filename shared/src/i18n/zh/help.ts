@@ -2593,7 +2593,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.goal': '把一家餐厅、一场活动、一个旅游团、一个车位或别的什么，手动放进这次旅行。',
   'help.guide.create-booking.step.1': '点击这一栏右上角的“手动添加”。“新建预订”打开。',
   'help.guide.create-booking.step.2':
-    '选“预订类型”。这一栏做的六类是“住宿”“餐厅”“活动”“旅游团”“停车”和“其他”，表单随选择而变：只有“住宿”会把日期换成一段日子的范围。',
+    '从表单顶部“出行人”旁边的列表里选“预订类型”。这一栏做的六类是“住宿”“餐厅”“活动”“旅游团”“停车”和“其他”，表单随选择而变：只有“住宿”会把日期换成一段日子的范围。',
   'help.guide.create-booking.step.3': '填“标题”。这是表单唯一坚持要的字段，在它有内容之前“添加”一直是灰的。',
   'help.guide.create-booking.step.4':
     '设置“日期”和“开始时间”，如果这条预订有结束，再设“结束日期”和“结束时间”。日历只给出旅行之内的日子；结束不晚于开始时，会用红色这样提示并挡住“添加”。',
@@ -2639,8 +2639,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': '说明一条预订是给谁的',
   'help.guide.booking-travelers.goal': '标出一条预订涵盖的出行人，然后只看他们的。',
   'help.guide.booking-travelers.step.1':
-    '用铅笔打开这条预订，往下到“出行人”。旅行的每位成员都在那里，其中也包括有名字的“访客”。',
-  'help.guide.booking-travelers.step.2': '点击这条预订是给谁的那些人。被选中的人会得到一个勾；再点一次就取消。',
+    '用铅笔打开这条预订。“出行人”在表单顶部，“预订类型”旁边，只要这条预订上还没有人，它就显示“分配出行人”。',
+  'help.guide.booking-travelers.step.2':
+    '点它，选出这条预订是给谁的那些人；有名字的“访客”也在列表里。被选中的人会得到一个勾，头像也会出现在这个字段中。再点一次名字就取消。',
   'help.guide.booking-travelers.step.3': '点击“更新”。',
   'help.guide.booking-travelers.step.4': '在上方工具栏里，类型筛选片旁边，点击某位出行人的头像，就只看他的预订。',
   'help.guide.booking-travelers.result': '卡片列出它是给谁的那些人，而头像那一排把这一栏收窄到其中一个人。',
@@ -2665,16 +2666,17 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': '把一条预订的金额变成费用',
   'help.guide.booking-cost.goal': '把一条预订花掉的钱记进“费用”，并在付钱的人之间分摊。',
   'help.guide.booking-cost.step.1':
-    '打开这条预订，走到表单底部。“费用”下面是“创建支出”，附带那行说明“先保存预订，然后打开费用编辑器。”',
+    '打开这条预订，走到表单底部。“费用”下面是“创建支出”和“关联已有支出”，附带那行说明“先保存预订，然后打开费用编辑器。”',
   'help.guide.booking-cost.step.2': '点击“创建支出”。预订被保存，它的表单关上，费用编辑器打开。',
   'help.guide.booking-cost.step.3': '“这笔花在哪了？”已经是这条预订的标题。填入“总金额”，并核对“货币”和“日期”。',
   'help.guide.booking-cost.step.4': '“分类”是预订类型推出来的那一个。设置“谁支付的？”以及金额怎么“分摊”。',
   'help.guide.booking-cost.step.5': '点击“添加支出”。',
   'help.guide.booking-cost.result':
-    '这条预订的表单现在显示“关联支出”和金额，同一笔支出也立在“费用”栏里，系在这条预订上。',
+    '这条预订的表单现在在“已关联支出”下列出这笔支出和它的金额，同一笔支出也立在“费用”栏里，系在这条预订上。',
   'help.guide.booking-cost.tip.1':
     '分类跟着类型走：“餐厅”变成“餐饮”，“住宿”变成“住宿”，“停车”变成“停车”，“活动”和“旅游团”都落进“其他”。',
-  'help.guide.booking-cost.tip.2': '“关联支出”上的垃圾桶移除的是这笔支出，不是这条预订。',
+  'help.guide.booking-cost.tip.2':
+    '一条预订可以带多笔支出。“关联已有支出”会列出“费用”里还不属于任何地方的支出。在已关联的一笔上，“取消关联，保留支出”会解开关联并把它留在“费用”里，而垃圾桶会把它移除。',
   'help.guide.booking-cost.tip.3': '只有在“费用”扩展开着时，“费用”才在表单里，管理员在“扩展”下切换它。',
   // filter-bookings
   'help.guide.filter-bookings.title': '找到一条预订',
@@ -2875,15 +2877,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.goal': '把一趟航班、一家酒店或一个地点真正花掉的钱，附到它所属的那条记录上。',
   'help.guide.expense-from-booking.step.1': '在“交通”或“预订”标签页打开该预订，点击它的铅笔。',
   'help.guide.expense-from-booking.step.2':
-    '滚动到表单底部的“费用”区块。在还没有任何关联时，它会提供“创建支出”，并说明会先保存预订。',
+    '滚动到表单底部的“费用”区块。它提供会先保存预订的“创建支出”，以及用于已在“费用”里的支出的“关联已有支出”。',
   'help.guide.expense-from-booking.step.3':
     '点击“创建支出”。预订被保存，表单关闭，费用编辑器随即打开，预订的标题作为名称，它的类型也已经匹配到了一个分类。',
   'help.guide.expense-from-booking.step.4':
-    '像填任何一笔支出那样填好金额和它的币种、谁付的钱和分摊，然后保存。此时再打开该预订，就能在“关联支出”下看到它，旁边有铅笔可以编辑，有垃圾桶可以移除。',
+    '像填任何一笔支出那样填好金额和它的币种、谁付的钱和分摊，然后保存。此时再打开该预订，就能在“已关联支出”下看到它，旁边有铅笔可以编辑，有“取消关联，保留支出”可以解开关联，有垃圾桶可以移除。',
   'help.guide.expense-from-booking.result':
     '预订带上了它的花费，而这笔支出就是“费用”标签页上一条普通的行，和别的支出一样有付款人、分摊和货币。',
   'help.guide.expense-from-booking.tip.1':
-    '删除预订会连同它关联的支出一起删除。预订的“费用”区块里的“移除关联支出”则相反：支出没了，预订还在。',
+    '删除预订会连同它关联的支出一起删除。预订的“费用”区块里的“移除关联支出”则相反：支出没了，预订还在。“取消关联，保留支出”则两者都保留。',
   'help.guide.expense-from-booking.tip.2': '地点的表单里有同样的区块，其中的“创建支出”会先保存地点。',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────

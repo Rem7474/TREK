@@ -1836,7 +1836,7 @@ const help: TranslationStrings = {
     'Kliknij Dodaj. Jeśli miejsce o tej samej nazwie już jest w podróży, formularz to mówi, a przycisk zmienia się w Dodaj mimo to.',
   'help.guide.create-place.result': 'Miejsce jest na liście i na mapie, pod Niezaplanowane, dopóki nie trafi do dnia.',
   'help.guide.create-place.tip.1':
-    'Pliki i Costs na dole formularza dołączają do miejsca dokument albo otwierają edytor Costs dla jego wydatku zaraz po zapisaniu.',
+    'Pliki i Koszty na dole formularza dołączają do miejsca dokument albo otwierają edytor Koszty dla jego wydatku zaraz po zapisaniu.',
   'help.guide.create-place.tip.2':
     'Wyszukiwanie na każdym TREK-u obsługują indeks TREK i OpenStreetMap, a Szczegóły miejsca uzupełniają się z Wikipedii, Wikivoyage i Wikimedia. Google jest pytany tylko tam, gdzie oba nic nie znajdą, i tylko on przynosi oceny.',
   'help.guide.create-place.tip.3':
@@ -3159,7 +3159,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Kliknij Rezerwacja ręczna u góry po prawej stronie zakładki. Otwiera się Nowa rezerwacja.',
   'help.guide.create-booking.step.2':
-    'Wybierz Rodzaj rezerwacji. Zakwaterowanie, Restauracja, Wydarzenie, Wycieczka, Parking i Inne to te sześć, które ta zakładka tworzy, a formularz zmienia się razem z wyborem: tylko Zakwaterowanie wymienia swoje daty na zakres dni.',
+    'Wybierz Rodzaj rezerwacji z listy u góry formularza, obok pola Podróżni. Zakwaterowanie, Restauracja, Wydarzenie, Wycieczka, Parking i Inne to te sześć, które ta zakładka tworzy, a formularz zmienia się razem z wyborem: tylko Zakwaterowanie wymienia swoje daty na zakres dni.',
   'help.guide.create-booking.step.3':
     'Wpisz Tytuł. To jedyne pole, przy którym formularz się upiera, a Dodaj pozostaje martwy, dopóki nic w nim nie ma.',
   'help.guide.create-booking.step.4':
@@ -3216,9 +3216,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.goal':
     'Zaznacz podróżnych, których rezerwacja obejmuje, a potem oglądaj tylko ich rezerwacje.',
   'help.guide.booking-travelers.step.1':
-    'Otwórz rezerwację ołówkiem i zjedź w dół do Podróżni. Stoi tam każdy uczestnik podróży, a wśród nich nazwani goście.',
+    'Otwórz rezerwację ołówkiem. Pole Podróżni jest u góry formularza, obok pola Rodzaj rezerwacji, i dopóki nikogo nie ma w rezerwacji, pokazuje Przypisz podróżnych.',
   'help.guide.booking-travelers.step.2':
-    'Kliknij ludzi, dla których ta rezerwacja jest. Wybrany dostaje ptaszka; kliknij go jeszcze raz, żeby go zdjąć.',
+    'Kliknij je i wybierz ludzi, dla których ta rezerwacja jest; nazwani goście też są na liście. Wybrany dostaje ptaszka i swój awatar w polu. Kliknij imię jeszcze raz, żeby go zdjąć.',
   'help.guide.booking-travelers.step.3': 'Kliknij Aktualizuj.',
   'help.guide.booking-travelers.step.4':
     'Na górze, w pasku obok plakietek rodzajów, kliknij awatar podróżnego, żeby zobaczyć tylko jego rezerwacje.',
@@ -3250,21 +3250,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Przenieś to, ile rezerwacja kosztuje, do Kosztów, podzielone między ludzi, którzy za nią płacą.',
   'help.guide.booking-cost.step.1':
-    'Otwórz rezerwację i zjedź na sam dół formularza. Pod Costs stoi Create expense, z notką, że zapisuje rezerwację, a potem otwiera edytor kosztów.',
+    'Otwórz rezerwację i zjedź na sam dół formularza. Pod Koszty stoją Utwórz wydatek i Powiąż istniejący wydatek, z notką Zapisuje rezerwację i otwiera edytor kosztów.',
   'help.guide.booking-cost.step.2':
-    'Kliknij Create expense. Rezerwacja zostaje zapisana, jej formularz się zamyka i otwiera się edytor kosztów.',
+    'Kliknij Utwórz wydatek. Rezerwacja zostaje zapisana, jej formularz się zamyka i otwiera się edytor kosztów.',
   'help.guide.booking-cost.step.3':
     'Na co to było? to już tytuł rezerwacji. Wstaw Łączną kwotę i sprawdź Walutę oraz Dzień.',
   'help.guide.booking-cost.step.4':
     'Kategoria jest tą, którą podpowiada rodzaj rezerwacji. Ustaw Kto zapłacił? i to, jak kwota się dzieli.',
   'help.guide.booking-cost.step.5': 'Kliknij Dodaj wydatek.',
   'help.guide.booking-cost.result':
-    'W formularzu rezerwacji stoi teraz Linked expense z kwotą, a ten sam wydatek stoi w zakładce Koszty, związany z tą rezerwacją.',
+    'Formularz rezerwacji pokazuje teraz wydatek pod Powiązane wydatki z jego kwotą, a ten sam wydatek stoi w zakładce Koszty, związany z tą rezerwacją.',
   'help.guide.booking-cost.tip.1':
     'Kategoria idzie za rodzajem: z Restauracji robi się Jedzenie i napoje, z Zakwaterowania Nocleg, z Parkingu Parking, a Wydarzenie i Wycieczka lądują oba w Inne.',
-  'help.guide.booking-cost.tip.2': 'Kosz przy Linked expense usuwa wydatek, nie rezerwację.',
+  'help.guide.booking-cost.tip.2':
+    'Rezerwacja może nieść kilka wydatków. Powiąż istniejący wydatek proponuje te z Kosztów, które jeszcze do niczego nie należą. Przy powiązanym Odłącz, zachowaj wydatek go odpina i zostawia w Kosztach, a kosz go usuwa.',
   'help.guide.booking-cost.tip.3':
-    'Costs jest w formularzu tylko wtedy, gdy dodatek Koszty jest włączony, a przełącza go administrator pod Dodatki.',
+    'Blok Koszty jest w formularzu tylko wtedy, gdy dodatek Koszty jest włączony, a przełącza go administrator pod Dodatki.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Znaleźć rezerwację',
   'help.guide.filter-bookings.goal': 'Zawęź długą zakładkę do rodzaju, osoby albo stanu, którego szukasz.',
@@ -3334,7 +3335,7 @@ const help: TranslationStrings = {
     'Dokumenty, które były dołączone, zostają w zakładce Pliki podróży; odchodzi tylko ich powiązanie z rezerwacją.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Każda znaleziona rezerwacja otwiera się w Nowa rezerwacja, jedna po drugiej, już wypełniona. Dla hotelu to nazwa w Tytuł i, gdy podróż ma to miejsce, pod Zakwaterowanie, jego Lokalizacja / Adres, Od i Do na jego nocach, Zameldowanie i Wymeldowanie, Kod rezerwacji, potwierdzenie pod Pliki i, przy włączonych Kosztach, cena jako Linked expense. Sprawdź to i kliknij Dodaj.',
+    'Każda znaleziona rezerwacja otwiera się w Nowa rezerwacja, jedna po drugiej, już wypełniona. Dla hotelu to nazwa w Tytuł i, gdy podróż ma to miejsce, pod Zakwaterowanie, jego Lokalizacja / Adres, Od i Do na jego nocach, Zameldowanie i Wymeldowanie, Kod rezerwacji, potwierdzenie pod Pliki i, przy włączonych Kosztach, cena jako Powiązany wydatek. Sprawdź to i kliknij Dodaj.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Koszty',
@@ -3503,17 +3504,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Otwórz rezerwację na zakładce Transport albo Rezerwacje i kliknij jej ołówek.',
   'help.guide.expense-from-booking.step.2':
-    'Przewiń do bloku Costs na dole formularza. Dopóki nic nie jest powiązane, oferuje Create expense i mówi, że najpierw zapisuje rezerwację.',
+    'Przewiń do bloku Koszty na dole formularza. Oferuje Utwórz wydatek, który najpierw zapisuje rezerwację, i Powiąż istniejący wydatek dla takiego, który już jest w Kosztach.',
   'help.guide.expense-from-booking.step.3':
-    'Kliknij Create expense. Rezerwacja zostaje zapisana, formularz się zamyka, a edytor Koszty otwiera się z tytułem rezerwacji jako nazwą i jej typem już dopasowanym do kategorii.',
+    'Kliknij Utwórz wydatek. Rezerwacja zostaje zapisana, formularz się zamyka, a edytor Koszty otwiera się z tytułem rezerwacji jako nazwą i jej typem już dopasowanym do kategorii.',
   'help.guide.expense-from-booking.step.4':
-    'Wypełnij kwotę i jej walutę, kto zapłacił i podział jak przy każdym wydatku, i zapisz. Ponowne otwarcie rezerwacji pokazuje go teraz pod Linked expense, z ołówkiem do edycji i koszem do usunięcia.',
+    'Wypełnij kwotę i jej walutę, kto zapłacił i podział jak przy każdym wydatku, i zapisz. Ponowne otwarcie rezerwacji pokazuje go teraz pod Powiązane wydatki, z ołówkiem do edycji, Odłącz, zachowaj wydatek do odpięcia i koszem do usunięcia.',
   'help.guide.expense-from-booking.result':
     'Rezerwacja niesie swój koszt, a wydatek jest zwykłym wierszem na zakładce Koszty, z płacącym, podziałem i walutą jak każdy inny.',
   'help.guide.expense-from-booking.tip.1':
-    'Usunięcie rezerwacji usuwa razem z nią powiązany wydatek. Remove expense w bloku Costs rezerwacji robi odwrotnie: wydatek znika, rezerwacja zostaje.',
+    'Usunięcie rezerwacji usuwa razem z nią powiązane wydatki. Usuń wydatek w bloku Koszty rezerwacji robi odwrotnie: wydatek znika, rezerwacja zostaje. Odłącz, zachowaj wydatek zachowuje jedno i drugie.',
   'help.guide.expense-from-booking.tip.2':
-    'Miejsce ma ten sam blok w swoim formularzu, gdzie Create expense najpierw zapisuje miejsce.',
+    'Miejsce ma ten sam blok w swoim formularzu, gdzie Utwórz wydatek najpierw zapisuje miejsce.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Transport',
@@ -3570,7 +3571,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'Wiersz ląduje tam, gdzie kładzie go jego godzina rozpoczęcia, za ostatnim przystankiem, który zaczyna się wcześniej. Jego uchwyt przeciąga go gdziekolwiek indziej w dniu albo na inny dzień.',
   'help.guide.add-transport.tip.2':
-    'Załącz plik pod Pliki bierze bilet, a Create expense pod Costs zapisuje rezerwację i otwiera edytor Koszty dla ceny przejazdu.',
+    'Załącz plik pod Pliki bierze bilet, a Utwórz wydatek pod Koszty zapisuje rezerwację i otwiera edytor Koszty dla ceny przejazdu.',
   'help.guide.add-transport.tip.3':
     'Podróżni zaznacza, kto jedzie. Gdy tylko jeden transport ma podróżnych, pasek narzędzi zakładki wypuszcza ich awatary i filtruje po nich listę.',
   // plan-transit

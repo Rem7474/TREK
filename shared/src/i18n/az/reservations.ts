@@ -240,6 +240,10 @@ const reservations: TranslationStrings = {
     'Rezervasiyanı yadda saxlayır, sonra Xərclər redaktorunu açır.',
   'reservations.linkedExpense': 'Əlaqəli xərc',
   'reservations.removeExpense': 'Xərci sil',
+  'reservations.linkedExpenses': 'Əlaqəli xərclər',
+  'reservations.linkExpense': 'Mövcud xərci əlaqələndir',
+  'reservations.unlinkExpense': 'Əlaqəni sil, xərci saxla',
+  'reservations.noUnlinkedExpenses': 'Əlaqəsiz xərc yoxdur',
 
   'reservations.travelers.label': 'Səyahətçilər',
   'reservations.travelers.assign': 'Səyahətçiləri təyin et',

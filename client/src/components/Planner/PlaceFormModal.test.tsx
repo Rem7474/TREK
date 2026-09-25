@@ -1920,7 +1920,7 @@ describe('PlaceFormModal remaining branches', () => {
       expect(onOpenExpense).not.toHaveBeenCalled();
     });
 
-    it('FE-PLANNER-PLACEFORM-071: an already-linked expense is shown with its amount instead of the button', () => {
+    it('FE-PLANNER-PLACEFORM-071: an already-linked expense is listed with its amount, and another can still be created', () => {
       withBudget();
       seedStore(useTripStore, {
         trip: buildTrip({ id: 1 }),
@@ -1929,7 +1929,11 @@ describe('PlaceFormModal remaining branches', () => {
       render(<PlaceFormModal {...defaultProps} place={{ id: 7, name: 'Louvre' } as never} />);
 
       expect(screen.getByText('Louvre tickets')).toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: /Create expense/i })).not.toBeInTheDocument();
+      expect(screen.getByText('Linked expenses')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Unlink, keep the expense' })).toBeInTheDocument();
+      // A place can carry several expenses (#2084), so the create button stays and the hint goes.
+      expect(screen.getByRole('button', { name: /Create expense/i })).toBeInTheDocument();
+      expect(screen.queryByText('Saves the place, then opens the Costs editor.')).not.toBeInTheDocument();
     });
 
     it('FE-PLANNER-PLACEFORM-072: an expense linked to another place is not claimed', () => {

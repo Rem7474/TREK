@@ -1717,7 +1717,7 @@ const help: TranslationStrings = {
     '“추가”를 클릭합니다. 같은 이름의 장소가 이미 여행에 있으면 양식이 그렇게 알려 주고 버튼이 “그래도 추가”로 바뀝니다.',
   'help.guide.create-place.result': '장소가 목록과 지도에 있습니다. 날짜에 놓이기 전까지는 “미계획” 아래에 있습니다.',
   'help.guide.create-place.tip.1':
-    '양식 아래의 “파일”과 “Costs”는 장소에 문서를 첨부하거나, 저장한 직후 그 지출의 “Costs” 편집기를 엽니다.',
+    '양식 아래의 “파일”과 “비용”은 장소에 문서를 첨부하거나, 저장한 직후 그 지출의 “비용” 편집기를 엽니다.',
   'help.guide.create-place.tip.2':
     '어느 TREK에서나 검색에 답하는 것은 TREK 색인과 OpenStreetMap이고, “장소 세부정보”는 Wikipedia, Wikivoyage, Wikimedia에서 스스로를 채웁니다. Google은 둘 다 아무것도 찾지 못한 곳에서만 쓰이고, 평점을 가져오는 것은 Google뿐입니다.',
   'help.guide.create-place.tip.3':
@@ -2974,7 +2974,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.goal': '식당, 이벤트, 투어, 주차 자리, 그 밖의 무엇이든 손으로 여행에 넣습니다.',
   'help.guide.create-booking.step.1': '탭 오른쪽 위의 “직접 예약”을 클릭합니다. “새 예약”이 열립니다.',
   'help.guide.create-booking.step.2':
-    '“예약 유형”을 고릅니다. 이 탭이 만드는 여섯 가지는 “숙박”, “레스토랑”, “이벤트”, “투어”, “주차”, “기타”이고, 고른 것에 따라 양식이 바뀝니다. 날짜를 날의 범위로 바꾸는 것은 “숙박”뿐입니다.',
+    '양식 위쪽의 “동행자” 옆에 있는 목록에서 “예약 유형”을 고릅니다. 이 탭이 만드는 여섯 가지는 “숙박”, “레스토랑”, “이벤트”, “투어”, “주차”, “기타”이고, 고른 것에 따라 양식이 바뀝니다. 날짜를 날의 범위로 바꾸는 것은 “숙박”뿐입니다.',
   'help.guide.create-booking.step.3':
     '“제목”을 입력합니다. 양식이 꼭 요구하는 항목은 이 하나뿐이고, 무언가 들어가기 전까지 “추가”는 눌리지 않습니다.',
   'help.guide.create-booking.step.4':
@@ -3026,9 +3026,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': '예약이 누구를 위한 것인지 밝히기',
   'help.guide.booking-travelers.goal': '예약이 포함하는 동행자를 표시하고, 그런 다음 그 사람의 것만 봅니다.',
   'help.guide.booking-travelers.step.1':
-    '연필로 예약을 열고 “동행자”까지 내려갑니다. 여행의 모든 구성원이 거기 서 있고, 이름이 있는 “게스트”도 그 안에 있습니다.',
+    '연필로 예약을 엽니다. “동행자”는 양식 위쪽, “예약 유형” 옆에 있고, 예약에 아무도 없는 동안에는 “동행자 지정”이라고 표시됩니다.',
   'help.guide.booking-travelers.step.2':
-    '이 예약이 해당하는 사람을 클릭합니다. 고른 사람에게는 체크가 붙고, 다시 클릭하면 풀립니다.',
+    '그곳을 클릭하고 이 예약이 해당하는 사람을 고릅니다. 이름이 있는 “게스트”도 목록에 있습니다. 고른 사람에게는 체크가 붙고 필드에 그 사람의 아바타가 나타납니다. 이름을 다시 클릭하면 풀립니다.',
   'help.guide.booking-travelers.step.3': '“업데이트”를 클릭합니다.',
   'help.guide.booking-travelers.step.4':
     '위쪽 도구 모음에서, 유형 칩 옆에 있는 동행자의 아바타를 클릭하면 그 사람의 예약만 보입니다.',
@@ -3056,21 +3056,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': '예약 금액을 비용으로 바꾸기',
   'help.guide.booking-cost.goal': '예약에 드는 금액을 “비용”에 넣고, 내는 사람들끼리 나눕니다.',
   'help.guide.booking-cost.step.1':
-    '예약을 열고 양식의 맨 아래로 갑니다. “Costs” 아래에 “Create expense”가 있고, 그 아래에 “Saves the booking, then opens the Costs editor.”라는 안내가 붙어 있습니다.',
+    '예약을 열고 양식의 맨 아래로 갑니다. “비용” 아래에 “지출 만들기”와 “기존 지출 연결”이 있고, 그 아래에 “예약을 저장한 뒤 비용 편집기를 엽니다.”라는 안내가 붙어 있습니다.',
   'help.guide.booking-cost.step.2':
-    '“Create expense”를 클릭합니다. 예약이 저장되고, 그 양식이 닫히며, 비용 편집 창이 열립니다.',
+    '“지출 만들기”를 클릭합니다. 예약이 저장되고, 그 양식이 닫히며, 비용 편집 창이 열립니다.',
   'help.guide.booking-cost.step.3':
     '“무엇을 위한 것인가요?”에는 이미 예약의 제목이 들어 있습니다. “총 금액”을 넣고 “통화”와 “날짜”를 확인합니다.',
   'help.guide.booking-cost.step.4':
     '“카테고리”는 예약 유형이 정해 주는 것입니다. “누가 지불했나요?”와 금액을 나누는 방식인 “Split”을 설정합니다.',
   'help.guide.booking-cost.step.5': '“지출 추가”를 클릭합니다.',
   'help.guide.booking-cost.result':
-    '예약의 양식에는 이제 금액과 함께 “Linked expense”가 보이고, 같은 지출이 이 예약에 묶인 채 “비용” 탭에 섭니다.',
+    '예약의 양식에는 이제 지출이 금액과 함께 “연결된 지출” 아래에 보이고, 같은 지출이 이 예약에 묶인 채 “비용” 탭에 섭니다.',
   'help.guide.booking-cost.tip.1':
     '카테고리는 유형을 따릅니다. “레스토랑”은 “식음료”가 되고, “숙박”은 “숙박”이 되고, “주차”는 “주차”가 되며, “이벤트”와 “투어”는 둘 다 “기타”로 갑니다.',
-  'help.guide.booking-cost.tip.2': '“Linked expense”의 휴지통은 지출을 없애지, 예약을 없애지는 않습니다.',
+  'help.guide.booking-cost.tip.2':
+    '예약 하나에 지출을 여러 개 달 수 있습니다. “기존 지출 연결”은 “비용”에 있으면서 아직 어디에도 속하지 않은 지출을 보여 줍니다. 연결된 지출에서 “연결 해제, 지출은 유지”는 연결만 풀고 지출을 “비용”에 남기며, 휴지통은 지출을 없앱니다.',
   'help.guide.booking-cost.tip.3':
-    '“Costs”가 양식에 있는 것은 “비용” 애드온이 켜져 있는 동안뿐이고, 관리자가 “애드온”에서 그것을 켜고 끕니다.',
+    '“비용”이 양식에 있는 것은 “비용” 애드온이 켜져 있는 동안뿐이고, 관리자가 “애드온”에서 그것을 켜고 끕니다.',
   // filter-bookings
   'help.guide.filter-bookings.title': '예약 찾기',
   'help.guide.filter-bookings.goal': '긴 탭을 찾는 유형, 사람, 상태로 좁힙니다.',
@@ -3138,7 +3139,7 @@ const help: TranslationStrings = {
     '첨부되어 있던 서류는 여행의 “파일” 탭에 남습니다. 사라지는 것은 예약과의 연결뿐입니다.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    '찾아낸 예약이 하나씩 “새 예약”에 이미 채워진 채로 차례로 열립니다. 호텔이라면 “제목”에 이름, 여행에 그 장소가 있으면 “숙박” 아래에 그 장소, “위치 / 주소”, 숙박일에 맞춘 “부터”와 “까지”, “체크인”과 “체크아웃”, “예약 코드”, “파일” 아래의 확인서, 그리고 “비용”이 켜져 있으면 “Linked expense”로 가격입니다. 확인하고 “추가”를 클릭합니다.',
+    '찾아낸 예약이 하나씩 “새 예약”에 이미 채워진 채로 차례로 열립니다. 호텔이라면 “제목”에 이름, 여행에 그 장소가 있으면 “숙박” 아래에 그 장소, “위치 / 주소”, 숙박일에 맞춘 “부터”와 “까지”, “체크인”과 “체크아웃”, “예약 코드”, “파일” 아래의 확인서, 그리고 “비용”이 켜져 있으면 “연결된 지출”로 가격입니다. 확인하고 “추가”를 클릭합니다.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': '비용',
@@ -3303,16 +3304,16 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.goal': '항공편이나 숙소, 장소에 실제로 든 비용을 그것이 속한 기록에 붙입니다.',
   'help.guide.expense-from-booking.step.1': '교통 탭이나 예약 탭에서 예약을 열고 연필을 클릭합니다.',
   'help.guide.expense-from-booking.step.2':
-    '양식 맨 아래의 Costs 블록까지 스크롤합니다. 아직 연결된 것이 없으면 Create expense를 내주고, 예약을 먼저 저장한다고 알려줍니다.',
+    '양식 맨 아래의 “비용” 블록까지 스크롤합니다. 예약을 먼저 저장하는 “지출 만들기”와, 이미 “비용”에 있는 지출을 위한 “기존 지출 연결”을 내줍니다.',
   'help.guide.expense-from-booking.step.3':
-    'Create expense를 클릭합니다. 예약이 저장되고 양식이 닫히며, 예약의 제목이 이름으로 들어가고 종류에 맞는 카테고리가 이미 붙은 채로 비용 편집기가 열립니다.',
+    '“지출 만들기”를 클릭합니다. 예약이 저장되고 양식이 닫히며, 예약의 제목이 이름으로 들어가고 종류에 맞는 카테고리가 이미 붙은 채로 비용 편집기가 열립니다.',
   'help.guide.expense-from-booking.step.4':
-    '다른 지출과 마찬가지로 금액과 그 통화, 누가 냈는지와 분할을 채우고 저장합니다. 예약을 다시 열면 Linked expense 아래에 그것이 보이고, 편집할 연필과 떼어낼 휴지통이 함께 있습니다.',
+    '다른 지출과 마찬가지로 금액과 그 통화, 누가 냈는지와 분할을 채우고 저장합니다. 예약을 다시 열면 “연결된 지출” 아래에 그것이 보이고, 편집할 연필, 연결만 풀 “연결 해제, 지출은 유지”, 삭제할 휴지통이 함께 있습니다.',
   'help.guide.expense-from-booking.result':
     '예약은 자기 비용을 지니게 되고, 지출은 비용 탭의 평범한 한 줄이 됩니다. 다른 지출처럼 지불자와 분할과 통화를 가집니다.',
   'help.guide.expense-from-booking.tip.1':
-    '예약을 삭제하면 연결된 지출도 함께 삭제됩니다. 예약의 Costs 블록에 있는 Remove expense는 그 반대로, 지출은 사라지고 예약은 남습니다.',
-  'help.guide.expense-from-booking.tip.2': '장소의 양식에도 같은 블록이 있고, Create expense가 장소를 먼저 저장합니다.',
+    '예약을 삭제하면 연결된 지출도 함께 삭제됩니다. 예약의 “비용” 블록에 있는 “지출 삭제”는 그 반대로, 지출은 사라지고 예약은 남습니다. “연결 해제, 지출은 유지”는 둘 다 남깁니다.',
+  'help.guide.expense-from-booking.tip.2': '장소의 양식에도 같은 블록이 있고, “지출 만들기”가 장소를 먼저 저장합니다.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': '교통',
@@ -3368,7 +3369,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     '행은 시작 시간이 정하는 자리, 곧 그보다 일찍 시작하는 마지막 장소 뒤에 놓입니다. 손잡이로 그 날짜 안 어디로든, 또는 다른 날짜로 끌 수 있습니다.',
   'help.guide.add-transport.tip.2':
-    '“파일” 아래의 “파일 첨부”가 승차권을 받고, “Costs” 아래의 “Create expense”는 예약을 저장하고 운임을 위해 “비용” 편집기를 엽니다.',
+    '“파일” 아래의 “파일 첨부”가 승차권을 받고, “비용” 아래의 “지출 만들기”는 예약을 저장하고 운임을 위해 “비용” 편집기를 엽니다.',
   'help.guide.add-transport.tip.3':
     '“동행자”는 이 이동에 누가 타는지를 표시합니다. 교통 하나에 동행자가 생기자마자 탭의 도구 모음에 그들의 아바타가 늘어나고, 그것으로 목록을 거릅니다.',
   // plan-transit

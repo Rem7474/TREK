@@ -1526,7 +1526,7 @@ const help: TranslationStrings = {
   'help.guide.create-place.step.5': '點選「新增」。如果旅行裡已經有同名的地點，表單會說明，按鈕變成「仍要新增」。',
   'help.guide.create-place.result': '地點已經在清單裡和地圖上，在被放到某一天之前位於「未規劃」下。',
   'help.guide.create-place.tip.1':
-    '表單底部的「檔案」和「Costs」可以給地點附上一份文件，或者在儲存之後立刻開啟它那筆支出的「Costs」編輯器。',
+    '表單底部的「檔案」和「費用」可以給地點附上一份文件，或者在儲存之後立刻開啟它那筆支出的「費用」編輯器。',
   'help.guide.create-place.tip.2':
     '每個 TREK 上回答搜尋的都是 TREK 索引和 OpenStreetMap，「地點詳細資料」則自己從 Wikipedia、Wikivoyage 和 Wikimedia 取內容。只有在這兩者都查不到時才會去問 Google，而且只有 Google 會帶來評分。',
   'help.guide.create-place.tip.3': '地點也可以從地圖開始：在那個位置按右鍵，表單就會帶著座標和地址開啟。',
@@ -2639,7 +2639,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.goal': '把一家餐廳、一場活動、一個旅遊團、一個車位或別的什麼，手動放進這次旅行。',
   'help.guide.create-booking.step.1': '點選這一欄右上角的「手動新增」。「新建預訂」開啟。',
   'help.guide.create-booking.step.2':
-    '選「預訂型別」。這一欄做的六類是「住宿」「餐廳」「活動」「旅遊團」「停車」和「其他」，表單隨選擇而變：只有「住宿」會把日期換成一段日子的範圍。',
+    '從表單頂部「出行成員」旁邊的清單裡選「預訂型別」。這一欄做的六類是「住宿」「餐廳」「活動」「旅遊團」「停車」和「其他」，表單隨選擇而變：只有「住宿」會把日期換成一段日子的範圍。',
   'help.guide.create-booking.step.3': '填「標題」。這是表單唯一堅持要的欄位，在它有內容之前「新增」一直是灰的。',
   'help.guide.create-booking.step.4':
     '設定「日期」和「開始時間」，如果這筆預訂有結束，再設「結束日期」和「結束時間」。日曆只給出旅行之內的日子；結束不晚於開始時，會用紅色這樣提示並擋住「新增」。',
@@ -2685,8 +2685,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': '說明一筆預訂是給誰的',
   'help.guide.booking-travelers.goal': '標出一筆預訂涵蓋的出行成員，然後只看他們的。',
   'help.guide.booking-travelers.step.1':
-    '用鉛筆開啟這筆預訂，往下到「出行成員」。旅行的每位成員都在那裡，其中也包括有名字的「訪客」。',
-  'help.guide.booking-travelers.step.2': '點選這筆預訂是給誰的那些人。被選中的人會得到一個勾；再點一次就取消。',
+    '用鉛筆開啟這筆預訂。「出行成員」在表單頂部，「預訂型別」旁邊，只要這筆預訂上還沒有人，它就顯示「指派成員」。',
+  'help.guide.booking-travelers.step.2':
+    '點它，選出這筆預訂是給誰的那些人；有名字的「訪客」也在清單裡。被選中的人會得到一個勾，頭像也會出現在這個欄位中。再點一次名字就取消。',
   'help.guide.booking-travelers.step.3': '點選「更新」。',
   'help.guide.booking-travelers.step.4': '在上方工具列裡，型別篩選片旁邊，點選某位出行成員的頭像，就只看他的預訂。',
   'help.guide.booking-travelers.result': '卡片列出它是給誰的那些人，而頭像那一排把這一欄收窄到其中一個人。',
@@ -2711,18 +2712,19 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': '把一筆預訂的金額變成費用',
   'help.guide.booking-cost.goal': '把一筆預訂花掉的錢記進「費用」，並在付錢的人之間分攤。',
   'help.guide.booking-cost.step.1':
-    '開啟這筆預訂，走到表單底部。「Costs」下面是「Create expense」，附帶那行說明「Saves the booking, then opens the Costs editor.」',
-  'help.guide.booking-cost.step.2': '點選「Create expense」。預訂被儲存，它的表單關上，費用編輯器開啟。',
+    '開啟這筆預訂，走到表單底部。「費用」下面是「建立支出」和「關聯已有支出」，附帶那行說明「先儲存預訂，然後開啟費用編輯器。」',
+  'help.guide.booking-cost.step.2': '點選「建立支出」。預訂被儲存，它的表單關上，費用編輯器開啟。',
   'help.guide.booking-cost.step.3':
     '「這筆是什麼支出？」已經是這筆預訂的標題。填入「總金額」，並核對「貨幣」和「日期」。',
   'help.guide.booking-cost.step.4': '「分類」是預訂型別推出來的那一個。設定「誰付的款？」以及金額怎麼「Split」。',
   'help.guide.booking-cost.step.5': '點選「新增支出」。',
   'help.guide.booking-cost.result':
-    '這筆預訂的表單現在顯示「Linked expense」和金額，同一筆支出也立在「費用」欄裡，繫在這筆預訂上。',
+    '這筆預訂的表單現在在「已關聯支出」下列出這筆支出和它的金額，同一筆支出也立在「費用」欄裡，繫在這筆預訂上。',
   'help.guide.booking-cost.tip.1':
     '分類跟著型別走：「餐廳」變成「餐飲」，「住宿」變成「住宿」，「停車」變成「停車」，「活動」和「旅遊團」都落進「其他」。',
-  'help.guide.booking-cost.tip.2': '「Linked expense」上的垃圾桶移除的是這筆支出，不是這筆預訂。',
-  'help.guide.booking-cost.tip.3': '只有在「費用」擴充套件開著時，「Costs」才在表單裡，管理員在「擴充套件」下切換它。',
+  'help.guide.booking-cost.tip.2':
+    '一筆預訂可以帶多筆支出。「關聯已有支出」會列出「費用」裡還不屬於任何地方的支出。在已關聯的一筆上，「取消關聯，保留支出」會解開關聯並把它留在「費用」裡，而垃圾桶會把它移除。',
+  'help.guide.booking-cost.tip.3': '只有在「費用」擴充套件開著時，「費用」才在表單裡，管理員在「擴充套件」下切換它。',
   // filter-bookings
   'help.guide.filter-bookings.title': '找到一筆預訂',
   'help.guide.filter-bookings.goal': '把一長欄收窄到你要的型別、人或狀態。',
@@ -2779,7 +2781,7 @@ const help: TranslationStrings = {
   'help.guide.delete-booking.tip.2': '附上過的單據仍留在這次旅行的「檔案」欄裡；走掉的只是它們與這筆預訂的關聯。',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    '找到的每筆預訂都會在「新建預訂」裡逐筆開啟，內容已填好。對飯店來說，那是「標題」裡的名稱，旅行裡有這個地點時還有「住宿」下的地點，它的「地點 / 地址」，按住宿的夜數填好的「從」和「到」，「入住」和「退房」，「預訂碼」，「檔案」下的確認單，以及在「費用」開著時作為「Linked expense」的價格。檢查一遍，點選「新增」。',
+    '找到的每筆預訂都會在「新建預訂」裡逐筆開啟，內容已填好。對飯店來說，那是「標題」裡的名稱，旅行裡有這個地點時還有「住宿」下的地點，它的「地點 / 地址」，按住宿的夜數填好的「從」和「到」，「入住」和「退房」，「預訂碼」，「檔案」下的確認單，以及在「費用」開著時作為「關聯支出」的價格。檢查一遍，點選「新增」。',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': '費用',
@@ -2925,16 +2927,16 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.goal': '把一趟航班、一家飯店或一個地點真正花掉的錢，附到它所屬的那條記錄上。',
   'help.guide.expense-from-booking.step.1': '在「交通」或「預訂」分頁打開該預訂，點選它的鉛筆。',
   'help.guide.expense-from-booking.step.2':
-    '捲動到表單底部的 Costs 區塊。在還沒有任何關聯時，它會提供 Create expense，並說明會先儲存預訂。',
+    '捲動到表單底部的「費用」區塊。它提供會先儲存預訂的「建立支出」，以及用於已在「費用」裡的支出的「關聯已有支出」。',
   'help.guide.expense-from-booking.step.3':
-    '點選 Create expense。預訂被儲存，表單關閉，費用編輯器隨即打開，預訂的標題作為名稱，它的類型也已經對應到了一個分類。',
+    '點選「建立支出」。預訂被儲存，表單關閉，費用編輯器隨即打開，預訂的標題作為名稱，它的類型也已經對應到了一個分類。',
   'help.guide.expense-from-booking.step.4':
-    '像填任何一筆支出那樣填好金額和它的幣別、誰付的錢和分攤，然後儲存。此時再打開該預訂，就能在 Linked expense 下看到它，旁邊有鉛筆可以編輯，有垃圾桶可以移除。',
+    '像填任何一筆支出那樣填好金額和它的幣別、誰付的錢和分攤，然後儲存。此時再打開該預訂，就能在「已關聯支出」下看到它，旁邊有鉛筆可以編輯，有「取消關聯，保留支出」可以解開關聯，有垃圾桶可以移除。',
   'help.guide.expense-from-booking.result':
     '預訂帶上了它的花費，而這筆支出就是「費用」分頁上一條普通的列，和別的支出一樣有付款人、分攤和貨幣。',
   'help.guide.expense-from-booking.tip.1':
-    '刪除預訂會連同它關聯的支出一起刪除。預訂的 Costs 區塊裡的 Remove expense 則相反：支出沒了，預訂還在。',
-  'help.guide.expense-from-booking.tip.2': '地點的表單裡有同樣的區塊，其中的 Create expense 會先儲存地點。',
+    '刪除預訂會連同它關聯的支出一起刪除。預訂的「費用」區塊裡的「移除支出」則相反：支出沒了，預訂還在。「取消關聯，保留支出」則兩者都保留。',
+  'help.guide.expense-from-booking.tip.2': '地點的表單裡有同樣的區塊，其中的「建立支出」會先儲存地點。',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': '交通',
@@ -2988,7 +2990,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     '這一列落在它的開始時間決定的位置，也就是最後一個開始得更早的地點之後。它的拖曳把手能把它拖到當天任何別的位置，或者拖到另一天。',
   'help.guide.add-transport.tip.2':
-    '「檔案」下的「附加檔案」接住車票，「Costs」下的「Create expense」儲存這筆預訂，並為票價開啟「費用」編輯器。',
+    '「檔案」下的「附加檔案」接住車票，「費用」下的「建立支出」儲存這筆預訂，並為票價開啟「費用」編輯器。',
   'help.guide.add-transport.tip.3':
     '「出行成員」標出誰在這趟交通上。只要有一筆交通帶了出行成員，標籤頁的工具列就長出他們的頭像，並按他們篩選清單。',
   // plan-transit

@@ -1793,7 +1793,7 @@ const help: TranslationStrings = {
     'Klikněte na Přidat. Pokud už v cestě je místo stejného názvu, formulář to řekne a tlačítko se změní na Přesto přidat.',
   'help.guide.create-place.result': 'Místo je v seznamu a na mapě, pod Nezařazené, dokud ho nepoložíte na den.',
   'help.guide.create-place.tip.1':
-    'Soubory a Costs dole ve formuláři připojí k místu dokument nebo hned po uložení otevřou editor Costs pro jeho výdaj.',
+    'Soubory a Náklady dole ve formuláři připojí k místu dokument nebo hned po uložení otevřou editor Náklady pro jeho výdaj.',
   'help.guide.create-place.tip.2':
     'Hledání na každém TREKu zodpoví index TREK a OpenStreetMap a Podrobnosti místa se plní z Wikipedie, Wikivoyage a Wikimedia. Google přijde na řadu jen tam, kde oba zůstanou prázdné, a jen on přináší hodnocení.',
   'help.guide.create-place.tip.3':
@@ -3086,7 +3086,7 @@ const help: TranslationStrings = {
     'Vložte do cesty ručně restauraci, událost, prohlídku, parkovací místo nebo cokoli jiného.',
   'help.guide.create-booking.step.1': 'Klikněte vpravo nahoře na kartě na Ruční rezervace. Otevře se Nová rezervace.',
   'help.guide.create-booking.step.2':
-    'Vyberte Typ rezervace. Ubytování, Restaurace, Událost, Prohlídka, Parkování a Jiné je těch šest, které tato karta dělá, a formulář se s volbou mění: jen Ubytování vymění svá data za rozsah dnů.',
+    'Vyberte Typ rezervace ze seznamu nahoře ve formuláři, vedle pole Cestující. Ubytování, Restaurace, Událost, Prohlídka, Parkování a Jiné je těch šest, které tato karta dělá, a formulář se s volbou mění: jen Ubytování vymění svá data za rozsah dnů.',
   'help.guide.create-booking.step.3':
     'Napište Název. Je to jediné pole, na kterém formulář trvá, a Přidat zůstane mrtvé, dokud v něm něco není.',
   'help.guide.create-booking.step.4':
@@ -3141,9 +3141,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Říct, pro koho rezervace je',
   'help.guide.booking-travelers.goal': 'Označte cestující, které rezervace pokrývá, a pak si nechte ukázat jen jejich.',
   'help.guide.booking-travelers.step.1':
-    'Otevřete rezervaci tužkou a sjeďte dolů k poli Cestující. Stojí tam každý člen cesty, jmenovaní hosté mezi nimi.',
+    'Otevřete rezervaci tužkou. Pole Cestující je nahoře ve formuláři, vedle pole Typ rezervace, a dokud na rezervaci nikdo není, ukazuje Přiřadit cestující.',
   'help.guide.booking-travelers.step.2':
-    'Klikněte na lidi, pro které tato rezervace je. Vybraný dostane fajfku; dalším kliknutím ji zase sundáte.',
+    'Klikněte na něj a vyberte lidi, pro které tato rezervace je; jmenovaní hosté jsou v seznamu také. Vybraný dostane fajfku a jeho avatar se objeví v poli. Dalším kliknutím na jméno ho zase sundáte.',
   'help.guide.booking-travelers.step.3': 'Klikněte na Aktualizovat.',
   'help.guide.booking-travelers.step.4':
     'Nahoře v liště, vedle štítků typů, klikněte na avatar cestujícího a uvidíte jen jeho rezervace.',
@@ -3174,21 +3174,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Udělat z ceny rezervace náklad',
   'help.guide.booking-cost.goal': 'Dostaňte to, co rezervace stojí, do Nákladů, rozdělené mezi lidi, kteří ji platí.',
   'help.guide.booking-cost.step.1':
-    'Otevřete rezervaci a sjeďte na konec formuláře. Pod Costs stojí Create expense, s poznámkou, že rezervaci uloží a pak otevře editor nákladů.',
+    'Otevřete rezervaci a sjeďte na konec formuláře. Pod Náklady stojí Vytvořit výdaj a Propojit stávající výdaj, s poznámkou Uloží rezervaci a poté otevře editor nákladů.',
   'help.guide.booking-cost.step.2':
-    'Klikněte na Create expense. Rezervace se uloží, její formulář se zavře a otevře se editor nákladů.',
+    'Klikněte na Vytvořit výdaj. Rezervace se uloží, její formulář se zavře a otevře se editor nákladů.',
   'help.guide.booking-cost.step.3':
     'Za co to bylo? už je název rezervace. Vložte Celkovou částku a zkontrolujte Měnu a Den.',
   'help.guide.booking-cost.step.4':
     'Kategorie je ta, kterou typ rezervace napovídá. Nastavte Kdo zaplatil? a to, jak se částka dělí.',
   'help.guide.booking-cost.step.5': 'Klikněte na Přidat výdaj.',
   'help.guide.booking-cost.result':
-    'Ve formuláři rezervace teď stojí Linked expense s částkou, a tentýž výdaj stojí na kartě Náklady, svázaný s touto rezervací.',
+    'Formulář rezervace teď uvádí výdaj pod Propojené výdaje s jeho částkou, a tentýž výdaj stojí na kartě Náklady, svázaný s touto rezervací.',
   'help.guide.booking-cost.tip.1':
     'Kategorie jde za typem: z Restaurace je Jídlo a pití, z Ubytování Ubytování, z Parkování Parkování, a Událost i Prohlídka obě padnou do Ostatní.',
-  'help.guide.booking-cost.tip.2': 'Koš u Linked expense odebere výdaj, ne rezervaci.',
+  'help.guide.booking-cost.tip.2':
+    'Rezervace může nést několik výdajů. Propojit stávající výdaj nabízí ty z Nákladů, které zatím nikam nepatří. U propojeného výdaje ho Odpojit, výdaj ponechat uvolní a nechá v Nákladech, kdežto koš ho odebere.',
   'help.guide.booking-cost.tip.3':
-    'Costs je ve formuláři jen tehdy, když je zapnutý doplněk Náklady, který správce přepíná pod Doplňky.',
+    'Blok Náklady je ve formuláři jen tehdy, když je zapnutý doplněk Náklady, který správce přepíná pod Doplňky.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Najít rezervaci',
   'help.guide.filter-bookings.goal': 'Zužte dlouhou kartu na typ, osobu nebo stav, který hledáte.',
@@ -3257,7 +3258,7 @@ const help: TranslationStrings = {
     'Dokumenty, které byly přiložené, zůstanou na kartě Soubory dané cesty; jde jen jejich propojení s rezervací.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Každá rezervace, která byla nalezena, se otevře v Nová rezervace, jedna po druhé, už vyplněná. U hotelu je to název v Název a, když cesta to místo má, pod Ubytování, jeho Místo / Adresa, Od dne a Do dne na jeho nocích, Check-in a Check-out, Rezervační kód, potvrzení pod Soubory a, se zapnutými Náklady, cena jako Linked expense. Zkontrolujte to a klikněte na Přidat.',
+    'Každá rezervace, která byla nalezena, se otevře v Nová rezervace, jedna po druhé, už vyplněná. U hotelu je to název v Název a, když cesta to místo má, pod Ubytování, jeho Místo / Adresa, Od dne a Do dne na jeho nocích, Check-in a Check-out, Rezervační kód, potvrzení pod Soubory a, se zapnutými Náklady, cena jako Propojený výdaj. Zkontrolujte to a klikněte na Přidat.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Náklady',
@@ -3426,17 +3427,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Otevřete rezervaci na kartě Doprava nebo Rezervace a klikněte na její tužku.',
   'help.guide.expense-from-booking.step.2':
-    'Sjeďte k bloku Costs dole ve formuláři. Dokud není nic propojené, nabízí Create expense a říká, že nejdřív uloží rezervaci.',
+    'Sjeďte k bloku Náklady dole ve formuláři. Nabízí Vytvořit výdaj, který nejdřív uloží rezervaci, a Propojit stávající výdaj pro výdaj, který už v Nákladech je.',
   'help.guide.expense-from-booking.step.3':
-    'Klikněte na Create expense. Rezervace se uloží, formulář se zavře a otevře se editor Náklady s názvem rezervace jako názvem a s jejím typem už přiřazeným ke kategorii.',
+    'Klikněte na Vytvořit výdaj. Rezervace se uloží, formulář se zavře a otevře se editor Náklady s názvem rezervace jako názvem a s jejím typem už přiřazeným ke kategorii.',
   'help.guide.expense-from-booking.step.4':
-    'Vyplňte částku a její měnu, kdo zaplatil, a rozdělení jako u každého výdaje a uložte. Když teď rezervaci otevřete znovu, ukáže výdaj pod Linked expense, s tužkou na úpravu a košem na odebrání.',
+    'Vyplňte částku a její měnu, kdo zaplatil, a rozdělení jako u každého výdaje a uložte. Když teď rezervaci otevřete znovu, ukáže výdaj pod Propojené výdaje, s tužkou na úpravu, Odpojit, výdaj ponechat na uvolnění a košem na odebrání.',
   'help.guide.expense-from-booking.result':
     'Rezervace nese svůj náklad a výdaj je obyčejný řádek na kartě Náklady, s plátcem, rozdělením a měnou jako každý jiný.',
   'help.guide.expense-from-booking.tip.1':
-    'Smazání rezervace smaže i její propojený výdaj. Remove expense v bloku Costs rezervace dělá opak: výdaj zmizí, rezervace zůstane.',
+    'Smazání rezervace smaže i její propojené výdaje. Odebrat výdaj v bloku Náklady rezervace dělá opak: výdaj zmizí, rezervace zůstane. Odpojit, výdaj ponechat zachová obojí.',
   'help.guide.expense-from-booking.tip.2':
-    'Místo má ve svém formuláři stejný blok, kde Create expense nejdřív uloží místo.',
+    'Místo má ve svém formuláři stejný blok, kde Vytvořit výdaj nejdřív uloží místo.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Doprava',
@@ -3492,7 +3493,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'Řádek přistane tam, kam jej položí jeho čas začátku, za poslední zastávkou, která začíná dříve. Úchyt jej přetáhne kamkoli jinam ve dni nebo na jiný den.',
   'help.guide.add-transport.tip.2':
-    'Přiložit soubor v sekci Soubory přijme jízdenku a Create expense v sekci Costs uloží rezervaci a otevře editor Náklady pro jízdné.',
+    'Přiložit soubor v sekci Soubory přijme jízdenku a Vytvořit výdaj v sekci Náklady uloží rezervaci a otevře editor Náklady pro jízdné.',
   'help.guide.add-transport.tip.3':
     'Cestující označuje, kdo jede. Jakmile má jedna přeprava cestující, liště karty narostou jejich avatary a filtruje podle nich seznam.',
   // plan-transit

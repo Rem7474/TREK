@@ -11,7 +11,7 @@ import { server } from '../../../helpers/msw/server'
 import { resetAllStores, seedStore } from '../../../helpers/store'
 import { fireEvent, render, screen, waitFor } from '../../../helpers/render'
 
-// FE-MOB-PLEDIT-001 to FE-MOB-PLEDIT-043, plus the 009b, 025b and 029b variants
+// FE-MOB-PLEDIT-001 to FE-MOB-PLEDIT-045, plus the 009b, 025b and 029b variants
 // planner.t echoes the key, so every label/placeholder is asserted as its key.
 
 const CATEGORIES = [
@@ -435,12 +435,12 @@ describe('MPlaceEditSheet', () => {
 
     it('FE-MOB-PLEDIT-033: the button only appears while the Budget addon is on', () => {
       const { unmount } = setup()
-      expect(screen.queryByRole('button', { name: 'reservations.createExpense' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Create expense' })).not.toBeInTheDocument()
       unmount()
 
       withBudget()
       setup()
-      expect(screen.getByRole('button', { name: 'reservations.createExpense' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Create expense' })).toBeInTheDocument()
     })
 
     it('FE-MOB-PLEDIT-034: creating an expense saves the place first, then opens the editor', async () => {
@@ -449,7 +449,7 @@ describe('MPlaceEditSheet', () => {
       const { onOpenExpense } = setup({ handleSavePlace })
 
       fireEvent.change(nameField(), { target: { value: 'Louvre' } })
-      fireEvent.click(screen.getByRole('button', { name: 'reservations.createExpense' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Create expense' }))
 
       await waitFor(() => expect(onOpenExpense).toHaveBeenCalled())
       expect(handleSavePlace.mock.invocationCallOrder[0]).toBeLessThan(onOpenExpense.mock.invocationCallOrder[0])
@@ -464,10 +464,29 @@ describe('MPlaceEditSheet', () => {
       const { onOpenExpense } = setup({ handleSavePlace })
 
       fireEvent.change(nameField(), { target: { value: 'Louvre' } })
-      fireEvent.click(screen.getByRole('button', { name: 'reservations.createExpense' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Create expense' }))
 
       await waitFor(() => expect(handleSavePlace).toHaveBeenCalled())
       expect(onOpenExpense).not.toHaveBeenCalled()
+    })
+
+    it('FE-MOB-PLEDIT-044: an edited place lists its expenses and opens one for editing (#2084)', () => {
+      withBudget()
+      const tickets = { id: 70, trip_id: 1, name: 'Temple tickets', total_price: 5, category: 'activities', place_id: 42 }
+      seedStore(useTripStore, { trip: { id: 1, currency: 'JPY' }, budgetItems: [tickets] })
+      const { onOpenExpense } = setup({ editingPlace: EDITED })
+      expect(screen.getByText('Linked expenses')).toBeInTheDocument()
+      fireEvent.click(screen.getByText('Temple tickets'))
+      expect(onOpenExpense).toHaveBeenCalledWith({ editItem: tickets })
+      // The place hint only shows while nothing is linked.
+      expect(screen.queryByText('Saves the place, then opens the Costs editor.')).not.toBeInTheDocument()
+    })
+
+    it('FE-MOB-PLEDIT-045: a new place shows the place hint and nothing to link to yet', () => {
+      withBudget()
+      setup()
+      expect(screen.getByText('Saves the place, then opens the Costs editor.')).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Link' })).not.toBeInTheDocument()
     })
   })
 

@@ -153,7 +153,7 @@ Requires `budget:read` or `budget:write` scope. The Budget addon must be enabled
 | Tool | Description |
 |---|---|
 | `create_budget_item` | Add an expense with name, category, and price. |
-| `update_budget_item` | Update an expense's details, split (persons/days), or notes. |
+| `update_budget_item` | Update an expense's details, split (persons/days), or notes. `reservation_id` / `place_id` link it to a booking or place of the same trip; `null` unlinks it. |
 | `delete_budget_item` | Remove a budget item. |
 | `set_budget_item_members` | Set which members are splitting a budget item (replaces current list). |
 | `toggle_budget_member_paid` | Mark or unmark a member as having paid their share. |

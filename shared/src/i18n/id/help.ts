@@ -1882,7 +1882,7 @@ const help: TranslationStrings = {
   'help.guide.create-place.result':
     'Tempat itu ada di daftar dan di peta, di bawah “Belum direncanakan” sampai ditaruh pada sebuah hari.',
   'help.guide.create-place.tip.1':
-    '“File” dan “Costs” di bagian bawah formulir melampirkan dokumen ke tempat itu, atau membuka editor “Costs” untuk pengeluarannya tepat setelah menyimpan.',
+    '“File” dan “Biaya” di bagian bawah formulir melampirkan dokumen ke tempat itu, atau membuka editor “Biaya” untuk pengeluarannya tepat setelah menyimpan.',
   'help.guide.create-place.tip.2':
     'Indeks TREK dan OpenStreetMap yang menjawab pencarian di setiap TREK, dan “Detail tempat” mengisi dirinya dari Wikipedia, Wikivoyage dan Wikimedia. Google baru ditanya di tempat yang keduanya tidak menemukan apa pun, dan hanya Google yang membawa penilaian.',
   'help.guide.create-place.tip.3':
@@ -3237,7 +3237,7 @@ const help: TranslationStrings = {
     'Masukkan sebuah restoran, acara, tur, tempat parkir atau apa pun lainnya ke dalam perjalanan dengan tangan.',
   'help.guide.create-booking.step.1': 'Klik “Pemesanan Manual” di kanan atas tab. “Reservasi Baru” terbuka.',
   'help.guide.create-booking.step.2':
-    'Pilih “Jenis Pemesanan”. “Akomodasi”, “Restoran”, “Acara”, “Tur”, “Parkir” dan “Lainnya” adalah enam jenis yang dibuat tab ini, dan formulirnya berubah mengikuti pilihan: hanya “Akomodasi” yang menukar tanggalnya dengan rentang hari.',
+    'Pilih “Jenis Pemesanan” dari daftar di bagian atas formulir, di samping “Peserta”. “Akomodasi”, “Restoran”, “Acara”, “Tur”, “Parkir” dan “Lainnya” adalah enam jenis yang dibuat tab ini, dan formulirnya berubah mengikuti pilihan: hanya “Akomodasi” yang menukar tanggalnya dengan rentang hari.',
   'help.guide.create-booking.step.3':
     'Ketik “Judul”. Inilah satu-satunya isian yang diharuskan oleh formulir, dan “Tambah” tetap mati sampai ia terisi.',
   'help.guide.create-booking.step.4':
@@ -3293,9 +3293,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Menyebut untuk siapa sebuah pemesanan dibuat',
   'help.guide.booking-travelers.goal': 'Tandai peserta yang dicakup sebuah pemesanan, lalu lihat hanya milik mereka.',
   'help.guide.booking-travelers.step.1':
-    'Buka pemesanan itu dengan pensil dan turun ke “Peserta”. Setiap anggota perjalanan berdiri di sana, termasuk “Tamu” yang bernama.',
+    'Buka pemesanan itu dengan pensil. “Peserta” ada di bagian atas formulir, di samping “Jenis Pemesanan”, dan bertuliskan “Tetapkan peserta” selama belum ada siapa pun di pemesanan itu.',
   'help.guide.booking-travelers.step.2':
-    'Klik orang-orang yang menjadi tujuan pemesanan ini. Yang terpilih mendapat centang; klik lagi untuk melepasnya.',
+    'Klik itu dan pilih orang-orang yang menjadi tujuan pemesanan ini; “Tamu” yang bernama juga ada di daftar. Yang terpilih mendapat centang dan avatarnya muncul di kolom itu. Klik namanya lagi untuk melepasnya.',
   'help.guide.booking-travelers.step.3': 'Klik “Perbarui”.',
   'help.guide.booking-travelers.step.4':
     'Di bilah alat atas, di sebelah chip jenis, klik avatar seorang peserta untuk melihat hanya pemesanan miliknya.',
@@ -3328,21 +3328,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Bawa apa yang dihabiskan sebuah pemesanan ke “Biaya”, terbagi di antara orang-orang yang membayarnya.',
   'help.guide.booking-cost.step.1':
-    'Buka pemesanan itu dan pergi ke kaki formulir. Di bawah “Costs” berdiri “Create expense”, dengan catatan “Saves the booking, then opens the Costs editor.”',
+    'Buka pemesanan itu dan pergi ke kaki formulir. Di bawah “Biaya” berdiri “Buat pengeluaran” dan “Tautkan pengeluaran yang ada”, dengan catatan “Menyimpan pemesanan, lalu membuka editor biaya.”',
   'help.guide.booking-cost.step.2':
-    'Klik “Create expense”. Pemesanan itu tersimpan, formulirnya tertutup dan penyunting biaya terbuka.',
+    'Klik “Buat pengeluaran”. Pemesanan itu tersimpan, formulirnya tertutup dan penyunting biaya terbuka.',
   'help.guide.booking-cost.step.3':
     '“Untuk apa?” sudah berisi judul pemesanan itu. Masukkan “Jumlah total” dan periksa “Mata uang” serta “Hari”.',
   'help.guide.booking-cost.step.4':
     '“Kategori” adalah yang tersirat dari jenis pemesanannya. Atur “Siapa yang membayar?” dan bagaimana jumlahnya dibagi lewat “Split”.',
   'help.guide.booking-cost.step.5': 'Klik “Tambah pengeluaran”.',
   'help.guide.booking-cost.result':
-    'Formulir pemesanan itu kini berbunyi “Linked expense” dengan jumlahnya, dan pengeluaran yang sama berdiri di tab “Biaya”, terikat pada pemesanan ini.',
+    'Formulir pemesanan itu kini mencantumkan pengeluarannya di bawah “Pengeluaran tertaut” beserta jumlahnya, dan pengeluaran yang sama berdiri di tab “Biaya”, terikat pada pemesanan ini.',
   'help.guide.booking-cost.tip.1':
     'Kategorinya mengikuti jenisnya: “Restoran” menjadi “Makanan & minuman”, “Akomodasi” menjadi “Akomodasi”, “Parkir” menjadi “Parkir”, dan “Acara” serta “Tur” keduanya mendarat di “Lainnya”.',
-  'help.guide.booking-cost.tip.2': 'Tempat sampah pada “Linked expense” menghapus pengeluarannya, bukan pemesanannya.',
+  'help.guide.booking-cost.tip.2':
+    'Satu pemesanan bisa membawa beberapa pengeluaran. “Tautkan pengeluaran yang ada” menawarkan pengeluaran di “Biaya” yang belum menjadi milik apa pun. Pada pengeluaran yang tertaut, “Lepas tautan, simpan pengeluaran” melepasnya dan membiarkannya di “Biaya”, sementara tempat sampah menghapusnya.',
   'help.guide.booking-cost.tip.3':
-    '“Costs” ada di formulir hanya selama addon “Biaya” menyala, yang dialihkan administrator di bawah “Addon”.',
+    '“Biaya” ada di formulir hanya selama addon “Biaya” menyala, yang dialihkan administrator di bawah “Addon”.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Menemukan sebuah pemesanan',
   'help.guide.filter-bookings.goal': 'Persempit tab yang panjang ke jenis, orang atau keadaan yang Anda cari.',
@@ -3414,7 +3415,7 @@ const help: TranslationStrings = {
     'Dokumen yang pernah dilampirkan tetap ada di tab “File” perjalanan; hanya hubungannya dengan pemesanan itu yang pergi.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Setiap pemesanan yang ditemukan terbuka di “Reservasi Baru”, satu demi satu, sudah terisi. Untuk hotel itu berarti nama di “Judul” dan, bila perjalanan memiliki tempatnya, di bawah “Akomodasi”, “Lokasi / Alamat”-nya, “Dari” dan “Sampai” pada malam-malamnya, “Check-in” dan “Check-out”, “Kode Pemesanan”, konfirmasi di bawah “File” dan, dengan “Biaya” menyala, harganya sebagai “Linked expense”. Periksa lalu klik “Tambah”.',
+    'Setiap pemesanan yang ditemukan terbuka di “Reservasi Baru”, satu demi satu, sudah terisi. Untuk hotel itu berarti nama di “Judul” dan, bila perjalanan memiliki tempatnya, di bawah “Akomodasi”, “Lokasi / Alamat”-nya, “Dari” dan “Sampai” pada malam-malamnya, “Check-in” dan “Check-out”, “Kode Pemesanan”, konfirmasi di bawah “File” dan, dengan “Biaya” menyala, harganya sebagai “Pengeluaran tertaut”. Periksa lalu klik “Tambah”.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Biaya',
@@ -3585,17 +3586,17 @@ const help: TranslationStrings = {
     'Lekatkan berapa biaya sebenarnya sebuah penerbangan, hotel atau tempat ke catatan yang memilikinya.',
   'help.guide.expense-from-booking.step.1': 'Buka pemesanan itu di tab Transportasi atau Pemesanan dan klik pensilnya.',
   'help.guide.expense-from-booking.step.2':
-    'Gulir ke blok Costs di bagian bawah formulir. Selama belum ada yang tertaut, ia menawarkan Create expense dan mengatakan bahwa pemesanannya disimpan lebih dulu.',
+    'Gulir ke blok “Biaya” di bagian bawah formulir. Ia menawarkan “Buat pengeluaran”, yang menyimpan pemesanannya lebih dulu, dan “Tautkan pengeluaran yang ada” untuk pengeluaran yang sudah ada di “Biaya”.',
   'help.guide.expense-from-booking.step.3':
-    'Klik Create expense. Pemesanannya disimpan, formulirnya menutup, dan editor Biaya terbuka dengan judul pemesanan sebagai namanya dan jenisnya sudah dicocokkan ke sebuah kategori.',
+    'Klik “Buat pengeluaran”. Pemesanannya disimpan, formulirnya menutup, dan editor Biaya terbuka dengan judul pemesanan sebagai namanya dan jenisnya sudah dicocokkan ke sebuah kategori.',
   'help.guide.expense-from-booking.step.4':
-    'Isi jumlahnya dan mata uangnya, siapa yang membayar dan pembagiannya seperti pengeluaran mana pun, lalu simpan. Membuka lagi pemesanannya kini menunjukkannya di bawah Linked expense, dengan pensil untuk menyuntingnya dan tempat sampah untuk membuangnya.',
+    'Isi jumlahnya dan mata uangnya, siapa yang membayar dan pembagiannya seperti pengeluaran mana pun, lalu simpan. Membuka lagi pemesanannya kini menunjukkannya di bawah “Pengeluaran tertaut”, dengan pensil untuk menyuntingnya, “Lepas tautan, simpan pengeluaran” untuk melepasnya dan tempat sampah untuk membuangnya.',
   'help.guide.expense-from-booking.result':
     'Pemesanannya membawa biayanya, dan pengeluarannya adalah baris biasa di tab Biaya, dengan pembayar, pembagian dan mata uang seperti yang lain.',
   'help.guide.expense-from-booking.tip.1':
-    'Menghapus pemesanannya ikut menghapus pengeluaran yang tertaut padanya. Remove expense di blok Costs pemesanan itu melakukan kebalikannya: pengeluarannya hilang, pemesanannya tinggal.',
+    'Menghapus pemesanannya ikut menghapus pengeluaran yang tertaut padanya. “Hapus pengeluaran” di blok “Biaya” pemesanan itu melakukan kebalikannya: pengeluarannya hilang, pemesanannya tinggal. “Lepas tautan, simpan pengeluaran” mempertahankan keduanya.',
   'help.guide.expense-from-booking.tip.2':
-    'Sebuah tempat punya blok yang sama di formulirnya, dengan Create expense yang menyimpan tempatnya lebih dulu.',
+    'Sebuah tempat punya blok yang sama di formulirnya, dengan “Buat pengeluaran” yang menyimpan tempatnya lebih dulu.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Transportasi',
@@ -3652,7 +3653,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'Baris itu mendarat di tempat yang ditentukan waktu mulainya, setelah perhentian terakhir yang mulai lebih awal. Pegangannya menyeretnya ke mana pun di dalam hari itu, atau ke hari lain.',
   'help.guide.add-transport.tip.2':
-    '“Lampirkan file” di bawah “File” menerima tiketnya, dan “Create expense” di bawah “Costs” menyimpan pemesanan dan membuka editor “Biaya” untuk ongkosnya.',
+    '“Lampirkan file” di bawah “File” menerima tiketnya, dan “Buat pengeluaran” di bawah “Biaya” menyimpan pemesanan dan membuka editor “Biaya” untuk ongkosnya.',
   'help.guide.add-transport.tip.3':
     '“Peserta” menandai siapa yang ikut dalam perjalanan ini. Begitu satu transportasi punya peserta, bilah alat tab menumbuhkan avatar mereka dan menyaring daftar berdasarkan mereka.',
   // plan-transit

@@ -532,7 +532,9 @@ const SCRIPTS: Record<string, GuideScript> = {
           await saveExpense(p).click()
           await expect(modal(p)).toHaveCount(0)
           await p.getByRole('button', { name: 'Edit' }).first().click()
-          await expect(modal(p).getByText('Linked expense')).toBeVisible({ timeout: 20_000 })
+          await expect(modal(p).getByText('Linked expenses', { exact: true })).toBeVisible({ timeout: 20_000 })
+          // The block sits at the foot of a long form: bring it into the picture.
+          await modal(p).getByText('Linked expenses', { exact: true }).evaluate(el => el.scrollIntoView({ block: 'center' }))
           await settle(p)
         },
       },

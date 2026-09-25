@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ClipboardEvent } from 'react'
-import { MapPin, Plus } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import MSheet from '../../../components/MSheet'
 import {
   DEFAULT_FORM,
@@ -14,6 +14,7 @@ import PlPlaceSearch, { type PlSearchPick } from './PlPlaceSearch'
 import PlCategoryPicker from './PlCategoryPicker'
 import PlTimeFields from './PlTimeFields'
 import PlFileAttach from './PlFileAttach'
+import MLinkedCosts from './MLinkedCosts'
 import PlaceDetailsColumn, { type PlaceDetailsSelection } from '../../../../components/Planner/PlaceDetailsColumn'
 import { useTranslation } from '../../../../i18n'
 import { useAuthStore } from '../../../../store/authStore'
@@ -477,19 +478,13 @@ export default function MPlaceEditSheet({ planner, onOpenExpense }: MPlaceEditSh
 
         {/* COSTS — same block, same flow as the booking sheet (#1298) */}
         {isBudgetEnabled && (
-          <>
-            <Eyebrow className="mb-[6px] mt-3 uppercase">{t('reservations.costsLabel')}</Eyebrow>
-            <button
-              type="button"
-              onClick={() => { expenseIntentRef.current = true; handleSubmit() }}
-              disabled={!form.name.trim() || isSaving}
-              className="flex w-full items-center justify-center gap-[6px] rounded-[13px] border border-[color:var(--m-rowbr)] bg-[color:var(--m-ic)] py-[11px] text-[0.78125rem] font-semibold text-m-ink disabled:opacity-40"
-            >
-              <Plus size={13} strokeWidth={2.2} />
-              {t('reservations.createExpense')}
-            </button>
-            <div className="mt-[5px] font-geist text-[0.625rem] text-m-faint">{t('places.createExpenseHint')}</div>
-          </>
+          <MLinkedCosts
+            placeId={sheetPlace?.id}
+            hintKey="places.createExpenseHint"
+            createDisabled={!form.name.trim() || isSaving}
+            onCreate={() => { expenseIntentRef.current = true; handleSubmit() }}
+            onEdit={item => onOpenExpense({ editItem: item })}
+          />
         )}
       </div>
 

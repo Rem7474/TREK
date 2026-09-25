@@ -1892,7 +1892,7 @@ const help: TranslationStrings = {
   'help.guide.create-place.result':
     'El lugar está en la lista y en el mapa, bajo Sin planificar hasta que se pone en un día.',
   'help.guide.create-place.tip.1':
-    'Archivos y Costs, al final del formulario, adjuntan un documento al lugar, o abren el editor Costs para su gasto justo después de guardar.',
+    'Archivos y Costes, al final del formulario, adjuntan un documento al lugar, o abren el editor de Costes para su gasto justo después de guardar.',
   'help.guide.create-place.tip.2':
     'El índice de TREK y OpenStreetMap responden a la búsqueda en cualquier TREK, y Detalles del lugar se rellena desde Wikipedia, Wikivoyage y Wikimedia. A Google solo se le pregunta donde los dos salen vacíos, y solo él trae las valoraciones.',
   'help.guide.create-place.tip.3':
@@ -3236,7 +3236,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Haz clic en Reserva manual, arriba a la derecha de la pestaña. Se abre Nueva reserva.',
   'help.guide.create-booking.step.2':
-    'Elige el Tipo de reserva. Alojamiento, Restaurante, Evento, Excursión, Aparcamiento y Otro son las seis que hace esta pestaña, y el formulario cambia con la elección: solo Alojamiento cambia sus fechas por un rango de días.',
+    'Elige el Tipo de reserva en la lista de arriba del formulario, junto a Viajeros. Alojamiento, Restaurante, Evento, Excursión, Aparcamiento y Otro son las seis que hace esta pestaña, y el formulario cambia con la elección: solo Alojamiento cambia sus fechas por un rango de días.',
   'help.guide.create-booking.step.3':
     'Escribe el Título. Es el único campo en el que el formulario insiste, y Añadir sigue muerto mientras esté vacío.',
   'help.guide.create-booking.step.4':
@@ -3292,9 +3292,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Decir para quién es una reserva',
   'help.guide.booking-travelers.goal': 'Marca los viajeros que cubre una reserva y luego ve solo las suyas.',
   'help.guide.booking-travelers.step.1':
-    'Abre la reserva con el lápiz y baja hasta Viajeros. Ahí está cada miembro del viaje, los invitados con nombre incluidos.',
+    'Abre la reserva con el lápiz. Viajeros está arriba del formulario, junto a Tipo de reserva, y pone Asignar viajeros mientras no haya nadie en la reserva.',
   'help.guide.booking-travelers.step.2':
-    'Haz clic en las personas para las que es esta reserva. Una elegida recibe una marca; vuelve a hacer clic para quitarla.',
+    'Haz clic y elige las personas para las que es esta reserva; los invitados con nombre también están en la lista. Una elegida recibe una marca y su avatar en el campo. Vuelve a hacer clic en el nombre para quitarla.',
   'help.guide.booking-travelers.step.3': 'Haz clic en Actualizar.',
   'help.guide.booking-travelers.step.4':
     'Arriba en la barra de herramientas, junto a los chips de clase, haz clic en el avatar de un viajero para ver solo sus reservas.',
@@ -3326,21 +3326,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Lleva lo que cuesta una reserva a los Costes, repartido entre las personas que lo pagan.',
   'help.guide.booking-cost.step.1':
-    'Abre la reserva y baja al final del formulario. Bajo Costs está Create expense, con la nota Saves the booking, then opens the Costs editor.',
+    'Abre la reserva y baja al final del formulario. Bajo Costes están Crear gasto y Vincular gasto existente, con la nota Guarda la reserva y luego abre el editor de gastos.',
   'help.guide.booking-cost.step.2':
-    'Haz clic en Create expense. La reserva se guarda, su formulario se cierra y el editor Costs se abre.',
+    'Haz clic en Crear gasto. La reserva se guarda, su formulario se cierra y el editor de Costes se abre.',
   'help.guide.booking-cost.step.3':
     '¿Para qué fue? ya es el título de la reserva. Mete el Importe total y comprueba la Moneda y el Día.',
   'help.guide.booking-cost.step.4':
     'Categoría es la que implica el tipo de reserva. Pon ¿Quién pagó? y cómo se reparte el importe.',
   'help.guide.booking-cost.step.5': 'Haz clic en Añadir gasto.',
   'help.guide.booking-cost.result':
-    'El formulario de la reserva pone ahora Linked expense con el importe, y el mismo gasto está en la pestaña Costes, atado a esta reserva.',
+    'El formulario de la reserva muestra ahora el gasto bajo Gastos vinculados con su importe, y el mismo gasto está en la pestaña Costes, atado a esta reserva.',
   'help.guide.booking-cost.tip.1':
     'La categoría sigue al tipo: Restaurante pasa a Comida y bebida, Alojamiento pasa a Alojamiento, Aparcamiento pasa a Aparcamiento, y Evento y Excursión aterrizan ambos en Otros.',
-  'help.guide.booking-cost.tip.2': 'La papelera de Linked expense quita el gasto, no la reserva.',
+  'help.guide.booking-cost.tip.2':
+    'Una reserva puede llevar varios gastos. Vincular gasto existente ofrece los de Costes que aún no pertenecen a nada. En uno vinculado, Desvincular, conservar el gasto lo suelta y lo deja en Costes, mientras que la papelera lo quita.',
   'help.guide.booking-cost.tip.3':
-    'Costs solo está en el formulario mientras el complemento Costes está activado, algo que el administrador conmuta en Complementos.',
+    'Costes solo está en el formulario mientras el complemento Costes está activado, algo que el administrador conmuta en Complementos.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Encontrar una reserva',
   'help.guide.filter-bookings.goal': 'Reduce una pestaña larga a la clase, la persona o el estado que buscas.',
@@ -3394,7 +3395,7 @@ const help: TranslationStrings = {
   'help.guide.edit-booking.tip.1':
     'Un Código de reserva que no puedes leer es Difuminar códigos de reserva en Ajustes, bajo Pantalla. Pasa el ratón por encima, o haz clic, y queda legible.',
   'help.guide.edit-booking.tip.2':
-    'Cambia el tipo y la categoría de un gasto vinculado le sigue, salvo que hubieras elegido una categoría a mano en el editor Costs.',
+    'Cambia el tipo y la categoría de un gasto vinculado le sigue, salvo que hubieras elegido una categoría a mano en el editor de Costes.',
   'help.guide.edit-booking.tip.3':
     'Un alojamiento se edita aquí también: sus días Desde y Hasta están en el mismo formulario.',
   // delete-booking
@@ -3412,7 +3413,7 @@ const help: TranslationStrings = {
     'Los documentos que estaban adjuntos se quedan en la pestaña Archivos del viaje; solo se va su vínculo con la reserva.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Cada reserva que se encontró se abre en Nueva reserva, una tras otra, ya rellenada. Para un hotel eso es el nombre en Título y, cuando el viaje tiene el lugar, bajo Alojamiento, su Ubicación / dirección, Desde y Hasta en sus noches, Registro de entrada y Registro de salida, el Código de reserva, la confirmación bajo Archivos y, con Costes activado, el precio como Linked expense. Compruébala y haz clic en Añadir.',
+    'Cada reserva que se encontró se abre en Nueva reserva, una tras otra, ya rellenada. Para un hotel eso es el nombre en Título y, cuando el viaje tiene el lugar, bajo Alojamiento, su Ubicación / dirección, Desde y Hasta en sus noches, Registro de entrada y Registro de salida, el Código de reserva, la confirmación bajo Archivos y, con Costes activado, el precio como Gasto vinculado. Compruébala y haz clic en Añadir.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Costes',
@@ -3583,17 +3584,17 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Abre la reserva en la pestaña Transportes o Reservas y haz clic en su lápiz.',
   'help.guide.expense-from-booking.step.2':
-    'Baja hasta el bloque Costs al final del formulario. Mientras no haya nada vinculado, ofrece Create expense y dice que primero guarda la reserva.',
+    'Baja hasta el bloque Costes al final del formulario. Ofrece Crear gasto, que primero guarda la reserva, y Vincular gasto existente para uno que ya está en la pestaña Costes.',
   'help.guide.expense-from-booking.step.3':
-    'Haz clic en Create expense. La reserva se guarda, el formulario se cierra, y el editor de Costes se abre con el título de la reserva como nombre y su tipo ya emparejado con una categoría.',
+    'Haz clic en Crear gasto. La reserva se guarda, el formulario se cierra, y el editor de Costes se abre con el título de la reserva como nombre y su tipo ya emparejado con una categoría.',
   'help.guide.expense-from-booking.step.4':
-    'Rellena el importe y su moneda, quién pagó y el reparto como en cualquier gasto, y guarda. Al reabrir la reserva aparece bajo Linked expense, con un lápiz para editarlo y una papelera para quitarlo.',
+    'Rellena el importe y su moneda, quién pagó y el reparto como en cualquier gasto, y guarda. Al reabrir la reserva aparece bajo Gastos vinculados, con un lápiz para editarlo, Desvincular, conservar el gasto para soltarlo y una papelera para quitarlo.',
   'help.guide.expense-from-booking.result':
     'La reserva lleva su coste, y el gasto es una fila corriente de la pestaña Costes, con un pagador, un reparto y una moneda como cualquier otro.',
   'help.guide.expense-from-booking.tip.1':
-    'Eliminar la reserva elimina con ella su gasto vinculado. Remove expense, en el bloque Costs de la reserva, hace lo contrario: el gasto se va, la reserva se queda.',
+    'Eliminar la reserva elimina con ella sus gastos vinculados. Quitar gasto, en el bloque Costes de la reserva, hace lo contrario: el gasto se va, la reserva se queda. Desvincular, conservar el gasto mantiene ambos.',
   'help.guide.expense-from-booking.tip.2':
-    'Un lugar tiene el mismo bloque en su formulario, donde Create expense guarda primero el lugar.',
+    'Un lugar tiene el mismo bloque en su formulario, donde Crear gasto guarda primero el lugar.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Transportes',
@@ -3650,7 +3651,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'La fila cae donde la pone su hora de inicio, tras la última parada que empieza antes. Su asa la arrastra a cualquier otro sitio del día, o a otro día.',
   'help.guide.add-transport.tip.2':
-    'Adjuntar archivo, bajo Archivos, recoge el billete, y Create expense, bajo Costs, guarda la reserva y abre el editor de Costes para el importe.',
+    'Adjuntar archivo, bajo Archivos, recoge el billete, y Crear gasto, bajo Costes, guarda la reserva y abre el editor de Costes para el importe.',
   'help.guide.add-transport.tip.3':
     'Viajeros marca quién va en este trayecto. En cuanto un transporte tiene viajeros, la barra de herramientas de la pestaña hace crecer sus avatares y filtra la lista por ellos.',
   // plan-transit

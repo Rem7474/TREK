@@ -3122,7 +3122,7 @@ const help: TranslationStrings = {
     'Lägg in en restaurang, ett evenemang, en rundtur, en parkeringsplats eller vad som helst annat i resan för hand.',
   'help.guide.create-booking.step.1': 'Klicka på Manuell bokning högst upp till höger på fliken. Ny bokning öppnas.',
   'help.guide.create-booking.step.2':
-    'Välj Bokningstyp. Boende, Restaurang, Evenemang, Rundtur, Parkering och Övrigt är de sex som den här fliken gör, och formuläret ändras med valet: bara Boende byter sina datum mot ett spann av dagar.',
+    'Välj Bokningstyp i listan överst i formuläret, bredvid Resenärer. Boende, Restaurang, Evenemang, Rundtur, Parkering och Övrigt är de sex som den här fliken gör, och formuläret ändras med valet: bara Boende byter sina datum mot ett spann av dagar.',
   'help.guide.create-booking.step.3':
     'Skriv in Titel. Det är det enda fältet formuläret kräver, och Lägg till är död tills det står något i det.',
   'help.guide.create-booking.step.4':
@@ -3178,9 +3178,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Säg vem en bokning gäller',
   'help.guide.booking-travelers.goal': 'Märk ut resenärerna en bokning täcker, och se sedan bara deras.',
   'help.guide.booking-travelers.step.1':
-    'Öppna bokningen med pennan och gå ner till Resenärer. Varje medlem i resan står där, namngivna gäster bland dem.',
+    'Öppna bokningen med pennan. Resenärer sitter överst i formuläret, bredvid Bokningstyp, och visar Tilldela resenärer så länge ingen är med på bokningen.',
   'help.guide.booking-travelers.step.2':
-    'Klicka på personerna den här bokningen gäller. En vald får en bock; klicka igen för att ta bort den.',
+    'Klicka på det och välj personerna den här bokningen gäller; namngivna gäster finns också i listan. En vald får en bock och sin avatar i fältet. Klicka på namnet igen för att ta bort den.',
   'help.guide.booking-travelers.step.3': 'Klicka på Uppdatera.',
   'help.guide.booking-travelers.step.4':
     'Uppe i verktygsraden, bredvid typbrickorna, klicka på en resenärs avatar för att bara se dennes bokningar.',
@@ -3211,7 +3211,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Gör en boknings pris till en kostnad',
   'help.guide.booking-cost.goal': 'Få in det en bokning kostar i Kostnader, fördelat mellan dem som betalar för den.',
   'help.guide.booking-cost.step.1':
-    'Öppna bokningen och gå till formulärets fot. Under Kostnader står Skapa utgift, med noteringen Sparar bokningen och öppnar sedan kostnadsredigeraren.',
+    'Öppna bokningen och gå till formulärets fot. Under Kostnader står Skapa utgift och Länka befintlig utgift, med noteringen Sparar bokningen och öppnar sedan kostnadsredigeraren.',
   'help.guide.booking-cost.step.2':
     'Klicka på Skapa utgift. Bokningen sparas, dess formulär stängs och kostnadsredigeraren öppnas.',
   'help.guide.booking-cost.step.3':
@@ -3220,10 +3220,11 @@ const help: TranslationStrings = {
     'Kategori är den som bokningstypen antyder. Sätt Vem betalade? och hur beloppet fördelas.',
   'help.guide.booking-cost.step.5': 'Klicka på Lägg till utgift.',
   'help.guide.booking-cost.result':
-    'Bokningens formulär läser nu Relaterade kostnader med beloppet, och samma utgift står på fliken Kostnader, knuten till den här bokningen.',
+    'Bokningens formulär listar nu utgiften under Länkade utgifter med dess belopp, och samma utgift står på fliken Kostnader, knuten till den här bokningen.',
   'help.guide.booking-cost.tip.1':
     'Kategorin följer typen: Restaurang blir Mat och dryck, Boende blir Boende, Parkering blir Parkering, och Evenemang och Rundtur hamnar båda i Annat.',
-  'help.guide.booking-cost.tip.2': 'Papperskorgen på Relaterade kostnader tar bort utgiften, inte bokningen.',
+  'help.guide.booking-cost.tip.2':
+    'En bokning kan bära flera utgifter. Länka befintlig utgift erbjuder de i Kostnader som ännu inte hör till något. På en länkad kopplar Koppla ifrån, behåll utgiften loss den och lämnar den i Kostnader, medan papperskorgen tar bort den.',
   'help.guide.booking-cost.tip.3':
     'Kostnader finns i formuläret bara medan tillägget Kostnader är på, vilket administratören slår om under Tillägg.',
   // filter-bookings
@@ -3468,15 +3469,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Öppna bokningen på fliken Transporter eller Bokningar och klicka på dess penna.',
   'help.guide.expense-from-booking.step.2':
-    'Bläddra till blocket Kostnader längst ned i formuläret. Med inget länkat ännu erbjuder det Skapa utgift och säger att det sparar bokningen först.',
+    'Bläddra till blocket Kostnader längst ned i formuläret. Det erbjuder Skapa utgift, som sparar bokningen först, och Länka befintlig utgift för en som redan finns i Kostnader.',
   'help.guide.expense-from-booking.step.3':
     'Klicka på Skapa utgift. Bokningen sparas, formuläret stängs, och Kostnader-redigeraren öppnas med bokningens titel som namn och dess typ redan matchad mot en kategori.',
   'help.guide.expense-from-booking.step.4':
-    'Fyll i beloppet och dess valuta, vem som betalade och fördelningen som för vilken utgift som helst, och spara. Öppnar du bokningen igen visas den nu under Relaterade kostnader, med en penna för att redigera den och en papperskorg för att ta bort den.',
+    'Fyll i beloppet och dess valuta, vem som betalade och fördelningen som för vilken utgift som helst, och spara. Öppnar du bokningen igen visas den nu under Länkade utgifter, med en penna för att redigera den, Koppla ifrån, behåll utgiften för att koppla loss den och en papperskorg för att ta bort den.',
   'help.guide.expense-from-booking.result':
     'Bokningen bär sin kostnad, och utgiften är en vanlig rad på fliken Kostnader, med en betalare, en fördelning och en valuta som vilken annan som helst.',
   'help.guide.expense-from-booking.tip.1':
-    'Att ta bort bokningen tar bort dess länkade utgift med den. Ta bort utgiften i bokningens Kostnader-block gör det motsatta: utgiften försvinner, bokningen stannar.',
+    'Att ta bort bokningen tar bort dess länkade utgifter med den. Ta bort utgiften i bokningens Kostnader-block gör det motsatta: utgiften försvinner, bokningen stannar. Koppla ifrån, behåll utgiften behåller båda.',
   'help.guide.expense-from-booking.tip.2':
     'En plats har samma block i sitt formulär, där Skapa utgift sparar platsen först.',
 

@@ -47,6 +47,8 @@ const transportRow = (page: Page, name: RegExp) => page.getByRole('button', { na
 const counted = (page: Page, label: string) => page.getByRole('button', { name: new RegExp(`^${label} \\d+$`) })
 /** A labelled field block inside the open dialog. */
 const block = (page: Page, label: string) => modal(page).getByText(label, { exact: true }).locator('xpath=..')
+/** CustomSelect portals its menu to the body: a fixed panel at z-index 99999. */
+const selectMenu = (page: Page) => page.locator('body > div[style*="99999"]').last()
 /** The leg-mode popover, told apart from the connector's tooltip by what stands in it. */
 const legMenu = (page: Page) =>
   page.locator('.trek-popover-enter').filter({ has: page.getByRole('button', { name: 'Use day default' }) }).last()
@@ -221,9 +223,15 @@ const SCRIPTS: Record<string, GuideScript> = {
         },
       },
       {
-        target: p => block(p, 'Booking Type'),
+        prepare: async p => {
+          await block(p, 'Booking Type').getByRole('button').first().click()
+          await expect(selectMenu(p)).toBeVisible()
+          await beat(p, 300)
+        },
+        target: selectMenu,
         act: async p => {
-          await modal(p).getByRole('button', { name: 'Taxi', exact: true }).click()
+          await selectMenu(p).getByRole('button', { name: /^Taxi$/ }).first().click()
+          await expect(selectMenu(p)).toHaveCount(0)
           await expect(modal(p).getByText('Start time', { exact: true })).toBeVisible()
           await settle(p)
         },

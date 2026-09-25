@@ -2939,7 +2939,7 @@ const help: TranslationStrings = {
   'help.guide.create-booking.step.1':
     'Bölmənin sağ yuxarısında Əl ilə rezervasiya et düyməsinə klikləyin. Yeni rezervasiya açılır.',
   'help.guide.create-booking.step.2':
-    'Rezervasiya növü seçin. Bu bölmənin yaratdığı altı növ Yaşayış yeri, Restoran, Tədbir, Tur, Parkinq və Digərdir, forma isə seçimə uyğun dəyişir: yalnız Yaşayış yeri tarixlər əvəzinə günlər aralığı istifadə edir.',
+    'Rezervasiya növü formanın yuxarısındakı siyahıdan, Səyahətçilər yanında seçin. Bu bölmənin yaratdığı altı növ Yaşayış yeri, Restoran, Tədbir, Tur, Parkinq və Digərdir, forma isə seçimə uyğun dəyişir: yalnız Yaşayış yeri tarixlər əvəzinə günlər aralığı istifadə edir.',
   'help.guide.create-booking.step.3':
     'Başlığı yazın. Bu, formanın tələb etdiyi yeganə sahədir və o doldurulmayana qədər Əlavə et işləmir.',
   'help.guide.create-booking.step.4':
@@ -2997,9 +2997,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.goal':
     'Rezervasiyanın əhatə etdiyi səyahətçiləri qeyd edin və sonra yalnız onlarınkını görün.',
   'help.guide.booking-travelers.step.1':
-    'Rezervasiyanı karandaşla açın və Səyahətçilər bölməsinə enin. Səyahətin bütün üzvləri, o cümlədən adlı qonaqlar orada göstərilir.',
+    'Rezervasiyanı karandaşla açın. Səyahətçilər formanın yuxarısında, Rezervasiya növü yanında yerləşir və rezervasiyada heç kim olmadıqca Səyahətçiləri təyin et yazısını göstərir.',
   'help.guide.booking-travelers.step.2':
-    'Bu rezervasiyanın aid olduğu insanlara klikləyin. Seçilmiş şəxsdə işarə görünür; onu götürmək üçün yenidən klikləyin.',
+    'Ona klikləyin və bu rezervasiyanın aid olduğu insanları seçin; adlı qonaqlar da siyahıdadır. Seçilmiş şəxsdə işarə görünür, onun avatarı isə sahədə göstərilir. Onu götürmək üçün ada yenidən klikləyin.',
   'help.guide.booking-travelers.step.3': 'Yenilə düyməsinə klikləyin.',
   'help.guide.booking-travelers.step.4':
     'Yuxarıda, alətlər panelində növ düymələrinin yanında yalnız həmin səyahətçinin rezervasiyalarını görmək üçün onun avatarına klikləyin.',
@@ -3029,7 +3029,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Rezervasiyanın qiymətini xərcə çevirin',
   'help.guide.booking-cost.goal': 'Rezervasiyanın dəyərini onu ödəyən insanlar arasında bölərək Xərclərə daxil edin.',
   'help.guide.booking-cost.step.1':
-    'Rezervasiyanı açın və formanın aşağısına gedin. Xərclər altında Rezervasiyanı yadda saxlayır, sonra Xərclər redaktorunu açır qeydi ilə Xərc yarat düyməsi var.',
+    'Rezervasiyanı açın və formanın aşağısına gedin. Xərclər altında Rezervasiyanı yadda saxlayır, sonra Xərclər redaktorunu açır qeydi ilə Xərc yarat və Mövcud xərci əlaqələndir düymələri var.',
   'help.guide.booking-cost.step.2':
     'Xərc yarat düyməsinə klikləyin. Rezervasiya yadda saxlanılır, forması bağlanır və Xərclər redaktoru açılır.',
   'help.guide.booking-cost.step.3':
@@ -3038,10 +3038,11 @@ const help: TranslationStrings = {
     'Kateqoriya rezervasiya növünə uyğun seçilib. Kim ödədi? sahəsini və məbləğin necə bölünəcəyini təyin edin.',
   'help.guide.booking-cost.step.5': 'Xərc əlavə et düyməsinə klikləyin.',
   'help.guide.booking-cost.result':
-    'Rezervasiyanın formasında indi məbləğlə birlikdə Əlaqəli xərc göstərilir, eyni xərc isə bu rezervasiyaya bağlı olaraq Xərclər bölməsində yer alır.',
+    'Rezervasiyanın formasında xərc indi məbləği ilə birlikdə Əlaqəli xərclər altında göstərilir, eyni xərc isə bu rezervasiyaya bağlı olaraq Xərclər bölməsində yer alır.',
   'help.guide.booking-cost.tip.1':
     'Kateqoriya növə uyğun seçilir: Restoran Yemək və içki, Yaşayış yeri Yaşayış yeri, Parkinq Parkinq olur, Tədbir və Tur isə Digər kateqoriyasına düşür.',
-  'help.guide.booking-cost.tip.2': 'Əlaqəli xərc üzərindəki zibil qutusu rezervasiyanı deyil, xərci silir.',
+  'help.guide.booking-cost.tip.2':
+    'Bir rezervasiyanın bir neçə xərci ola bilər. Mövcud xərci əlaqələndir Xərclər bölməsində hələ heç yerə aid olmayan xərcləri təklif edir. Əlaqəli xərcdə Əlaqəni sil, xərci saxla onu ayırır və Xərclər bölməsində saxlayır, zibil qutusu isə onu silir.',
   'help.guide.booking-cost.tip.3':
     'Xərclər formada yalnız Xərclər əlavəsi aktiv olduqda görünür; onu administrator Əlavələr bölməsində aktivləşdirir.',
   // filter-bookings
@@ -3474,15 +3475,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Rezervasiyanı Nəqliyyat və ya Rezervasiyalar tabında açın və onun qələminə klikləyin.',
   'help.guide.expense-from-booking.step.2':
-    'Formanın aşağısındakı Xərclər blokuna qədər sürüşdürün. Hələ heç nə əlaqələndirilməyibsə, orada Xərc yarat təklif olunur və əvvəlcə rezervasiyanın yadda saxlanılacağı qeyd edilir.',
+    'Formanın aşağısındakı Xərclər blokuna qədər sürüşdürün. Orada əvvəlcə rezervasiyanı yadda saxlayan Xərc yarat və artıq Xərclər bölməsində olan xərc üçün Mövcud xərci əlaqələndir təklif olunur.',
   'help.guide.expense-from-booking.step.3':
     'Xərc yarat düyməsinə klikləyin. Rezervasiya yadda saxlanılır, forma bağlanır və Xərclər redaktoru ad olaraq rezervasiyanın başlığı və növünə artıq uyğunlaşdırılmış kateqoriya ilə açılır.',
   'help.guide.expense-from-booking.step.4':
-    'İstənilən xərcdə olduğu kimi məbləği və valyutasını, kimin ödədiyini və bölüşdürməni doldurun və yadda saxlayın. Rezervasiyanı yenidən açdıqda xərc Əlaqəli xərc altında, redaktə etmək üçün qələm və silmək üçün zibil qutusu ilə göstərilir.',
+    'İstənilən xərcdə olduğu kimi məbləği və valyutasını, kimin ödədiyini və bölüşdürməni doldurun və yadda saxlayın. Rezervasiyanı yenidən açdıqda xərc Əlaqəli xərclər altında, redaktə etmək üçün qələm, ayırmaq üçün Əlaqəni sil, xərci saxla və silmək üçün zibil qutusu ilə göstərilir.',
   'help.guide.expense-from-booking.result':
     'Rezervasiya öz xərcini daşıyır, xərc isə Xərclər tabında digərləri kimi ödəyicisi, bölüşdürməsi və valyutası olan adi sətirdir.',
   'help.guide.expense-from-booking.tip.1':
-    'Rezervasiyanı silmək onunla əlaqəli xərci də silir. Rezervasiyanın Xərclər blokundakı Xərci sil isə əksini edir: xərc silinir, rezervasiya qalır.',
+    'Rezervasiyanı silmək onunla əlaqəli xərcləri də silir. Rezervasiyanın Xərclər blokundakı Xərci sil isə əksini edir: xərc silinir, rezervasiya qalır. Əlaqəni sil, xərci saxla isə hər ikisini saxlayır.',
   'help.guide.expense-from-booking.tip.2':
     'Məkanın formasında da eyni blok var; orada Xərc yarat əvvəlcə məkanı yadda saxlayır.',
 

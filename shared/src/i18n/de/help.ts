@@ -3254,7 +3254,7 @@ const help: TranslationStrings = {
     'Trag ein Restaurant, eine Veranstaltung, eine Tour, einen Parkplatz oder sonst etwas von Hand in die Reise ein.',
   'help.guide.create-booking.step.1': 'Klick oben rechts im Tab auf Manuelle Buchung. Neue Buchung öffnet sich.',
   'help.guide.create-booking.step.2':
-    'Wähl die Art der Buchung. Unterkunft, Restaurant, Veranstaltung, Tour, Parkplatz und Sonstiges sind die sechs, die dieser Tab anlegt, und das Formular ändert sich mit der Wahl: nur Unterkunft tauscht ihre Daten gegen eine Spanne von Tagen.',
+    'Wähl die Art der Buchung aus der Liste oben im Formular, neben Reisende. Unterkunft, Restaurant, Veranstaltung, Tour, Parkplatz und Sonstiges sind die sechs, die dieser Tab anlegt, und das Formular ändert sich mit der Wahl: nur Unterkunft tauscht ihre Daten gegen eine Spanne von Tagen.',
   'help.guide.create-booking.step.3':
     'Tipp den Titel ein. Es ist das eine Feld, auf dem das Formular besteht, und Hinzufügen bleibt tot, bis dort etwas steht.',
   'help.guide.create-booking.step.4':
@@ -3311,9 +3311,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Sagen, für wen eine Buchung ist',
   'help.guide.booking-travelers.goal': 'Markier die Reisenden, die eine Buchung abdeckt, und sieh dann nur ihre.',
   'help.guide.booking-travelers.step.1':
-    'Öffne die Buchung mit dem Stift und geh hinunter zu Reisende. Dort steht jedes Mitglied der Reise, benannte Gäste darunter.',
+    'Öffne die Buchung mit dem Stift. Reisende steht oben im Formular, neben Art der Buchung, und zeigt Reisende zuweisen, solange niemand auf der Buchung ist.',
   'help.guide.booking-travelers.step.2':
-    'Klick die Personen an, für die diese Buchung ist. Eine gewählte bekommt einen Haken; klick sie noch einmal an, um ihn wieder wegzunehmen.',
+    'Klick darauf und wähl die Personen, für die diese Buchung ist; benannte Gäste stehen auch in der Liste. Eine gewählte bekommt einen Haken und ihren Avatar im Feld. Klick den Namen noch einmal an, um sie wieder wegzunehmen.',
   'help.guide.booking-travelers.step.3': 'Klick auf Aktualisieren.',
   'help.guide.booking-travelers.step.4':
     'Oben in der Werkzeugleiste, neben den Chips für die Art, klick den Avatar einer reisenden Person an, um nur ihre Buchungen zu sehen.',
@@ -3346,7 +3346,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.goal':
     'Bring das, was eine Buchung kostet, in die Kosten, aufgeteilt zwischen den Leuten, die dafür zahlen.',
   'help.guide.booking-cost.step.1':
-    'Öffne die Buchung und geh ans Ende des Formulars. Unter Kosten steht Ausgabe erstellen, mit dem Hinweis Speichert die Buchung und öffnet dann den Kosten-Editor.',
+    'Öffne die Buchung und geh ans Ende des Formulars. Unter Kosten stehen Ausgabe erstellen und Bestehende Ausgabe verknüpfen, mit dem Hinweis Speichert die Buchung und öffnet dann den Kosten-Editor.',
   'help.guide.booking-cost.step.2':
     'Klick auf Ausgabe erstellen. Die Buchung wird gespeichert, ihr Formular schließt sich, und der Kosten-Editor öffnet sich.',
   'help.guide.booking-cost.step.3':
@@ -3355,10 +3355,11 @@ const help: TranslationStrings = {
     'Kategorie ist die, die die Art der Buchung nahelegt. Setz Wer hat bezahlt? und wie der Betrag aufgeteilt wird.',
   'help.guide.booking-cost.step.5': 'Klick auf Ausgabe hinzufügen.',
   'help.guide.booking-cost.result':
-    'Im Formular der Buchung steht jetzt Verknüpfte Ausgabe mit dem Betrag, und dieselbe Ausgabe steht im Tab Kosten, an diese Buchung gebunden.',
+    'Im Formular der Buchung steht die Ausgabe jetzt unter Verknüpfte Ausgaben mit ihrem Betrag, und dieselbe Ausgabe steht im Tab Kosten, an diese Buchung gebunden.',
   'help.guide.booking-cost.tip.1':
     'Die Kategorie folgt der Art: Restaurant wird zu Essen & Trinken, Unterkunft wird zu Unterkunft, Parkplatz wird zu Parken, und Veranstaltung und Tour landen beide in Sonstiges.',
-  'help.guide.booking-cost.tip.2': 'Der Papierkorb bei Verknüpfte Ausgabe entfernt die Ausgabe, nicht die Buchung.',
+  'help.guide.booking-cost.tip.2':
+    'Eine Buchung kann mehrere Ausgaben tragen. Bestehende Ausgabe verknüpfen bietet die Ausgaben aus Kosten an, die noch nirgends hängen. Bei einer verknüpften löst Lösen, Ausgabe behalten die Verbindung und lässt sie in Kosten stehen, während der Papierkorb sie entfernt.',
   'help.guide.booking-cost.tip.3':
     'Kosten steht nur im Formular, solange das Addon Kosten an ist, das der Administrator unter Addons schaltet.',
   // filter-bookings
@@ -3605,15 +3606,15 @@ const help: TranslationStrings = {
   'help.guide.expense-from-booking.step.1':
     'Öffne die Buchung im Reiter Transport oder Buchungen und klick auf ihren Stift.',
   'help.guide.expense-from-booking.step.2':
-    'Scroll zum Block Kosten unten im Formular. Solange nichts verknüpft ist, bietet er Ausgabe erstellen an und sagt, dass er die Buchung zuerst speichert.',
+    'Scroll zum Block Kosten unten im Formular. Er bietet Ausgabe erstellen an, das die Buchung zuerst speichert, und Bestehende Ausgabe verknüpfen für eine, die schon in Kosten steht.',
   'help.guide.expense-from-booking.step.3':
     'Klick auf Ausgabe erstellen. Die Buchung wird gespeichert, das Formular schließt sich, und der Kosten-Editor öffnet sich mit dem Titel der Buchung als Namen und ihrem Typ, der schon einer Kategorie zugeordnet ist.',
   'help.guide.expense-from-booking.step.4':
-    'Trag den Betrag und seine Währung ein, wer bezahlt hat, und die Aufteilung wie bei jeder Ausgabe, und speichere. Öffnest du die Buchung jetzt wieder, steht sie unter Verknüpfte Ausgabe, mit einem Stift zum Bearbeiten und einem Papierkorb zum Entfernen.',
+    'Trag den Betrag und seine Währung ein, wer bezahlt hat, und die Aufteilung wie bei jeder Ausgabe, und speichere. Öffnest du die Buchung jetzt wieder, steht sie unter Verknüpfte Ausgaben, mit einem Stift zum Bearbeiten, Lösen, Ausgabe behalten zum Abkoppeln und einem Papierkorb zum Entfernen.',
   'help.guide.expense-from-booking.result':
     'Die Buchung trägt ihre Kosten, und die Ausgabe ist eine ganz normale Zeile im Reiter Kosten, mit Zahler, Aufteilung und Währung wie jede andere.',
   'help.guide.expense-from-booking.tip.1':
-    'Die Buchung zu löschen löscht ihre verknüpfte Ausgabe mit. Ausgabe entfernen im Block Kosten der Buchung macht das Gegenteil: Die Ausgabe geht, die Buchung bleibt.',
+    'Die Buchung zu löschen löscht ihre verknüpften Ausgaben mit. Ausgabe entfernen im Block Kosten der Buchung macht das Gegenteil: Die Ausgabe geht, die Buchung bleibt. Lösen, Ausgabe behalten behält beides.',
   'help.guide.expense-from-booking.tip.2':
     'Ein Ort hat denselben Block in seinem Formular, wobei Ausgabe erstellen dort zuerst den Ort speichert.',
 

@@ -215,11 +215,11 @@ Two inline warnings are shown when editing times: one if the end time is set to 
 
 ## Costs for a place
 
-With the [Costs/Budget addon](Budget-Tracking) enabled, the place form carries the same **Costs** block that bookings and transports have. **Create expense** saves the place and then opens the Costs editor for a new expense linked to it: the museum ticket, the guided tour, the entry fee. Once linked, the block shows that expense with edit and remove actions.
+With the [Costs/Budget addon](Budget-Tracking) enabled, the place form carries the same **Costs** block that bookings and transports have. **Create expense** saves the place and then opens the Costs editor for a new expense linked to it: the museum ticket, the guided tour, the entry fee. On a saved place, **Link existing expense** ties one that is already in Costs. Every linked expense is listed with edit, unlink and remove actions, and a place can carry several.
 
 The expense belongs to the **place**, not to a day. Putting the same place on several days does not multiply it: you bought the ticket once. If you really pay each time, add a second expense from the Costs tab.
 
-Deleting the place deletes its linked expense too, the same way deleting a booking does.
+Deleting the place deletes its linked expenses too, the same way deleting a booking does.
 
 ## Rating a place
 

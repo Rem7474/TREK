@@ -1845,7 +1845,7 @@ const help: TranslationStrings = {
     'Clique em Adicionar. Se já houver um lugar com o mesmo nome na viagem, o formulário avisa e o botão vira Adicionar mesmo assim.',
   'help.guide.create-place.result': 'O lugar está na lista e no mapa, em Não planejados até ser posto em um dia.',
   'help.guide.create-place.tip.1':
-    'Arquivos e Costs no fim do formulário anexam um documento ao lugar, ou abrem o editor Costs para a despesa dele logo depois de salvar.',
+    'Arquivos e Custos no fim do formulário anexam um documento ao lugar, ou abrem o editor de Custos para a despesa dele logo depois de salvar.',
   'help.guide.create-place.tip.2':
     'O índice do TREK e o OpenStreetMap respondem à busca em qualquer TREK, e Detalhes do lugar se preenche com Wikipédia, Wikivoyage e Wikimedia. O Google só é consultado onde os dois vêm vazios, e só ele traz as avaliações.',
   'help.guide.create-place.tip.3':
@@ -3164,7 +3164,7 @@ const help: TranslationStrings = {
     'Coloque à mão na viagem um restaurante, um evento, um passeio, uma vaga de estacionamento ou qualquer outra coisa.',
   'help.guide.create-booking.step.1': 'Clique em Reserva manual no canto superior direito da aba. Nova reserva abre.',
   'help.guide.create-booking.step.2':
-    'Escolha o Tipo de reserva. Hospedagem, Restaurante, Evento, Passeio, Estacionamento e Outro são os seis que esta aba cria, e o formulário muda com a escolha: só Hospedagem troca suas datas por um intervalo de dias.',
+    'Escolha o Tipo de reserva na lista no topo do formulário, ao lado de Viajantes. Hospedagem, Restaurante, Evento, Passeio, Estacionamento e Outro são os seis que esta aba cria, e o formulário muda com a escolha: só Hospedagem troca suas datas por um intervalo de dias.',
   'help.guide.create-booking.step.3':
     'Digite o Título. É o único campo em que o formulário insiste, e Adicionar fica morto até ter algo.',
   'help.guide.create-booking.step.4':
@@ -3220,9 +3220,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Dizer para quem é uma reserva',
   'help.guide.booking-travelers.goal': 'Marque os viajantes que uma reserva cobre e depois veja só as deles.',
   'help.guide.booking-travelers.step.1':
-    'Abra a reserva com o lápis e desça até Viajantes. Ali está cada membro da viagem, convidados com nome incluídos.',
+    'Abra a reserva com o lápis. Viajantes fica no topo do formulário, ao lado de Tipo de reserva, e mostra Atribuir viajantes enquanto ninguém estiver na reserva.',
   'help.guide.booking-travelers.step.2':
-    'Clique nas pessoas para quem esta reserva é. Quem é escolhido ganha um tique; clique de novo para tirar.',
+    'Clique nele e escolha as pessoas para quem esta reserva é; convidados com nome também estão na lista. Quem é escolhido ganha um tique e seu avatar no campo. Clique no nome de novo para tirar.',
   'help.guide.booking-travelers.step.3': 'Clique em Atualizar.',
   'help.guide.booking-travelers.step.4':
     'Lá em cima na barra de ferramentas, ao lado dos chips de tipo, clique no avatar de um viajante para ver só as reservas dele.',
@@ -3252,21 +3252,22 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Transformar o preço de uma reserva em custo',
   'help.guide.booking-cost.goal': 'Leve o que uma reserva custa para os Custos, dividido entre as pessoas que pagam.',
   'help.guide.booking-cost.step.1':
-    'Abra a reserva e vá até o pé do formulário. Sob Costs está Create expense, com a nota Saves the booking, then opens the Costs editor.',
+    'Abra a reserva e vá até o pé do formulário. Sob Custos estão Criar despesa e Vincular despesa existente, com a nota Salva a reserva e depois abre o editor de despesas.',
   'help.guide.booking-cost.step.2':
-    'Clique em Create expense. A reserva é salva, o formulário dela fecha e o editor Costs abre.',
+    'Clique em Criar despesa. A reserva é salva, o formulário dela fecha e o editor de Custos abre.',
   'help.guide.booking-cost.step.3':
     'Para que foi? já é o título da reserva. Coloque o Valor total e confira a Moeda e o Dia.',
   'help.guide.booking-cost.step.4':
     'Categoria é a que o tipo de reserva sugere. Defina Quem pagou? e como o valor é dividido.',
   'help.guide.booking-cost.step.5': 'Clique em Adicionar despesa.',
   'help.guide.booking-cost.result':
-    'O formulário da reserva agora mostra Linked expense com o valor, e a mesma despesa está na aba Custos, amarrada a esta reserva.',
+    'O formulário da reserva agora lista a despesa em Despesas vinculadas com o valor dela, e a mesma despesa está na aba Custos, amarrada a esta reserva.',
   'help.guide.booking-cost.tip.1':
     'A categoria segue o tipo: Restaurante vira Comida e bebida, Hospedagem vira Hospedagem, Estacionamento vira Estacionamento, e Evento e Passeio caem os dois em Outros.',
-  'help.guide.booking-cost.tip.2': 'A lixeira em Linked expense remove a despesa, não a reserva.',
+  'help.guide.booking-cost.tip.2':
+    'Uma reserva pode levar várias despesas. Vincular despesa existente oferece as de Custos que ainda não pertencem a nada. Em uma vinculada, Desvincular, manter a despesa a solta e a deixa em Custos, enquanto a lixeira a remove.',
   'help.guide.booking-cost.tip.3':
-    'Costs só está no formulário enquanto o complemento Custos estiver ligado, o que o administrador liga em Complementos.',
+    'Custos só está no formulário enquanto o complemento Custos estiver ligado, o que o administrador liga em Complementos.',
   // filter-bookings
   'help.guide.filter-bookings.title': 'Encontrar uma reserva',
   'help.guide.filter-bookings.goal': 'Reduza uma aba longa ao tipo, à pessoa ou ao estado que você procura.',
@@ -3320,7 +3321,7 @@ const help: TranslationStrings = {
   'help.guide.edit-booking.tip.1':
     'Um Código da reserva que você não consegue ler é Ocultar códigos de reserva nas Configurações, em Exibição. Passe o mouse por cima, ou clique nele, e ele fica legível.',
   'help.guide.edit-booking.tip.2':
-    'Mude o tipo e a categoria de uma despesa vinculada acompanha, a não ser que você tivesse escolhido uma categoria à mão no editor Costs.',
+    'Mude o tipo e a categoria de uma despesa vinculada acompanha, a não ser que você tivesse escolhido uma categoria à mão no editor de Custos.',
   'help.guide.edit-booking.tip.3':
     'Uma hospedagem também é editada aqui: os dias De e Até dela estão no mesmo formulário.',
   // delete-booking
@@ -3338,7 +3339,7 @@ const help: TranslationStrings = {
     'Os documentos que estavam anexados ficam na aba Arquivos da viagem; só o vínculo deles com a reserva some.',
   // import-booking-file
   'help.guide.import-booking-file.step.5':
-    'Cada reserva encontrada abre em Nova reserva, uma após a outra, já preenchida. Para um hotel, isso é o nome em Título e, quando a viagem tem o lugar, em Hospedagem, o Local / endereço dele, De e Até nas noites dele, Check-in e Check-out, o Código da reserva, a confirmação em Arquivos e, com Custos ligado, o preço como Linked expense. Confira e clique em Adicionar.',
+    'Cada reserva encontrada abre em Nova reserva, uma após a outra, já preenchida. Para um hotel, isso é o nome em Título e, quando a viagem tem o lugar, em Hospedagem, o Local / endereço dele, De e Até nas noites dele, Check-in e Check-out, o Código da reserva, a confirmação em Arquivos e, com Custos ligado, o preço como Despesa vinculada. Confira e clique em Adicionar.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Custos',
@@ -3508,17 +3509,17 @@ const help: TranslationStrings = {
     'Anexe o que um voo, um hotel ou um lugar realmente custou ao registro a que pertence.',
   'help.guide.expense-from-booking.step.1': 'Abra a reserva na aba Transportes ou Reservas e clique no lápis dela.',
   'help.guide.expense-from-booking.step.2':
-    'Role até o bloco Costs no fim do formulário. Enquanto nada estiver vinculado, ele oferece Create expense e diz que salva a reserva primeiro.',
+    'Role até o bloco Custos no fim do formulário. Ele oferece Criar despesa, que salva a reserva primeiro, e Vincular despesa existente para uma que já está na aba Custos.',
   'help.guide.expense-from-booking.step.3':
-    'Clique em Create expense. A reserva é salva, o formulário fecha, e o editor de Custos abre com o título da reserva como nome e o seu tipo já associado a uma categoria.',
+    'Clique em Criar despesa. A reserva é salva, o formulário fecha, e o editor de Custos abre com o título da reserva como nome e o seu tipo já associado a uma categoria.',
   'help.guide.expense-from-booking.step.4':
-    'Preencha o valor e a moeda dele, quem pagou e a divisão como em qualquer despesa, e salve. Ao reabrir a reserva, ela aparece em Linked expense, com um lápis para editar e uma lixeira para remover.',
+    'Preencha o valor e a moeda dele, quem pagou e a divisão como em qualquer despesa, e salve. Ao reabrir a reserva, ela aparece em Despesas vinculadas, com um lápis para editar, Desvincular, manter a despesa para soltar e uma lixeira para remover.',
   'help.guide.expense-from-booking.result':
     'A reserva carrega o seu custo, e a despesa é uma linha comum na aba Custos, com pagador, divisão e moeda como qualquer outra.',
   'help.guide.expense-from-booking.tip.1':
-    'Excluir a reserva exclui junto a despesa vinculada. Remove expense, no bloco Costs da reserva, faz o contrário: a despesa sai, a reserva fica.',
+    'Excluir a reserva exclui junto as despesas vinculadas. Remover despesa, no bloco Custos da reserva, faz o contrário: a despesa sai, a reserva fica. Desvincular, manter a despesa mantém as duas.',
   'help.guide.expense-from-booking.tip.2':
-    'Um lugar tem o mesmo bloco no seu formulário, onde Create expense salva o lugar primeiro.',
+    'Um lugar tem o mesmo bloco no seu formulário, onde Criar despesa salva o lugar primeiro.',
 
   // ── Screen: trip-transports ───────────────────────────────────────────────────────────
   'help.ctx.trip-transports.title': 'Transportes',
@@ -3574,7 +3575,7 @@ const help: TranslationStrings = {
   'help.guide.add-transport.tip.1':
     'A linha cai onde o horário de início a coloca, depois da última parada que começa mais cedo. A alça dela a arrasta para qualquer outro ponto do dia, ou para outro dia.',
   'help.guide.add-transport.tip.2':
-    'Anexar arquivo, em Arquivos, recebe a passagem, e Create expense, em Costs, salva a reserva e abre o editor de Custos para a tarifa.',
+    'Anexar arquivo, em Arquivos, recebe a passagem, e Criar despesa, em Custos, salva a reserva e abre o editor de Custos para a tarifa.',
   'help.guide.add-transport.tip.3':
     'Viajantes marca quem está nesse trajeto. Assim que um transporte tem viajantes, a barra de ferramentas da aba faz crescer os avatares deles e filtra a lista por eles.',
   // plan-transit

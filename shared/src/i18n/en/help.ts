@@ -2802,7 +2802,7 @@ const help: TranslationStrings = {
     'Put a restaurant, an event, a tour, a parking space or anything else into the trip by hand.',
   'help.guide.create-booking.step.1': 'Click Manual Booking at the top right of the tab. New Reservation opens.',
   'help.guide.create-booking.step.2':
-    'Pick the Booking Type. Accommodation, Restaurant, Event, Tour, Parking and Other are the six this tab makes, and the form changes with the choice: only Accommodation trades its dates for a range of days.',
+    'Pick the Booking Type from the list at the top of the form, next to Travelers. Accommodation, Restaurant, Event, Tour, Parking and Other are the six this tab makes, and the form changes with the choice: only Accommodation trades its dates for a range of days.',
   'help.guide.create-booking.step.3':
     'Type the Title. It is the one field the form insists on, and Add stays dead until it has something.',
   'help.guide.create-booking.step.4':
@@ -2857,9 +2857,9 @@ const help: TranslationStrings = {
   'help.guide.booking-travelers.title': 'Say who a booking is for',
   'help.guide.booking-travelers.goal': 'Mark the travellers a booking covers, and then see only theirs.',
   'help.guide.booking-travelers.step.1':
-    'Open the booking with the pencil and go down to Travelers. Every member of the trip stands there, named guests among them.',
+    'Open the booking with the pencil. Travelers sits at the top of the form, next to Booking Type, and reads Assign travelers while nobody is on the booking.',
   'help.guide.booking-travelers.step.2':
-    'Click the people this booking is for. A chosen one gets a tick; click it again to take it off.',
+    'Click it and pick the people this booking is for; named guests are in the list too. A chosen one gets a tick and their avatar in the field. Click the name again to take it off.',
   'help.guide.booking-travelers.step.3': 'Click Update.',
   'help.guide.booking-travelers.step.4':
     'Up in the toolbar, next to the type chips, click a traveller’s avatar to see only their bookings.',
@@ -2889,7 +2889,7 @@ const help: TranslationStrings = {
   'help.guide.booking-cost.title': 'Turn a booking’s price into a cost',
   'help.guide.booking-cost.goal': 'Get what a booking costs into Costs, split between the people paying for it.',
   'help.guide.booking-cost.step.1':
-    'Open the booking and go to the foot of the form. Under Costs stands Create expense, with the note Saves the booking, then opens the Costs editor.',
+    'Open the booking and go to the foot of the form. Under Costs stand Create expense and Link existing expense, with the note Saves the booking, then opens the Costs editor.',
   'help.guide.booking-cost.step.2':
     'Click Create expense. The booking is saved, its form closes and the Costs editor opens.',
   'help.guide.booking-cost.step.3':
@@ -2898,10 +2898,11 @@ const help: TranslationStrings = {
     'Category is the one the booking type implies. Set Who paid? and how the amount is split.',
   'help.guide.booking-cost.step.5': 'Click Add expense.',
   'help.guide.booking-cost.result':
-    'The booking’s form now reads Linked expense with the amount, and the same expense stands in the Costs tab, tied to this booking.',
+    'The booking’s form now lists the expense under Linked expenses with its amount, and the same expense stands in the Costs tab, tied to this booking.',
   'help.guide.booking-cost.tip.1':
     'The category follows the type: Restaurant becomes Food & drink, Accommodation becomes Accommodation, Parking becomes Parking, and Event and Tour both land in Other.',
-  'help.guide.booking-cost.tip.2': 'The bin on Linked expense removes the expense, not the booking.',
+  'help.guide.booking-cost.tip.2':
+    'A booking can carry several expenses. Link existing expense offers the ones in Costs that belong nowhere yet. On a linked one, Unlink, keep the expense lets it go and leaves it in Costs, while the bin removes it.',
   'help.guide.booking-cost.tip.3':
     'Costs is in the form only while the Costs addon is on, which the administrator switches under Addons.',
   // filter-bookings
@@ -3325,15 +3326,15 @@ const help: TranslationStrings = {
     'Attach what a flight, a hotel or a place actually cost to the record it belongs to.',
   'help.guide.expense-from-booking.step.1': 'Open the booking on the Transports or Bookings tab and click its pencil.',
   'help.guide.expense-from-booking.step.2':
-    'Scroll to the Costs block at the bottom of the form. With nothing linked yet it offers Create expense and says it saves the booking first.',
+    'Scroll to the Costs block at the bottom of the form. It offers Create expense, which saves the booking first, and Link existing expense for one that is already in Costs.',
   'help.guide.expense-from-booking.step.3':
     'Click Create expense. The booking is saved, the form closes, and the Costs editor opens with the booking’s title as the name and its type already matched to a category.',
   'help.guide.expense-from-booking.step.4':
-    'Fill in the amount and its currency, who paid and the split as for any expense, and save. Reopening the booking now shows it under Linked expense, with a pencil to edit it and a bin to remove it.',
+    'Fill in the amount and its currency, who paid and the split as for any expense, and save. Reopening the booking now shows it under Linked expenses, with a pencil to edit it, Unlink, keep the expense to let it go and a bin to remove it.',
   'help.guide.expense-from-booking.result':
     'The booking carries its cost, and the expense is an ordinary row on the Costs tab, with a payer, a split and a currency like any other.',
   'help.guide.expense-from-booking.tip.1':
-    'Deleting the booking deletes its linked expense with it. Remove expense in the booking’s Costs block does the opposite: the expense goes, the booking stays.',
+    'Deleting the booking deletes its linked expenses with it. Remove expense in the booking’s Costs block does the opposite: the expense goes, the booking stays. Unlink, keep the expense keeps both.',
   'help.guide.expense-from-booking.tip.2':
     'A place has the same block in its form, with Create expense saving the place first.',
 
