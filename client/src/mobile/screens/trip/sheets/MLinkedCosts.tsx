@@ -92,7 +92,7 @@ export default function MLinkedCosts({ reservationId = null, placeId = null, hin
           {t('reservations.createExpense')}
         </button>
         {/* Linking needs the record to exist, so it waits for the first save. */}
-        {targetId && (
+        {targetId !== null && (
           <button type="button" onClick={() => setPicking(v => !v)} aria-expanded={picking} className={`${PILL_CLS} ${picking ? '!bg-m-act !text-m-actfg' : ''}`}>
             <Link2 size={13} strokeWidth={2.2} />
             {t('files.link')}
@@ -100,7 +100,7 @@ export default function MLinkedCosts({ reservationId = null, placeId = null, hin
         )}
       </div>
 
-      {picking && targetId && (
+      {picking && targetId !== null && (
         <div className="mt-2 rounded-[13px] border border-[color:var(--m-rowbr)] bg-[color:var(--m-ic)] p-1">
           {unlinked.length >= SEARCH_FROM && (
             <div className="mx-1 mb-1 mt-1 flex items-center gap-2 rounded-[10px] bg-[color:var(--m-ic)] px-[10px] py-[7px]">

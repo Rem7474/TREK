@@ -100,7 +100,7 @@ export function BookingCostsSection({ reservationId, placeId = null, hintKey = '
           <Plus size={14} /> {t('reservations.createExpense')}
         </button>
         {/* Linking needs the record to exist, so it waits for the first save. */}
-        {targetId && (
+        {targetId !== null && (
           <CustomSelect
             value=""
             onChange={value => {
