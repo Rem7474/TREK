@@ -135,9 +135,12 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
     { id: 'todo' as const, label: t('todo.subtab.todo'), icon: ListTodo, count: todoItems.length },
   ]
 
+  // The to-do view fills what is left under the bar, so its list and detail pane
+  // scroll inside the screen and the pane's buttons stay in sight.
+  const fill = subTab === 'todo'
   return (
-    <div>
-      <div style={{ padding: '24px 28px 0' }} className="max-md:!px-4 max-md:!pt-4">
+    <div style={fill ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
+      <div style={{ padding: '24px 28px 0', flexShrink: 0 }} className="max-md:!px-4 max-md:!pt-4">
         <div className="bg-surface-tertiary" style={{
           borderRadius: 18,
           padding: '14px 16px 14px 22px',
@@ -237,7 +240,7 @@ function ListsContainer({ tripId, packingItems, todoItems }: { tripId: number; p
           )}
         </div>
       </div>
-      <div style={{ padding: '16px 28px 0' }} className="max-md:!px-4">
+      <div style={fill ? { padding: '16px 28px 16px', flex: 1, minHeight: 0 } : { padding: '16px 28px 0' }} className="max-md:!px-4">
         {subTab === 'packing' && (
           <LazyPanel id="packing">
             <PackingListPanel tripId={tripId} items={packingItems} openImportSignal={importPackingSignal} addCategorySignal={addCategorySignal} saveTemplateSignal={saveTemplateSignal} inlineHeader={false} view={packingView} onViewChange={setPackingView} />

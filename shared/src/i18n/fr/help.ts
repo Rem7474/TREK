@@ -3092,7 +3092,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Appliquer un modèle et Enregistrer comme modèle remplissent ou conservent une liste sans la retaper, et les deux icônes à côté exportent la liste, en impression, en PDF ou en fichier, et en importent une. Le bouton rouge près de la barre de progression indique combien d’articles sont cochés et les efface.',
   'help.ctx.trip-lists.bullet.6':
-    'À faire a sa propre barre latérale : la carte de progression, les filtres Tout, Mes tâches, En retard et Terminé, Trier par Priorité ou Date d’échéance, et une ligne par liste. Un clic sur une tâche l’ouvre dans le panneau de droite, et Nouvelle tâche ouvre le formulaire Nouvelle tâche au milieu de l’écran.',
+    'À faire a sa propre barre latérale : la carte de progression, les filtres Tout, Mes tâches, En retard et Terminé, une ligne par liste et Ajouter une liste en dessous. Les tâches sont dans une carte dont l’en-tête nomme le filtre et porte le tri, Priorité ou Date d’échéance. Un clic sur une tâche l’ouvre dans le panneau de droite, et Nouvelle tâche ouvre le formulaire Nouvelle tâche au milieu de l’écran.',
   // packing-categories
   'help.guide.packing-categories.title': 'Construire la liste de bagages',
   'help.guide.packing-categories.goal':
@@ -3241,7 +3241,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Nommez-la dans Nom de la tâche, et mettez tout ce qui vaut la peine d’être retenu sous Description.',
   'help.guide.create-todo.step.3':
-    'Liste groupe la tâche. Choisissez-en une, ou utilisez le signe plus à côté pour taper un nouveau nom.',
+    'Liste groupe la tâche. Choisissez-en une, ou utilisez le signe plus à côté pour en nommer une nouvelle dans une petite fenêtre.',
   'help.guide.create-todo.step.4': 'Priorité, ce sont quatre boutons : Aucune, P1, P2 et P3, du rouge au bleu.',
   'help.guide.create-todo.step.5': 'Date d’échéance ouvre un calendrier, et Assigné à met un nom sur la tâche.',
   'help.guide.create-todo.step.6': 'Cliquez sur Créer la tâche.',
@@ -3262,16 +3262,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Sous Listes se trouve une ligne par liste. En choisir une montre cette liste, tâches terminées comprises.',
   'help.guide.todo-filters.step.3':
-    'Trier par réordonne ce qui est à l’écran : Priorité met P1 en premier, Date d’échéance met l’échéance la plus proche en premier. Un seul des deux à la fois.',
+    'Le tri dans l’en-tête de la liste réordonne ce qui est à l’écran : Priorité met P1 en premier, Date d’échéance met l’échéance la plus proche en premier. Un seul des deux à la fois, et un second clic revient à votre propre ordre.',
   'help.guide.todo-filters.step.4': 'Cliquez sur une tâche pour l’ouvrir dans le panneau de droite.',
   'help.guide.todo-filters.step.5':
-    'Changez ce qu’il vous faut, Description, Priorité, Liste, Date d’échéance ou Assigné à, puis Enregistrer les modifications. Supprimer emporte la tâche aussitôt.',
+    'Changez ce qu’il vous faut, Description, Priorité, Liste, Date d’échéance ou Assigné à, puis Enregistrer les modifications. La case dans l’en-tête du panneau coche la tâche, et Supprimer l’emporte aussitôt.',
   'help.guide.todo-filters.result':
     'La liste ne montre que les tâches que vous avez demandées, et le panneau de droite modifie celle que vous avez choisie.',
   'help.guide.todo-filters.tip.1':
     'Une ligne de liste ne compte que ce qui reste ouvert, mais la sélectionner montre aussi les tâches terminées. Tout, Mes tâches et En retard cachent ce qui est fait ; Terminé ne montre rien d’autre.',
   'help.guide.todo-filters.tip.2':
-    'Trier par Priorité et Trier par Date d’échéance s’excluent, et tant que l’un des deux est actif, les lignes ne peuvent plus être glissées dans un ordre à vous.',
+    'Priorité et Date d’échéance dans le tri s’excluent, et tant que l’un des deux est actif, les lignes ne peuvent plus être glissées dans un ordre à vous.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Réservations',

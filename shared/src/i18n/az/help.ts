@@ -3131,7 +3131,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Şablonu tətbiq et və Şablon kimi yadda saxla siyahını əl ilə yazmadan doldurur və ya saxlayır, yanlarındakı iki ikon isə siyahını çap, PDF və ya fayl kimi ixrac edir və bir siyahı idxal edir. İrəliləyiş zolağının yanındakı qırmızı düymə neçə elementin işarələndiyini göstərir və onları silir.',
   'help.ctx.trip-lists.bullet.6':
-    'Tapşırıqların öz yan paneli var: irəliləyiş kartı, Hamısı, Mənim tapşırıqlarım, Vaxtı keçmiş və Hazır filtrləri, Prioritet və ya Son tarix üzrə Sırala və hər siyahı üçün bir sətir. Tapşırığa klikləmək onu sağdakı paneldə açır, Yeni tapşırıq əlavə et isə ekranın ortasında Yeni tapşırıq formasını açır.',
+    'Tapşırıqların öz yan paneli var: irəliləyiş kartı, Hamısı, Mənim tapşırıqlarım, Vaxtı keçmiş və Tamamlanıb filtrləri, hər siyahı üçün bir sətir və onların altında Siyahı əlavə et. Tapşırıqlar bir kartın içindədir; kartın başlığında filtrin adı və sıralama, yəni Prioritet və ya Son tarix, yer alır. Tapşırığa klikləmək onu sağdakı paneldə açır, Yeni tapşırıq əlavə et isə ekranın ortasında Yeni tapşırıq formasını açır.',
   // packing-categories
   'help.guide.packing-categories.title': 'Baqaj siyahısını qurun',
   'help.guide.packing-categories.goal':
@@ -3275,7 +3275,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Tapşırığın adı sahəsində ona ad verin, yadda saxlanmağa dəyər hər şeyi isə Təsvir sahəsinə yazın.',
   'help.guide.create-todo.step.3':
-    'Siyahı tapşırığı qruplaşdırır. Birini seçin və ya yeni ad yazmaq üçün yanındakı artı işarəsindən istifadə edin.',
+    'Siyahı tapşırığı qruplaşdırır. Birini seçin və ya yanındakı artı işarəsi ilə kiçik bir dialoqda yenisinə ad verin.',
   'help.guide.create-todo.step.4':
     'Prioritet dörd düymədən ibarətdir: Heç biri, P1, P2 və P3, qırmızıdan maviyə doğru.',
   'help.guide.create-todo.step.5': 'Son tarix təqvim açır, Təyin edilən şəxslər isə tapşırığa şəxs təyin edir.',
@@ -3295,16 +3295,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Siyahılar altında hər siyahı üçün bir sətir var. Birini seçdikdə həmin siyahı tamamlanmış tapşırıqlarla birlikdə göstərilir.',
   'help.guide.todo-filters.step.3':
-    'Sırala ekrandakıların sırasını dəyişir: Prioritet P1-i birinci qoyur, Son tarix ən yaxın son tarixi birinci qoyur. Eyni anda bu ikisindən yalnız biri aktiv ola bilər.',
+    'Siyahının başlığındakı sıralama ekrandakıların sırasını dəyişir: Prioritet P1-i birinci qoyur, Son tarix ən yaxın son tarixi birinci qoyur. Eyni anda bu ikisindən yalnız biri aktiv ola bilər, ikinci klik isə sizin öz sıranıza qaytarır.',
   'help.guide.todo-filters.step.4': 'Tapşırığı sağdakı paneldə açmaq üçün ona klikləyin.',
   'help.guide.todo-filters.step.5':
-    'Lazım olanı dəyişin: Təsvir, Prioritet, Siyahı, Son tarix və ya Təyin edilən şəxslər, sonra Dəyişiklikləri yadda saxla. Sil tapşırığı dərhal silir.',
+    'Lazım olanı dəyişin: Təsvir, Prioritet, Siyahı, Son tarix və ya Təyin edilən şəxslər, sonra Dəyişiklikləri yadda saxla. Panelin başlığındakı qutu tapşırığı tamamlanmış kimi işarələyir, Sil isə onu dərhal silir.',
   'help.guide.todo-filters.result':
     'Siyahı yalnız istədiyiniz tapşırıqları göstərir, sağdakı panel isə seçdiyiniz tapşırığı redaktə edir.',
   'help.guide.todo-filters.tip.1':
     'Siyahı sətri yalnız hələ açıq olanları sayır, lakin onu seçdikdə tamamlanmış tapşırıqlar da göstərilir. Hamısı, Mənim tapşırıqlarım və Vaxtı keçmiş tamamlananları gizlədir; Hazır isə yalnız onları göstərir.',
   'help.guide.todo-filters.tip.2':
-    'Prioritetə görə və Son tarixə görə sıralama bir-birini istisna edir; onlardan biri aktiv olduqda sətirləri sürükləyərək öz sıranızı qurmaq mümkün olmur.',
+    'Sıralamadakı Prioritet və Son tarix bir-birini istisna edir; onlardan biri aktiv olduqda sətirləri sürükləyərək öz sıranızı qurmaq mümkün olmur.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Xərclər',

@@ -3057,7 +3057,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Použiť šablónu a Uložiť ako šablónu naplnia alebo uchovajú zoznam bez vypisovania a dve ikony vedľa nich zoznam exportujú, ako výtlačok, PDF alebo súbor, alebo nejaký importujú. Červené tlačidlo pri lište priebehu uvádza, koľko položiek je zaškrtnutých, a odstráni ich.',
   'help.ctx.trip-lists.bullet.6':
-    'Úlohy majú vlastný bočný panel: kartu priebehu, filtre Všetky, Moje úlohy, Po termíne a Hotovo, Zoradiť podľa Priorita alebo Termín splnenia a jeden riadok na zoznam. Kliknutím na úlohu ju otvoríte v paneli vpravo a Pridať novú úlohu otvorí formulár Nová úloha uprostred obrazovky.',
+    'Úlohy majú vlastný bočný panel: kartu priebehu, filtre Všetko, Moje úlohy, Po termíne a Hotové, jeden riadok na zoznam a pod nimi Pridať zoznam. Úlohy sú v karte, ktorej hlavička pomenúva filter a nesie zoradenie, Priorita alebo Termín splnenia. Kliknutím na úlohu ju otvoríte v paneli vpravo a Pridať novú úlohu otvorí formulár Nová úloha uprostred obrazovky.',
   // packing-categories
   'help.guide.packing-categories.title': 'Zostavte zoznam vecí',
   'help.guide.packing-categories.goal':
@@ -3197,7 +3197,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Pomenujte ju v poli Názov úlohy a všetko, čo stojí za zapamätanie, napíšte do poľa Popis.',
   'help.guide.create-todo.step.3':
-    'Zoznam úlohy zoskupuje. Vyberte jeden alebo pomocou plusu vedľa neho zadajte nový názov.',
+    'Zoznam úlohy zoskupuje. Vyberte jeden alebo pomocou plusu vedľa neho pomenujte nový v malom dialógu.',
   'help.guide.create-todo.step.4': 'Priorita má štyri tlačidlá: Žiadne, P1, P2 a P3, od červenej po modrú.',
   'help.guide.create-todo.step.5': 'Termín splnenia otvorí kalendár a Priradené priradí úlohu konkrétnej osobe.',
   'help.guide.create-todo.step.6': 'Kliknite na Vytvoriť úlohu.',
@@ -3215,16 +3215,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Pod Zoznamy je jeden riadok pre každý zoznam. Výberom sa zobrazí daný zoznam vrátane dokončených úloh.',
   'help.guide.todo-filters.step.3':
-    'Zoradiť podľa mení poradie toho, čo je na obrazovke: Priorita dá na začiatok P1, Termín splnenia najbližší termín. Naraz platí iba jedno z nich.',
+    'Zoradenie v hlavičke zoznamu mení poradie toho, čo je na obrazovke: Priorita dá na začiatok P1, Termín splnenia najbližší termín. Naraz platí iba jedno z nich a druhé kliknutie vráti vaše vlastné poradie.',
   'help.guide.todo-filters.step.4': 'Kliknutím na úlohu ju otvoríte v paneli vpravo.',
   'help.guide.todo-filters.step.5':
-    'Zmeňte, čo potrebujete: Popis, Priorita, Zoznam, Termín splnenia alebo Priradené, potom Uložiť zmeny. Vymazať úlohu okamžite odstráni.',
+    'Zmeňte, čo potrebujete: Popis, Priorita, Zoznam, Termín splnenia alebo Priradené, potom Uložiť zmeny. Začiarkavacie políčko v hlavičke panela označí úlohu ako hotovú a Zmazať ju okamžite odstráni.',
   'help.guide.todo-filters.result':
     'Zoznam ukazuje iba úlohy, ktoré ste chceli vidieť, a panel vpravo upravuje tú, ktorú ste vybrali.',
   'help.guide.todo-filters.tip.1':
     'Riadok zoznamu počíta iba to, čo je ešte otvorené, ale po jeho výbere sa zobrazia aj dokončené úlohy. Všetky, Moje úlohy a Po termíne skrývajú hotové; Hotovo nezobrazuje nič iné.',
   'help.guide.todo-filters.tip.2':
-    'Zoradenie podľa priority a podľa termínu splnenia sa navzájom vylučujú a kým je niektoré zapnuté, riadky už nemožno presúvaním usporiadať do vlastného poradia.',
+    'Priorita a Termín splnenia v zoradení sa navzájom vylučujú a kým je niektoré zapnuté, riadky už nemožno presúvaním usporiadať do vlastného poradia.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Náklady',

@@ -2967,7 +2967,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Şablon uygula ve Şablon olarak kaydet bir listeyi yazmadan doldurur ya da saklar, yanlarındaki iki simge ise listeyi çıktı, PDF ya da dosya olarak dışa aktarır ve bir liste içe aktarır. İlerleme çubuğunun yanındaki kırmızı düğme kaç öğenin işaretli olduğunu söyler ve onları temizler.',
   'help.ctx.trip-lists.bullet.6':
-    'Yapılacaklar kendi kenar çubuğuna sahiptir: ilerleme kartı, Tümü, Görevlerim, Gecikmiş ve Tamamlandı filtreleri, Sırala Öncelik ya da Son tarih ve liste başına bir satır. Bir göreve tıklamak onu sağdaki bölmede açar, Yeni görev ekle ise ekranın ortasında Yeni görev formunu açar.',
+    'Yapılacaklar kendi kenar çubuğuna sahiptir: ilerleme kartı, Tümü, Görevlerim, Gecikmiş ve Tamamlandı filtreleri, liste başına bir satır ve bunların altında Liste ekle. Görevler bir kartın içindedir; kartın başlığında filtrenin adı ve sıralama, yani Öncelik ya da Son tarih, yer alır. Bir göreve tıklamak onu sağdaki bölmede açar, Yeni görev ekle ise ekranın ortasında Yeni görev formunu açar.',
   // packing-categories
   'help.guide.packing-categories.title': 'Paket listesini kurun',
   'help.guide.packing-categories.goal':
@@ -3111,7 +3111,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Görev adı alanında ona bir ad verin ve hatırlanmaya değer ne varsa Açıklama altına koyun.',
   'help.guide.create-todo.step.3':
-    'Liste görevi gruplar. Birini seçin ya da yanındaki artıyı kullanarak yeni bir ad yazın.',
+    'Liste görevi gruplar. Birini seçin ya da yanındaki artıyı kullanarak küçük bir iletişim kutusunda yenisine ad verin.',
   'help.guide.create-todo.step.4': 'Öncelik dört düğmedir: Yok, P1, P2 ve P3, kırmızıdan maviye.',
   'help.guide.create-todo.step.5': 'Son tarih bir takvim açar, Atanan ise göreve bir ad koyar.',
   'help.guide.create-todo.step.6': 'Görev oluştur düğmesine tıklayın.',
@@ -3130,16 +3130,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Listeler altında liste başına bir satır oturur. Birini seçmek o listeyi, bitmiş görevler dahil, gösterir.',
   'help.guide.todo-filters.step.3':
-    'Sırala ekrandakinin sırasını değiştirir: Öncelik P1 olanları öne alır, Son tarih en yakın tarihi öne alır. Aynı anda yalnızca ikisinden biri.',
+    'Listenin başlığındaki sıralama ekrandakinin sırasını değiştirir: Öncelik P1 olanları öne alır, Son tarih en yakın tarihi öne alır. Aynı anda yalnızca ikisinden biri, ikinci bir tıklama ise sizin kendi sıranıza geri döner.',
   'help.guide.todo-filters.step.4': 'Sağdaki bölmede açmak için bir göreve tıklayın.',
   'help.guide.todo-filters.step.5':
-    'Neyi gerekiyorsa değiştirin, Açıklama, Öncelik, Liste, Son tarih ya da Atanan, sonra Değişiklikleri kaydet. Sil görevi hemen alır götürür.',
+    'Neyi gerekiyorsa değiştirin, Açıklama, Öncelik, Liste, Son tarih ya da Atanan, sonra Değişiklikleri kaydet. Bölmenin başlığındaki kutu görevi tamamlandı olarak işaretler, Sil ise onu hemen alır götürür.',
   'help.guide.todo-filters.result':
     'Liste yalnızca istediğiniz görevleri gösterir ve sağdaki bölme seçtiğinizi düzenler.',
   'help.guide.todo-filters.tip.1':
     'Bir liste satırı yalnızca hâlâ açık olanı sayar, ama onu seçmek bitmiş görevleri de gösterir. Tümü, Görevlerim ve Gecikmiş bitmiş olanı gizler; Tamamlandı başka bir şey göstermez.',
   'help.guide.todo-filters.tip.2':
-    'Sırala Öncelik ve Sırala Son tarih birbirini dışlar ve ikisinden biri açıkken satırlar artık kendi istediğiniz bir sıraya sürüklenemez.',
+    'Sıralamadaki Öncelik ve Son tarih birbirini dışlar ve ikisinden biri açıkken satırlar artık kendi istediğiniz bir sıraya sürüklenemez.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Rezervasyonlar',

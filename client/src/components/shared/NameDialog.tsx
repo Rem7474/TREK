@@ -1,7 +1,7 @@
-import Modal from '../shared/Modal'
+import Modal from './Modal'
 import { useTranslation } from '../../i18n'
 
-interface PackingNameDialogProps {
+interface NameDialogProps {
   open: boolean
   title: string
   placeholder: string
@@ -17,7 +17,7 @@ interface PackingNameDialogProps {
  * It takes the name in the middle of the screen instead of pushing a field
  * into the page; Enter confirms and Esc (from the modal) cancels.
  */
-export default function PackingNameDialog({ open, title, placeholder, confirmLabel, value, onChange, onConfirm, onClose }: PackingNameDialogProps) {
+export default function NameDialog({ open, title, placeholder, confirmLabel, value, onChange, onConfirm, onClose }: NameDialogProps) {
   const { t } = useTranslation()
   const ready = value.trim().length > 0
   return (

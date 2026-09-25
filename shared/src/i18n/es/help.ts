@@ -3033,7 +3033,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Aplicar plantilla y Guardar como plantilla llenan o conservan una lista sin teclearla, y los dos iconos de al lado exportan la lista, como impresión, PDF o archivo, e importan una. El botón rojo junto a la barra de progreso dice cuántos artículos están marcados y los quita.',
   'help.ctx.trip-lists.bullet.6':
-    'Por hacer tiene su propia barra lateral: la tarjeta de progreso, los filtros Todo, Mis tareas, Vencida y Hecho, Ordenar por Prioridad o Fecha límite, y una fila por lista. Un clic en una tarea la abre en el panel de la derecha, y Nueva tarea abre el formulario Nueva tarea sobre el centro de la pantalla.',
+    'Por hacer tiene su propia barra lateral: la tarjeta de progreso, los filtros Todo, Mis tareas, Vencida y Hecho, una fila por lista y Añadir lista debajo. Las tareas están en una tarjeta cuya cabecera nombra el filtro y contiene el orden, Prioridad o Fecha límite. Un clic en una tarea la abre en el panel de la derecha, y Nueva tarea abre el formulario Nueva tarea sobre el centro de la pantalla.',
   // packing-categories
   'help.guide.packing-categories.title': 'Construir la lista de equipaje',
   'help.guide.packing-categories.goal':
@@ -3182,7 +3182,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Ponle nombre en Nombre de la tarea, y escribe lo que valga la pena recordar en Descripción.',
   'help.guide.create-todo.step.3':
-    'Lista agrupa la tarea. Elige una, o usa el signo más de al lado para escribir un nombre nuevo.',
+    'Lista agrupa la tarea. Elige una, o usa el signo más de al lado para darle nombre a una nueva en un pequeño diálogo.',
   'help.guide.create-todo.step.4': 'Prioridad son cuatro botones: Ninguna, P1, P2 y P3, del rojo al azul.',
   'help.guide.create-todo.step.5': 'Fecha límite abre un calendario, y Asignado a pone un nombre en la tarea.',
   'help.guide.create-todo.step.6': 'Haz clic en Crear tarea.',
@@ -3202,16 +3202,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Bajo Listas hay una fila por lista. Elegir una muestra esa lista, tareas terminadas incluidas.',
   'help.guide.todo-filters.step.3':
-    'Ordenar por reordena lo que hay en pantalla: Prioridad pone P1 primero, Fecha límite pone el plazo más cercano primero. Solo uno de los dos a la vez.',
+    'El orden en la cabecera de la lista reordena lo que hay en pantalla: Prioridad pone P1 primero, Fecha límite pone el plazo más cercano primero. Solo uno de los dos a la vez, y un segundo clic vuelve a tu propio orden.',
   'help.guide.todo-filters.step.4': 'Haz clic en una tarea para abrirla en el panel de la derecha.',
   'help.guide.todo-filters.step.5':
-    'Cambia lo que necesites, Descripción, Prioridad, Lista, Fecha límite o Asignado a, y luego Guardar cambios. Eliminar se lleva la tarea al instante.',
+    'Cambia lo que necesites, Descripción, Prioridad, Lista, Fecha límite o Asignado a, y luego Guardar cambios. La casilla en la cabecera del panel marca la tarea como hecha, y Eliminar se la lleva al instante.',
   'help.guide.todo-filters.result':
     'La lista muestra solo las tareas que has pedido, y el panel de la derecha edita la que elegiste.',
   'help.guide.todo-filters.tip.1':
     'Una fila de lista cuenta solo lo que sigue abierto, pero seleccionarla muestra también las tareas terminadas. Todo, Mis tareas y Vencida ocultan lo hecho; Hecho no muestra nada más.',
   'help.guide.todo-filters.tip.2':
-    'Ordenar por Prioridad y Ordenar por Fecha límite se excluyen, y mientras uno de los dos esté activo las filas ya no se pueden arrastrar a un orden propio.',
+    'Prioridad y Fecha límite en el orden se excluyen, y mientras uno de los dos esté activo las filas ya no se pueden arrastrar a un orden propio.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Reservas',

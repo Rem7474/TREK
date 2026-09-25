@@ -3051,7 +3051,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Vorlage anwenden und Als Vorlage speichern füllen oder bewahren eine Liste, ohne sie abzutippen, und die zwei Symbole daneben exportieren die Liste, als Ausdruck, als PDF oder als Datei, und importieren eine. Der rote Knopf neben dem Fortschrittsbalken nennt, wie viele Einträge abgehakt sind, und räumt sie weg.',
   'help.ctx.trip-lists.bullet.6':
-    'Aufgaben hat eine eigene Seitenleiste: die Fortschrittskarte, die Filter Alle, Meine Aufgaben, Überfällig und Erledigt, Sortieren nach Priorität oder Fällig am, und eine Zeile pro Liste. Ein Klick auf eine Aufgabe öffnet sie im Panel rechts, und Neue Aufgabe hinzufügen öffnet das Formular Neue Aufgabe über der Mitte des Bildschirms.',
+    'Aufgaben hat eine eigene Seitenleiste: die Fortschrittskarte, die Filter Alle, Meine Aufgaben, Überfällig und Erledigt, eine Zeile pro Liste und darunter Liste hinzufügen. Die Aufgaben sitzen in einer Karte, deren Kopf den Filter nennt und die Sortierung trägt, Priorität oder Fällig am. Ein Klick auf eine Aufgabe öffnet sie im Panel rechts, und Neue Aufgabe hinzufügen öffnet das Formular Neue Aufgabe über der Mitte des Bildschirms.',
   // packing-categories
   'help.guide.packing-categories.title': 'Die Packliste aufbauen',
   'help.guide.packing-categories.goal':
@@ -3201,7 +3201,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Benenne sie in Aufgabenname, und schreib alles, was du dir merken willst, unter Beschreibung.',
   'help.guide.create-todo.step.3':
-    'Liste gruppiert die Aufgabe. Wähl eine, oder tipp mit dem Plus daneben einen neuen Namen.',
+    'Liste gruppiert die Aufgabe. Wähl eine, oder benenn über das Plus daneben in einem kleinen Dialog eine neue.',
   'help.guide.create-todo.step.4': 'Priorität sind vier Knöpfe: Keine, P1, P2 und P3, von Rot bis Blau.',
   'help.guide.create-todo.step.5': 'Fällig am öffnet einen Kalender, und Zuständig setzt einen Namen auf die Aufgabe.',
   'help.guide.create-todo.step.6': 'Klick auf Aufgabe erstellen.',
@@ -3221,16 +3221,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Unter Listen sitzt eine Zeile pro Liste. Eine davon zu wählen zeigt diese Liste, erledigte Aufgaben eingeschlossen.',
   'help.guide.todo-filters.step.3':
-    'Sortieren nach ordnet um, was auf dem Schirm ist: Priorität stellt P1 nach vorn, Fällig am die nächste Frist. Immer nur eins von beiden.',
+    'Die Sortierung im Kopf der Liste ordnet um, was auf dem Schirm ist: Priorität stellt P1 nach vorn, Fällig am die nächste Frist. Immer nur eins von beiden, und ein zweiter Klick führt zurück zu deiner eigenen Reihenfolge.',
   'help.guide.todo-filters.step.4': 'Klick auf eine Aufgabe, um sie im Panel rechts zu öffnen.',
   'help.guide.todo-filters.step.5':
-    'Änder, was du brauchst, Beschreibung, Priorität, Liste, Fällig am oder Zuständig, dann Speichern. Löschen nimmt die Aufgabe sofort weg.',
+    'Änder, was du brauchst, Beschreibung, Priorität, Liste, Fällig am oder Zuständig, dann Speichern. Das Kästchen im Kopf des Panels hakt die Aufgabe ab, und Löschen nimmt sie sofort weg.',
   'help.guide.todo-filters.result':
     'Die Liste zeigt nur die Aufgaben, nach denen du gefragt hast, und das Panel rechts bearbeitet die, die du gewählt hast.',
   'help.guide.todo-filters.tip.1':
     'Eine Listenzeile zählt nur, was noch offen ist, aber sie auszuwählen zeigt auch die erledigten Aufgaben. Alle, Meine Aufgaben und Überfällig verbergen, was erledigt ist; Erledigt zeigt nichts anderes.',
   'help.guide.todo-filters.tip.2':
-    'Sortieren nach Priorität und Sortieren nach Fällig am schließen sich aus, und solange eins von beiden an ist, lassen sich die Zeilen nicht mehr in eine eigene Reihenfolge ziehen.',
+    'Priorität und Fällig am in der Sortierung schließen sich aus, und solange eins von beiden an ist, lassen sich die Zeilen nicht mehr in eine eigene Reihenfolge ziehen.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Buchungen',

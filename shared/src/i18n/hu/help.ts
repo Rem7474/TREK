@@ -3030,7 +3030,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'A Sablon alkalmazása és a Mentés sablonként gépelés nélkül tölti fel vagy őrzi meg a listát, a mellettük lévő két ikon pedig exportálja a listát, nyomtatásként, PDF-ként vagy fájlként, illetve importál egyet. A haladási sáv melletti piros gomb megmondja, hány tétel van kipipálva, és eltakarítja őket.',
   'help.ctx.trip-lists.bullet.6':
-    'A Teendőknek saját oldalsávja van: a haladási kártya, a Mind, a Saját feladataim, a Lejárt és a Kész szűrők, a Rendezés Prioritás vagy Határidő szerint, és listánként egy sor. Egy feladatra kattintva a jobb oldali panelen nyílik meg, az Új feladat pedig a képernyő közepén nyitja meg az Új feladat űrlapot.',
+    'A Teendőknek saját oldalsávja van: a haladási kártya, a Mind, a Saját feladataim, a Lejárt és a Kész szűrők, listánként egy sor, alattuk pedig a Lista hozzáadása. A feladatok egy kártyán ülnek, amelynek fejléce megnevezi a szűrőt és a rendezést is hordozza, Prioritás vagy Határidő. Egy feladatra kattintva a jobb oldali panelen nyílik meg, az Új feladat pedig a képernyő közepén nyitja meg az Új feladat űrlapot.',
   // packing-categories
   'help.guide.packing-categories.title': 'Csomagolási lista felépítése',
   'help.guide.packing-categories.goal':
@@ -3178,7 +3178,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Nevezd el a Feladat neve mezőben, és tedd a Leírás alá mindazt, amit érdemes megjegyezni.',
   'help.guide.create-todo.step.3':
-    'A Lista csoportosítja a feladatot. Válassz egyet, vagy használd a mellette lévő pluszt új név beírásához.',
+    'A Lista csoportosítja a feladatot. Válassz egyet, vagy a mellette lévő plusszal nevezz el egy újat egy kis párbeszédablakban.',
   'help.guide.create-todo.step.4': 'A Prioritás négy gomb: Nincs, P1, P2 és P3, a pirostól a kékig.',
   'help.guide.create-todo.step.5': 'A Határidő naptárat nyit, a Hozzárendelve pedig nevet tesz a feladatra.',
   'help.guide.create-todo.step.6': 'Kattints a Feladat létrehozása gombra.',
@@ -3197,16 +3197,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'A Listák alatt listánként egy sor ül. Ha kiválasztasz egyet, azt a listát mutatja, a befejezett feladatokkal együtt.',
   'help.guide.todo-filters.step.3':
-    'A Rendezés átrendezi, ami a képernyőn van: a Prioritás a P1 elemeket teszi előre, a Határidő a legközelebbi határidőt. Egyszerre csak a kettő egyike.',
+    'A lista fejlécében lévő rendezés átrendezi, ami a képernyőn van: a Prioritás a P1 elemeket teszi előre, a Határidő a legközelebbi határidőt. Egyszerre csak a kettő egyike, és egy második kattintás visszaáll a saját sorrendedre.',
   'help.guide.todo-filters.step.4': 'Kattints egy feladatra, hogy a jobb oldali panelen nyíljon meg.',
   'help.guide.todo-filters.step.5':
-    'Változtasd meg, amit kell, Leírás, Prioritás, Lista, Határidő vagy Hozzárendelve, aztán Módosítások mentése. A Törlés azonnal elviszi a feladatot.',
+    'Változtasd meg, amit kell, Leírás, Prioritás, Lista, Határidő vagy Hozzárendelve, aztán Módosítások mentése. A panel fejlécében lévő jelölőnégyzet kipipálja a feladatot, a Törlés pedig azonnal elviszi.',
   'help.guide.todo-filters.result':
     'A lista csak azokat a feladatokat mutatja, amiket kértél, a jobb oldali panel pedig azt szerkeszti, amit kiválasztottál.',
   'help.guide.todo-filters.tip.1':
     'Egy listasor csak azt számolja, ami még nyitott, de ha kiválasztod, a befejezett feladatokat is mutatja. A Mind, a Saját feladataim és a Lejárt elrejti, ami kész; a Kész mást nem mutat.',
   'help.guide.todo-filters.tip.2':
-    'A Rendezés Prioritás szerint és a Rendezés Határidő szerint kizárja egymást, és amíg bármelyik be van kapcsolva, a sorokat már nem lehet saját sorrendbe húzni.',
+    'A rendezésben a Prioritás és a Határidő kizárja egymást, és amíg bármelyik be van kapcsolva, a sorokat már nem lehet saját sorrendbe húzni.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Foglalások',

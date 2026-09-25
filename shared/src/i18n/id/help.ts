@@ -3035,7 +3035,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     '“Terapkan template” dan “Simpan sebagai template” mengisi atau menyimpan sebuah daftar tanpa mengetiknya, dan dua ikon di sebelahnya mengekspor daftar, sebagai cetakan, PDF, atau file, dan mengimpor daftar. Tombol merah di sebelah bilah kemajuan menyebut berapa item yang tercentang lalu menyingkirkannya.',
   'help.ctx.trip-lists.bullet.6':
-    '“Tugas” punya bilah sisi sendiri: kartu kemajuan, filter “Semua”, “Tugasku”, “Terlambat” dan “Selesai”, “Urutkan” menurut “Prioritas” atau “Tenggat waktu”, dan satu baris per daftar. Klik pada sebuah tugas membukanya di panel sebelah kanan, dan “Tugas baru” membuka formulir “Tugas baru” di atas bagian tengah layar.',
+    '“Tugas” punya bilah sisi sendiri: kartu kemajuan, filter “Semua”, “Tugasku”, “Terlambat” dan “Selesai”, satu baris per daftar dan “Tambah daftar” di bawahnya. Tugas-tugas berada di sebuah kartu yang kepalanya menyebut nama filter dan memuat pengurutan, “Prioritas” atau “Tenggat waktu”. Klik pada sebuah tugas membukanya di panel sebelah kanan, dan “Tugas baru” membuka formulir “Tugas baru” di atas bagian tengah layar.',
   // packing-categories
   'help.guide.packing-categories.title': 'Membangun daftar bawaan',
   'help.guide.packing-categories.goal':
@@ -3183,7 +3183,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Beri nama di “Nama tugas”, dan taruh apa pun yang layak diingat di bawah “Deskripsi”.',
   'help.guide.create-todo.step.3':
-    '“Daftar” mengelompokkan tugas. Pilih satu, atau gunakan tanda plus di sebelahnya untuk mengetik nama baru.',
+    '“Daftar” mengelompokkan tugas. Pilih satu, atau gunakan tanda plus di sebelahnya untuk menamai daftar baru di sebuah dialog kecil.',
   'help.guide.create-todo.step.4':
     '“Prioritas” adalah empat tombol: “Tidak ada”, P1, P2 dan P3, dari merah turun ke biru.',
   'help.guide.create-todo.step.5':
@@ -3204,16 +3204,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Di bawah “Daftar” duduk satu baris per daftar. Memilih salah satunya menampilkan daftar itu, termasuk tugas yang sudah selesai.',
   'help.guide.todo-filters.step.3':
-    '“Urutkan” menata ulang apa yang ada di layar: “Prioritas” menaruh P1 di depan, “Tenggat waktu” menaruh tenggat terdekat di depan. Hanya satu dari keduanya pada satu waktu.',
+    'Pengurutan di kepala daftar menata ulang apa yang ada di layar: “Prioritas” menaruh P1 di depan, “Tenggat waktu” menaruh tenggat terdekat di depan. Hanya satu dari keduanya pada satu waktu, dan klik kedua mengembalikan urutan Anda sendiri.',
   'help.guide.todo-filters.step.4': 'Klik sebuah tugas untuk membukanya di panel sebelah kanan.',
   'help.guide.todo-filters.step.5':
-    'Ubah apa yang perlu, “Deskripsi”, “Prioritas”, “Daftar”, “Tenggat waktu” atau “Ditugaskan ke”, lalu “Simpan perubahan”. “Hapus” menyingkirkan tugas itu seketika.',
+    'Ubah apa yang perlu, “Deskripsi”, “Prioritas”, “Daftar”, “Tenggat waktu” atau “Ditugaskan ke”, lalu “Simpan perubahan”. Kotak di kepala panel menandai tugas sebagai selesai, dan “Hapus” menyingkirkannya seketika.',
   'help.guide.todo-filters.result':
     'Daftar hanya menampilkan tugas yang Anda minta, dan panel di sebelah kanan menyunting yang Anda pilih.',
   'help.guide.todo-filters.tip.1':
     'Baris daftar hanya menghitung yang masih terbuka, tetapi memilihnya menampilkan tugas yang sudah selesai juga. “Semua”, “Tugasku” dan “Terlambat” menyembunyikan yang sudah rampung; “Selesai” tidak menampilkan yang lain.',
   'help.guide.todo-filters.tip.2':
-    '“Urutkan” menurut “Prioritas” dan “Urutkan” menurut “Tenggat waktu” saling meniadakan, dan selama salah satunya menyala baris tidak bisa lagi diseret ke urutan Anda sendiri.',
+    '“Prioritas” dan “Tenggat waktu” dalam pengurutan saling meniadakan, dan selama salah satunya menyala baris tidak bisa lagi diseret ke urutan Anda sendiri.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Pemesanan',

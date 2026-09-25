@@ -2964,7 +2964,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Zastosuj szablon i Zapisz jako szablon wypełniają albo zachowują listę bez pisania jej od nowa, a dwie ikony obok nich eksportują listę, jako wydruk, PDF albo plik, i importują listę. Czerwony przycisk przy pasku postępu mówi, ile przedmiotów jest zaznaczonych, i sprząta je.',
   'help.ctx.trip-lists.bullet.6':
-    'Do zrobienia ma własny panel boczny: kartę postępu, filtry Wszystkie, Moje zadania, Przeterminowane i Gotowe, Sortuj wg Priorytet albo Termin, oraz jeden wiersz na listę. Kliknięcie zadania otwiera je w panelu po prawej, a Nowe zadanie otwiera na środku ekranu formularz Nowe zadanie.',
+    'Do zrobienia ma własny panel boczny: kartę postępu, filtry Wszystkie, Moje zadania, Przeterminowane i Gotowe, jeden wiersz na listę i pod nimi Dodaj listę. Zadania leżą w karcie, której nagłówek nazywa filtr i mieści sortowanie, Priorytet albo Termin. Kliknięcie zadania otwiera je w panelu po prawej, a Nowe zadanie otwiera na środku ekranu formularz Nowe zadanie.',
   // packing-categories
   'help.guide.packing-categories.title': 'Zbudować listę pakowania',
   'help.guide.packing-categories.goal':
@@ -3105,7 +3105,8 @@ const help: TranslationStrings = {
   'help.guide.create-todo.goal': 'Zapisz coś, co musi się wydarzyć, z listą, priorytetem, datą i imieniem przy tym.',
   'help.guide.create-todo.step.1': 'Kliknij Nowe zadanie u góry po prawej.',
   'help.guide.create-todo.step.2': 'Nazwij je w Nazwa zadania i wpisz wszystko, co warto zapamiętać, pod Opis.',
-  'help.guide.create-todo.step.3': 'Lista grupuje zadanie. Wybierz jedną albo użyj plusa obok, żeby wpisać nową nazwę.',
+  'help.guide.create-todo.step.3':
+    'Lista grupuje zadanie. Wybierz jedną albo użyj plusa obok, żeby w małym oknie nadać nazwę nowej.',
   'help.guide.create-todo.step.4': 'Priorytet to cztery przyciski: Brak, P1, P2 i P3, od czerwonego do niebieskiego.',
   'help.guide.create-todo.step.5': 'Termin otwiera kalendarz, a Przypisano do umieszcza na zadaniu imię.',
   'help.guide.create-todo.step.6': 'Kliknij Utwórz zadanie.',
@@ -3124,16 +3125,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Pod Listy siedzi jeden wiersz na listę. Wybranie jednego pokazuje tę listę, razem z ukończonymi zadaniami.',
   'help.guide.todo-filters.step.3':
-    'Sortuj wg zmienia kolejność tego, co na ekranie: Priorytet daje na przód P1, Termin daje na przód najbliższy termin. Tylko jedno z dwóch naraz.',
+    'Sortowanie w nagłówku listy zmienia kolejność tego, co na ekranie: Priorytet daje na przód P1, Termin daje na przód najbliższy termin. Tylko jedno z dwóch naraz, a drugie kliknięcie wraca do twojej własnej kolejności.',
   'help.guide.todo-filters.step.4': 'Kliknij zadanie, żeby otworzyć je w panelu po prawej.',
   'help.guide.todo-filters.step.5':
-    'Zmień, co trzeba, Opis, Priorytet, Lista, Termin albo Przypisano do, a potem Zapisz zmiany. Usuń zabiera zadanie od razu.',
+    'Zmień, co trzeba, Opis, Priorytet, Lista, Termin albo Przypisano do, a potem Zapisz zmiany. Pole wyboru w nagłówku panelu odhacza zadanie, a Usuń zabiera je od razu.',
   'help.guide.todo-filters.result':
     'Lista pokazuje tylko zadania, o które prosiłeś, a panel po prawej edytuje to, które wybrałeś.',
   'help.guide.todo-filters.tip.1':
     'Wiersz listy liczy tylko to, co jeszcze otwarte, ale wybranie go pokazuje też ukończone zadania. Wszystkie, Moje zadania i Przeterminowane ukrywają to, co gotowe; Gotowe nie pokazują nic innego.',
   'help.guide.todo-filters.tip.2':
-    'Sortuj wg Priorytet i Sortuj wg Termin wykluczają się nawzajem, a dopóki któreś jest włączone, wierszy nie da się już przeciągać we własną kolejność.',
+    'Priorytet i Termin w sortowaniu wykluczają się nawzajem, a dopóki któreś jest włączone, wierszy nie da się już przeciągać we własną kolejność.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Rezerwacje',

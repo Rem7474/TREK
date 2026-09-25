@@ -2969,7 +2969,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Aplicar modelo e Salvar como modelo preenchem ou guardam uma lista sem digitá-la, e os dois ícones ao lado exportam a lista, como impressão, PDF ou arquivo, e importam uma. O botão vermelho ao lado da barra de progresso diz quantos itens estão marcados e os retira.',
   'help.ctx.trip-lists.bullet.6':
-    'A fazer tem uma barra lateral própria: o cartão de progresso, os filtros Todos, Minhas tarefas, Atrasada e Concluído, Ordenar por Prioridade ou Data de vencimento, e uma linha por lista. Um clique numa tarefa a abre no painel da direita, e Nova tarefa abre o formulário Nova tarefa sobre o meio da tela.',
+    'A fazer tem uma barra lateral própria: o cartão de progresso, os filtros Todos, Minhas tarefas, Atrasada e Concluído, uma linha por lista e Adicionar lista embaixo delas. As tarefas ficam num cartão cujo cabeçalho nomeia o filtro e traz a ordenação, Prioridade ou Data de vencimento. Um clique numa tarefa a abre no painel da direita, e Nova tarefa abre o formulário Nova tarefa sobre o meio da tela.',
   // packing-categories
   'help.guide.packing-categories.title': 'Montar a lista de mala',
   'help.guide.packing-categories.goal':
@@ -3112,7 +3112,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Dê um nome a ela em Nome da tarefa, e ponha em Descrição tudo o que valer a pena lembrar.',
   'help.guide.create-todo.step.3':
-    'Lista agrupa a tarefa. Escolha uma, ou use o sinal de mais ao lado para digitar um nome novo.',
+    'Lista agrupa a tarefa. Escolha uma, ou use o sinal de mais ao lado para dar nome a uma nova numa pequena caixa de diálogo.',
   'help.guide.create-todo.step.4': 'Prioridade são quatro botões: Nenhuma, P1, P2 e P3, do vermelho ao azul.',
   'help.guide.create-todo.step.5': 'Data de vencimento abre um calendário, e Atribuído a põe um nome na tarefa.',
   'help.guide.create-todo.step.6': 'Clique em Criar tarefa.',
@@ -3131,16 +3131,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Sob Listas fica uma linha por lista. Escolher uma mostra aquela lista, tarefas concluídas inclusive.',
   'help.guide.todo-filters.step.3':
-    'Ordenar por reordena o que está na tela: Prioridade põe P1 primeiro, Data de vencimento põe o prazo mais próximo primeiro. Só um dos dois por vez.',
+    'A ordenação no cabeçalho da lista reordena o que está na tela: Prioridade põe P1 primeiro, Data de vencimento põe o prazo mais próximo primeiro. Só um dos dois por vez, e um segundo clique volta para a sua própria ordem.',
   'help.guide.todo-filters.step.4': 'Clique numa tarefa para abri-la no painel da direita.',
   'help.guide.todo-filters.step.5':
-    'Mude o que precisar, Descrição, Prioridade, Lista, Data de vencimento ou Atribuído a, depois Salvar alterações. Excluir leva a tarefa embora na hora.',
+    'Mude o que precisar, Descrição, Prioridade, Lista, Data de vencimento ou Atribuído a, depois Salvar alterações. A caixa no cabeçalho do painel marca a tarefa como feita, e Excluir a leva embora na hora.',
   'help.guide.todo-filters.result':
     'A lista mostra só as tarefas que você pediu, e o painel da direita edita a que você escolheu.',
   'help.guide.todo-filters.tip.1':
     'Uma linha de lista conta só o que continua em aberto, mas selecioná-la mostra também as tarefas concluídas. Todos, Minhas tarefas e Atrasada escondem o que está pronto; Concluído não mostra mais nada.',
   'help.guide.todo-filters.tip.2':
-    'Ordenar por Prioridade e Ordenar por Data de vencimento se excluem, e enquanto um dos dois estiver ligado as linhas não podem mais ser arrastadas para uma ordem sua.',
+    'Prioridade e Data de vencimento na ordenação se excluem, e enquanto um dos dois estiver ligado as linhas não podem mais ser arrastadas para uma ordem sua.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Reservas',

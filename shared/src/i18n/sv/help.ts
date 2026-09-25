@@ -2928,7 +2928,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Använd mall och Spara som mall fyller eller behåller en lista utan att du skriver den, och de två ikonerna bredvid dem exporterar listan, som utskrift, som PDF eller som fil, och importerar en. Den röda knappen bredvid förloppsstapeln säger hur många föremål som är markerade och sopar bort dem.',
   'help.ctx.trip-lists.bullet.6':
-    'Att göra har en egen sidopanel: framstegskortet, filtren Alla, Mina uppgifter, Förfallen och Slutförda, Sortera efter Prioritet eller Förfallodag, och en rad per lista. Ett klick på en uppgift öppnar den i rutan till höger, och Lägg till ny uppgift öppnar formuläret Ny uppgift över mitten av skärmen.',
+    'Att göra har en egen sidopanel: framstegskortet, filtren Alla, Mina uppgifter, Förfallen och Slutförda, en rad per lista och Lägg till lista under dem. Uppgifterna ligger i ett kort vars huvud namnger filtret och rymmer sorteringen, Prioritet eller Förfallodag. Ett klick på en uppgift öppnar den i rutan till höger, och Lägg till ny uppgift öppnar formuläret Ny uppgift över mitten av skärmen.',
   // packing-categories
   'help.guide.packing-categories.title': 'Bygg packlistan',
   'help.guide.packing-categories.goal':
@@ -3071,7 +3071,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.1': 'Klicka på Lägg till ny uppgift högst upp till höger.',
   'help.guide.create-todo.step.2': 'Ge den ett namn i Uppgiftsnamn, och lägg allt värt att minnas under Beskrivning.',
   'help.guide.create-todo.step.3':
-    'Lista grupperar uppgiften. Välj en, eller använd plusset bredvid för att skriva ett nytt namn.',
+    'Lista grupperar uppgiften. Välj en, eller använd plusset bredvid för att namnge en ny i en liten dialog.',
   'help.guide.create-todo.step.4': 'Prioritet är fyra knappar: Ingen, P1, P2 och P3, rött ner till blått.',
   'help.guide.create-todo.step.5': 'Förfallodag öppnar en kalender, och Tilldelad till sätter ett namn på uppgiften.',
   'help.guide.create-todo.step.6': 'Klicka på Skapa uppgift.',
@@ -3089,16 +3089,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Under Listor sitter en rad per lista. Att välja en visar den listan, slutförda uppgifter inräknade.',
   'help.guide.todo-filters.step.3':
-    'Sortera efter ordnar om det som står på skärmen: Prioritet lägger P1 först, Förfallodag lägger den närmaste deadlinen först. Bara en av de två åt gången.',
+    'Sorteringen i listans huvud ordnar om det som står på skärmen: Prioritet lägger P1 först, Förfallodag lägger den närmaste deadlinen först. Bara en av de två åt gången, och ett andra klick går tillbaka till din egen ordning.',
   'help.guide.todo-filters.step.4': 'Klicka på en uppgift för att öppna den i rutan till höger.',
   'help.guide.todo-filters.step.5':
-    'Ändra det du behöver, Beskrivning, Prioritet, Lista, Förfallodag eller Tilldelad till, sedan Spara ändringar. Radera tar bort uppgiften på en gång.',
+    'Ändra det du behöver, Beskrivning, Prioritet, Lista, Förfallodag eller Tilldelad till, sedan Spara ändringar. Kryssrutan i rutans huvud bockar av uppgiften, och Radera tar bort den på en gång.',
   'help.guide.todo-filters.result':
     'Listan visar bara de uppgifter du bad om, och rutan till höger redigerar den du valde.',
   'help.guide.todo-filters.tip.1':
     'En listrad räknar bara det som fortfarande är öppet, men att välja den visar de slutförda uppgifterna också. Alla, Mina uppgifter och Förfallen döljer det som är klart; Slutförda visar inget annat.',
   'help.guide.todo-filters.tip.2':
-    'Sortera efter Prioritet och Sortera efter Förfallodag utesluter varandra, och medan någon av dem är på går raderna inte längre att dra i en egen ordning.',
+    'Prioritet och Förfallodag i sorteringen utesluter varandra, och medan någon av dem är på går raderna inte längre att dra i en egen ordning.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Bokningar',

@@ -686,7 +686,8 @@ const SCRIPTS: Record<string, GuideScript> = {
         target: p => todoPane(p).getByRole('button', { name: 'Save changes' }),
         act: async p => {
           await todoPane(p).getByRole('button', { name: 'Save changes' }).click()
-          await expect(task(p, EDITED_TASK)).toContainText(ASSIGNEE, { timeout: 20_000 })
+          // The row names its assignee as an avatar, labelled with the name.
+          await expect(task(p, EDITED_TASK).getByLabel(ASSIGNEE)).toBeVisible({ timeout: 20_000 })
           await settle(p)
         },
       },

@@ -2899,7 +2899,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Použít šablonu a Uložit jako šablonu naplní nebo zachovají seznam bez psaní a dvě ikony vedle nich seznam exportují, jako výtisk, PDF nebo soubor, nebo nějaký importují. Červené tlačítko u pruhu postupu říká, kolik položek je zaškrtnutých, a odklidí je.',
   'help.ctx.trip-lists.bullet.6':
-    'Úkoly mají vlastní postranní panel: kartu postupu, filtry Vše, Moje úkoly, Po termínu a Hotové, Řadit podle Priorita nebo Termín splnění a jeden řádek na seznam. Kliknutí na úkol ho otevře v panelu vpravo a Přidat nový úkol otevře uprostřed obrazovky formulář Nový úkol.',
+    'Úkoly mají vlastní postranní panel: kartu postupu, filtry Vše, Moje úkoly, Po termínu a Hotové, jeden řádek na seznam a pod nimi Přidat seznam. Úkoly leží v kartě, jejíž záhlaví jmenuje filtr a nese řazení, Priorita nebo Termín splnění. Kliknutí na úkol ho otevře v panelu vpravo a Přidat nový úkol otevře uprostřed obrazovky formulář Nový úkol.',
   // packing-categories
   'help.guide.packing-categories.title': 'Sestavit seznam věcí',
   'help.guide.packing-categories.goal':
@@ -3035,7 +3035,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.1': 'Klikněte vpravo nahoře na Přidat nový úkol.',
   'help.guide.create-todo.step.2': 'Pojmenujte ho v Název úkolu a dejte všechno, co stojí za zapamatování, pod Popis.',
   'help.guide.create-todo.step.3':
-    'Seznam úkol zařazuje. Vyberte jeden, nebo použijte plus vedle něj a napište nový název.',
+    'Seznam úkol zařazuje. Vyberte jeden, nebo použijte plus vedle něj a v malém dialogu pojmenujte nový.',
   'help.guide.create-todo.step.4': 'Priorita jsou čtyři tlačítka: Žádná, P1, P2 a P3, od červené po modrou.',
   'help.guide.create-todo.step.5': 'Termín splnění otevře kalendář a Přiřazeno dá na úkol jméno.',
   'help.guide.create-todo.step.6': 'Klikněte na Vytvořit úkol.',
@@ -3053,16 +3053,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Pod Seznamy sedí jeden řádek na seznam. Když jeden vyberete, ukáže se ten seznam, včetně dokončených úkolů.',
   'help.guide.todo-filters.step.3':
-    'Řadit podle mění pořadí toho, co je na obrazovce: Priorita dává dopředu P1, Termín splnění dává dopředu nejbližší termín. Vždy jen jedno z těch dvou.',
+    'Řazení v záhlaví seznamu mění pořadí toho, co je na obrazovce: Priorita dává dopředu P1, Termín splnění dává dopředu nejbližší termín. Vždy jen jedno z těch dvou a druhé kliknutí vrátí vaše vlastní pořadí.',
   'help.guide.todo-filters.step.4': 'Klikněte na úkol, abyste ho otevřeli v panelu vpravo.',
   'help.guide.todo-filters.step.5':
-    'Změňte, co potřebujete, Popis, Priorita, Seznam, Termín splnění nebo Přiřazeno, a pak Uložit změny. Smazat úkol odstraní hned.',
+    'Změňte, co potřebujete, Popis, Priorita, Seznam, Termín splnění nebo Přiřazeno, a pak Uložit změny. Zaškrtávací políčko v záhlaví panelu označí úkol jako hotový a Smazat ho odstraní hned.',
   'help.guide.todo-filters.result':
     'Seznam ukazuje jen úkoly, na které jste se ptali, a panel vpravo upravuje ten, který jste vybrali.',
   'help.guide.todo-filters.tip.1':
     'Řádek seznamu počítá jen to, co je ještě otevřené, ale když ho vyberete, ukáže i dokončené úkoly. Vše, Moje úkoly a Po termínu skrývají to, co je hotové; Hotové neukazují nic jiného.',
   'help.guide.todo-filters.tip.2':
-    'Řadit podle Priorita a Řadit podle Termín splnění se navzájem vylučují a dokud je jedno z nich zapnuté, řádky už nejde přetáhnout do vlastního pořadí.',
+    'Priorita a Termín splnění v řazení se navzájem vylučují a dokud je jedno z nich zapnuté, řádky už nejde přetáhnout do vlastního pořadí.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Rezervace',

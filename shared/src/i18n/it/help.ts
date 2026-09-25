@@ -3016,7 +3016,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Applica modello e Salva come modello riempiono o conservano una lista senza digitarla, e le due icone accanto esportano la lista, come stampa, come PDF o come file, e ne importano una. Il pulsante rosso vicino alla barra di avanzamento dice quanti elementi sono spuntati e li porta via.',
   'help.ctx.trip-lists.bullet.6':
-    'Da fare ha una barra laterale propria: la scheda di avanzamento, i filtri Tutti, Le mie attività, Scaduta e Fatto, Ordina per Priorità o Scadenza, e una riga per lista. Un clic su un’attività la apre nel pannello a destra, e Nuova attività apre il modulo Nuova attività sopra il centro dello schermo.',
+    'Da fare ha una barra laterale propria: la scheda di avanzamento, i filtri Tutti, Le mie attività, Scaduta e Fatto, una riga per lista e sotto Aggiungi lista. Le attività stanno in una scheda la cui intestazione nomina il filtro e contiene l’ordinamento, Priorità o Scadenza. Un clic su un’attività la apre nel pannello a destra, e Nuova attività apre il modulo Nuova attività sopra il centro dello schermo.',
   // packing-categories
   'help.guide.packing-categories.title': 'Costruire la lista valigia',
   'help.guide.packing-categories.goal':
@@ -3163,7 +3163,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Dalle un nome in Nome attività, e metti sotto Descrizione tutto quello che vale la pena ricordare.',
   'help.guide.create-todo.step.3':
-    'Lista raggruppa l’attività. Scegline una, oppure usa il segno più accanto per digitare un nome nuovo.',
+    'Lista raggruppa l’attività. Scegline una, oppure usa il segno più accanto per dare un nome a una nuova in una piccola finestra.',
   'help.guide.create-todo.step.4': 'Priorità sono quattro pulsanti: Nessuna, P1, P2 e P3, dal rosso al blu.',
   'help.guide.create-todo.step.5': 'Scadenza apre un calendario, e Assegnato a mette un nome sull’attività.',
   'help.guide.create-todo.step.6': 'Clicca Crea attività.',
@@ -3183,16 +3183,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Sotto Liste sta una riga per lista. Sceglierne una mostra quella lista, attività finite comprese.',
   'help.guide.todo-filters.step.3':
-    'Ordina per riordina quello che è sullo schermo: Priorità mette P1 per primo, Scadenza mette la scadenza più vicina per prima. Solo uno dei due alla volta.',
+    'L’ordinamento nell’intestazione della lista riordina quello che è sullo schermo: Priorità mette P1 per primo, Scadenza mette la scadenza più vicina per prima. Solo uno dei due alla volta, e un secondo clic torna al tuo ordine.',
   'help.guide.todo-filters.step.4': 'Clicca un’attività per aprirla nel pannello a destra.',
   'help.guide.todo-filters.step.5':
-    'Cambia quello che ti serve, Descrizione, Priorità, Lista, Scadenza o Assegnato a, poi Salva modifiche. Elimina porta via l’attività all’istante.',
+    'Cambia quello che ti serve, Descrizione, Priorità, Lista, Scadenza o Assegnato a, poi Salva modifiche. La casella nell’intestazione del pannello spunta l’attività, ed Elimina la porta via all’istante.',
   'help.guide.todo-filters.result':
     'La lista mostra solo le attività che hai chiesto, e il pannello a destra modifica quella che hai scelto.',
   'help.guide.todo-filters.tip.1':
     'Una riga di lista conta solo quello che è ancora aperto, ma selezionarla mostra anche le attività finite. Tutti, Le mie attività e Scaduta nascondono quello che è fatto; Fatto non mostra altro.',
   'help.guide.todo-filters.tip.2':
-    'Ordina per Priorità e Ordina per Scadenza si escludono, e finché uno dei due è attivo le righe non si possono più trascinare in un ordine tuo.',
+    'Priorità e Scadenza nell’ordinamento si escludono, e finché uno dei due è attivo le righe non si possono più trascinare in un ordine tuo.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Prenotazioni',

@@ -2987,7 +2987,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Apply template and Save as template fill or keep a list without typing it out, and the two icons beside them export the list, as a printout, a PDF or a file, and import one. The red button beside the progress bar names how many items are ticked and clears them away.',
   'help.ctx.trip-lists.bullet.6':
-    'To-Do has a sidebar of its own: the progress card, the filters All, My Tasks, Overdue and Done, Sort by Priority or Due date, and one row per list. A click on a task opens it in the pane on the right, and Add new task opens the New task form over the middle of the screen.',
+    'To-Do has a sidebar of its own: the progress card, the filters All, My Tasks, Overdue and Done, one row per list and Add list under them. The tasks sit in a card whose head names the filter and holds the sort, Priority or Due date. A click on a task opens it in the pane on the right, and Add new task opens the New task form over the middle of the screen.',
   // packing-categories
   'help.guide.packing-categories.title': 'Build the packing list',
   'help.guide.packing-categories.goal':
@@ -3125,7 +3125,8 @@ const help: TranslationStrings = {
     'Write down something that has to happen, with a list, a priority, a date and a name against it.',
   'help.guide.create-todo.step.1': 'Click Add new task at the top right.',
   'help.guide.create-todo.step.2': 'Name it in Task name, and put anything worth remembering under Description.',
-  'help.guide.create-todo.step.3': 'List groups the task. Pick one, or use the plus next to it to type a new name.',
+  'help.guide.create-todo.step.3':
+    'List groups the task. Pick one, or use the plus next to it to name a new one in a small dialog.',
   'help.guide.create-todo.step.4': 'Priority is four buttons: None, P1, P2 and P3, red down to blue.',
   'help.guide.create-todo.step.5': 'Due date opens a calendar, and Assigned to puts a name on the task.',
   'help.guide.create-todo.step.6': 'Click Create task.',
@@ -3144,16 +3145,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Under Lists sits one row per list. Picking one shows that list, finished tasks included.',
   'help.guide.todo-filters.step.3':
-    'Sort by reorders what is on screen: Priority puts P1 first, Due date puts the nearest deadline first. Only one of the two at a time.',
+    'The sort in the head of the list reorders what is on screen: Priority puts P1 first, Due date puts the nearest deadline first. Only one of the two at a time, and a second click goes back to your own order.',
   'help.guide.todo-filters.step.4': 'Click a task to open it in the pane on the right.',
   'help.guide.todo-filters.step.5':
-    'Change what you need, Description, Priority, List, Due date or Assigned to, then Save changes. Delete takes the task away at once.',
+    'Change what you need, Description, Priority, List, Due date or Assigned to, then Save changes. The box in the pane’s head ticks the task off, and Delete takes it away at once.',
   'help.guide.todo-filters.result':
     'The list shows only the tasks you asked for, and the pane on the right edits the one you picked.',
   'help.guide.todo-filters.tip.1':
     'A list row counts only what is still open, but selecting it shows the finished tasks too. All, My Tasks and Overdue hide what is done; Done shows nothing else.',
   'help.guide.todo-filters.tip.2':
-    'Sort by Priority and Sort by Due date exclude each other, and while either is on the rows can no longer be dragged into an order of your own.',
+    'Priority and Due date in the sort exclude each other, and while either is on the rows can no longer be dragged into an order of your own.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Costs',

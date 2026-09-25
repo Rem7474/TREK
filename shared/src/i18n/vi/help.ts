@@ -2952,7 +2952,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     '“Áp dụng mẫu” và “Lưu dưới dạng mẫu” lấp đầy hoặc giữ lại một danh sách mà không phải gõ ra, còn hai biểu tượng bên cạnh xuất danh sách, dưới dạng bản in, PDF hoặc tập tin, và nhập một danh sách. Nút đỏ bên cạnh thanh tiến độ nêu có bao nhiêu mục đã được đánh dấu rồi dọn chúng đi.',
   'help.ctx.trip-lists.bullet.6':
-    '“Việc cần làm” có thanh bên riêng: thẻ tiến độ, các bộ lọc “Tất cả”, “Nhiệm vụ của tôi”, “Quá hạn” và “Xong”, “Sắp xếp theo” “Sự ưu tiên” hoặc “Ngày đến hạn”, và một hàng cho mỗi danh sách. Nhấp vào một nhiệm vụ sẽ mở nó ở khung bên phải, và “Thêm nhiệm vụ mới” mở biểu mẫu “Nhiệm vụ mới” ngay giữa màn hình.',
+    '“Việc cần làm” có thanh bên riêng: thẻ tiến độ, các bộ lọc “Tất cả”, “Nhiệm vụ của tôi”, “Quá hạn” và “Xong”, một hàng cho mỗi danh sách và “Thêm danh sách” bên dưới. Các nhiệm vụ nằm trong một thẻ có phần đầu ghi tên bộ lọc và chứa cách sắp xếp, “Sự ưu tiên” hoặc “Ngày đến hạn”. Nhấp vào một nhiệm vụ sẽ mở nó ở khung bên phải, và “Thêm nhiệm vụ mới” mở biểu mẫu “Nhiệm vụ mới” ngay giữa màn hình.',
   // packing-categories
   'help.guide.packing-categories.title': 'Dựng danh sách đóng gói',
   'help.guide.packing-categories.goal':
@@ -3095,7 +3095,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.1': 'Nhấp “Thêm nhiệm vụ mới” ở trên cùng bên phải.',
   'help.guide.create-todo.step.2': 'Đặt tên ở “Tên nhiệm vụ”, và ghi mọi thứ đáng nhớ vào “Miêu tả”.',
   'help.guide.create-todo.step.3':
-    '“Danh sách” gom nhóm nhiệm vụ. Chọn một, hoặc dùng dấu cộng bên cạnh để gõ một tên mới.',
+    '“Danh sách” gom nhóm nhiệm vụ. Chọn một, hoặc dùng dấu cộng bên cạnh để đặt tên cho một danh sách mới trong một hộp thoại nhỏ.',
   'help.guide.create-todo.step.4': '“Sự ưu tiên” là bốn nút: “Không có”, P1, P2 và P3, từ đỏ xuống xanh lam.',
   'help.guide.create-todo.step.5': '“Ngày đến hạn” mở một lịch, và “Được giao cho” đặt một cái tên lên nhiệm vụ.',
   'help.guide.create-todo.step.6': 'Nhấp “Tạo nhiệm vụ”.',
@@ -3114,16 +3114,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Dưới “Danh sách” là một hàng cho mỗi danh sách. Chọn một hàng sẽ hiện danh sách đó, gồm cả các nhiệm vụ đã hoàn thành.',
   'help.guide.todo-filters.step.3':
-    '“Sắp xếp theo” xếp lại những gì đang trên màn hình: “Sự ưu tiên” đưa P1 lên trước, “Ngày đến hạn” đưa hạn gần nhất lên trước. Mỗi lần chỉ một trong hai.',
+    'Phần sắp xếp ở đầu danh sách xếp lại những gì đang trên màn hình: “Sự ưu tiên” đưa P1 lên trước, “Ngày đến hạn” đưa hạn gần nhất lên trước. Mỗi lần chỉ một trong hai, và nhấp lần thứ hai sẽ trở về thứ tự riêng của bạn.',
   'help.guide.todo-filters.step.4': 'Nhấp một nhiệm vụ để mở nó ở khung bên phải.',
   'help.guide.todo-filters.step.5':
-    'Đổi những gì bạn cần, “Miêu tả”, “Sự ưu tiên”, “Danh sách”, “Ngày đến hạn” hoặc “Được giao cho”, rồi “Lưu thay đổi”. “Xóa bỏ” xóa nhiệm vụ đi ngay lập tức.',
+    'Đổi những gì bạn cần, “Miêu tả”, “Sự ưu tiên”, “Danh sách”, “Ngày đến hạn” hoặc “Được giao cho”, rồi “Lưu thay đổi”. Ô ở đầu khung đánh dấu nhiệm vụ là đã xong, và “Xóa bỏ” xóa nó đi ngay lập tức.',
   'help.guide.todo-filters.result':
     'Danh sách chỉ hiện những nhiệm vụ bạn đã yêu cầu, và khung bên phải sửa nhiệm vụ bạn đã chọn.',
   'help.guide.todo-filters.tip.1':
     'Một hàng danh sách chỉ đếm những gì còn dang dở, nhưng chọn nó thì các nhiệm vụ đã hoàn thành cũng hiện ra. “Tất cả”, “Nhiệm vụ của tôi” và “Quá hạn” giấu những gì đã xong; “Xong” thì không hiện gì khác.',
   'help.guide.todo-filters.tip.2':
-    '“Sắp xếp theo” “Sự ưu tiên” và “Sắp xếp theo” “Ngày đến hạn” loại trừ lẫn nhau, và khi một trong hai đang bật thì không còn kéo các hàng vào thứ tự riêng của bạn được nữa.',
+    '“Sự ưu tiên” và “Ngày đến hạn” trong phần sắp xếp loại trừ lẫn nhau, và khi một trong hai đang bật thì không còn kéo các hàng vào thứ tự riêng của bạn được nữa.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Đặt chỗ',

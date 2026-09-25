@@ -3021,7 +3021,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Aplica una plantilla i Desa com a plantilla omplen o conserven una llista sense teclejar-la, i les dues icones del costat exporten la llista, com a impressió, PDF o fitxer, i n’importen una. El botó vermell al costat de la barra de progrés diu quants articles estan marcats i els retira.',
   'help.ctx.trip-lists.bullet.6':
-    'Pendents té una barra lateral pròpia: la targeta de progrés, els filtres Tot, Les meves tasques, Vençuda i Fet, Ordena per Prioritat o Data límit, i una fila per categoria. Un clic en una tasca l’obre al panell de la dreta, i Tasca nova obre el formulari Tasca nova sobre el mig de la pantalla.',
+    'Pendents té una barra lateral pròpia: la targeta de progrés, els filtres Tot, Les meves tasques, Vençuda i Fet, una fila per categoria i, a sota, Afegeix una categoria. Les tasques són en una targeta amb una capçalera que anomena el filtre i porta l’ordenació, Prioritat o Data límit. Un clic en una tasca l’obre al panell de la dreta, i Tasca nova obre el formulari Tasca nova sobre el mig de la pantalla.',
   // packing-categories
   'help.guide.packing-categories.title': 'Construir la llista d’equipatge',
   'help.guide.packing-categories.goal':
@@ -3168,7 +3168,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Posa-li nom a Nom de la tasca, i escriu sota Descripció tot el que valgui la pena recordar.',
   'help.guide.create-todo.step.3':
-    'Categoria agrupa la tasca. Tria’n una, o fes servir el signe més del costat per escriure un nom nou.',
+    'Categoria agrupa la tasca. Tria’n una, o fes servir el signe més del costat per posar nom a una de nova en un petit diàleg.',
   'help.guide.create-todo.step.4': 'Prioritat són quatre botons: Cap, P1, P2 i P3, del vermell al blau.',
   'help.guide.create-todo.step.5': 'Data límit obre un calendari, i Assignada a posa un nom a la tasca.',
   'help.guide.create-todo.step.6': 'Fes clic a Crea una tasca.',
@@ -3188,16 +3188,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Sota Categories hi ha una fila per categoria. Triar-ne una mostra aquella categoria, tasques acabades incloses.',
   'help.guide.todo-filters.step.3':
-    'Ordena per reordena el que hi ha a la pantalla: Prioritat posa P1 primer, Data límit posa el termini més proper primer. Només un dels dos alhora.',
+    'L’ordenació a la capçalera de la llista reordena el que hi ha a la pantalla: Prioritat posa P1 primer, Data límit posa el termini més proper primer. Només un dels dos alhora, i un segon clic torna al teu propi ordre.',
   'help.guide.todo-filters.step.4': 'Fes clic en una tasca per obrir-la al panell de la dreta.',
   'help.guide.todo-filters.step.5':
-    'Canvia el que et calgui, Descripció, Prioritat, Categoria, Data límit o Assignada a, i després Desa els canvis. Elimina s’emporta la tasca a l’instant.',
+    'Canvia el que et calgui, Descripció, Prioritat, Categoria, Data límit o Assignada a, i després Desa els canvis. La casella de la capçalera del panell marca la tasca com a feta, i Elimina se l’emporta a l’instant.',
   'help.guide.todo-filters.result':
     'La llista mostra només les tasques que has demanat, i el panell de la dreta edita la que has triat.',
   'help.guide.todo-filters.tip.1':
     'Una fila de categoria compta només el que encara és obert, però seleccionar-la mostra també les tasques acabades. Tot, Les meves tasques i Vençuda amaguen el que està fet; Fet no mostra res més.',
   'help.guide.todo-filters.tip.2':
-    'Ordena per Prioritat i Ordena per Data límit s’exclouen, i mentre un dels dos està actiu les files ja no es poden arrossegar a un ordre propi.',
+    'Prioritat i Data límit a l’ordenació s’exclouen, i mentre un dels dos està actiu les files ja no es poden arrossegar a un ordre propi.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Reserves',

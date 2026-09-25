@@ -3036,7 +3036,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Sjabloon toepassen en Opslaan als sjabloon vullen of bewaren een lijst zonder hem uit te typen, en de twee pictogrammen ernaast exporteren de lijst, als afdruk, als PDF of als bestand, en importeren er een. De rode knop naast de voortgangsbalk noemt hoeveel items aangevinkt zijn en ruimt ze op.',
   'help.ctx.trip-lists.bullet.6':
-    'Taken heeft een eigen zijbalk: de voortgangskaart, de filters Alles, Mijn taken, Verlopen en Klaar, Sorteren op Prioriteit of Vervaldatum, en één rij per lijst. Een klik op een taak opent hem in het paneel rechts, en Nieuwe taak opent het formulier Nieuwe taak over het midden van het scherm.',
+    'Taken heeft een eigen zijbalk: de voortgangskaart, de filters Alles, Mijn taken, Verlopen en Klaar, één rij per lijst en daaronder Lijst toevoegen. De taken staan in een kaart waarvan de kop het filter noemt en de sortering bevat, Prioriteit of Vervaldatum. Een klik op een taak opent hem in het paneel rechts, en Nieuwe taak opent het formulier Nieuwe taak over het midden van het scherm.',
   // packing-categories
   'help.guide.packing-categories.title': 'De inpaklijst opbouwen',
   'help.guide.packing-categories.goal':
@@ -3181,7 +3181,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Geef hem een naam in Taaknaam, en zet alles wat het onthouden waard is onder Beschrijving.',
   'help.guide.create-todo.step.3':
-    'Lijst groepeert de taak. Kies er een, of gebruik de plus ernaast om een nieuwe naam te typen.',
+    'Lijst groepeert de taak. Kies er een, of gebruik de plus ernaast om een nieuwe te benoemen in een klein dialoogvenster.',
   'help.guide.create-todo.step.4': 'Prioriteit is vier knoppen: Geen, P1, P2 en P3, van rood tot blauw.',
   'help.guide.create-todo.step.5': 'Vervaldatum opent een kalender, en Toegewezen aan zet een naam op de taak.',
   'help.guide.create-todo.step.6': 'Klik op Taak aanmaken.',
@@ -3201,16 +3201,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Onder Lijsten staat één rij per lijst. Er een kiezen toont die lijst, afgeronde taken inbegrepen.',
   'help.guide.todo-filters.step.3':
-    'Sorteren op herschikt wat op het scherm staat: Prioriteit zet P1 vooraan, Vervaldatum zet de dichtstbijzijnde deadline vooraan. Maar één van de twee tegelijk.',
+    'De sortering in de kop van de lijst herschikt wat op het scherm staat: Prioriteit zet P1 vooraan, Vervaldatum zet de dichtstbijzijnde deadline vooraan. Maar één van de twee tegelijk, en een tweede klik gaat terug naar je eigen volgorde.',
   'help.guide.todo-filters.step.4': 'Klik op een taak om hem in het paneel rechts te openen.',
   'help.guide.todo-filters.step.5':
-    'Verander wat je nodig hebt, Beschrijving, Prioriteit, Lijst, Vervaldatum of Toegewezen aan, en dan Wijzigingen opslaan. Verwijderen haalt de taak meteen weg.',
+    'Verander wat je nodig hebt, Beschrijving, Prioriteit, Lijst, Vervaldatum of Toegewezen aan, en dan Wijzigingen opslaan. Het vakje in de kop van het paneel vinkt de taak af, en Verwijderen haalt hem meteen weg.',
   'help.guide.todo-filters.result':
     'De lijst toont alleen de taken waar je om vroeg, en het paneel rechts bewerkt degene die je koos.',
   'help.guide.todo-filters.tip.1':
     'Een lijstrij telt alleen wat nog open staat, maar hem selecteren toont ook de afgeronde taken. Alles, Mijn taken en Verlopen verbergen wat af is; Klaar toont niets anders.',
   'help.guide.todo-filters.tip.2':
-    'Sorteren op Prioriteit en Sorteren op Vervaldatum sluiten elkaar uit, en zolang een van beide aan staat kunnen de rijen niet meer in een eigen volgorde gesleept worden.',
+    'Prioriteit en Vervaldatum in de sortering sluiten elkaar uit, en zolang een van beide aan staat kunnen de rijen niet meer in een eigen volgorde gesleept worden.',
 
   // ── Screen: trip-bookings ─────────────────────────────────────────────────────────────
   'help.ctx.trip-bookings.title': 'Boekingen',

@@ -3045,7 +3045,7 @@ const help: TranslationStrings = {
   'help.ctx.trip-lists.bullet.5':
     'Rakenda mall ja Salvesta mallina täidavad või salvestavad nimekirja ilma seda käsitsi sisestamata ning nende kõrval olevad kaks ikooni ekspordivad nimekirja väljatrükina, PDF-ina või failina ja impordivad nimekirja. Edenemisriba kõrval olev punane nupp näitab, mitu eset on märgitud, ja eemaldab need.',
   'help.ctx.trip-lists.bullet.6':
-    'Ülesannetel on oma külgriba: edenemise kaart, filtrid Kõik, Minu ülesanded, Üle tähtaja ja Valmis, Sordi valikutega Tähtsus või Tähtaeg ning üks rida iga nimekirja kohta. Klõps ülesandel avab selle paremal paanil ja Lisa uus ülesanne avab ekraani keskel vormi Uus ülesanne.',
+    'Ülesannetel on oma külgriba: edenemise kaart, filtrid Kõik, Minu ülesanded, Üle tähtaja ja Tehtud, üks rida iga nimekirja kohta ning nende all Lisa nimekiri. Ülesanded on kaardil, mille päis nimetab filtri ja hoiab sortimist, Tähtsus või Tähtaeg. Klõps ülesandel avab selle paremal paanil ja Lisa uus ülesanne avab ekraani keskel vormi Uus ülesanne.',
   // packing-categories
   'help.guide.packing-categories.title': 'Koosta pakkimisnimekiri',
   'help.guide.packing-categories.goal':
@@ -3185,7 +3185,7 @@ const help: TranslationStrings = {
   'help.guide.create-todo.step.2':
     'Anna sellele nimi väljal Ülesande nimi ja kirjuta kõik meelespidamist väärt väljale Kirjeldus.',
   'help.guide.create-todo.step.3':
-    'Loend rühmitab ülesande. Vali üks või kasuta selle kõrval olevat plussi, et sisestada uus nimi.',
+    'Nimekiri rühmitab ülesande. Vali üks või kasuta selle kõrval olevat plussi, et väikeses dialoogis uuele nimi anda.',
   'help.guide.create-todo.step.4': 'Tähtsus koosneb neljast nupust: Puudub, P1, P2 ja P3, punasest siniseni.',
   'help.guide.create-todo.step.5': 'Tähtaeg avab kalendri ja Vastutaja määrab ülesandele inimese.',
   'help.guide.create-todo.step.6': 'Klõpsa nuppu Loo ülesanne.',
@@ -3202,16 +3202,16 @@ const help: TranslationStrings = {
   'help.guide.todo-filters.step.2':
     'Jaotises Nimekirjad on iga loendi kohta üks rida. Ühe valimine näitab seda loendit koos lõpetatud ülesannetega.',
   'help.guide.todo-filters.step.3':
-    'Sordi muudab ekraanil oleva järjekorda: Tähtsus paneb ette P1, Tähtaeg paneb ette lähima tähtaja. Korraga saab kasutada ainult üht neist.',
+    'Sortimine nimekirja päises muudab ekraanil oleva järjekorda: Tähtsus paneb ette P1, Tähtaeg paneb ette lähima tähtaja. Korraga saab kasutada ainult üht neist ja teine klõps viib tagasi sinu enda järjekorra juurde.',
   'help.guide.todo-filters.step.4': 'Klõpsa ülesandel, et see paremal paanil avada.',
   'help.guide.todo-filters.step.5':
-    'Muuda vajalikku, Kirjeldus, Tähtsus, Loend, Tähtaeg või Vastutaja, ja klõpsa Salvesta muudatused. Kustuta eemaldab ülesande kohe.',
+    'Muuda vajalikku, Kirjeldus, Tähtsus, Nimekiri, Tähtaeg või Vastutaja, ja klõpsa Salvesta muudatused. Paani päises olev märkeruut märgib ülesande tehtuks ja Kustuta eemaldab selle kohe.',
   'help.guide.todo-filters.result':
     'Loendis on ainult soovitud ülesanded ja paremal paanil saad valitud ülesannet muuta.',
   'help.guide.todo-filters.tip.1':
     'Loendi rida loeb ainult veel avatud ülesandeid, kuid selle valimisel on näha ka lõpetatud ülesanded. Kõik, Minu ülesanded ja Üle tähtaja peidavad lõpetatud ülesanded; Valmis näitab ainult neid.',
   'help.guide.todo-filters.tip.2':
-    'Sortimine tähtsuse ja tähtaja järgi välistavad teineteist ning kui üks neist on sees, ei saa ridu enam lohistades oma järjekorda seada.',
+    'Tähtsus ja Tähtaeg sortimises välistavad teineteist ning kui üks neist on sees, ei saa ridu enam lohistades oma järjekorda seada.',
 
   // ── Screen: trip-costs ────────────────────────────────────────────────────────────────
   'help.ctx.trip-costs.title': 'Kulud',

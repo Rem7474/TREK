@@ -2,7 +2,7 @@ import {
   CheckCheck, Luggage, Package, FolderPlus, Download, Trash2,
 } from 'lucide-react'
 import type { PackingState } from './usePackingListPanel'
-import PackingNameDialog from './PackingNameDialog'
+import NameDialog from '../shared/NameDialog'
 
 export function PackingHeader(S: PackingState) {
   const {
@@ -199,7 +199,7 @@ export function PackingHeader(S: PackingState) {
 
       {/* Naming a new list or a template happens in a dialog of its own, not in a
           field pushed into the page. */}
-      <PackingNameDialog
+      <NameDialog
         open={canEdit && addingCategory}
         title={t('packing.addCategory')}
         placeholder={t('packing.newCategoryPlaceholder')}
@@ -209,7 +209,7 @@ export function PackingHeader(S: PackingState) {
         onConfirm={handleAddNewCategory}
         onClose={() => { setAddingCategory(false); setNewCatName('') }}
       />
-      <PackingNameDialog
+      <NameDialog
         open={canEdit && isAdmin && items.length > 0 && showSaveTemplate}
         title={t('packing.saveAsTemplate')}
         placeholder={t('packing.templateName')}
