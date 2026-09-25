@@ -75,8 +75,10 @@ const sameCoord = (a: [number, number], b: [number, number]): boolean =>
  * Map the day's merged items to render rows and slot a travel-time connector
  * after every located place whose next located stop is again a place. Segments
  * are matched by their exact waypoint coordinates (the calculator echoes the
- * input waypoints back on each leg), so hotel-bookend or transport legs in the
- * pool simply never match and no index bookkeeping is needed.
+ * input waypoints back on each leg), so transport legs in the pool simply never
+ * match and no index bookkeeping is needed. The hotel bookends are left out up
+ * front: they belong to the day's edges, and a stop planned on the hotel's own
+ * spot would otherwise pair with them (#2501).
  */
 export function buildPlanRows(opts: {
   merged: MergedItem[]
@@ -85,7 +87,7 @@ export function buildPlanRows(opts: {
   dayId: number
 }): PlanRow[] {
   const { merged, reservations, routeSegments, dayId } = opts
-  const pool = [...routeSegments]
+  const pool = routeSegments.filter(s => !s.hotelBookend)
   const takeSegment = (from: [number, number], to: [number, number]): RouteSegment | null => {
     const idx = pool.findIndex(s => sameCoord(s.from, from) && sameCoord(s.to, to))
     return idx >= 0 ? pool.splice(idx, 1)[0] : null
@@ -184,10 +186,18 @@ export interface HotelLegs { top: HotelLeg | null; bottom: HotelLeg | null }
 /**
  * The two accommodation bookend legs of a day: the drive from the day's hotel to
  * the first stop (top) and from the last stop back to the hotel (bottom). The
- * route calc already produced these via withHotelBookends — honouring the
- * optimize-from-accommodation setting and the should-draw gates — so we just
- * locate the pooled segment that starts (top) / ends (bottom) at the hotel's
- * coordinates. Its presence is exactly the signal that the leg should be drawn.
+ * route calc already produced these via withHotelBookends, honouring the
+ * optimize-from-accommodation setting and the should-draw gates, and tagged
+ * them, so we just pick the tagged segments. Their presence is exactly the signal
+ * that the leg should be drawn.
+ *
+ * Not by coordinates alone: a stop planned on the hotel's own spot starts and
+ * ends legs there too. Matched that way, the drive from that stop to the next one
+ * sat above a day that opens with a flight, and showed a second time in its own
+ * place (#2501); an earlier drive onto that spot sat at the day's end (#2476).
+ * The tag says which end of the day a leg is, and its hotel end still has to be
+ * this stay: the calc keeps the last day's legs until the new day has routed, so
+ * right after a day switch the tagged legs can belong to another hotel.
  */
 export function hotelLegsForDay(
   day: Day,
@@ -196,24 +206,15 @@ export function hotelLegsForDay(
   routeSegments: RouteSegment[],
 ): HotelLegs {
   const { morning, evening } = getDayBookendHotels(day, days, accommodations)
-  const legAt = (a: Accommodation | undefined, end: 'from' | 'to'): HotelLeg | null => {
+  const legOf = (a: Accommodation | undefined, bookend: 'morning' | 'evening'): HotelLeg | null => {
     if (!a || a.place_lat == null || a.place_lng == null) return null
-    const coord: [number, number] = [a.place_lat, a.place_lng]
-    // The morning leg is the first segment leaving the hotel, the evening leg the
-    // LAST one reaching it. Taking the first for both put an earlier drive that
-    // happens to end on the evening hotel's spot under the day's end, instead of
-    // the drive that closes the day (#2476).
-    const seg = end === 'from'
-      ? routeSegments.find(s => sameCoord(s.from, coord))
-      : [...routeSegments].reverse().find(s => sameCoord(s.to, coord))
+    const at: [number, number] = [a.place_lat, a.place_lng]
+    const seg = routeSegments.find(s => s.hotelBookend === bookend && sameCoord(bookend === 'morning' ? s.from : s.to, at))
     return seg ? { seg, name: accommodationName(a) } : null
   }
-  const top = legAt(morning, 'from')
-  const bottom = legAt(evening, 'to')
-  // A moving day without stops is one drive from one hotel to the next (#1297): it
-  // both leaves the morning hotel and reaches the evening one, so it shows once, at
-  // the top, instead of again at the bottom (#2476).
-  return { top, bottom: top && bottom && bottom.seg === top.seg ? null : bottom }
+  // A moving day without stops is one drive from one hotel to the next (#1297). The
+  // calc tags it as the morning leg, so it shows once, at the top (#2476).
+  return { top: legOf(morning, 'morning'), bottom: legOf(evening, 'evening') }
 }
 
 /** The day headline as city pills — a "Tokyo → Kyoto" title becomes two pills with an arrow. */

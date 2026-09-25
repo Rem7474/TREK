@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildDayRouteRuns } from './dayRoutePlan'
+import { buildDayRouteRuns, hotelBookendOf } from './dayRoutePlan'
 import { buildAssignment, buildDay, buildPlace } from '../../../tests/helpers/factories'
 import type { Accommodation, AssignmentsMap, Day, Reservation } from '../../types'
 
@@ -140,6 +140,30 @@ describe('buildDayRouteRuns', () => {
     }))
     expect(runs).toHaveLength(1)
     expect(runs[0].map(p => p.lat)).toEqual([53.5503, 53.5465])
+  })
+
+  it('FE-MAP-DRP-015: the hotel points say which end of the day they are, a stop on the same spot does not (#2501)', () => {
+    const hotel = { id: 1, trip_id: 1, place_lat: 48.80, place_lng: 2.30, start_day_id: 1, end_day_id: 3 } as unknown as Accommodation
+    const runs = buildDayRouteRuns(2, inputs({
+      days: [buildDay({ id: 1, day_number: 1 }), buildDay({ id: 2, day_number: 2 }), buildDay({ id: 3, day_number: 3 })],
+      assignments: { '2': [at(48.86, 2.35, 0), at(48.80, 2.30, 1), at(48.88, 2.36, 2)] },
+      accommodations: [hotel],
+      optimizeFromAccommodation: true,
+    }))
+    const legs = runs.flatMap(run => run.slice(1).map((p, i) => hotelBookendOf(run[i], p) ?? null))
+    // Out of the hotel, three stops (one of them on the hotel's own spot), back to it.
+    expect(legs).toEqual(['morning', null, null, 'evening'])
+  })
+
+  it('FE-MAP-DRP-016: the one drive of a moving day without stops is its morning leg (#2476)', () => {
+    const days = [1, 2, 3].map(n => buildDay({ id: n, day_number: n }))
+    const stays = [
+      { id: 1, trip_id: 1, place_lat: 48.137, place_lng: 11.575, start_day_id: 1, end_day_id: 2 },
+      { id: 2, trip_id: 1, place_lat: 53.551, place_lng: 9.993, start_day_id: 2, end_day_id: 3 },
+    ] as unknown as Accommodation[]
+    const [run] = buildDayRouteRuns(2, inputs({ days, accommodations: stays, optimizeFromAccommodation: true }))
+    expect(run.map(p => p.hotel)).toEqual(['morning', 'evening'])
+    expect(hotelBookendOf(run[0], run[1])).toBe('morning')
   })
 
   it('FE-MAP-DRP-008: a day that is not in the trip has no route', () => {

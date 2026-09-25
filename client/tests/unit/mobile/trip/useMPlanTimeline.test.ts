@@ -126,8 +126,9 @@ describe('useMPlanTimeline', () => {
   })
 
   it('FE-MOB-PLTL-004: exposes the hotel bookend legs and header chips', async () => {
-    const out = seg([48, 16.05], [48, 16.1])
-    const back = seg([48, 16.2], [48, 16.05])
+    // The route calculation tags the two bookends it drew (#2501).
+    const out: RouteSegment = { ...seg([48, 16.05], [48, 16.1]), hotelBookend: 'morning' }
+    const back: RouteSegment = { ...seg([48, 16.2], [48, 16.05]), hotelBookend: 'evening' }
     routeCalc.segments = [out, back]
     const { result } = await renderTimeline(makePlanner({ tripAccommodations: [HOTEL] }))
     expect(result.current.hotelLegs.top?.seg).toBe(out)

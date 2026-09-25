@@ -5,14 +5,14 @@ import {
   hotelLegsForDay, itemHasTime, parseReservationMeta, transportSubtitle, weatherIconFor,
   type TransportEntry,
 } from '../../../../src/mobile/screens/trip/plan/planTimelineModel'
-import { getDisplayTimeForDay, type MergedItem } from '../../../../src/utils/dayMerge'
-import { buildDayRouteRuns } from '../../../../src/components/Map/dayRoutePlan'
+import { getDisplayTimeForDay, getMergedItems, getTransportForDay, type MergedItem } from '../../../../src/utils/dayMerge'
+import { buildDayRouteRuns, hotelBookendOf, type DayRoutePoint } from '../../../../src/components/Map/dayRoutePlan'
 import { buildAssignment, buildDayNote, buildPlace, buildReservation } from '../../../helpers/factories'
 import type {
   Accommodation, Assignment, Day, DayNote, Reservation, RouteSegment, TranslationFn,
 } from '../../../../src/types'
 
-// FE-MOB-PTLM-001 to FE-MOB-PTLM-047
+// FE-MOB-PTLM-001 to FE-MOB-PTLM-050
 
 const DAYS = [
   { id: 1, trip_id: 1, day_number: 1, date: '2026-05-01', title: null },
@@ -43,6 +43,14 @@ function seg(from: [number, number], to: [number, number], overrides: Partial<Ro
     ...overrides,
   }
 }
+
+// What useRouteCalculation hands the timeline: one segment per pair of neighbouring
+// waypoints in each drawn run, the hotel bookends tagged as such.
+const segmentsOf = (runs: DayRoutePoint[][]): RouteSegment[] =>
+  runs.flatMap(run => run.slice(1).map((p, i) => {
+    const hotelBookend = hotelBookendOf(run[i], p)
+    return seg([run[i].lat, run[i].lng], [p.lat, p.lng], hotelBookend ? { hotelBookend } : {})
+  }))
 
 const placeItem = (a: Assignment): MergedItem => ({ type: 'place', sortKey: a.order_index, data: a })
 const noteItem = (n: DayNote): MergedItem => ({ type: 'note', sortKey: n.sort_order ?? 0, data: n })
@@ -295,30 +303,46 @@ describe('planTimelineModel — hotel chips and legs', () => {
 
   it('FE-MOB-PTLM-025: picks the hotel bookend legs out of the calculated segments', () => {
     const hotel = accommodation({ id: 7, start_day_id: 1, end_day_id: 3, place_lat: 48.0, place_lng: 16.0 })
-    const out = seg([48.0, 16.0], [48.1, 16.1])
-    const back = seg([48.2, 16.2], [48.0, 16.0])
-    const legs = hotelLegsForDay(DAY2, DAYS, [hotel], [out, back, seg([48.1, 16.1], [48.2, 16.2])])
+    const out = seg([48.0, 16.0], [48.1, 16.1], { hotelBookend: 'morning' })
+    const back = seg([48.2, 16.2], [48.0, 16.0], { hotelBookend: 'evening' })
+    const legs = hotelLegsForDay(DAY2, DAYS, [hotel], [out, seg([48.1, 16.1], [48.2, 16.2]), back])
     expect(legs.top).toEqual({ seg: out, name: 'Hotel Sacher' })
     expect(legs.bottom).toEqual({ seg: back, name: 'Hotel Sacher' })
   })
 
-  it('FE-MOB-PTLM-026: returns no legs when no segment touches the hotel', () => {
+  it('FE-MOB-PTLM-026: returns no legs when the calculation drew no bookend, whatever touches the hotel (#2501)', () => {
+    // A stop on the hotel's own spot starts and ends legs at its coordinates too.
     const hotel = accommodation({ id: 8, start_day_id: 1, end_day_id: 3, place_lat: 48.0, place_lng: 16.0 })
-    expect(hotelLegsForDay(DAY2, DAYS, [hotel], [seg([48.1, 16.1], [48.2, 16.2])])).toEqual({ top: null, bottom: null })
+    const legs = hotelLegsForDay(DAY2, DAYS, [hotel], [seg([48.1, 16.1], [48.0, 16.0]), seg([48.0, 16.0], [48.2, 16.2])])
+    expect(legs).toEqual({ top: null, bottom: null })
   })
 
   it('FE-MOB-PTLM-027: returns no legs without an accommodation on the day', () => {
-    expect(hotelLegsForDay(DAY2, DAYS, [], [seg([48.1, 16.1], [48.2, 16.2])])).toEqual({ top: null, bottom: null })
+    const tagged = [seg([48.0, 16.0], [48.1, 16.1], { hotelBookend: 'morning' }), seg([48.1, 16.1], [48.0, 16.0], { hotelBookend: 'evening' })]
+    expect(hotelLegsForDay(DAY2, DAYS, [], tagged)).toEqual({ top: null, bottom: null })
   })
 
-  it('FE-MOB-PTLM-045: the evening leg is the last drive into the hotel, not the first (#2476)', () => {
+  it('FE-MOB-PTLM-050: another stay\'s bookends are not this day\'s, as right after a day switch (#2501)', () => {
+    // The calc still holds the day before's legs, out of and back to Munich, while
+    // the new day, a night in Hamburg, is being routed.
+    const munich = { lat: 48.137, lng: 11.575 }
+    const hamburg = accommodation({ id: 9, start_day_id: 2, end_day_id: 3, place_name: 'Hamburg Inn', place_lat: 53.551, place_lng: 9.993 })
+    const stale = [
+      seg([munich.lat, munich.lng], [48.14, 11.58], { hotelBookend: 'morning' }),
+      seg([48.14, 11.58], [48.15, 11.59]),
+      seg([48.15, 11.59], [munich.lat, munich.lng], { hotelBookend: 'evening' }),
+    ]
+    expect(hotelLegsForDay(DAY2, DAYS, [hamburg], stale)).toEqual({ top: null, bottom: null })
+  })
+
+  it('FE-MOB-PTLM-045: the evening leg is the drive that closes the day, not an earlier one onto the hotel spot (#2476)', () => {
     // A stop planned on the hotel's own spot early in the day: the drive there reaches
     // the hotel's coordinates first, but the day ends with the drive back from the park.
     const hotel = accommodation({ id: 7, start_day_id: 1, end_day_id: 3, place_lat: 48.0, place_lng: 16.0 })
-    const out = seg([48.0, 16.0], [48.1, 16.1])
+    const out = seg([48.0, 16.0], [48.1, 16.1], { hotelBookend: 'morning' })
     const toHotelSpot = seg([48.1, 16.1], [48.0, 16.0])
     const onward = seg([48.0, 16.0], [48.2, 16.2])
-    const back = seg([48.2, 16.2], [48.0, 16.0])
+    const back = seg([48.2, 16.2], [48.0, 16.0], { hotelBookend: 'evening' })
     const legs = hotelLegsForDay(DAY2, DAYS, [hotel], [out, toHotelSpot, onward, back])
     expect(legs.top?.seg).toBe(out)
     expect(legs.bottom?.seg).toBe(back)
@@ -344,14 +368,11 @@ describe('planTimelineModel — hotel chips and legs', () => {
           ]
         : [],
     })
-    // What the connector calculation hands the timeline: one segment per pair of
-    // neighbouring waypoints in each drawn run.
     const legsOf = (reservations: Reservation[]) => {
       const runs = buildDayRouteRuns(2, {
         days: DAYS, assignments: {}, reservations, accommodations: stays, optimizeFromAccommodation: true,
       })
-      const segments = runs.flatMap(run => run.slice(1).map((p, i) => seg([run[i].lat, run[i].lng], [p.lat, p.lng])))
-      return hotelLegsForDay(DAY2, DAYS, stays, segments)
+      return hotelLegsForDay(DAY2, DAYS, stays, segmentsOf(runs))
     }
 
     it('FE-MOB-PTLM-046: shows no drive from one hotel to the other, above or below the flight', () => {
@@ -372,6 +393,71 @@ describe('planTimelineModel — hotel chips and legs', () => {
       expect(legs.top).toMatchObject({ name: 'Hotel A', seg: { from: [HOTEL_A.lat, HOTEL_A.lng], to: [HOTEL_B.lat, HOTEL_B.lng] } })
       expect(legs.bottom).toBeNull()
     })
+  })
+})
+
+describe('planTimelineModel: a day that lands and then drives to the hotel (#2501)', () => {
+  // Day 1 checks into a Hamburg hotel at three. The flight lands at one, and the
+  // traveller put the hotel on the day as a stop of their own, then the town hall.
+  const DAY1 = DAYS[0]
+  const HOTEL = { lat: 53.5465, lng: 9.9727 }
+  const AMS = { lat: 52.3105, lng: 4.7683 }
+  const HAM = { lat: 53.6304, lng: 9.9882 }
+  const TOWN_HALL = { lat: 53.5503, lng: 9.9937 }
+  const stay = accommodation({
+    id: 30, place_id: 900, place_name: 'Hotel Hafen', place_lat: HOTEL.lat, place_lng: HOTEL.lng,
+    start_day_id: 1, end_day_id: 3, check_in: '15:00', check_out: '11:00',
+  })
+  const flight = buildReservation({
+    id: 7, type: 'flight', title: 'KL 1783', day_id: 1, end_day_id: 1, day_plan_position: -0.5,
+    reservation_time: '2026-05-01T10:00', reservation_end_time: '2026-05-01T13:00',
+    endpoints: [
+      { role: 'from', sequence: 0, name: 'AMS', code: null, ...AMS, timezone: null, local_date: null, local_time: null },
+      { role: 'to', sequence: 1, name: 'HAM', code: null, ...HAM, timezone: null, local_date: null, local_time: null },
+    ],
+  })
+  const hotelStop = buildAssignment({ id: 21, day_id: 1, order_index: 0, place: place(900, 'Hotel Hafen', HOTEL.lat, HOTEL.lng) })
+  const townHall = buildAssignment({ id: 22, day_id: 1, order_index: 1, place: place(901, 'Town Hall', TOWN_HALL.lat, TOWN_HALL.lng) })
+
+  // The day as the phone timeline builds it: merged the way useMPlanTimeline merges,
+  // segments the way useRouteCalculation routes the same day.
+  const dayOne = () => {
+    const dayAssignments = [hotelStop, townHall]
+    const merged = getMergedItems({
+      dayAssignments,
+      dayNotes: [],
+      dayTransports: getTransportForDay({ reservations: [flight], dayId: 1, dayAssignmentIds: dayAssignments.map(a => a.id), days: DAYS }),
+      dayId: 1,
+    })
+    const segments = segmentsOf(buildDayRouteRuns(1, {
+      days: DAYS, assignments: { '1': dayAssignments }, reservations: [flight], accommodations: [stay], optimizeFromAccommodation: true,
+    }))
+    return {
+      rows: buildPlanRows({ merged, reservations: [flight], routeSegments: segments, dayId: 1 }),
+      legs: hotelLegsForDay(DAY1, DAYS, [stay], segments),
+    }
+  }
+  const ends = (s: RouteSegment) => [s.from, s.to]
+
+  it('FE-MOB-PTLM-048: opens with the flight, shows the hop from the hotel stop once and ends at the hotel', () => {
+    const { rows, legs } = dayOne()
+    // No drive out of a hotel the traveller has not reached yet.
+    expect(legs.top).toBeNull()
+    const hops = rows.filter(r => r.kind === 'conn').map(r => r.kind === 'conn' && ends(r.seg))
+    expect(hops.filter(h => JSON.stringify(h) === JSON.stringify([[HOTEL.lat, HOTEL.lng], [TOWN_HALL.lat, TOWN_HALL.lng]]))).toHaveLength(1)
+    expect(rows[0]).toMatchObject({ kind: 'transport', key: 'tr-7' })
+    // The day closes with the drive back to the hotel.
+    expect(legs.bottom).toMatchObject({ name: 'Hotel Hafen', seg: { from: [TOWN_HALL.lat, TOWN_HALL.lng], to: [HOTEL.lat, HOTEL.lng] } })
+  })
+
+  it('FE-MOB-PTLM-049: a bookend is never read as the hop between two stops that share its ends', () => {
+    // The tag decides, not the coordinates: two stops on the very spots a bookend
+    // joins get no connector out of it.
+    const bookend = seg([HOTEL.lat, HOTEL.lng], [TOWN_HALL.lat, TOWN_HALL.lng], { hotelBookend: 'morning' })
+    const rows = buildPlanRows({
+      merged: [placeItem(hotelStop), placeItem(townHall)], reservations: [], routeSegments: [bookend], dayId: 1,
+    })
+    expect(rows.map(r => r.kind)).toEqual(['place', 'place'])
   })
 })
 
