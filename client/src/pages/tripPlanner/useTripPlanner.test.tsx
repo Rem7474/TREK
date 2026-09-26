@@ -1,4 +1,4 @@
-// FE-TP-HOOK-001 to FE-TP-HOOK-142
+// FE-TP-HOOK-001 to FE-TP-HOOK-163
 import React from 'react'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { TranslationProvider } from '../../i18n/TranslationContext'
@@ -2161,6 +2161,26 @@ describe('useTripPlanner — a receipt scanned from Costs', () => {
 
     await waitFor(() => expect(useBackgroundTasksStore.getState().tasks).toHaveLength(0))
     expect(result.current.receiptExpense).toBeNull()
+  })
+
+  it('FE-TP-HOOK-163: a member who may add expenses but not upload files gets the reading without the photo', async () => {
+    // The photo goes up through the file upload on save, and a refused upload
+    // used to take the whole expense down with it.
+    seedStore(useAuthStore, { user: buildUser({ id: 2, role: 'user' }) })
+    usePermissionsStore.setState({ permissions: { file_upload: 'trip_owner' } })
+    seedTrip()
+    const photo = new File(['x'], 'bill.jpg', { type: 'image/jpeg' })
+    useBackgroundTasksStore.setState({
+      tasks: [{
+        id: 'job-u', tripId: '42', label: 'bill.jpg', status: 'done', done: 1, total: 1, kind: 'costs',
+        reviewRequested: true, items: [], receipt: RECEIPT, sourceFiles: [photo],
+      }] as never,
+    })
+
+    const { result } = await renderPlanner()
+
+    await waitFor(() => expect(result.current.receiptExpense).not.toBeNull())
+    expect(result.current.receiptExpense).toMatchObject({ name: 'Café', amount: 12.5, receiptFiles: [] })
   })
 })
 

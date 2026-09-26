@@ -78,6 +78,14 @@ describe('ReservationImportController.preview', () => {
     expect(await status(() => c.preview(user, 't1', [file('IMG_1.heic')], { mode: 'fallback-on-empty' }))).toBe(400);
   });
 
+  it('names the photo formats in that refusal too', async () => {
+    const { c } = make();
+    const err = await c.preview(user, 't1', [file('IMG_1.heic')], { mode: 'fallback-on-empty' }).catch((e: unknown) => e);
+    expect((err as HttpException).getResponse()).toEqual({
+      error: 'Unsupported file type: IMG_1.heic. Accepted: EML, PDF, PKPass, HTML, TXT, JPG, JPEG, PNG, WEBP (photos when the AI model reads images)',
+    });
+  });
+
   it('defaults the mode to no-ai when omitted', async () => {
     const { c, svc } = make();
     await c.preview(user, 't1', [file()], {});

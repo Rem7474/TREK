@@ -192,11 +192,11 @@ export default function MCostSheet({ tripId, base, people, me, editing, prefill,
   }, [totalNum])
 
   const enableMultiPayer = () => {
-    const seed = payerIds.size > 0 ? new Set(payerIds) : new Set<number>([payerId > 0 ? payerId : me])
+    const startPayers = payerIds.size > 0 ? new Set(payerIds) : new Set<number>([payerId > 0 ? payerId : me])
     const pinned = new Set<number>()
-    setPayerIds(seed)
+    setPayerIds(startPayers)
     setPinnedPayers(pinned)
-    setPayerAmounts(prev => rebalancePayers(prev, pinned, seed, totalNum))
+    setPayerAmounts(prev => rebalancePayers(prev, pinned, startPayers, totalNum))
     setMultiPayer(true)
   }
 

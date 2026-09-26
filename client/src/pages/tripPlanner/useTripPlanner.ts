@@ -2727,13 +2727,19 @@ export function useTripPlanner() {
   // Lives in the hook so the page stays a pure wiring container.
   const bgTasks = useBackgroundTasksStore((s) => s.tasks)
   const dismissBgTask = useBackgroundTasksStore((s) => s.dismiss)
+  const loadedTripId = trip?.id
   useEffect(() => {
     const task = bgTasks.find(
       (tk) => tk.tripId === String(tripId) && tk.status === 'done' && tk.reviewRequested && !tk.consumed,
     )
     if (task && task.kind === 'costs') {
       // A scanned receipt is reviewed in the expense editor, pre-filled with what
-      // was read and with the photo waiting to be attached when it is saved.
+      // was read and with the photo waiting to be attached when it is saved. The
+      // photo goes up through the trip's file upload, so it is only put there for
+      // someone who may upload files: for anyone else it made the whole save fail,
+      // expense included, over an attachment they never picked. Whether they may
+      // is only known once this trip is loaded, so the review waits for it.
+      if (loadedTripId !== tripId) return
       const receipt = task.receipt
       const jobId = task.id
       const inMemory = task.sourceFiles
@@ -2742,7 +2748,7 @@ export function useTripPlanner() {
       void (async () => {
         const files = inMemory && inMemory.length ? inMemory : await getImportFiles(jobId)
         deleteImportFiles(jobId)
-        setReceiptExpense(receiptToPrefill(receipt, files))
+        setReceiptExpense(receiptToPrefill(receipt, canUploadFiles ? files : []))
       })()
     } else if (task && task.items && task.items.length > 0) {
       // Hand the items (and the source files, to attach to each booking) to the review flow
@@ -2759,7 +2765,7 @@ export function useTripPlanner() {
         startImportReview(items, files, kind)
       })()
     }
-  }, [bgTasks, tripId, startImportReview, dismissBgTask])
+  }, [bgTasks, tripId, startImportReview, dismissBgTask, canUploadFiles, loadedTripId])
 
   // Called when a reviewed item's modal closes (saved or skipped): open the next,
   // or finish the review session and refresh accommodations.

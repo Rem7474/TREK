@@ -14,7 +14,7 @@ import {
   toReceiptRead,
 } from './receipt-read';
 import { buildSystemPrompt, KI_RESERVATION_JSON_SCHEMA } from './llm-prompt';
-import type { LlmExtractionInput } from './llm-provider.interface';
+import type { LlmExtractionFile, LlmExtractionInput } from './llm-provider.interface';
 import { isPdf, extractText } from './text-extract';
 import { routeExtraction, routeImageExtraction, detectFlightNumbers, extractTotalPrice } from './router/extraction-router';
 import { toIsoCurrency } from './currency-code';
@@ -72,11 +72,18 @@ export class LlmParseService {
       return { receipt: null, warnings: [`${file.originalName}: the configured model does not read images`] };
     }
 
-    const image = await capImage(file.buffer, imageType);
-    const prompt = buildReceiptPrompt();
+    let image: LlmExtractionFile;
+    try {
+      image = await capImage(file.buffer, imageType);
+    } catch (err) {
+      // A photo too large to decode or to send, refused like one that cannot be read.
+      return { receipt: null, warnings: [`${file.originalName}: ${err instanceof Error ? err.message : String(err)}`] };
+    }
+    const local = config.provider === 'local';
+    const prompt = buildReceiptPrompt(new Date(), !local);
     let raw: unknown;
     try {
-      if (config.provider === 'local') {
+      if (local) {
         // Ollama's own chat API, as the booking router uses: `think: false` and
         // `num_ctx` exist there and not on /v1, and a hybrid model that is left
         // to reason spends the whole token budget on it and answers nothing.
@@ -119,7 +126,7 @@ export class LlmParseService {
     // Only a local Ollama can be asked. A cloud model is not assumed to read
     // images: an admin who knows it does says so.
     if (config.provider !== 'local') return false;
-    const capabilities = await this.local.modelCapabilities(config.baseUrl, config.model);
+    const capabilities = await this.local.modelCapabilities(config.baseUrl, config.model, config.apiKey);
     return capabilities?.includes('vision') ?? false;
   }
 

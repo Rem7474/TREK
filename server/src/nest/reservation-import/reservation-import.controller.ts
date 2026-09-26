@@ -30,6 +30,11 @@ import { BookingImportConfirmDto, BookingImportPreviewDto } from './reservation-
 import { IMAGE_EXTENSIONS, imageMimeType } from '../llm-parse/image-input';
 
 const ACCEPTED_EXTS = new Set(['.eml', '.pdf', '.pkpass', '.html', '.htm', '.txt', ...IMAGE_EXTENSIONS]);
+/**
+ * The formats as the 400 names them. The photo formats come from the list the
+ * check itself reads, so a format added there is named here too.
+ */
+const ACCEPTED_LABEL = `EML, PDF, PKPass, HTML, TXT, ${IMAGE_EXTENSIONS.map((ext) => ext.slice(1).toUpperCase()).join(', ')} (photos when the AI model reads images)`;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const MAX_FILES = 5;
 
@@ -116,7 +121,7 @@ export class ReservationImportController {
     for (const f of files) {
       const ext = f.originalname.toLowerCase().slice(f.originalname.lastIndexOf('.'));
       if (!ACCEPTED_EXTS.has(ext)) {
-        throw new HttpException({ error: `Unsupported file type: ${f.originalname}. Accepted: EML, PDF, PKPass, HTML, TXT` }, 400);
+        throw new HttpException({ error: `Unsupported file type: ${f.originalname}. Accepted: ${ACCEPTED_LABEL}` }, 400);
       }
     }
     // A photo has no text layer and no structure: only a model that reads images

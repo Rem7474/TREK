@@ -105,8 +105,9 @@ TREK can parse booking confirmation emails, PDFs, and pass files and create rese
 | Apple Wallet pass | `.pkpass` |
 | HTML confirmation page | `.html`, `.htm` |
 | Plain-text email | `.txt` |
+| Photo of a ticket or confirmation | `.jpg`, `.jpeg`, `.png`, `.webp` (only with the AI Parsing addon and a model that reads images) |
 
-Up to 5 files, 10 MB each, per import.
+Up to 5 files, 10 MB each, per import. A photo always goes to the AI model, never to KDE Itinerary, and the upload dialog only offers photos when the model reads images. See [AI-Booking-Import](AI-Booking-Import#photos).
 
 ### How to import
 

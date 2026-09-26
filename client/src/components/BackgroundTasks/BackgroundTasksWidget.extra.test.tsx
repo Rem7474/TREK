@@ -1,4 +1,4 @@
-// FE-W4BGT-001 to FE-W4BGT-024
+// FE-W4BGT-001 to FE-W4BGT-029
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { screen, act, waitFor } from '@testing-library/react'
 import { render, fireEvent } from '../../../tests/helpers/render'
@@ -343,5 +343,13 @@ describe('BackgroundTasksWidget — a receipt scanned from Costs', () => {
     useBackgroundTasksStore.setState({ tasks: [task({ kind: 'costs', items: undefined })] })
     render(<BackgroundTasksWidget />)
     expect(await screen.findByRole('button', { name: 'Review expense' })).toBeInTheDocument()
+  })
+
+  it('FE-W4BGT-029: a receipt restored from a reload says it is reading the receipt until its status is back', () => {
+    // The status request stays pending (beforeEach), so the card shows the restored state.
+    useBackgroundTasksStore.setState({ tasks: [task({ kind: 'costs', label: 'bill.jpg', items: undefined })] })
+    render(<BackgroundTasksWidget />)
+    expect(screen.getByText('Reading the receipt…')).toBeInTheDocument()
+    expect(screen.queryByText('Parsing files…')).not.toBeInTheDocument()
   })
 })

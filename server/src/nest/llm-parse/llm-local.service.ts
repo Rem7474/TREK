@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { Injectable, HttpException } from '@nestjs/common';
 import { z } from 'zod';
 import { safeFetchLlm } from '../../utils/ssrfGuard';
@@ -86,10 +87,17 @@ export class LlmLocalService {
    * does not have, an answer that is not what Ollama sends. Never throws, since
    * every caller treats "unknown" as "no", and remembers the answer per server
    * and model so a page load does not become a request to the model server.
+   *
+   * The configured key goes along as the same Bearer header the extraction
+   * sends: an Ollama behind an auth proxy answered 401 without it, and a model
+   * the extraction could reach was never offered a photo. The answer is
+   * remembered per key too, by its hash, so a corrected key is asked afresh
+   * instead of inheriting the miss of the wrong one.
    */
-  async modelCapabilities(baseUrl: string | undefined, model: string): Promise<string[] | null> {
+  async modelCapabilities(baseUrl: string | undefined, model: string, apiKey?: string): Promise<string[] | null> {
     const now = Date.now();
-    const key = `${baseUrl ?? ''}\n${model}`;
+    const keyHash = apiKey ? createHash('sha256').update(apiKey).digest('hex') : '';
+    const key = `${baseUrl ?? ''}\n${model}\n${keyHash}`;
     const cached = this.capabilityCache.get(key);
     if (cached && cached.expires > now) return cached.capabilities;
 
@@ -98,7 +106,10 @@ export class LlmLocalService {
       const root = this.ollamaRoot(baseUrl);
       const res = await safeFetchLlm(`${root}/api/show`, {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: {
+          'content-type': 'application/json',
+          ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {}),
+        },
         body: JSON.stringify({ model }),
         signal: AbortSignal.timeout(SHOW_TIMEOUT_MS),
       });

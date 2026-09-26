@@ -98,6 +98,7 @@ When the configured model reads images (see **Model reads images** above), the i
 - A photo always goes to the model: KDE Itinerary is not asked, since it reads documents, not pictures.
 - A scanned PDF (no text layer) is read the same way: its first two pages are drawn as images and sent to the model.
 - It is shrunk to 1600 px on its longest side before it is sent. A model pays for every pixel and does not read a till roll better at twelve megapixels; on a local `qwen3.5:4b` running on CPU the same ticket took several times longer at full size.
+- A photo over 40 megapixels is refused, with a warning naming the file, before it is even decoded. So is a WEBP over 3.5 MB: TREK shrinks JPG and PNG but cannot shrink a WEBP, and a provider takes no more than that.
 - HEIC is not accepted. A phone's photo picker hands over a JPEG.
 - When the model does not read images, the dialog does not offer photos, and the server refuses one sent anyway with *The configured AI model does not read photos*.
 

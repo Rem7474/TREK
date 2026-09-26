@@ -1,4 +1,4 @@
-// FE-ADMIN-ADDON-001 to FE-ADMIN-ADDON-037
+// FE-ADMIN-ADDON-001 to FE-ADMIN-ADDON-039
 import { render, screen, waitFor } from '../../../tests/helpers/render';
 import userEvent from '@testing-library/user-event';
 import { delay, http, HttpResponse } from 'msw';
@@ -769,7 +769,7 @@ describe('AddonManager', () => {
     });
   });
 
-  it('FE-ADMIN-ADDON-035: whether the model reads images is auto, on or off, kept as stored and saved as chosen', async () => {
+  it('FE-ADMIN-ADDON-038: whether the model reads images is auto, on or off, kept as stored and saved as chosen', async () => {
     const user = userEvent.setup();
     const bodies: unknown[] = [];
     server.use(
@@ -792,7 +792,7 @@ describe('AddonManager', () => {
     expect(bodies[0]).not.toHaveProperty('config.multimodal');
   });
 
-  it('FE-ADMIN-ADDON-036: with the local provider the hint says Automatic asks the server', async () => {
+  it('FE-ADMIN-ADDON-039: with the local provider the hint says Automatic asks the server', async () => {
     server.use(addonsRoute([llmAddon({ provider: 'local', model: 'qwen3.5:4b' })]), modelsRoute([]));
     render(<AddonManager />);
     expect(await screen.findByText('Automatic asks the Ollama server whether this model reads images.')).toBeInTheDocument();

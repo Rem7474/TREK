@@ -81,6 +81,23 @@ describe('LlmLocalService.modelCapabilities', () => {
     await expect(svc().modelCapabilities('http://ollama:11434/v1', 'qwen3.5:4b')).resolves.toEqual(['completion', 'vision']);
     expect(fetchFn.mock.calls[0][0]).toBe('http://ollama:11434/api/show');
     expect(JSON.parse(fetchFn.mock.calls[0][1].body)).toEqual({ model: 'qwen3.5:4b' });
+    expect(fetchFn.mock.calls[0][1].headers).not.toHaveProperty('authorization');
+  });
+
+  it('sends the configured key as the Bearer header the extraction sends', async () => {
+    const fetchFn = mockFetch(async () => showOk({ capabilities: ['vision'] }));
+    await expect(svc().modelCapabilities('http://ollama:11434/v1', 'qwen3.5:4b', 'proxy-key')).resolves.toEqual(['vision']);
+    expect(fetchFn.mock.calls[0][1].headers).toMatchObject({ authorization: 'Bearer proxy-key' });
+  });
+
+  it('remembers an answer per key, so a corrected key is asked afresh', async () => {
+    const fetchFn = mockFetch(async (_url: string, init: { headers: Record<string, string> }) =>
+      init?.headers?.authorization === 'Bearer right' ? showOk({ capabilities: ['vision'] }) : { ok: false, status: 401, body: null });
+    const s = svc();
+    await expect(s.modelCapabilities('http://ollama:11434', 'm', 'wrong')).resolves.toBeNull();
+    await expect(s.modelCapabilities('http://ollama:11434', 'm', 'right')).resolves.toEqual(['vision']);
+    await expect(s.modelCapabilities('http://ollama:11434', 'm', 'right')).resolves.toEqual(['vision']);
+    expect(fetchFn).toHaveBeenCalledTimes(2);
   });
 
   it('asks the server once per server and model, not once per call', async () => {

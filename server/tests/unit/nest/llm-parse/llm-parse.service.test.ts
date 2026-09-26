@@ -55,6 +55,17 @@ const svc = () => new LlmParseService(
 );
 const file = (name: string, body = 'Flight AB123') => ({ buffer: Buffer.from(body), originalName: name });
 
+/** The first bytes of a PNG that claims the given size: enough for the pixel cap to refuse it. */
+function pngClaiming(w: number, h: number): Buffer {
+  const out = Buffer.alloc(33);
+  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(out, 0);
+  out.writeUInt32BE(13, 8);
+  out.write('IHDR', 12, 'latin1');
+  out.writeUInt32BE(w, 16);
+  out.writeUInt32BE(h, 20);
+  return out;
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   resolveLlmConfig.mockReturnValue(cfg());
@@ -319,10 +330,11 @@ describe('LlmParseService: a photo', () => {
   });
 
   it('readsImages on auto asks a local server, and answers no for a cloud provider', async () => {
-    resolveLlmConfig.mockReturnValue(cfg({ provider: 'local', vision: 'auto', baseUrl: 'http://ollama:11434/v1', model: 'qwen3.5:4b' }));
+    resolveLlmConfig.mockReturnValue(cfg({ provider: 'local', vision: 'auto', baseUrl: 'http://ollama:11434/v1', model: 'qwen3.5:4b', apiKey: 'proxy-key' }));
     modelCapabilities.mockResolvedValue(['completion', 'vision']);
     await expect(svc().readsImages(1)).resolves.toBe(true);
-    expect(modelCapabilities).toHaveBeenCalledWith('http://ollama:11434/v1', 'qwen3.5:4b');
+    // With the key the extraction sends, so an Ollama behind an auth proxy answers.
+    expect(modelCapabilities).toHaveBeenCalledWith('http://ollama:11434/v1', 'qwen3.5:4b', 'proxy-key');
     modelCapabilities.mockResolvedValue(['completion']);
     await expect(svc().readsImages(1)).resolves.toBe(false);
     modelCapabilities.mockResolvedValue(null);
@@ -371,6 +383,14 @@ describe('LlmParseService: a photo', () => {
     expect(extract).not.toHaveBeenCalled();
   });
 
+  it('turns a photo too large to decode into a warning, not a throw', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ vision: 'on' }));
+    const res = await svc().parse({ buffer: pngClaiming(20000, 20000), originalName: 'ticket.png' }, 1);
+    expect(res.kiItems).toEqual([]);
+    expect(res.warnings[0]).toMatch(/^ticket\.png: could not read file .*20000 x 20000 pixels/);
+    expect(extract).not.toHaveBeenCalled();
+  });
+
   it('leaves a PDF on its text path when the model reads images', async () => {
     resolveLlmConfig.mockReturnValue(cfg({ vision: 'on' }));
     await svc().parse(file('a.pdf', '%PDF'), 1);
@@ -400,6 +420,8 @@ describe('LlmParseService.readReceipt', () => {
     const call = extractEnforced.mock.calls[0][0];
     expect(call).toMatchObject({ baseUrl: 'http://ollama:11434/v1', model: 'qwen3.5:4b', images: [Buffer.from('jpeg').toString('base64')] });
     expect(call.schema.required).toContain('total');
+    // The grammar holds Ollama to one flat receipt, and the prompt says the same.
+    expect(call.system).toContain('Return ONLY a JSON object of the form { "merchant"');
     expect(extract).not.toHaveBeenCalled();
   });
 
@@ -411,6 +433,14 @@ describe('LlmParseService.readReceipt', () => {
     expect(input.rootKey).toBe('receipts');
     expect(input.file).toEqual({ mimeType: 'image/png', data: Buffer.from('png') });
     expect(input.text).toBeUndefined();
+    expect(input.prompt).toContain('Return ONLY a JSON object of the form { "receipts": [');
+  });
+
+  it('refuses a photo too large to decode with a warning, before asking the model', async () => {
+    resolveLlmConfig.mockReturnValue(cfg({ vision: 'on' }));
+    const res = await svc().readReceipt({ buffer: pngClaiming(20000, 20000), originalName: 'r.png' }, 1);
+    expect(res).toEqual({ receipt: null, warnings: ['r.png: the photo is 20000 x 20000 pixels, more than the 40 megapixels TREK reads'] });
+    expect(extract).not.toHaveBeenCalled();
   });
 
   it('answers a warning, not a throw, when the model fails or reads nothing', async () => {

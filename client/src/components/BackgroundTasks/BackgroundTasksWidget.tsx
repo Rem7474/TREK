@@ -19,6 +19,11 @@ function settleJob(id: string, tripId: string, result: unknown): void {
   useBackgroundTasksStore.getState().setDone(id, tripId, (r?.items ?? []) as never, r?.warnings ?? [], r?.receipt)
 }
 
+/** What a job that is still reading says: a receipt scan reads, a booking import parses. */
+function readingKey(task: BackgroundImportTask): string {
+  return task.kind === 'costs' ? 'costs.scan.reading' : 'reservations.import.parsing'
+}
+
 /**
  * Global, route-independent widget (bottom-right) that tracks background booking
  * imports. Mounted once at the app root so it survives navigation. It listens to the
@@ -164,7 +169,7 @@ export default function BackgroundTasksWidget() {
 
             {task.status === 'running' && (
               <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>
-                {t(task.kind === 'costs' ? 'costs.scan.reading' : 'reservations.import.parsing')}
+                {t(readingKey(task))}
                 {task.total > 1 ? ` · ${task.done}/${task.total}` : ''}
               </div>
             )}
@@ -172,7 +177,7 @@ export default function BackgroundTasksWidget() {
             {task.status === 'done' && (
               task.items === undefined ? (
                 // Restored from a reload; items are being re-fetched (see the poll backstop).
-                <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>{t('reservations.import.parsing')}</div>
+                <div style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', marginTop: 1 }}>{t(readingKey(task))}</div>
               ) : taskFoundSomething(task) ? (
                 <div>
                   <button type="button"

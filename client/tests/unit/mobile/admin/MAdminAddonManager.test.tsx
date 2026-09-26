@@ -1,4 +1,4 @@
-// FE-MOB-AADD-001 to FE-MOB-AADD-032
+// FE-MOB-AADD-001 to FE-MOB-AADD-033
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { delay, http, HttpResponse } from 'msw';
@@ -657,7 +657,7 @@ describe('MAdminAddonManager', () => {
     await screen.findByText('Failed to save');
   });
 
-  it('FE-MOB-AADD-030: whether the model reads images is a three-way choice, saved as picked', async () => {
+  it('FE-MOB-AADD-033: whether the model reads images is a three-way choice, saved as picked', async () => {
     const user = userEvent.setup();
     const bodies: unknown[] = [];
     server.use(
