@@ -1,4 +1,4 @@
-import type { BudgetParticipantFinal, CostCategory } from '@trek/shared'
+import type { BudgetParticipantFinal, BudgetUnconverted, CostCategory } from '@trek/shared'
 import { paidByUser, readUserNote, settlementDate, splitEqualShares } from '../../../../components/Budget/CostsPanel.helpers'
 import { catMeta, COST_CATEGORY_LIST } from '../../../../components/Budget/costsCategories'
 import { convertBooked, convertedLine, tripAmountOf } from '../../../../hooks/useExchangeRates'
@@ -116,6 +116,10 @@ export interface CostsSettlementResponse {
   settlements: CostsSettlement[]
   /** What the trip ends up costing each participant — netted server-side off the same ledger as `balances`. */
   finalBudgets: BudgetParticipantFinal[]
+  /** The currency the figures are in: the display currency, or the trip's own without a quote for it. */
+  currency?: string
+  /** Rows no rate could convert, left out of every figure above. */
+  unconverted?: BudgetUnconverted
 }
 
 // ── hero / tile totals (spec §3.1-§3.3) ────────────────────────────────────

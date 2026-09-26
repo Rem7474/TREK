@@ -63,9 +63,13 @@ export class TripPromptsMcp {
       .join('\n');
     const memberCount = Math.max(1, [summary.members?.owner, ...(summary.members?.collaborators || [])].filter(Boolean).length);
     const perPerson = (total / memberCount).toFixed(2);
+    // Rows no rate could convert are in none of the figures above; say so rather than
+    // let the total pass for the whole trip.
+    const uncounted = budget?.unconverted_item_ids?.length || 0;
+    const uncountedLine = uncounted > 0 ? `\n\n${uncounted} expense(s) not counted yet: no exchange rate.` : '';
     return {
       description: `Budget overview for "${trip?.title || tripId}"`,
-      messages: [{ role: 'user' as const, content: { type: 'text' as const, text: `# Budget: ${trip?.title || 'Trip'}\n\n**Total: ${total} ${currency}** (${perPerson} ${currency} per person)\n\n${lines || 'No expenses recorded.'}` } }],
+      messages: [{ role: 'user' as const, content: { type: 'text' as const, text: `# Budget: ${trip?.title || 'Trip'}\n\n**Total: ${total} ${currency}** (${perPerson} ${currency} per person)\n\n${lines || 'No expenses recorded.'}${uncountedLine}` } }],
     };
   }
 

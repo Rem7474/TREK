@@ -73,6 +73,8 @@ export class TripReadModelService {
       total: totals.total,
       by_category: totals.byCategory,
       currency: trip.currency,
+      // Rows in a foreign currency with no rate to convert them: in no total above.
+      unconverted_item_ids: totals.unconverted,
     };
 
     // Thread the viewer so another member's private/personal packing items (#858)

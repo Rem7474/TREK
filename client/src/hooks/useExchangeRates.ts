@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import type { BudgetFallbackFx } from '@trek/shared'
 import { currencyDecimals } from '../utils/formatters'
 
 /**
@@ -10,6 +11,9 @@ import { currencyDecimals } from '../utils/formatters'
  */
 
 const TTL_MS = 6 * 60 * 60 * 1000 // 6h
+// A hung request would otherwise hold every caller, the freeze-rates heal included,
+// for as long as the browser keeps the socket open.
+const FETCH_TIMEOUT_MS = 10_000
 const mem = new Map<string, { rates: Record<string, number>; ts: number }>()
 
 function readCache(base: string): { rates: Record<string, number>; ts: number } | null {
@@ -35,8 +39,12 @@ export async function fetchExchangeRates(base: string): Promise<Record<string, n
   const upper = (base || 'EUR').toUpperCase()
   const cached = readCache(upper)
   if (cached && Date.now() - cached.ts < TTL_MS) return cached.rates
+  // A controller rather than AbortSignal.timeout, which Safari only has from 16 on;
+  // without it the call would throw and never fetch at all.
+  const stop = new AbortController()
+  const timer = setTimeout(() => stop.abort(), FETCH_TIMEOUT_MS)
   try {
-    const d = await fetch(`https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(upper)}`)
+    const d = await fetch(`https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(upper)}`, { signal: stop.signal })
       .then(r => r.json()) as Array<{ quote?: string; rate?: number }>
     if (!Array.isArray(d)) return cached?.rates ?? null
     // Frankfurter omits the base's own self-rate, so seed it with `base = 1`.
@@ -50,7 +58,56 @@ export async function fetchExchangeRates(base: string): Promise<Record<string, n
     return rates
   } catch {
     return cached?.rates ?? null // offline → stale beats nothing
+  } finally {
+    clearTimeout(timer)
   }
+}
+
+/**
+ * The cached rates for `base`, and only while they are fresh (younger than the TTL). This is
+ * the table the client lends the server to freeze a rate with (`fallback_fx`): a stale one
+ * would pin a figure from another day on the row for good.
+ */
+export function freshRates(base: string): Record<string, number> | null {
+  const cached = readCache((base || 'EUR').toUpperCase())
+  return cached && Date.now() - cached.ts < TTL_MS ? cached.rates : null
+}
+
+/** `freshRates`, fetching first when the cache is not fresh. Null when the fetch fails too. */
+export async function fetchFreshRates(base: string): Promise<Record<string, number> | null> {
+  await fetchExchangeRates(base)
+  return freshRates(base)
+}
+
+const CURRENCY_CODE = /^[A-Z]{3}$/
+
+/**
+ * Whether a rate is one the server's contract takes (budget.schema.ts): finite and from
+ * 1e-9 to 1e9, for a lent `fallback_fx` rate as for the settlement's `base_rate`. Anything
+ * else fails the whole request with a 400, so the client leaves it out instead.
+ */
+export function isSendableRate(rate: number | null | undefined): rate is number {
+  return rate != null && Number.isFinite(rate) && rate >= 1e-9 && rate <= 1e9
+}
+
+/**
+ * `data` with its currency's rate against the trip currency lent alongside, for a write the
+ * server freezes a rate on (an expense, a transfer). The server prefers its own rate and
+ * uses this one only when it has none, which is the setup where its fetch fails and the
+ * browser's does not. Sent only for a currency foreign to the trip with a fresh quote in
+ * the cache, and never beside an explicit `exchange_rate`; anything else comes back as it
+ * was. A rate outside what the contract accepts would fail the whole write, so it is left out.
+ */
+export function withFallbackFx<T extends { currency?: string | null; exchange_rate?: number | null }>(
+  data: T,
+  tripCurrency: string | null | undefined,
+): T & { fallback_fx?: BudgetFallbackFx } {
+  const trip = (tripCurrency || '').toUpperCase()
+  const cur = (data.currency || '').toUpperCase()
+  if (!CURRENCY_CODE.test(trip) || !CURRENCY_CODE.test(cur) || cur === trip || data.exchange_rate != null) return data
+  const rate = freshRates(trip)?.[cur]
+  if (!isSendableRate(rate)) return data
+  return { ...data, fallback_fx: { base: trip, rates: { [cur]: rate } } }
 }
 
 /**
@@ -229,5 +286,16 @@ export function useExchangeRates(base: string, tripCurrency?: string | null) {
     [rates, anchorRates, upper],
   )
 
-  return { rates, convert }
+  // Units of the display currency per 1 trip currency, from the same quotes `convert` uses.
+  // The settlement takes it as `base_rate` to answer in the display currency when the
+  // server has no quote of its own. Null while neither quote is known, and null for a
+  // figure the settlement query refuses (a trip in XAU shown in IRR runs past 1e9): sent
+  // along, it would fail the whole read with a 400, healthy server or not.
+  const perTrip = rates?.[anchor]
+  const quoted = anchor === upper
+    ? 1
+    : crossRate(anchorRates, upper, anchor) ?? (perTrip && perTrip > 0 ? 1 / perTrip : null)
+  const displayPerTrip = isSendableRate(quoted) ? quoted : null
+
+  return { rates, convert, displayPerTrip }
 }

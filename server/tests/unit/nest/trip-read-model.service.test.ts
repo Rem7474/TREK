@@ -212,6 +212,8 @@ describe('getTripSummary shaping', () => {
     expect(summary.budget.total).toBe(785.26);
     expect(summary.budget.by_category).toEqual({ food: 100, accommodation: 685.26 });
     expect(summary.budget.currency).toBe('EUR');
+    // Both rows convert, so none is reported as left out of the total.
+    expect(summary.budget.unconverted_item_ids).toEqual([]);
   });
 
   it('TRIP-READ-009: totals a trip saved without a currency in euros, the default the rest of the app reads it in (#2525)', async () => {

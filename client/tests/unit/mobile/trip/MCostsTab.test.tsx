@@ -4,6 +4,7 @@ import MCostsTab from '../../../../src/mobile/screens/trip/tabs/MCostsTab'
 import type { MTripShellApi, TripPlanner } from '../../../../src/mobile/screens/trip/MTripShell'
 import { budgetApi } from '../../../../src/api/client'
 import { localToday } from '../../../../src/components/Planner/today'
+import { resetFreezeAttempts } from '../../../../src/components/Budget/useFreezeMissingRates'
 import { clearExchangeRateCache } from '../../../../src/hooks/useExchangeRates'
 import { useAuthStore } from '../../../../src/store/authStore'
 import { useSettingsStore } from '../../../../src/store/settingsStore'
@@ -14,7 +15,7 @@ import { resetAllStores, seedStore } from '../../../helpers/store'
 import { server } from '../../../helpers/msw/server'
 import { fireEvent, render, screen, waitFor, within } from '../../../helpers/render'
 
-// FE-MOB-COSTT-001 to FE-MOB-COSTT-044
+// FE-MOB-COSTT-001 to FE-MOB-COSTT-049
 
 // The add/edit expense sheet is the shared desktop-sized form; the panel only
 // owns when it opens and what happens on save, so it is stubbed here.
@@ -723,7 +724,12 @@ describe('MCostsTab', () => {
     expect(within(dialog).getByRole('button', { name: /GBP/ })).toBeInTheDocument()
 
     fireEvent.click(within(dialog).getByRole('button', { name: 'common.save' }))
-    expect(update).toHaveBeenCalledWith(7, 505, { from_user_id: 1, to_user_id: 2, amount: 10, currency: 'GBP', settled_at: '2026-04-28' })
+    // The pound rate the phone holds goes along; the server only uses it when the
+    // currency changes and it has no rate of its own, so the frozen one stays.
+    expect(update).toHaveBeenCalledWith(7, 505, {
+      from_user_id: 1, to_user_id: 2, amount: 10, currency: 'GBP', settled_at: '2026-04-28',
+      fallback_fx: { base: 'USD', rates: { GBP: 0.5 } },
+    })
   })
 
   it('FE-MOB-COSTT-045: a bill whose rate moved shows what was entered and what it was booked at (#2525)', async () => {
@@ -792,6 +798,63 @@ describe('MCostsTab', () => {
     expect(within(card).queryByText(/^\$12,345\.67 →/)).toBeNull()
     expect(screen.getByText('costs.spent:$12,345.67')).toBeInTheDocument()
     expect(up(screen.getByText('costs.totalSpend'), 1).textContent).toContain('$12,345.67')
+  })
+
+  // The server could not fetch rates, so the museum's pounds never froze one and the
+  // settlement left them out. An editor's phone lends its own rate and reads again.
+  it('FE-MOB-COSTT-047: an editor heals a bill the server could not convert and reads the settlement again', async () => {
+    resetFreezeAttempts()
+    let healed = false
+    server.use(
+      http.get('/api/trips/:id/budget/settlement', ({ request }) => {
+        settlementBases.push(new URL(request.url).searchParams.get('base') ?? '')
+        return HttpResponse.json(healed
+          ? { ...SETTLEMENT, unconverted: { item_ids: [], settlement_ids: [], currencies: [] } }
+          : { ...SETTLEMENT, unconverted: { item_ids: [12], settlement_ids: [], currencies: ['GBP'] } })
+      }),
+    )
+    const freeze = vi.spyOn(budgetApi, 'freezeRates').mockImplementation(async () => {
+      healed = true
+      return { items: [{ ...MUSEUM, exchange_rate: 0.5 }], settlements: [], unresolved: [] }
+    })
+    await renderTab()
+
+    await waitFor(() => expect(freeze).toHaveBeenCalledWith(7, { fallback_fx: { base: 'USD', rates: { GBP: 0.5 } } }))
+    await waitFor(() => expect(settlementBases).toHaveLength(2))
+    expect(freeze).toHaveBeenCalledTimes(1)
+  })
+
+  it('FE-MOB-COSTT-048: a read-only member\'s phone never freezes a rate', async () => {
+    resetFreezeAttempts()
+    serveSettlement({ ...SETTLEMENT, unconverted: { item_ids: [12], settlement_ids: [], currencies: ['GBP'] } })
+    const freeze = vi.spyOn(budgetApi, 'freezeRates')
+    await renderTab(planner({ can: vi.fn(() => false) as unknown as TripPlanner['can'] }))
+
+    await new Promise(r => setTimeout(r, 50))
+    expect(freeze).not.toHaveBeenCalled()
+    expect(settlementBases).toHaveLength(1)
+  })
+
+  it('FE-MOB-COSTT-049: asks the settlement in the display currency with the phone\'s own rate for it', async () => {
+    seedStore(useSettingsStore, {
+      settings: { ...useSettingsStore.getState().settings, default_currency: 'GBP' },
+    })
+    const rates: (string | null)[] = []
+    server.use(
+      http.get('/api/trips/:id/budget/settlement', ({ request }) => {
+        const url = new URL(request.url)
+        settlementBases.push(url.searchParams.get('base') ?? '')
+        rates.push(url.searchParams.get('base_rate'))
+        return HttpResponse.json(SETTLEMENT)
+      }),
+    )
+    render(<MCostsTab planner={planner()} shell={buildShell()} />)
+    await screen.findByText('+£12.50')
+
+    // Pounds per dollar from the trip currency's own table, what the server labels with
+    // when it cannot fetch a quote itself.
+    expect(settlementBases).toEqual(['GBP'])
+    expect(rates).toEqual(['0.5'])
   })
 
   it('FE-MOB-COSTT-044: a payment cannot be saved without a day', async () => {

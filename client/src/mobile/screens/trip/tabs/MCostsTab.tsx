@@ -7,13 +7,14 @@ import {
 import MDancingTrek from '../../../components/MDancingTrek'
 import { useAuthStore } from '../../../../store/authStore'
 import { useSettingsStore } from '../../../../store/settingsStore'
-import { useExchangeRates } from '../../../../hooks/useExchangeRates'
+import { useExchangeRates, withFallbackFx } from '../../../../hooks/useExchangeRates'
 import { useTranslation } from '../../../../i18n'
 import { amountToInputString, formatMoney } from '../../../../utils/formatters'
 import { downloadBlob, openFile } from '../../../../utils/fileDownload'
 import { budgetApi } from '../../../../api/client'
 import MCostSheet from '../sheets/MCostSheet'
 import { ReceiptPreviewModal } from '../../../../components/Budget/ReceiptPreviewModal'
+import { useFreezeMissingRates } from '../../../../components/Budget/useFreezeMissingRates'
 import { finalBudgetFor, finalBudgetSources, paidByUser, readUserNote, settlementDate } from '../../../../components/Budget/CostsPanel.helpers'
 import { catMeta, COST_CAT_META } from '../../../../components/Budget/costsCategories'
 import CustomSelect from '../../../../components/shared/CustomSelect'
@@ -56,18 +57,19 @@ export default function MCostsTab({ planner, shell }: MTabScreenProps) {
   const base = (displayCurrency || trip?.currency || 'EUR').toUpperCase()
   const tripCurrency = (trip?.currency || base).toUpperCase()
   // Anchored on the trip currency's quote, the one the server books with (#2525).
-  const { convert } = useExchangeRates(base, tripCurrency)
+  const { convert, displayPerTrip } = useExchangeRates(base, tripCurrency)
   const ctx: CostsCtx = useMemo(() => ({ me, tripCurrency, displayCurrency: base, convert }), [me, tripCurrency, base, convert])
 
   const [settlement, setSettlement] = useState<CostsSettlementResponse | null>(null)
   // A failed settlement read leaves `settlement` null, and the final budget would
   // read that as "the trip cost nobody anything", a claim we cannot make.
   const [settlementError, setSettlementError] = useState(false)
+  // Sends the browser's own figure for the display currency, as CostsPanel.tsx does.
   const loadSettlement = useCallback(() => {
-    budgetApi.settlement(tripId, base)
+    budgetApi.settlement(tripId, base, base !== tripCurrency ? displayPerTrip : null)
       .then(s => { setSettlement(s); setSettlementError(false) })
       .catch(() => setSettlementError(true))
-  }, [tripId, base])
+  }, [tripId, base, tripCurrency, displayPerTrip])
 
   // Mirrors CostsPanel.tsx: items reload on trip change, settlement reloads on
   // trip/base change; further refreshes are explicit after each mutation below
@@ -79,6 +81,7 @@ export default function MCostsTab({ planner, shell }: MTabScreenProps) {
   useEffect(() => {
     loadSettlement()
   }, [loadSettlement])
+  useFreezeMissingRates({ tripId, tripCurrency, canEdit, unconverted: settlement?.unconverted, onHealed: loadSettlement })
 
   const [search, setSearch] = useState('')
   const [segment, setSegment] = useState<CostsSegment>('all')
@@ -571,6 +574,7 @@ export default function MCostsTab({ planner, shell }: MTabScreenProps) {
         }}
         tripId={tripId}
         base={base}
+        tripCurrency={tripCurrency}
         people={tripMembers}
         me={me}
         toast={toast}
@@ -881,12 +885,13 @@ function MemberAvatar({ name, avatarUrl, isMe, variant, size, t }: {
  * (editable like an expense's, unlike the legacy created_at-only date, see
  * `settlementDate` in CostsPanel.helpers.ts).
  */
-function AddPaymentSheet({ open, editing, onClose, tripId, base, people, me, toast, t, onSaved }: {
+function AddPaymentSheet({ open, editing, onClose, tripId, base, tripCurrency, people, me, toast, t, onSaved }: {
   open: boolean
   editing: CostsSettlement | null
   onClose: () => void
   tripId: number
   base: string
+  tripCurrency: string
   people: TripMember[]
   me: number
   toast: { error: (message: string) => void }
@@ -917,7 +922,7 @@ function AddPaymentSheet({ open, editing, onClose, tripId, base, people, me, toa
   const save = async () => {
     if (!valid || saving) return
     setSaving(true)
-    const data = { from_user_id: fromId, to_user_id: toId, amount: amt, currency, settled_at: day }
+    const data = withFallbackFx({ from_user_id: fromId, to_user_id: toId, amount: amt, currency, settled_at: day }, tripCurrency)
     try {
       if (editing) await budgetApi.updateSettlement(tripId, editing.id, data)
       else await budgetApi.createSettlement(tripId, data)

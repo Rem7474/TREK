@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { server } from '../../tests/helpers/msw/server'
-import { bookedInTrip, convertBooked, convertedLine, crossRate, fetchExchangeRates, clearExchangeRateCache, tripAmountOf, useExchangeRates } from './useExchangeRates'
+import { bookedInTrip, convertBooked, convertedLine, crossRate, fetchExchangeRates, fetchFreshRates, freshRates, clearExchangeRateCache, tripAmountOf, useExchangeRates, withFallbackFx } from './useExchangeRates'
 
 const FX_URL = 'https://api.frankfurter.dev/v2/rates'
 
@@ -44,6 +44,94 @@ describe('fetchExchangeRates (#1561)', () => {
     }))
     server.use(http.get(FX_URL, () => HttpResponse.error()))
     expect(await fetchExchangeRates('NOK')).toEqual({ NOK: 1, USD: 0.1 })
+  })
+
+  // A request the network never answers held the Costs panel's heal for as long as the
+  // browser kept the socket open. It gives up after 10 s like any other failure.
+  it('gives up on a request that hangs after 10 s and serves the stale cache', async () => {
+    vi.useFakeTimers()
+    const fetchSpy = vi.spyOn(globalThis, 'fetch')
+    try {
+      localStorage.setItem('trek_fx_NOK', JSON.stringify({ rates: { NOK: 1, USD: 0.1 }, ts: Date.now() - 24 * 60 * 60 * 1000 }))
+      let signal: AbortSignal | undefined
+      fetchSpy.mockImplementation((_input, init) => new Promise((_resolve, reject) => {
+        signal = init?.signal ?? undefined
+        signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')))
+      }))
+      const pending = fetchExchangeRates('NOK')
+      await vi.advanceTimersByTimeAsync(9_999)
+      expect(signal?.aborted).toBe(false)
+      await vi.advanceTimersByTimeAsync(1)
+      expect(signal?.aborted).toBe(true)
+      expect(await pending).toEqual({ NOK: 1, USD: 0.1 })
+    } finally {
+      fetchSpy.mockRestore()
+      vi.useRealTimers()
+    }
+  })
+})
+
+// The rates the client lends the server to freeze a rate with. Only a fresh table counts:
+// a stale one would pin a figure from another day on the row for good.
+describe('freshRates and fetchFreshRates', () => {
+  beforeEach(() => {
+    clearExchangeRateCache()
+  })
+
+  it('reads a fresh cache and ignores a stale or missing one', () => {
+    expect(freshRates('AUD')).toBeNull()
+    localStorage.setItem('trek_fx_AUD', JSON.stringify({ rates: { AUD: 1, VND: 18241.3 }, ts: Date.now() - 7 * 60 * 60 * 1000 }))
+    expect(freshRates('aud')).toBeNull()
+    clearExchangeRateCache()
+    localStorage.setItem('trek_fx_AUD', JSON.stringify({ rates: { AUD: 1, VND: 18241.3 }, ts: Date.now() }))
+    expect(freshRates('aud')).toEqual({ AUD: 1, VND: 18241.3 })
+  })
+
+  it('fetches when the cache is stale and gives the new table', async () => {
+    localStorage.setItem('trek_fx_AUD', JSON.stringify({ rates: { AUD: 1, VND: 15000 }, ts: Date.now() - 7 * 60 * 60 * 1000 }))
+    server.use(http.get(FX_URL, () => HttpResponse.json([{ quote: 'VND', rate: 18241.3 }])))
+    expect(await fetchFreshRates('AUD')).toEqual({ AUD: 1, VND: 18241.3 })
+  })
+
+  it('is null when the fetch fails and only a stale table is left', async () => {
+    localStorage.setItem('trek_fx_AUD', JSON.stringify({ rates: { AUD: 1, VND: 15000 }, ts: Date.now() - 7 * 60 * 60 * 1000 }))
+    server.use(http.get(FX_URL, () => HttpResponse.error()))
+    expect(await fetchFreshRates('AUD')).toBeNull()
+  })
+})
+
+describe('withFallbackFx', () => {
+  beforeEach(() => {
+    clearExchangeRateCache()
+    localStorage.setItem('trek_fx_AUD', JSON.stringify({ rates: { AUD: 1, VND: 18241.3, EUR: 0.61, XAU: 1e-10 }, ts: Date.now() }))
+  })
+
+  it('lends the fresh trip-currency rate for a foreign currency', () => {
+    expect(withFallbackFx({ name: 'Pho', currency: 'vnd', total_price: 8920000 }, 'aud')).toEqual({
+      name: 'Pho', currency: 'vnd', total_price: 8920000,
+      fallback_fx: { base: 'AUD', rates: { VND: 18241.3 } },
+    })
+    expect(withFallbackFx({ from_user_id: 1, to_user_id: 2, amount: 10, currency: 'EUR' }, 'AUD').fallback_fx)
+      .toEqual({ base: 'AUD', rates: { EUR: 0.61 } })
+  })
+
+  it('leaves the data alone when there is nothing to lend', () => {
+    const inTrip = { name: 'Tram', currency: 'AUD' }
+    expect(withFallbackFx(inTrip, 'AUD')).toBe(inTrip)
+    // No currency at all is the trip's own.
+    expect(withFallbackFx({ name: 'Tram', currency: null }, 'AUD')).toEqual({ name: 'Tram', currency: null })
+    // An explicit rate is the caller's and wins on the server anyway.
+    expect(withFallbackFx({ currency: 'VND', exchange_rate: 17000 }, 'AUD')).toEqual({ currency: 'VND', exchange_rate: 17000 })
+    // No quote for the currency, no trip currency, or a rate the contract would refuse.
+    expect(withFallbackFx({ currency: 'JPY' }, 'AUD')).toEqual({ currency: 'JPY' })
+    expect(withFallbackFx({ currency: 'VND' }, null)).toEqual({ currency: 'VND' })
+    expect(withFallbackFx({ currency: 'XAU' }, 'AUD')).toEqual({ currency: 'XAU' })
+  })
+
+  it('lends nothing from a stale table', () => {
+    clearExchangeRateCache()
+    localStorage.setItem('trek_fx_AUD', JSON.stringify({ rates: { AUD: 1, VND: 18241.3 }, ts: Date.now() - 7 * 60 * 60 * 1000 }))
+    expect(withFallbackFx({ currency: 'VND' }, 'AUD')).toEqual({ currency: 'VND' })
   })
 })
 
@@ -171,6 +259,45 @@ describe('useExchangeRates anchored on the trip currency (#2525)', () => {
     const { result } = renderHook(() => useExchangeRates('EUR', 'EUR'))
     await waitFor(() => expect(result.current.convert(1.1398, 'USD')).toBe(1))
     expect(calls).toBe(1)
+    expect(result.current.displayPerTrip).toBe(1)
+  })
+
+  // What the settlement is asked to label its figures with when the server has no quote
+  // (`base_rate`): the same figure `convert` takes a trip amount to the display currency with.
+  it('gives the display currency per 1 trip currency from the trip\'s quote', async () => {
+    quotes()
+    const { result } = renderHook(() => useExchangeRates('USD', 'EUR'))
+    await waitFor(() => expect(result.current.displayPerTrip).toBe(1.1398))
+    expect(result.current.convert(1, 'EUR')).toBe(result.current.displayPerTrip)
+  })
+
+  it('falls back to the display currency\'s quote for it, and is null without either', async () => {
+    server.use(http.get(FX_URL, ({ request }) => (new URL(request.url).searchParams.get('base') === 'USD'
+      ? HttpResponse.json([{ quote: 'EUR', rate: 0.8 }])
+      : HttpResponse.error())))
+    const { result } = renderHook(() => useExchangeRates('USD', 'EUR'))
+    await waitFor(() => expect(result.current.displayPerTrip).toBe(1.25))
+
+    clearExchangeRateCache()
+    let calls = 0
+    server.use(http.get(FX_URL, () => { calls++; return HttpResponse.error() }))
+    const none = renderHook(() => useExchangeRates('GBP', 'AUD'))
+    await waitFor(() => expect(calls).toBe(2))
+    expect(none.result.current.displayPerTrip).toBeNull()
+  })
+
+  // A trip in gold read in rials: 2.6 billion rials to the ounce is past the 1e9 the
+  // settlement query takes, and sent as `base_rate` it would fail the whole read with a 400.
+  it('is null for a figure the settlement query would refuse, which convert still uses', () => {
+    localStorage.setItem('trek_fx_XAU', JSON.stringify({ rates: { XAU: 1, IRR: 2.6e9 }, ts: Date.now() }))
+    localStorage.setItem('trek_fx_IRR', JSON.stringify({ rates: { IRR: 1, XAU: 1 / 2.6e9 }, ts: Date.now() }))
+    const high = renderHook(() => useExchangeRates('IRR', 'XAU'))
+    expect(high.result.current.convert(1, 'XAU')).toBe(2.6e9)
+    expect(high.result.current.displayPerTrip).toBeNull()
+    // The other way round the figure falls under 1e-9.
+    const low = renderHook(() => useExchangeRates('XAU', 'IRR'))
+    expect(low.result.current.convert(2.6e9, 'IRR')).toBeCloseTo(1, 10)
+    expect(low.result.current.displayPerTrip).toBeNull()
   })
 })
 

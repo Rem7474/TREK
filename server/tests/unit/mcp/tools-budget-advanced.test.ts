@@ -362,6 +362,7 @@ describe('Settlement tools', () => {
       { id: user.id } as User,
       { id: trip.id, user_id: user.id } as TripAccess,
       String(trip.id),
+      {},
     );
 
     await withHarness(user.id, async (h) => {
@@ -398,7 +399,7 @@ describe('Settlement tools', () => {
         { id: user.id } as User,
         { id: trip.id, user_id: user.id, currency: 'EUR' } as TripAccess,
         String(trip.id),
-        'USD',
+        { base: 'USD' },
       );
       await withHarness(user.id, async (h) => {
         const result = await h.client.callTool({ name: 'get_settlement_summary', arguments: { tripId: trip.id, base: 'USD' } });

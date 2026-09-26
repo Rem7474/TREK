@@ -157,11 +157,12 @@ Requires `budget:read` or `budget:write` scope. The Budget addon must be enabled
 | `delete_budget_item` | Remove a budget item. |
 | `set_budget_item_members` | Set which members are splitting a budget item (replaces current list). |
 | `toggle_budget_member_paid` | Mark or unmark a member as having paid their share. |
-| `get_settlement_summary` | Each member's net balance, the suggested payments to settle shared expenses, and each member's final budget (`finalBudgets`: expenses paid, net reimbursements, pending reimbursements, final cost, each figure with the rows it is made of under `sources`), in the trip's base currency. Call this before recording a settlement. |
+| `get_settlement_summary` | Each member's net balance, the suggested payments to settle shared expenses, and each member's final budget (`finalBudgets`: expenses paid, net reimbursements, pending reimbursements, final cost, each figure with the rows it is made of under `sources`). `currency` says what the amounts are in: the `base` asked for when the server can quote it, otherwise the trip's base currency. An expense or payment in a foreign currency with no frozen rate, while the server has no live rate for it either, is left out of every figure and listed under `unconverted` (`item_ids`, `settlement_ids`, `currencies`). Call this before recording a settlement. |
 | `list_settlements` | List the recorded settle-up payments for a trip — who paid whom, how much, and when. |
 | `create_settlement` | Record a settle-up payment: one member paid another the given amount, with the payment's currency and the day it happened. |
 | `update_settlement` | Update a recorded settle-up payment (payer, recipient, amount, currency and the day it happened). |
 | `delete_settlement` | Delete a recorded settle-up payment. This is the undo for `create_settlement` and restores the affected balances. |
+| `freeze_budget_rates` | Pin today's server exchange rate on every expense and settle-up payment in a foreign currency that has no rate frozen yet, the rows under `unconverted` included. Rows with a frozen rate, in the trip currency or without a currency are never touched, and no rate is taken from the caller. Returns the rows it froze (`items`, `settlements`) and the currencies the server could not quote (`unresolved`). Needs the budget edit permission; an error when the trip currency changed meanwhile, with nothing written. |
 
 ### Tags
 

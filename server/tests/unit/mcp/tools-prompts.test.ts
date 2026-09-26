@@ -172,6 +172,7 @@ beforeEach(() => {
         total: totals.total,
         by_category: totals.byCategory,
         currency: trip.currency,
+        unconverted_item_ids: totals.unconverted,
       },
       packing: packingRows, // array shape; packing prompt tolerates it
       reservations: [],
@@ -533,6 +534,32 @@ describe('Prompt: budget-overview', () => {
     expect(text).toContain('- Accommodation: 685.26 EUR');
     expect(text).toContain('- Food: 100 EUR');
     expect(text).not.toContain('801.76');
+  });
+
+  it('says how many expenses no exchange rate could put into the total', async () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id, { title: 'Dong Trip' });
+    // Stored with the "not frozen" rate 1, and no rates to convert it with.
+    promptBudget.createBudgetItem(trip.id, {
+      name: 'Pho', category: 'Food', currency: 'VND', total_price: 8920000, members: [{ user_id: user.id }],
+    });
+    createBudgetItem(testDb, trip.id, { name: 'Dinner', category: 'Food', total_price: 100 });
+
+    const client = await buildServer(user.id);
+    const text = await invokePromptText(client, 'budget-overview', { tripId: trip.id });
+    expect(text).toContain('Total: 100 EUR');
+    expect(text).toContain('1 expense(s) not counted yet: no exchange rate.');
+    expect(text).not.toContain('8920000');
+  });
+
+  it('adds no such line when every expense converts', async () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id, { title: 'Euro Trip' });
+    createBudgetItem(testDb, trip.id, { name: 'Dinner', category: 'Food', total_price: 100 });
+
+    const client = await buildServer(user.id);
+    const text = await invokePromptText(client, 'budget-overview', { tripId: trip.id });
+    expect(text).not.toContain('not counted yet');
   });
 
   it('renders "No expenses recorded." when budget array is empty', async () => {

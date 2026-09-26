@@ -9,8 +9,9 @@ import { useToast } from '../shared/Toast'
 import { useTranslation } from '../../i18n'
 import { budgetApi } from '../../api/client'
 import { saveWithReceipts } from './receiptUploads'
-import { convertBooked, convertedLine, tripAmountOf, useExchangeRates } from '../../hooks/useExchangeRates'
+import { convertBooked, convertedLine, tripAmountOf, useExchangeRates, withFallbackFx } from '../../hooks/useExchangeRates'
 import { splitShareLabel, useExpenseFx } from './expenseFx'
+import { useFreezeMissingRates } from './useFreezeMissingRates'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { formatMoney, currencyDecimals, currencyLocale, localizeAmountInput, amountToInputString } from '../../utils/formatters'
 import { downloadBlob, openFile } from '../../utils/fileDownload'
@@ -22,7 +23,7 @@ import { SYMBOLS, currenciesWith, SPLIT_COLORS } from './BudgetPanel.constants'
 import { amountPattern, calculateTicketShares, finalBudgetFor, finalBudgetSources, hasTicketSplit, NOTE_MAX, paidByUser, payersBalanced, readTicketItems, readUserNote, rebalancePayers, settlementDate, splitEqualShares, writeTicketItems, type TicketItem } from './CostsPanel.helpers'
 import { COST_CATEGORY_LIST, catMeta } from './costsCategories'
 import { ReceiptPreviewModal } from './ReceiptPreviewModal'
-import type { BudgetParticipantFinal } from '@trek/shared'
+import type { BudgetParticipantFinal, BudgetUnconverted } from '@trek/shared'
 import type { BudgetItem, BudgetItemReceipt } from '../../types'
 import type { TripMember } from './BudgetPanelMemberChips'
 import GuestBadge from '../shared/GuestBadge'
@@ -61,6 +62,11 @@ interface SettlementData {
   // What the trip ends up costing each participant. Computed server-side off the
   // same ledger as the balances, so the breakdown can't contradict them.
   finalBudgets: BudgetParticipantFinal[]
+  // The currency the figures are in: the display currency, or the trip's own when
+  // neither the server nor `base_rate` could quote the pair.
+  currency?: string
+  // Rows no rate could convert, left out of every figure above.
+  unconverted?: BudgetUnconverted
 }
 
 // One row in the unified Costs ledger — either an expense or a settle-up payment,
@@ -88,7 +94,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   // Pre-rework rows stored currency = NULL, meaning "the trip's own currency".
   const tripCurrency = (trip?.currency || base).toUpperCase()
   // Anchored on the trip currency's quote, the one the server books with (#2525).
-  const { convert } = useExchangeRates(base, tripCurrency)
+  const { convert, displayPerTrip } = useExchangeRates(base, tripCurrency)
   const curOf = useCallback((e: BudgetItem) => (e.currency || tripCurrency), [tripCurrency])
   const [settlement, setSettlement] = useState<SettlementData | null>(null)
   // A failed settlement read leaves `settlement` null, which the empty views would
@@ -122,14 +128,20 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   const fmt = useCallback((v: number, c = base) => formatMoney(v, c, locale), [base, locale])
   const fmt0 = useCallback((v: number, c = base) => formatMoney(v, c, locale, { decimals: 0 }), [base, locale])
 
+  // The browser's own figure for the display currency goes along, for the server to
+  // answer in it when it cannot fetch a quote itself.
   const loadSettlement = useCallback(() => {
-    budgetApi.settlement(tripId, base)
+    budgetApi.settlement(tripId, base, base !== tripCurrency ? displayPerTrip : null)
       .then(s => { setSettlement(s); setSettlementError(false) })
       .catch(() => setSettlementError(true))
-  }, [tripId, base])
+  }, [tripId, base, tripCurrency, displayPerTrip])
 
   useEffect(() => { loadBudgetItems(tripId); loadSettlement() }, [tripId])
-  useEffect(() => { loadSettlement() }, [budgetItems.length, base])
+  useEffect(() => { loadSettlement() }, [budgetItems.length, loadSettlement])
+
+  // Rows the server could not count get a rate frozen from the browser's, and the
+  // settlement is read again once they count.
+  useFreezeMissingRates({ tripId, tripCurrency, canEdit, unconverted: settlement?.unconverted, onHealed: loadSettlement })
 
   // The bottom-nav "+" on the Costs tab opens the add-expense modal via ?create=expense.
   const [searchParams, setSearchParams] = useSearchParams()
@@ -255,7 +267,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
   // ── settle actions ──────────────────────────────────────────────────────
   const settleFlow = async (fromId: number, toId: number, amount: number) => {
     try {
-      await budgetApi.createSettlement(tripId, { from_user_id: fromId, to_user_id: toId, amount, currency: base })
+      await budgetApi.createSettlement(tripId, withFallbackFx({ from_user_id: fromId, to_user_id: toId, amount, currency: base }, tripCurrency))
       loadSettlement()
     } catch { toast.error(t('common.unknownError')) }
   }
@@ -266,7 +278,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
     const flows = settlement?.flows || []
     if (!flows.length) return
     try {
-      for (const f of flows) await budgetApi.createSettlement(tripId, { from_user_id: f.from.user_id, to_user_id: f.to.user_id, amount: f.amount, currency: base })
+      for (const f of flows) await budgetApi.createSettlement(tripId, withFallbackFx({ from_user_id: f.from.user_id, to_user_id: f.to.user_id, amount: f.amount, currency: base }, tripCurrency))
     } catch { toast.error(t('common.unknownError')) }
     // Refresh even when one transfer failed: the ones created before it are real,
     // and leaving them in the flow list invites a second, doubled settle-up.
@@ -504,7 +516,7 @@ export default function CostsPanel({ tripId, tripMembers = [] }: CostsPanelProps
       )}
 
       {(editingSettlement || addingPayment) && (
-        <SettlementModal tripId={tripId} people={people} me={me} editing={editingSettlement} currency={base}
+        <SettlementModal tripId={tripId} people={people} me={me} editing={editingSettlement} currency={base} tripCurrency={tripCurrency}
           onClose={() => { setEditingSettlement(null); setAddingPayment(false) }}
           onSaved={() => { setEditingSettlement(null); setAddingPayment(false); loadSettlement() }} />
       )}
@@ -1142,8 +1154,8 @@ function FlowPills({ ids, lead, Avatar, name }: { ids: number[]; lead: string; A
 // A transfer can be made in any currency — paying a rouble debt in euros is normal —
 // so it carries its own, defaulting to the display currency. The server freezes its
 // FX rate on write, the same way an expense's is frozen.
-function SettlementModal({ tripId, people, me, editing, currency, onClose, onSaved }: {
-  tripId: number; people: TripMember[]; me: number; editing: Settlement | null; currency: string; onClose: () => void; onSaved: () => void
+function SettlementModal({ tripId, people, me, editing, currency, tripCurrency, onClose, onSaved }: {
+  tripId: number; people: TripMember[]; me: number; editing: Settlement | null; currency: string; tripCurrency: string; onClose: () => void; onSaved: () => void
 }) {
   const { t } = useTranslation()
   const toast = useToast()
@@ -1164,7 +1176,7 @@ function SettlementModal({ tripId, people, me, editing, currency, onClose, onSav
   const save = async () => {
     if (!valid) return
     setSaving(true)
-    const data = { from_user_id: Number(fromId), to_user_id: Number(toId), amount: amt, currency: cur, settled_at: day }
+    const data = withFallbackFx({ from_user_id: Number(fromId), to_user_id: Number(toId), amount: amt, currency: cur, settled_at: day }, tripCurrency)
     try {
       if (editing) await budgetApi.updateSettlement(tripId, editing.id, data)
       else await budgetApi.createSettlement(tripId, data)
