@@ -41,6 +41,8 @@ import {
   type PackingImportRequest, type PackingBagMembersRequest, type PackingUpdateBagRequest,
   type PackingCategoryAssigneesRequest, type PackingApplyTemplateRequest,
   type BudgetUpdateMembersRequest, type BudgetToggleMemberPaidRequest, type BudgetReorderCategoriesRequest,
+  type BudgetCreateSettlementRequest, type BudgetUpdateSettlementRequest, type BudgetSettlementQuery,
+  type BudgetFreezeRatesRequest, type BudgetFreezeRatesResponse,
   type TodoCategoryAssigneesRequest,
   type CollabNoteCreateRequest, type CollabNoteUpdateRequest, type CollabPollCreateRequest,
   type CollabPollVoteRequest, type CollabMessageCreateRequest, type CollabReactionRequest,
@@ -1361,9 +1363,13 @@ export const budgetApi = {
   togglePaid: (tripId: number | string, id: number, userId: number, paid: boolean) => apiClient.put(`/trips/${tripId}/budget/${id}/members/${userId}/paid`, { paid } satisfies BudgetToggleMemberPaidRequest).then(r => r.data),
   setPayers: (tripId: number | string, id: number, payers: { user_id: number; amount: number }[]) => apiClient.put(`/trips/${tripId}/budget/${id}/payers`, { payers }).then(r => r.data),
   perPersonSummary: (tripId: number | string) => apiClient.get(`/trips/${tripId}/budget/summary/per-person`).then(r => r.data),
-  settlement: (tripId: number | string, base?: string) => apiClient.get(`/trips/${tripId}/budget/settlement`, base ? { params: { base } } : undefined).then(r => r.data),
-  createSettlement: (tripId: number | string, data: { from_user_id: number; to_user_id: number; amount: number; currency?: string; settled_at?: string | null }) => apiClient.post(`/trips/${tripId}/budget/settlements`, data).then(r => r.data),
-  updateSettlement: (tripId: number | string, settlementId: number, data: { from_user_id: number; to_user_id: number; amount: number; currency?: string; settled_at?: string | null }) => apiClient.put(`/trips/${tripId}/budget/settlements/${settlementId}`, data).then(r => r.data),
+  // `baseRate` is units of `base` per 1 trip currency from the client's own rates. The server
+  // uses it only in place of a display quote it cannot fetch itself, which also reads legacy
+  // transfers without a currency (in the display currency, as with a live quote).
+  settlement: (tripId: number | string, base?: string, baseRate?: number | null) => apiClient.get(`/trips/${tripId}/budget/settlement`, base ? { params: { base, ...(baseRate != null ? { base_rate: baseRate } : {}) } satisfies BudgetSettlementQuery } : undefined).then(r => r.data),
+  createSettlement: (tripId: number | string, data: BudgetCreateSettlementRequest) => apiClient.post(`/trips/${tripId}/budget/settlements`, data).then(r => r.data),
+  updateSettlement: (tripId: number | string, settlementId: number, data: BudgetUpdateSettlementRequest) => apiClient.put(`/trips/${tripId}/budget/settlements/${settlementId}`, data).then(r => r.data),
+  freezeRates: (tripId: number | string, data: BudgetFreezeRatesRequest): Promise<BudgetFreezeRatesResponse> => apiClient.post(`/trips/${tripId}/budget/freeze-rates`, data).then(r => r.data),
   deleteSettlement: (tripId: number | string, settlementId: number) => apiClient.delete(`/trips/${tripId}/budget/settlements/${settlementId}`).then(r => r.data),
   reorderItems: (tripId: number | string, orderedIds: number[]) => apiClient.put(`/trips/${tripId}/budget/reorder/items`, { orderedIds }).then(r => r.data),
   reorderCategories: (tripId: number | string, orderedCategories: string[]) => apiClient.put(`/trips/${tripId}/budget/reorder/categories`, { orderedCategories } satisfies BudgetReorderCategoriesRequest).then(r => r.data),

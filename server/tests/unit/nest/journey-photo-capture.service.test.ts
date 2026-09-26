@@ -131,9 +131,10 @@ describe('JourneyPhotoCaptureService', () => {
     });
     const recordCaptureMetadata = vi.fn(() => true);
     // Ids from 30 up are the uploaded files; their EXIF says when they were taken.
+    // The storage stub answers with what the EXIF reader makes of such a file.
     const resolve = (id: number) =>
       id >= 30 ? { id, provider: 'local', file_path: `journey/${id}.jpg` } : { id, provider: 'immich' };
-    const withLocalFile = vi.fn(async () => ({ DateTimeOriginal: new Date('2026-03-15T09:00:00Z') }));
+    const withLocalFile = vi.fn(async () => ({ takenAt: '2026-03-15T09:00:00.000Z', lat: null, lng: null }));
     const backfill = new PhotoCaptureBackfillService(
       { getPhotoInfo } as unknown as PhotoResolverService,
       { resolve, recordCaptureMetadata } as unknown as TrekPhotosRepository,

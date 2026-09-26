@@ -928,7 +928,7 @@ describe('guest members (#1362)', () => {
 // ── Folded CRUD SQL (summary / list / create / delete / copy) ─────────────────
 
 describe('folded trip CRUD', () => {
-  it('TRIP-SVC-042: getTripSummary aggregates members, days, budget, packing and reservations', () => {
+  it('TRIP-SVC-042: getTripSummary aggregates members, days, budget, packing and reservations', async () => {
     const { user: owner } = createUser(testDb);
     const { user: member } = createUser(testDb);
     const trip = createTrip(testDb, owner.id, { start_date: '2025-06-01', end_date: '2025-06-02' });
@@ -936,7 +936,7 @@ describe('folded trip CRUD', () => {
     testDb.prepare("INSERT INTO budget_items (trip_id, category, name, total_price) VALUES (?, 'food', 'Dinner', 40)").run(trip.id);
     testDb.prepare("INSERT INTO packing_items (trip_id, name, checked) VALUES (?, 'Socks', 1)").run(trip.id);
 
-    const summary = readModelSvc.getTripSummary(trip.id, owner.id)!;
+    const summary = (await readModelSvc.getTripSummary(trip.id, owner.id))!;
     expect(summary).toBeTruthy();
     expect((summary.trip as any).id).toBe(trip.id);
     expect(summary.members.owner.id).toBe(owner.id);
@@ -950,7 +950,7 @@ describe('folded trip CRUD', () => {
     expect(summary.collab_notes).toEqual([]);
 
     // Missing trips return null instead of throwing.
-    expect(readModelSvc.getTripSummary(99999)).toBeNull();
+    expect(await readModelSvc.getTripSummary(99999)).toBeNull();
   });
 
   it('TRIP-SVC-043: list returns owned + shared trips with is_owner, honoring the archived filter', () => {

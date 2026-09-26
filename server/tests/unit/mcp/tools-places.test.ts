@@ -237,6 +237,26 @@ describe('Tool: update_place', () => {
     });
   });
 
+  it('moving a place drops the country Atlas cached for it, renaming it does not (#2527)', async () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id);
+    const place = createPlace(testDb, trip.id, { name: 'Hotel', lat: 48.8566, lng: 2.3522 });
+    testDb.prepare("INSERT INTO place_regions (place_id, country_code, region_code, region_name) VALUES (?, 'FR', 'FR-IDF', 'Ile-de-France')").run(place.id);
+    const cachedRegion = () => testDb.prepare('SELECT country_code FROM place_regions WHERE place_id = ?').get(place.id);
+
+    await withHarness(user.id, async (h) => {
+      await h.client.callTool({ name: 'update_place', arguments: { tripId: trip.id, placeId: place.id, name: 'Hotel Adlon' } });
+      expect(cachedRegion()).toEqual({ country_code: 'FR' });
+
+      const moved = await h.client.callTool({
+        name: 'update_place',
+        arguments: { tripId: trip.id, placeId: place.id, lat: 52.5163, lng: 13.3777, address: 'Unter den Linden 77, Berlin, Germany' },
+      });
+      expect(moved.isError).toBeFalsy();
+      expect(cachedRegion()).toBeUndefined();
+    });
+  });
+
   it('broadcasts place:updated event', async () => {
     const { user } = createUser(testDb);
     const trip = createTrip(testDb, user.id);

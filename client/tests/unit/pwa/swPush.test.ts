@@ -13,8 +13,8 @@
 //  - a renewed subscription reaches the server, and the old one is forgotten
 //    only once the new one is stored.
 // Plus the drift guard: vite.config.js must import the file, and it must exist,
-// or the SPA fallback answers importScripts with index.html and the new worker
-// never installs.
+// or importScripts gets a 404 instead of a script and the new worker never
+// installs.
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';

@@ -39,7 +39,7 @@ const permissionsStub = { checkPermission } as unknown as PermissionsService;
 
 // Constructor-injected since the budget fold (was a path mock of the deleted
 // services/budgetService).
-const budget = { createBudgetItem: vi.fn(), updateBudgetItem: vi.fn(), deleteBudgetItem: vi.fn(), linkBudgetItemToReservation: vi.fn() };
+const budget = { createBudgetItem: vi.fn(), updateBudgetItem: vi.fn(), deleteBudgetItem: vi.fn(), linkBudgetItemToReservation: vi.fn(), freezeForeignRate: vi.fn() };
 
 const { notif } = vi.hoisted(() => ({ notif: { send: vi.fn().mockResolvedValue(undefined) } }));
 
@@ -559,6 +559,37 @@ describe('ReservationsService (DI-native, real SQL)', () => {
     it('falls back to type then "Other" for the category and swallows errors', () => {
       budget.linkBudgetItemToReservation.mockImplementation(() => { throw new Error('boom'); });
       expect(() => svc.syncBudgetOnCreate('5', 9, 'Hotel', undefined, { total_price: 50 }, 'sock')).not.toThrow();
+    });
+
+    // #2525: an imported booking quoted in dollars became a cost of that many euros.
+    it('links the cost in the currency and at the rate it arrives with', () => {
+      budget.linkBudgetItemToReservation.mockReturnValue({ id: 7 });
+      svc.syncBudgetOnCreate('5', 9, 'Hotel', 'hotel', { total_price: 801.76, currency: 'USD', exchange_rate: 1.17 }, 'sock');
+      expect(budget.linkBudgetItemToReservation).toHaveBeenCalledWith('5', 9, {
+        name: 'Hotel', category: 'hotel', total_price: 801.76, currency: 'USD', exchange_rate: 1.17,
+      });
+    });
+  });
+
+  describe('withFrozenRate (#2525)', () => {
+    it('keeps a quoted currency and freezes a rate for it', async () => {
+      budget.freezeForeignRate.mockImplementation(async (_tripId: unknown, data: { exchange_rate?: number }) => { data.exchange_rate = 1.17; });
+      expect(await svc.withFrozenRate('5', { total_price: 801.76, category: 'hotel', currency: ' usd ' })).toEqual({
+        total_price: 801.76, category: 'hotel', currency: 'USD', exchange_rate: 1.17,
+      });
+      expect(budget.freezeForeignRate).toHaveBeenCalledWith('5', { currency: 'USD', exchange_rate: 1.17 });
+    });
+
+    it('leaves the rate off when none could be frozen, so the cost converts live', async () => {
+      budget.freezeForeignRate.mockResolvedValue(undefined);
+      expect(await svc.withFrozenRate('5', { total_price: 10, currency: 'EUR' })).toEqual({ total_price: 10, currency: 'EUR' });
+    });
+
+    it('drops a currency that is not a code, and never takes a rate from the caller', async () => {
+      expect(await svc.withFrozenRate('5', { total_price: 10, currency: 'dollars', exchange_rate: 99 })).toEqual({ total_price: 10 });
+      expect(await svc.withFrozenRate('5', { total_price: 10, exchange_rate: 99 })).toEqual({ total_price: 10 });
+      expect(budget.freezeForeignRate).not.toHaveBeenCalled();
+      expect(await svc.withFrozenRate('5', undefined)).toBeUndefined();
     });
   });
 

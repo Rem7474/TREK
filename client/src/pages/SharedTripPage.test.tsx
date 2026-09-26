@@ -2,7 +2,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '../../tests/helpers/render';
 import { Routes, Route } from 'react-router';
 import { http, HttpResponse } from 'msw';
+import { AxiosError } from 'axios';
 import { server } from '../../tests/helpers/msw/server';
+import { shareApi } from '../api/client';
 import { resetAllStores, seedStore } from '../../tests/helpers/store';
 import { buildSettings } from '../../tests/helpers/factories';
 import { useSettingsStore } from '../store/settingsStore';
@@ -592,6 +594,112 @@ describe('SharedTripPage', () => {
       await waitFor(() => expect(screen.getByText('Dinner')).toBeInTheDocument());
       // 100 EUR / 0.8 = 125.00 NZD once the rate resolves.
       await waitFor(() => expect(screen.getAllByText(/125\.00 NZD/).length).toBeGreaterThan(0));
+    });
+  });
+
+  describe('FE-PAGE-SHARED-043: a foreign expense reads at the rate it was booked at, as in Costs (#2525)', () => {
+    it('shows the frozen-rate value in whole cents, not today\'s rate', async () => {
+      // CHF so no earlier test has cached rates for this base. Today 1 CHF buys 1.1395
+      // USD; the expense froze 1.17 when it was entered. Costs reads 801.76 / 1.17 =
+      // 685.26 CHF. Today's rate alone gives 703.61, printed as "703.607".
+      server.use(
+        http.get('https://api.frankfurter.dev/v2/rates', () => HttpResponse.json([{ quote: 'USD', rate: 1.1395 }])),
+        http.get('/api/shared/:token', ({ params }) => {
+          if (params.token !== 'booked-token') return;
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Shared Paris Trip', start_date: '2026-07-01', end_date: '2026-07-05', currency: 'CHF' },
+            baseCurrency: 'CHF',
+            days: [], assignments: {}, dayNotes: {}, places: [], reservations: [], accommodations: [], packing: [],
+            budget: [
+              { id: 1, name: 'Aparthotel Silver', total_price: 801.76, category: 'Accommodation', currency: 'USD', exchange_rate: 1.17 },
+              { id: 2, name: 'Tram pass', total_price: 100, category: 'Transport', currency: null, exchange_rate: 1 },
+            ],
+            categories: [],
+            permissions: { share_bookings: false, share_packing: false, share_budget: true, share_collab: false },
+            collab: [],
+          });
+        }),
+      );
+
+      renderSharedTrip('booked-token');
+      await waitFor(() => expect(screen.getByText('Shared Paris Trip')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: /costs/i }));
+
+      await waitFor(() => expect(screen.getByText('Aparthotel Silver')).toBeInTheDocument());
+      // Row and its category both read the booked value; the trip total adds the
+      // 100 CHF tram pass to it.
+      await waitFor(() => expect(screen.getAllByText('685.26 CHF')).toHaveLength(2));
+      expect(screen.getByText('785.26 CHF')).toBeInTheDocument();
+      expect(screen.queryByText(/703\.6/)).toBeNull();
+      // What was entered stays beside the converted row, as the Costs list shows it.
+      expect(screen.getByText('· 801.76 USD')).toBeInTheDocument();
+    });
+
+    it('reads a same-day bill in the display currency exactly as typed, with the trip currency\'s quote', async () => {
+      // ZAR trip read in USD (ZAR so no earlier test has cached its rates). The bill froze
+      // 0.05911 USD per rand, today's ZAR quote. The USD quote, 16.918 rand per dollar, is
+      // rounded on its own and is not its inverse.
+      server.use(
+        http.get('https://api.frankfurter.dev/v2/rates', ({ request }) => {
+          const base = new URL(request.url).searchParams.get('base');
+          return HttpResponse.json(base === 'ZAR' ? [{ quote: 'USD', rate: 0.05911 }] : [{ quote: 'ZAR', rate: 16.918 }]);
+        }),
+        http.get('/api/shared/:token', ({ params }) => {
+          if (params.token !== 'same-day-token') return;
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Shared Paris Trip', start_date: '2026-07-01', end_date: '2026-07-05', currency: 'ZAR' },
+            baseCurrency: 'USD',
+            days: [], assignments: {}, dayNotes: {}, places: [], reservations: [], accommodations: [], packing: [],
+            budget: [
+              { id: 1, name: 'Villa', total_price: 12345.67, category: 'Accommodation', currency: 'USD', exchange_rate: 0.05911 },
+            ],
+            categories: [],
+            permissions: { share_bookings: false, share_packing: false, share_budget: true, share_collab: false },
+            collab: [],
+          });
+        }),
+      );
+
+      renderSharedTrip('same-day-token');
+      await waitFor(() => expect(screen.getByText('Shared Paris Trip')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: /costs/i }));
+
+      await waitFor(() => expect(screen.getAllByText('12,345.67 USD')).toHaveLength(3));
+      expect(screen.queryByText(/^· /)).toBeNull();
+    });
+
+    it('reads a bill in the display currency through the trip currency too, beside what was entered', async () => {
+      // The owner reads in USD on a CHF trip. The USD bill was booked at 685.26 CHF,
+      // which today is 780.86 USD, the figure Costs and its balances use; the CHF one
+      // converts at today's rate (100 CHF = 113.95 USD).
+      server.use(
+        http.get('https://api.frankfurter.dev/v2/rates', () => HttpResponse.json([{ quote: 'CHF', rate: 1 / 1.1395 }])),
+        http.get('/api/shared/:token', ({ params }) => {
+          if (params.token !== 'display-token') return;
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Shared Paris Trip', start_date: '2026-07-01', end_date: '2026-07-05', currency: 'CHF' },
+            baseCurrency: 'USD',
+            days: [], assignments: {}, dayNotes: {}, places: [], reservations: [], accommodations: [], packing: [],
+            budget: [
+              { id: 1, name: 'Aparthotel Silver', total_price: 801.76, category: 'Accommodation', currency: 'USD', exchange_rate: 1.17 },
+              { id: 2, name: 'Tram pass', total_price: 100, category: 'Transport', currency: null, exchange_rate: 1 },
+            ],
+            categories: [],
+            permissions: { share_bookings: false, share_packing: false, share_budget: true, share_collab: false },
+            collab: [],
+          });
+        }),
+      );
+
+      renderSharedTrip('display-token');
+      await waitFor(() => expect(screen.getByText('Shared Paris Trip')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: /costs/i }));
+
+      await waitFor(() => expect(screen.getAllByText('113.95 USD')).toHaveLength(2));
+      expect(screen.getAllByText('780.86 USD')).toHaveLength(2);
+      expect(screen.getByText('894.81 USD')).toBeInTheDocument();
+      expect(screen.getByText('· 801.76 USD')).toBeInTheDocument();
+      expect(screen.getByText('· 100.00 CHF')).toBeInTheDocument();
     });
   });
 
@@ -1542,6 +1650,179 @@ describe('SharedTripPage', () => {
       const header = document.querySelector<HTMLElement>('div[style*="linear-gradient(135deg"]');
       expect(header?.textContent).toContain('Shared Paris Trip');
       expect(header?.style.overflow).toBe('hidden');
+    });
+  });
+
+  // ── #2505: only a 404 means the link is dead ────────────────────────────
+
+  describe('FE-PAGE-SHARED-043: a failed load is not an expired link (#2505)', () => {
+    const failWith = (status: number) =>
+      server.use(http.get('/api/shared/:token', () => HttpResponse.json({ error: 'nope' }, { status })));
+
+    it.each([500, 502, 503, 429])('keeps the link when the server answers %i', async (status) => {
+      failWith(status);
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    });
+
+    // A request with no response makes the api client probe /api/health for a
+    // proxy wall first; answer it the way a healthy server does.
+    const healthy = () => http.get('/api/health', () => HttpResponse.json({ status: 'ok' }));
+
+    it('keeps the link when the request never reaches the server', async () => {
+      server.use(healthy(), http.get('/api/shared/:token', () => HttpResponse.error()));
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+    });
+
+    it('keeps the link when the request times out', async () => {
+      // What axios rejects with once its 8s deadline passes: no response at all.
+      const timeout = new AxiosError('timeout of 8000ms exceeded', AxiosError.ECONNABORTED);
+      const spy = vi.spyOn(shareApi, 'getSharedTrip').mockRejectedValueOnce(timeout);
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+      spy.mockRestore();
+    });
+
+    it('still calls a 404 from the share endpoint an expired link, without a retry', async () => {
+      server.use(
+        http.get('/api/shared/:token', () => HttpResponse.json({ error: 'Invalid or expired link' }, { status: 404 })),
+      );
+      renderSharedTrip('gone-token');
+
+      await waitFor(() => expect(screen.getByText(/link expired or invalid/i)).toBeInTheDocument());
+      expect(screen.queryByText(/could not be loaded/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /try again/i })).not.toBeInTheDocument();
+    });
+
+    // A reverse proxy that has no upstream for TREK (Traefik while the
+    // container is stopped or still in its start period, nginx with a missing
+    // location) answers 404 on its own. That is the restart window of the
+    // report, not a dead link.
+    it.each([
+      ['a plain text 404 from Traefik', '404 page not found\n', 'text/plain; charset=utf-8'],
+      ['an HTML 404 from nginx', '<html><head><title>404 Not Found</title></head><body></body></html>', 'text/html'],
+    ])('keeps the link on %s', async (_label, body, contentType) => {
+      server.use(
+        http.get('/api/shared/:token', () => new HttpResponse(body, { status: 404, headers: { 'content-type': contentType } })),
+      );
+      renderSharedTrip('test-token');
+
+      await waitFor(() => expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument());
+      expect(screen.queryByText(/link expired or invalid/i)).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    });
+
+    it('shows the failed screen instead of crashing when a 200 is not the share payload', async () => {
+      // An auth wall or a captive portal answering the API call with its own page.
+      let calls = 0;
+      server.use(
+        http.get('/api/shared/:token', () => {
+          calls += 1;
+          if (calls === 1) {
+            return new HttpResponse('<!doctype html><html><body>Sign in</body></html>', {
+              status: 200,
+              headers: { 'content-type': 'text/html' },
+            });
+          }
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Past The Wall', start_date: '2026-07-01', end_date: '2026-07-02' },
+            days: [],
+            assignments: {},
+            dayNotes: {},
+            places: [],
+            reservations: [],
+            accommodations: [],
+            permissions: { share_map: true },
+          });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      fireEvent.click(await screen.findByRole('button', { name: /try again/i }));
+
+      await waitFor(() => expect(screen.getByText('Past The Wall')).toBeInTheDocument());
+      expect(calls).toBe(2);
+    });
+
+    it('loads the trip when the retry gets through', async () => {
+      let calls = 0;
+      server.use(
+        http.get('/api/shared/:token', () => {
+          calls += 1;
+          if (calls === 1) return new HttpResponse(null, { status: 503 });
+          return HttpResponse.json({
+            trip: { id: 1, title: 'Back Online Trip', start_date: '2026-07-01', end_date: '2026-07-02' },
+            days: [],
+            assignments: {},
+            dayNotes: {},
+            places: [],
+            reservations: [],
+            accommodations: [],
+            permissions: { share_map: true },
+          });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      const retry = await screen.findByRole('button', { name: /try again/i });
+      fireEvent.click(retry);
+
+      await waitFor(() => expect(screen.getByText('Back Online Trip')).toBeInTheDocument());
+      expect(calls).toBe(2);
+    });
+
+    it('keeps the failed screen up with a busy button while the retry runs, and sends it once', async () => {
+      let calls = 0;
+      let release: () => void = () => {};
+      server.use(
+        http.get('/api/shared/:token', async () => {
+          calls += 1;
+          if (calls === 1) return new HttpResponse(null, { status: 500 });
+          await new Promise<void>((resolve) => { release = resolve; });
+          return new HttpResponse(null, { status: 500 });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      const retry = await screen.findByRole('button', { name: /try again/i });
+      fireEvent.click(retry);
+      await waitFor(() => expect(retry).toBeDisabled());
+      expect(retry).toHaveAttribute('aria-busy', 'true');
+      expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument();
+      fireEvent.click(retry);
+
+      await waitFor(() => expect(calls).toBe(2));
+      release();
+      await waitFor(() => expect(retry).not.toBeDisabled());
+      expect(calls).toBe(2);
+      expect(screen.getByText(/could not be loaded/i)).toBeInTheDocument();
+    });
+
+    it('lands on the expired screen when the retry finds the link gone', async () => {
+      let calls = 0;
+      server.use(
+        healthy(),
+        http.get('/api/shared/:token', () => {
+          calls += 1;
+          return calls === 1
+            ? HttpResponse.error()
+            : HttpResponse.json({ error: 'Invalid or expired link' }, { status: 404 });
+        }),
+      );
+      renderSharedTrip('test-token');
+
+      fireEvent.click(await screen.findByRole('button', { name: /try again/i }));
+
+      await waitFor(() => expect(screen.getByText(/link expired or invalid/i)).toBeInTheDocument());
+      expect(calls).toBe(2);
     });
   });
 });

@@ -45,7 +45,8 @@ export default function MLinkedCosts({ reservationId = null, placeId = null, hin
   const [picking, setPicking] = useState(false)
   const [query, setQuery] = useState('')
 
-  const money = (item: BudgetItem) => formatMoney(item.total_price, item.currency || base, locale)
+  // In the expense's own currency; one saved without a currency is in the trip's (#2525).
+  const money = (item: BudgetItem) => formatMoney(item.total_price, item.currency || tripCurrency || base, locale)
   const remove = async (item: BudgetItem) => {
     if (!tripId) return
     try { await deleteBudgetItem(tripId, item.id) } catch { toast.error(t('common.unknownError')) }

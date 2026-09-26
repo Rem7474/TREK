@@ -53,9 +53,10 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         // The Web Push handlers (push, notificationclick, pushsubscriptionchange).
         // Workbox writes importScripts('sw-push.js') at the top of the generated
-        // worker, in dev too. The file lives in public/: were it missing, the SPA
-        // fallback would answer with index.html and the new worker would fail to
-        // install, which tests/unit/pwa/swPush.test.ts guards against.
+        // worker, in dev too. The file lives in public/: were it missing,
+        // importScripts would get no script (the server answers a missing build
+        // file with a 404) and the new worker would fail to install, which
+        // tests/unit/pwa/swPush.test.ts guards against.
         importScripts: ['sw-push.js'],
         // Anything above this is dropped from the precache manifest. The build does
         // not fail over it, it only prints "won't be precached", so the ceiling has

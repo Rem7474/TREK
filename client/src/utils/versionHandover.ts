@@ -17,25 +17,20 @@
  * version and session.
  */
 
+import { reloadFresh } from './chunkReload'
+import { currentController, servingWorker } from './serviceWorkerShell'
+
 const VERSION_KEY = 'trek_app_version'
 const RELOAD_KEY = 'trek_app_version_reload'
 
-/** The worker controlling this page, or null. Reading it can throw where site data is blocked. */
-function currentController(): ServiceWorker | null {
-  try {
-    return 'serviceWorker' in navigator ? navigator.serviceWorker.controller : null
-  } catch {
-    return null
-  }
-}
+// The version this bundle was built as (vite.config.js). A bare tsc run has none,
+// and then no version counts as this bundle's own.
+const BUNDLE_VERSION: string = typeof __TREK_UI_VERSION__ === 'string' ? __TREK_UI_VERSION__ : ''
 
-// The worker that served this page, noted when the app loads. The browser checks
-// sw.js on every navigation by itself, and when that check installs the new build
-// before the server has told us its version, the takeover is over before anyone
-// listens for it. A controller other than this one means the new shell is only a
-// reload away. A page served without a worker came from the network, so a worker
-// claiming it later is no takeover.
-const servedBy = currentController()
+// The worker that served this page, noted when the app loads (serviceWorkerShell).
+// When the browser's own check of sw.js installs the new build before the server
+// has told us its version, the takeover is over before anyone listens for it.
+const servedBy = servingWorker()
 
 function markApplied(version: string): void {
   try { localStorage.setItem(VERSION_KEY, version) } catch { /* site data blocked */ }
@@ -54,10 +49,18 @@ function reloadOnce(version: string): void {
   } catch {
     return
   }
-  window.location.reload()
+  // Under a URL no cache has seen yet: without a worker, a proxy that keeps
+  // index.html against its headers would answer a plain reload with the very
+  // shell this page runs, and the marker has moved on already (#2524).
+  reloadFresh()
 }
 
-async function handOver(reg: ServiceWorkerRegistration, version: string): Promise<void> {
+/**
+ * Asks the worker for the new build and moves the marker once it has taken over.
+ * `runsIt` is a page that already runs the new bundle, so the takeover needs no
+ * reload to show it.
+ */
+async function handOver(reg: ServiceWorkerRegistration, version: string, runsIt: boolean): Promise<void> {
   // Listening before asking for the update, so a quick takeover is not missed.
   // Giving up disarms the listener: the reload belongs to this launch, and one
   // arriving later in the session would hit the user in the middle of an edit.
@@ -65,7 +68,7 @@ async function handOver(reg: ServiceWorkerRegistration, version: string): Promis
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (!armed) return
     markApplied(version)
-    reloadOnce(version)
+    if (!runsIt) reloadOnce(version)
   }, { once: true })
 
   try {
@@ -80,7 +83,7 @@ async function handOver(reg: ServiceWorkerRegistration, version: string): Promis
     // sw.js is unchanged, so the release changed nothing the precache holds and
     // the bundle this page runs is the current one.
     armed = false
-    if (currentController() === servedBy) markApplied(version)
+    if (runsIt || currentController() === servedBy) markApplied(version)
     return
   }
   // Precaching is all or nothing: one failed request out of several hundred and
@@ -129,14 +132,31 @@ export async function reconcileAppVersion(reported: unknown): Promise<void> {
     // Left for the next launch. A reload now would only reach the old worker again.
     return
   }
-  // Without a worker the page came from the network and runs the new bundle
-  // already, so the reload only confirms it. A controller other than the one
-  // that served the page means the browser finished the handover by itself,
-  // and the reload is what shows the new build.
+
+  // A page that came from the network and was built as this version runs it
+  // already. That is where the way out of a broken app shell lands, before the
+  // new app could move the marker (#2524): the old worker is gone, and the one
+  // registered since is this build. Reloading once it has taken over would only
+  // interrupt the user a few seconds in, with nothing new to show. An older
+  // worker still in charge (this page was loaded past it, as a hard reload
+  // does) would serve its own build to the next tab or launch, so it is handed
+  // over like any other, just without the reload.
+  const runsIt = !servedBy && version === BUNDLE_VERSION
+  if (runsIt && (!reg?.active || reg.active === currentController())) {
+    markApplied(version)
+    return
+  }
+
+  // Without a worker the page came from the network, yet was not built as this
+  // version: a proxy or CDN handed out an index.html it kept, or the server
+  // reports a version its bundle was not built as, and then the reload only
+  // confirms what runs. A controller other than the one that served the page
+  // means the browser finished the handover by itself, and the reload is what
+  // shows the new build.
   if (!reg || (servedBy && currentController() !== servedBy)) {
     markApplied(version)
     reloadOnce(version)
     return
   }
-  await handOver(reg, version)
+  await handOver(reg, version, runsIt)
 }

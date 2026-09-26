@@ -3,6 +3,9 @@ import type { TranslationStrings } from '../types';
 const shared: TranslationStrings = {
   'shared.expired': 'Link on aegunud või vigane',
   'shared.expiredHint': 'See reisi jagamislink ei ole enam aktiivne.',
+  'shared.loadFailed': 'Seda reisi ei õnnestunud laadida',
+  'shared.loadFailedHint': 'See ei tähenda, et link on aegunud. Kontrolli oma ühendust ja proovi hetke pärast uuesti.',
+  'shared.retry': 'Proovi uuesti',
   'shared.readOnly': 'Jagatud vaade ainult lugemiseks',
   'shared.tabPlan': 'Plaan',
   'shared.tabBookings': 'Broneeringud',

@@ -13,6 +13,19 @@ export interface DayRoutePoint {
   isPlace: boolean
   leg_transport_mode?: string | null
   incoming_leg_transport_mode?: string | null
+  /** Only on an accommodation bookend: the stay the day starts from or ends at. */
+  hotel?: 'morning' | 'evening'
+}
+
+/**
+ * Which accommodation bookend the leg between two neighbouring run points is, if any.
+ * A day that is nothing but the drive from one stay to the next counts as its morning
+ * leg, so it shows once at the top rather than at both ends (#2476).
+ */
+export function hotelBookendOf(from: DayRoutePoint, to: DayRoutePoint): 'morning' | 'evening' | undefined {
+  if (from.hotel === 'morning') return 'morning'
+  if (to.hotel === 'evening') return 'evening'
+  return undefined
 }
 
 /** Everything the plan depends on, passed in rather than read from the store, so the
@@ -131,9 +144,10 @@ export function buildDayRouteRuns(dayId: number, input: DayRouteInputs): DayRout
   }
   // A hotel bookend point is not a place-assignment, so isPlace: false — resolveLegMode
   // falls through to the day default for hotel-adjacent legs unless the place endpoint
-  // carries its own override.
-  const hotelPt = (a?: Accommodation): DayRoutePoint | null =>
-    a && a.place_lat != null && a.place_lng != null ? { lat: a.place_lat, lng: a.place_lng, isPlace: false } : null
+  // carries its own override. It says which end of the day it is, so the legs routed
+  // from it can be told apart from a stop planned on the hotel's own spot (#2501).
+  const hotelPt = (a: Accommodation | undefined, hotel: 'morning' | 'evening'): DayRoutePoint | null =>
+    a && a.place_lat != null && a.place_lng != null ? { lat: a.place_lat, lng: a.place_lng, isPlace: false, hotel } : null
   // Only draw a hotel bookend when the leg is a real drive: a place before check-in
   // (#1465), a later "home" stop on the checkout day (#1465), or a transport endpoint on
   // an arrival/departure day (#1321, #2133) all draw no bookend.
@@ -154,8 +168,8 @@ export function buildDayRouteRuns(dayId: number, input: DayRouteInputs): DayRout
   const dayHasCarrier = dayTransports.some(r => hasCarrierEndpointOnDay(r, dayId))
   const firstWay = flatPts[0]
   const lastWay = flatPts[flatPts.length - 1]
-  const morningHotel = hotelPt(bookends?.morning)
-  const eveningHotel = hotelPt(bookends?.evening)
+  const morningHotel = hotelPt(bookends?.morning, 'morning')
+  const eveningHotel = hotelPt(bookends?.evening, 'evening')
   const drawMorning = !!bookends && !!day && shouldDrawMorningLeg(bookends, day, edgeInfo(firstStop, 'first'), dayHasCarrier)
     && (!morningHotel || !firstWay || firstWay.isPlace || withinDriveRange(morningHotel, firstWay))
   const drawEvening = !!bookends && !!day && shouldDrawEveningLeg(bookends, day, edgeInfo(lastStop, 'last'), dayHasCarrier)
@@ -176,8 +190,8 @@ export function buildDayRouteRuns(dayId: number, input: DayRouteInputs): DayRout
   // waypoint behind, so the gates above never see it; no line beats a wrong one.
   const dayHasCarrierBooking = dayTransports.some(r => isCarrierTransport(r))
   if (runsWithHotel.length === 0 && drawMorning && drawEvening && !dayHasCarrierBooking) {
-    const m = hotelPt(bookends?.morning)
-    const e = hotelPt(bookends?.evening)
+    const m = hotelPt(bookends?.morning, 'morning')
+    const e = hotelPt(bookends?.evening, 'evening')
     if (m && e && (m.lat !== e.lat || m.lng !== e.lng)) runsWithHotel.push([m, e])
   }
 

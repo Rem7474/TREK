@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import MLinkedCosts from '../../../../src/mobile/screens/trip/sheets/MLinkedCosts'
 import { useTripStore } from '../../../../src/store/tripStore'
+import { useSettingsStore } from '../../../../src/store/settingsStore'
 import { formatMoney } from '../../../../src/utils/formatters'
 import type { BudgetItem } from '../../../../src/types'
 import { buildBudgetItem, buildTrip } from '../../../helpers/factories'
@@ -9,7 +10,7 @@ import { server } from '../../../helpers/msw/server'
 import { resetAllStores, seedStore } from '../../../helpers/store'
 import { fireEvent, render, screen, waitFor, within } from '../../../helpers/render'
 
-// FE-MOB-LINKCOST-001 to FE-MOB-LINKCOST-014
+// FE-MOB-LINKCOST-001 to FE-MOB-LINKCOST-015
 // MLinkedCosts reads the real translations (it is shared by three sheets), so
 // the assertions use the English copy rather than echoed keys.
 
@@ -207,5 +208,17 @@ describe('MLinkedCosts', () => {
 
     seedStore(useTripStore, { budgetItems: [souvenirs] })
     expect(await screen.findByText('Saves the place, then opens the Costs editor.')).toBeInTheDocument()
+  })
+
+  it('FE-MOB-LINKCOST-015: an expense without a currency reads in the trip currency, not the display one (#2525)', () => {
+    const deposit = buildBudgetItem({ id: 15, trip_id: 1, name: 'Hotel deposit', total_price: 120, currency: null, category: 'accommodation', reservation_id: 9 })
+    const tram = buildBudgetItem({ id: 16, trip_id: 1, name: 'Tram pass', total_price: 9, currency: null, category: 'transport' })
+    seedStore(useTripStore, { budgetItems: [deposit, tram] })
+    seedStore(useSettingsStore, { settings: { default_currency: 'USD' } })
+    setup()
+    expect(within(rowOf('Hotel deposit')).getByText(money(120, 'EUR'))).toBeInTheDocument()
+    expect(screen.queryByText(money(120, 'USD'))).not.toBeInTheDocument()
+    fireEvent.click(linkPill())
+    expect(screen.getByText('Tram pass').closest('button')).toHaveTextContent(money(9, 'EUR'))
   })
 })

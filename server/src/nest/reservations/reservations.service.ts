@@ -12,7 +12,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 import { AccommodationsService, noStayMirror, type AccommodationMirror } from '../accommodations/accommodations.service';
 
 type Trip = TripAccess;
-type BudgetEntry = { total_price?: number; category?: string } | undefined;
+type BudgetEntry = { total_price?: number; category?: string; currency?: string | null; exchange_rate?: number } | undefined;
 
 export interface ReservationEndpoint {
   id?: number;
@@ -1031,6 +1031,25 @@ export class ReservationsService {
     return answer;
   }
 
+  /**
+   * The linked cost a new booking's price becomes, in the currency the price was quoted
+   * in and at the rate frozen for it now (#2525). An imported booking previewed its
+   * $801.76 in dollars, then stored 801.76 in the trip's own currency, because only the
+   * amount travelled. The rate is resolved here, before the synchronous writes, the way
+   * the direct booking import and the Costs routes resolve it. A currency that is not a
+   * three-letter code is dropped, which leaves the price in the trip currency as before,
+   * and a rate is never taken from the caller.
+   */
+  async withFrozenRate(tripId: string | number, entry: BudgetEntry): Promise<BudgetEntry> {
+    if (!entry || typeof entry !== 'object') return entry;
+    const { currency: rawCurrency, exchange_rate: _callerRate, ...rest } = entry;
+    const currency = typeof rawCurrency === 'string' ? rawCurrency.trim().toUpperCase() : '';
+    if (!/^[A-Z]{3}$/.test(currency)) return rest;
+    const priced: { currency?: string | null; exchange_rate?: number } = { currency };
+    await this.budget.freezeForeignRate(tripId, priced);
+    return { ...rest, currency, ...(priced.exchange_rate != null ? { exchange_rate: priced.exchange_rate } : {}) };
+  }
+
   /** POST side effect: auto-create a linked budget item when a price is provided. */
   syncBudgetOnCreate(tripId: string, reservationId: number, title: string, type: string | undefined, entry: BudgetEntry, socketId: string | undefined): void {
     if (!entry || !(Number(entry.total_price) > 0)) return;
@@ -1039,6 +1058,8 @@ export class ReservationsService {
         name: title,
         category: entry.category || type || 'Other',
         total_price: entry.total_price!,
+        ...(entry.currency ? { currency: entry.currency } : {}),
+        ...(entry.exchange_rate != null ? { exchange_rate: entry.exchange_rate } : {}),
       });
       this.realtime.broadcast(tripId, 'budget:created', { item }, socketId);
     } catch (err) {

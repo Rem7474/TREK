@@ -259,6 +259,12 @@ export interface RouteSegment {
   noteText?: string
   /** The travel mode this leg was routed with (#1281) — drives the connector icon. */
   mode?: string
+  /**
+   * Set on the drive from the day's accommodation to its first stop ('morning') or
+   * from its last stop back to it ('evening'), so a list can show that leg at the
+   * day's edge without guessing it from coordinates a stop may share (#2501).
+   */
+  hotelBookend?: 'morning' | 'evening'
 }
 
 /** An intermediate stop a plugin route places on the drawn line (charging stop, rest area). */
