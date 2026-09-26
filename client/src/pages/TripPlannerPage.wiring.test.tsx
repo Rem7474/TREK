@@ -1215,6 +1215,27 @@ describe('TripPlannerPage — modals', () => {
     expect(tripActions.deleteFile).toHaveBeenCalledWith(42, 2)
   })
 
+  it('FE-PAGE-TPW-053b: the transport edit window deletes the booking when the user may edit reservations', async () => {
+    const res = buildReservation({ id: 55, type: 'flight', title: 'LH 400' })
+    renderPage({ showTransportModal: true, editingTransport: res })
+
+    await act(async () => { await props('transportModal').onDelete() })
+    expect(hookState.handleDeleteReservation).toHaveBeenCalledWith(55)
+  })
+
+  it('FE-PAGE-TPW-053c: no transport delete without an edited booking or permission', () => {
+    renderPage({ showTransportModal: true })
+    expect(props('transportModal').onDelete).toBeUndefined()
+
+    cleanup()
+    renderPage({
+      showTransportModal: true,
+      editingTransport: buildReservation({ id: 55, type: 'flight' }),
+      can: vi.fn((action: string) => action !== 'reservation_edit'),
+    })
+    expect(props('transportModal').onDelete).toBeUndefined()
+  })
+
   it('FE-PAGE-TPW-054: during a review the transport modal exits advance the queue too', async () => {
     renderPage({ showTransportModal: true, importReviewActive: true })
 

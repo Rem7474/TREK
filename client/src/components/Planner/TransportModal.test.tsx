@@ -112,6 +112,36 @@ describe('TransportModal', () => {
     expect(screen.getByText(/Edit transport/i)).toBeInTheDocument();
   });
 
+  it('FE-PLANNER-TRANSMODAL-003b: shows a delete action when editing with onDelete', () => {
+    const res = buildReservation({ title: 'Paris Flight', type: 'flight' });
+    render(<TransportModal {...defaultProps} reservation={res} onDelete={vi.fn()} />);
+    expect(screen.getByRole('button', { name: /delete/i })).toBeInTheDocument();
+  });
+
+  it('FE-PLANNER-TRANSMODAL-003c: no delete action when creating, or when onDelete is omitted', () => {
+    const res = buildReservation({ title: 'Paris Flight', type: 'flight' });
+    const { rerender } = render(<TransportModal {...defaultProps} reservation={null} onDelete={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: /delete/i })).not.toBeInTheDocument();
+    rerender(<TransportModal {...defaultProps} reservation={res} />);
+    expect(screen.queryByRole('button', { name: /delete/i })).not.toBeInTheDocument();
+  });
+
+  it('FE-PLANNER-TRANSMODAL-003d: confirming delete calls onDelete then onClose', async () => {
+    const onDelete = vi.fn().mockResolvedValue(undefined);
+    const onClose = vi.fn();
+    const res = buildReservation({ title: 'Paris Flight', type: 'flight' });
+    render(<TransportModal {...defaultProps} reservation={res} onDelete={onDelete} onClose={onClose} />);
+
+    await userEvent.click(screen.getByRole('button', { name: /delete/i }));
+    expect(screen.getByText('Delete booking?')).toBeInTheDocument();
+
+    const deleteButtons = screen.getAllByRole('button', { name: /delete/i });
+    await userEvent.click(deleteButtons[deleteButtons.length - 1]);
+
+    await waitFor(() => expect(onDelete).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+  });
+
   it('FE-PLANNER-TRANSMODAL-004: title input is required — onSave not called with empty title', async () => {
     const onSave = vi.fn().mockResolvedValue(undefined);
     render(<TransportModal {...defaultProps} onSave={onSave} />);
