@@ -77,12 +77,7 @@ export function useExpenseForm({
   const [name, setName] = useState(editing?.name || prefill?.name || '');
   const [cat, setCat] = useState<string>(editing ? catMeta(editing.category).key : prefill?.category || 'food');
   const [seed] = useState(() =>
-    newExpenseSeed(
-      prefill,
-      base,
-      people.map((p) => p.id),
-      localToday()
-    )
+    newExpenseSeed(prefill, base, localToday())
   );
   const [currency, setCurrencyState] = useState(editing ? editingCurrency : seed.currency);
   const [day, setDay] = useState(editing ? editing.expense_date || localToday() : seed.day);

@@ -144,8 +144,8 @@ describe('useExpenseForm: where it starts', () => {
     expect(f.currency).toBe('USD');
     expect(f.total).toBe('12.50');
     expect(f.day).toBe('2026-05-01');
-    expect(f.ticketItems.map((i) => [i.name, i.price, [...i.participants]])).toEqual([['Coffee', '4.00', [1, 2]]]);
-    // The lines wait in the Ticket split; the split itself stays Equally.
+    expect(f.ticketItems.map((i) => [i.name, i.price, [...i.participants]])).toEqual([['Coffee', '4.00', []]]);
+    // The lines wait in the Ticket split with nobody on them; the split itself stays Equally.
     expect(f.splitMode).toBe('equally');
     expect(f.pendingReceiptFiles).toEqual([photo]);
   });

@@ -279,11 +279,11 @@ export function calculateTicketShares(items: TicketItem[]): { shares: Record<num
  * editors (the desktop modal and the phone sheet) seed from this one place.
  *
  * A prefill without a currency is in `base`, which is also what the currency
- * field starts on. Receipt lines seed the Ticket split, shared by everyone like
- * a line added by hand, while the split itself stays Equally until the person
- * switches.
+ * field starts on. Receipt lines seed the Ticket split with nobody on them, so
+ * each is a tap on who had it rather than a round of unticking everyone else,
+ * while the split itself stays Equally until the person switches.
  */
-export function newExpenseSeed(prefill: ExpensePrefill | undefined, base: string, peopleIds: number[], today: string) {
+export function newExpenseSeed(prefill: ExpensePrefill | undefined, base: string, today: string) {
   const currency = (prefill?.currency || base).toUpperCase()
   return {
     currency,
@@ -293,7 +293,7 @@ export function newExpenseSeed(prefill: ExpensePrefill | undefined, base: string
       id: `receipt-${i}`,
       name: line.name,
       price: amountToInputString(line.price, currency),
-      participants: new Set(peopleIds),
+      participants: new Set<number>(),
     })),
     receiptFiles: prefill?.receiptFiles ?? [],
   }
